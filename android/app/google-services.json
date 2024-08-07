@@ -1,0 +1,195 @@
+{
+  "project_info": {
+    "project_number": "1007237012704",
+    "firebase_url": "https://unh-app-58bd8.firebaseio.com",
+    "project_id": "unh-app-58bd8",
+    "storage_bucket": "unh-app-58bd8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007237012704:android:50d0ca75ef702039178485",
+        "android_client_info": {
+          "package_name": "com.sataware.indigenoushealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007237012704-5jsmj9qm92bv9psofra6q5ntbq8ddi89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sataware.indigenoushealth",
+            "certificate_hash": "42099bb648a4eb436934eb829b5a806d313feb7d"
+          }
+        },
+        {
+          "client_id": "1007237012704-gv9uu5mer684l5j4nqugqqnpng9saop9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sataware.indigenoushealth",
+            "certificate_hash": "14fe60af6278a3e783703314a9a886865705fef5"
+          }
+        },
+        {
+          "client_id": "1007237012704-nik4e96bjvqa06tt8ao6cgtfihoto6nt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA_Tt5erwNZeaH34FQLS8kb2XBhEH60HE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007237012704-nik4e96bjvqa06tt8ao6cgtfihoto6nt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1007237012704-1hh47ok7me1mhoj3hcocalr757o1potb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sataware.unitednatives1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007237012704:android:9a74d3785683434f178485",
+        "android_client_info": {
+          "package_name": "com.sataware.unh1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007237012704-9uh0f8p2lu8tbs7687lei66phvbsho8a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sataware.unh1",
+            "certificate_hash": "21130c36f90c1c46c149f0a894962f57105666c3"
+          }
+        },
+        {
+          "client_id": "1007237012704-t0ptnt3siengh4vn4ncv8u63iu11iocs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sataware.unh1",
+            "certificate_hash": "c806cf95394db852718ce0577101e996461adc64"
+          }
+        },
+        {
+          "client_id": "1007237012704-v6cm9liieffsa0g9m761vlqho41jhp2h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sataware.unh1",
+            "certificate_hash": "c8e9f24137db03ec060fa16466f1b690543af15d"
+          }
+        },
+        {
+          "client_id": "1007237012704-nik4e96bjvqa06tt8ao6cgtfihoto6nt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA_Tt5erwNZeaH34FQLS8kb2XBhEH60HE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007237012704-nik4e96bjvqa06tt8ao6cgtfihoto6nt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1007237012704-1hh47ok7me1mhoj3hcocalr757o1potb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sataware.unitednatives1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007237012704:android:28408f24131b4b2e178485",
+        "android_client_info": {
+          "package_name": "com.sataware.unitednatives"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007237012704-nik4e96bjvqa06tt8ao6cgtfihoto6nt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA_Tt5erwNZeaH34FQLS8kb2XBhEH60HE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007237012704-nik4e96bjvqa06tt8ao6cgtfihoto6nt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1007237012704-1hh47ok7me1mhoj3hcocalr757o1potb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sataware.unitednatives1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007237012704:android:d6cf3d5245212288178485",
+        "android_client_info": {
+          "package_name": "com.sataware.unitednativesllc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007237012704-nik4e96bjvqa06tt8ao6cgtfihoto6nt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA_Tt5erwNZeaH34FQLS8kb2XBhEH60HE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007237012704-nik4e96bjvqa06tt8ao6cgtfihoto6nt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1007237012704-1hh47ok7me1mhoj3hcocalr757o1potb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sataware.unitednatives1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

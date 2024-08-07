@@ -1,0 +1,119 @@
+import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
+import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../utils/constants.dart';
+
+class DoctorItem extends StatefulWidget {
+  final String doctorAvatar;
+  final String doctorName;
+  final String doctorSpeciality;
+  final String doctorPrice;
+  final Function onTap;
+  final String rating;
+
+  DoctorItem(
+      {Key key,
+      @required this.doctorAvatar,
+      @required this.doctorName,
+      @required this.doctorSpeciality,
+      @required this.doctorPrice,
+      @required this.onTap,
+      @required this.rating})
+      : super(key: key);
+
+  @override
+  State<DoctorItem> createState() => _DoctorItemState();
+}
+
+class _DoctorItemState extends State<DoctorItem> {
+  BookAppointmentController _bookAppointmentController =
+      Get.find<BookAppointmentController>();
+
+  Widget build(BuildContext context) {
+    return Material(
+      child: InkWell(
+        onTap: widget.onTap,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Row(
+            children: <Widget>[
+              Utils().imageProfile(widget.doctorAvatar ?? "", 30),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            "${widget.doctorName}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                .copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: kColorBlue,
+                          size: 18,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "${widget.rating}",
+                          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                              fontSize: 16, fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      "${widget.doctorSpeciality}",
+                      style: TextStyle(color: Colors.grey[400], fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '${Translate.of(context).translate('start_from')} \$${widget.doctorPrice}',
+                          style: Theme.of(context).textTheme.subtitle2.copyWith(
+                              fontSize: 14, fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(width: 15),
+                        _bookAppointmentController.medicalName ==
+                                "United Natives"
+                            ? SizedBox()
+                            : Text(
+                                '${Translate.of(context).translate('(Other Provider)')}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle2
+                                    .copyWith(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.red),
+                              ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
