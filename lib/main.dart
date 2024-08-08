@@ -190,7 +190,7 @@ class _MyAppState extends State<MyApp> {
                       );
                     },
                     title: 'United Natives',
-                    home: SplashPage(),
+                    home: const SplashPage(),
                     initialBinding: AppBidding(),
                     onGenerateRoute: RouteGenerator.generateRoute,
                     // localizationsDelegates: [

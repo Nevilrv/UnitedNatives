@@ -13,9 +13,9 @@ String myDoctorsListDataResponseModelToJson(
     json.encode(data.toJson());
 
 class MyDoctorsListDataResponseModel {
-  String status;
-  List<DoctorData> data;
-  String message;
+  String? status;
+  List<DoctorData>? data;
+  String? message;
 
   MyDoctorsListDataResponseModel({
     this.status,
@@ -33,19 +33,19 @@ class MyDoctorsListDataResponseModel {
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "message": message,
       };
 }
 
 class DoctorData {
-  String id;
-  String patientId;
-  String doctorName;
-  String doctorNameSlug;
-  String doctorMobile;
-  List<Note> notes;
-  DateTime createdAt;
+  String? id;
+  String? patientId;
+  String? doctorName;
+  String? doctorNameSlug;
+  String? doctorMobile;
+  List<Note>? notes;
+  DateTime? createdAt;
 
   DoctorData({
     this.id,
@@ -75,16 +75,16 @@ class DoctorData {
         "doctor_name": doctorName,
         "doctor_name_slug": doctorNameSlug,
         "doctor_mobile": doctorMobile,
-        "notes": List<Note>.from(notes.map((x) => x.toJson())),
-        "created_at": createdAt.toIso8601String(),
+        "notes": List<Note>.from(notes!.map((x) => x.toJson())),
+        "created_at": createdAt?.toIso8601String(),
       };
 }
 
 class Note {
-  int id;
-  String note;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  String? note;
+  String? createdAt;
+  String? updatedAt;
 
   Note({
     this.id,

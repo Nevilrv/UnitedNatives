@@ -152,7 +152,7 @@ class RouteGenerator {
     String email, password, webViewUrl, secretPin;
     email = Config.getEmail();
     password = Config.getPassword();
-    secretPin = Prefs.getString(Prefs.SecretPin);
+    secretPin = Prefs.getString(Prefs.SecretPin) ?? "";
     webViewUrl =
         "${Constants.webUrl}?userEmail=$email&userPassword=$password&securePinInp=$secretPin";
 
@@ -191,12 +191,12 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => OnBoardingPage());
 
       case Routes.aboutus:
-        return CupertinoPageRoute(builder: (_) => AboutUNH());
+        return CupertinoPageRoute(builder: (_) => const AboutUNH());
 
       case Routes.signup:
-        return CupertinoPageRoute(builder: (_) => SignupPage());
-      case Routes.docsignup:
-        return CupertinoPageRoute(builder: (_) => DocSignupPage());
+        return CupertinoPageRoute(builder: (_) => const SignupPage());
+      case Routes.docSignup:
+        return CupertinoPageRoute(builder: (_) => const DocSignupPage());
 
       case Routes.paymentregister:
         return CupertinoPageRoute(builder: (_) => PaymentRegister());
@@ -207,14 +207,14 @@ class RouteGenerator {
       case Routes.diabetes:
         return CupertinoPageRoute(builder: (_) => Diabetes());
 
-      case Routes.Sv:
+      case Routes.landingPage:
         return CupertinoPageRoute(builder: (_) => LandingPage());
 
       case Routes.bp:
         return CupertinoPageRoute(builder: (_) => BloodPressure());
       case Routes.weightloss:
         return CupertinoPageRoute(builder: (_) => Weightloss());
-      case Routes.Sober:
+      case Routes.sober:
         return CupertinoPageRoute(builder: (_) => SoberDay());
       case Routes.wht:
         return CupertinoPageRoute(builder: (_) => WomenHealth());
@@ -241,11 +241,11 @@ class RouteGenerator {
       case Routes.reportAProblem:
         return CupertinoPageRoute(builder: (_) => Report());
 
-      case Routes.terms_and_conditions:
-        return CupertinoPageRoute(builder: (_) => TermsAndCondition());
+      case Routes.termsAndConditions:
+        return CupertinoPageRoute(builder: (_) => const TermsAndCondition());
 
-      case Routes.privacypolicy:
-        return CupertinoPageRoute(builder: (_) => PrivacyPolicy());
+      case Routes.privacyPolicy:
+        return CupertinoPageRoute(builder: (_) => const PrivacyPolicy());
 
       // case Routes.nearby:
       //   return CupertinoPageRoute(builder: (_) {
@@ -362,15 +362,15 @@ class RouteGenerator {
           builder: (_) => WebViewLoad(url: webViewUrl),
         );
 
-      case Routes.schedule_class:
+      case Routes.scheduleClass:
         return CupertinoPageRoute(builder: (_) => ScheduleClass());
 
-      case Routes.dr_schedule_class:
+      case Routes.drScheduleClass:
         return CupertinoPageRoute(builder: (_) => DrScheduleClass());
       case Routes.servicesDoctor:
-        return CupertinoPageRoute(builder: (_) => DoctorServices());
+        return CupertinoPageRoute(builder: (_) => const DoctorServices());
       case Routes.servicesPatient:
-        return CupertinoPageRoute(builder: (_) => PatientServices());
+        return CupertinoPageRoute(builder: (_) => const PatientServices());
 
       case Routes.request:
         return CupertinoPageRoute(builder: (_) => Request());
@@ -478,14 +478,14 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => CategoryView());
       case Routes.catagoryblogdoctor:
         return CupertinoPageRoute(builder: (_) => CategoryViewDoctor());
-      case Routes.Pcatagoryblog:
+      case Routes.pCatagoryBlog:
         return CupertinoPageRoute(builder: (_) => const PCategoryView());
 
       case Routes.remainder:
         return CupertinoPageRoute(builder: (_) => RemainderPage());
 
       case Routes.telehealth:
-        return CupertinoPageRoute(builder: (_) => TeleHealth());
+        return CupertinoPageRoute(builder: (_) => const TeleHealth());
 
       case Routes.docnotification:
         return CupertinoPageRoute(builder: (_) => DocNotificationsPage());

@@ -1,62 +1,63 @@
 class SocialLoginModel {
-  String status;
-  SocialLoginData socialLoginData;
-  String message;
+  String? status;
+  SocialLoginData? socialLoginData;
+  String? message;
 
   SocialLoginModel({this.status, this.socialLoginData, this.message});
 
   SocialLoginModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    socialLoginData = json['data'] != null ? new SocialLoginData.fromJson(json['data']) : null;
+    socialLoginData =
+        json['data'] != null ? SocialLoginData.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.socialLoginData != null) {
-      data['data'] = this.socialLoginData.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (socialLoginData != null) {
+      data['data'] = socialLoginData?.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class SocialLoginData {
-  String id;
-  String userType;
-  String firstName;
-  String lastName;
-  String gender;
-  String email;
-  String loginType;
-  String fbId;
-  Null googleId;
-  Null contactNumber;
-  Null dateOfBirth;
-  String password;
-  String socialProfilePic;
-  Null profilePic;
-  String modified;
-  String created;
+  String? id;
+  String? userType;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? email;
+  String? loginType;
+  String? fbId;
+  String? googleId;
+  String? contactNumber;
+  String? dateOfBirth;
+  String? password;
+  String? socialProfilePic;
+  String? profilePic;
+  String? modified;
+  String? created;
 
   SocialLoginData(
       {this.id,
-        this.userType,
-        this.firstName,
-        this.lastName,
-        this.gender,
-        this.email,
-        this.loginType,
-        this.fbId,
-        this.googleId,
-        this.contactNumber,
-        this.dateOfBirth,
-        this.password,
-        this.socialProfilePic,
-        this.profilePic,
-        this.modified,
-        this.created});
+      this.userType,
+      this.firstName,
+      this.lastName,
+      this.gender,
+      this.email,
+      this.loginType,
+      this.fbId,
+      this.googleId,
+      this.contactNumber,
+      this.dateOfBirth,
+      this.password,
+      this.socialProfilePic,
+      this.profilePic,
+      this.modified,
+      this.created});
 
   SocialLoginData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -78,23 +79,23 @@ class SocialLoginData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_type'] = this.userType;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['gender'] = this.gender;
-    data['email'] = this.email;
-    data['login_type'] = this.loginType;
-    data['fb_id'] = this.fbId;
-    data['google_id'] = this.googleId;
-    data['contact_number'] = this.contactNumber;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['password'] = this.password;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['profile_pic'] = this.profilePic;
-    data['modified'] = this.modified;
-    data['created'] = this.created;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_type'] = userType;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['login_type'] = loginType;
+    data['fb_id'] = fbId;
+    data['google_id'] = googleId;
+    data['contact_number'] = contactNumber;
+    data['date_of_birth'] = dateOfBirth;
+    data['password'] = password;
+    data['social_profile_pic'] = socialProfilePic;
+    data['profile_pic'] = profilePic;
+    data['modified'] = modified;
+    data['created'] = created;
     return data;
   }
 }

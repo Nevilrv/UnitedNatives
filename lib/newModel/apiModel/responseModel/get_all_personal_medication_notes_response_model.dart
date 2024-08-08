@@ -13,9 +13,9 @@ String getAllPersonalMedicationNotesResponseModelToJson(
     json.encode(data.toJson());
 
 class GetAllPersonalMedicationNotesResponseModel {
-  String status;
-  List<PersonalMedicationNotesItemData> data;
-  String message;
+  String? status;
+  List<PersonalMedicationNotesItemData>? data;
+  String? message;
 
   GetAllPersonalMedicationNotesResponseModel({
     this.status,
@@ -34,18 +34,18 @@ class GetAllPersonalMedicationNotesResponseModel {
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "message": message,
       };
 }
 
 class PersonalMedicationNotesItemData {
-  String id;
-  String patientId;
-  String title;
-  String notes;
-  DateTime datetime;
-  DateTime createdAt;
+  String? id;
+  String? patientId;
+  String? title;
+  String? notes;
+  DateTime? datetime;
+  DateTime? createdAt;
 
   PersonalMedicationNotesItemData({
     this.id,
@@ -76,6 +76,6 @@ class PersonalMedicationNotesItemData {
         "title": title,
         "notes": notes,
         "datetime": datetime,
-        "created_at": createdAt.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
       };
 }

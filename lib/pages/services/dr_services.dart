@@ -1,17 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/services_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/services/service_detail_screen.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/services_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/services_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/services/service_detail_screen.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/services_view_model.dart';
 
 class DoctorServices extends StatefulWidget {
+  const DoctorServices({super.key});
+
   @override
-  _DoctorServicesState createState() => _DoctorServicesState();
+  State<DoctorServices> createState() => _DoctorServicesState();
 }
 
 class _DoctorServicesState extends State<DoctorServices> {
@@ -40,7 +42,7 @@ class _DoctorServicesState extends State<DoctorServices> {
           title: Text('Services',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
               textAlign: TextAlign.center),
         ),
@@ -54,33 +56,34 @@ class _DoctorServicesState extends State<DoctorServices> {
             }
             if (controller.getServicesDoctorApiResponse.status ==
                 Status.ERROR) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 40),
+              return const Padding(
+                padding: EdgeInsets.only(top: 40),
                 child: Center(child: Text("Server error")),
               );
             }
             ServicesResponseModel response =
                 controller.getServicesDoctorApiResponse.data;
-            if (response.data.length == 0) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 40),
+            if (response.data!.isEmpty) {
+              return const Padding(
+                padding: EdgeInsets.only(top: 40),
                 child: Center(child: Text("No services found")),
               );
             }
             return ListView.builder(
-              itemCount: response.data.length,
+              itemCount: response.data?.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: () {
                     Get.to(() => ServiceDetailScreen(
-                          image: response.data[index].featuredImage,
-                          title: response.data[index].title,
-                          description: response.data[index].description,
+                          image: response.data![index].featuredImage.toString(),
+                          title: response.data![index].title.toString(),
+                          description:
+                              response.data![index].description.toString(),
                         ));
                   },
                   child: Container(
-                    padding: EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(15),
                     height: h * 0.2,
                     child: servicesCard(context, response, index),
                   ),
@@ -102,10 +105,10 @@ class _DoctorServicesState extends State<DoctorServices> {
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
           child: CachedNetworkImage(
-            imageUrl: responseModel.data[index].featuredImage == null ||
-                    responseModel.data[index].featuredImage == ''
+            imageUrl: responseModel.data?[index].featuredImage == null ||
+                    responseModel.data?[index].featuredImage == ''
                 ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJUHNY8udnX0Rb5RUn9a3IVLHm1yGY4UQHBw&usqp=CAU'
-                : responseModel.data[index].featuredImage,
+                : "${responseModel.data?[index].featuredImage.toString()}",
             imageBuilder: (context, imageProvider) => Container(
               // width: 420.0,
               // height: 400.0,
@@ -117,7 +120,7 @@ class _DoctorServicesState extends State<DoctorServices> {
             placeholder: (context, url) => Center(
               child: Utils.circular(),
             ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
         Container(
@@ -126,16 +129,16 @@ class _DoctorServicesState extends State<DoctorServices> {
               color: Colors.black45.withOpacity(0.4),
               borderRadius: BorderRadius.circular(6)),
         ),
-        Container(
+        SizedBox(
           width: w,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                '${responseModel.data[index].title ?? ""}',
+                responseModel.data?[index].title ?? "",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.button.copyWith(
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     fontSize: 25,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),

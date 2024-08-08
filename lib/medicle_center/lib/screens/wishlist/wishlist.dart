@@ -9,7 +9,7 @@ import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dar
 import 'package:share/share.dart';
 
 class WishList extends StatefulWidget {
-  const WishList({Key key}) : super(key: key);
+  const WishList({super.key});
 
   @override
   _WishListState createState() {

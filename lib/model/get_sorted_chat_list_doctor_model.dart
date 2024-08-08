@@ -1,10 +1,10 @@
 import 'api_state_enum.dart';
 
 class GetSortedChatListDoctor {
-  String status;
-  List<ShortedDoctorChat> doctorChatList;
-  String message;
-  APIState apiState;
+  String? status;
+  List<ShortedDoctorChat>? doctorChatList;
+  String? message;
+  APIState? apiState;
 
   GetSortedChatListDoctor({this.status, this.doctorChatList, this.message});
 
@@ -13,12 +13,11 @@ class GetSortedChatListDoctor {
     if (json['data'] != null) {
       doctorChatList = <ShortedDoctorChat>[];
       json['data'].forEach((v) {
-        doctorChatList.add(new ShortedDoctorChat.fromJson(v));
-        doctorChatList.removeWhere(
-            (element) => element.chatKey == null || element.chatKey == "");
+        doctorChatList?.add(ShortedDoctorChat.fromJson(v));
+        doctorChatList?.removeWhere((element) => element.chatKey == "");
       });
     }
-    if (doctorChatList.isEmpty) {
+    if (doctorChatList!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
       apiState = APIState.COMPLETE;
@@ -27,45 +26,45 @@ class GetSortedChatListDoctor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.doctorChatList != null) {
-      data['data'] = this.doctorChatList.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (doctorChatList != null) {
+      data['data'] = doctorChatList?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class ShortedDoctorChat {
-  String chatId;
-  String fromType;
-  String fromId;
-  String toType;
-  String toId;
-  String message;
-  String attachment;
-  String chatKey;
-  String chatDatetime;
-  String doctorProfilePic;
-  String doctorSocialProfilePic;
-  String patientId;
-  String patientFirstName;
-  String patientLastName;
-  String patientProfilePic;
-  String patientSocialProfilePic;
-  String bloodGroup;
-  String maritalStatus;
-  String height;
-  String weight;
-  String emergencyContact;
-  String caseManager;
-  String insuranceEligibility;
-  String gender;
-  String mail;
-  String tribalStatus;
-  String lastMessage;
-  int unreadMessagesCount;
+  String? chatId;
+  String? fromType;
+  String? fromId;
+  String? toType;
+  String? toId;
+  String? message;
+  String? attachment;
+  String? chatKey;
+  String? chatDatetime;
+  String? doctorProfilePic;
+  String? doctorSocialProfilePic;
+  String? patientId;
+  String? patientFirstName;
+  String? patientLastName;
+  String? patientProfilePic;
+  String? patientSocialProfilePic;
+  String? bloodGroup;
+  String? maritalStatus;
+  String? height;
+  String? weight;
+  String? emergencyContact;
+  String? caseManager;
+  String? insuranceEligibility;
+  String? gender;
+  String? mail;
+  String? tribalStatus;
+  String? lastMessage;
+  int? unreadMessagesCount;
 
   ShortedDoctorChat({
     this.chatId,
@@ -130,36 +129,36 @@ class ShortedDoctorChat {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['chat_id'] = this.chatId;
-    data['from_type'] = this.fromType;
-    data['from_id'] = this.fromId;
-    data['to_type'] = this.toType;
-    data['to_id'] = this.toId;
-    data['message'] = this.message;
-    data['attachment'] = this.attachment;
-    data['chat_key'] = this.chatKey;
-    data['chat_datetime'] = this.chatDatetime;
-    data['doctor_profile_pic'] = this.doctorProfilePic;
-    data['doctor_social_profile_pic'] = this.doctorSocialProfilePic;
-    data['patient_id'] = this.patientId;
-    data['patient_first_name'] = this.patientFirstName;
-    data['patient_last_name'] = this.patientLastName;
-    data['patient_profile_pic'] = this.patientProfilePic;
-    data['patient_social_profile_pic'] = this.patientSocialProfilePic;
-    data['blood_group'] = this.bloodGroup;
-    data['marital_status'] = this.maritalStatus;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['emergency_contact'] = this.emergencyContact;
-    data['case_manager'] = this.caseManager;
-    data['insurance_eligibility'] = this.insuranceEligibility;
-    data['tribal_status'] = this.tribalStatus;
-    data['patient_gender'] = this.gender;
-    data['patient_email'] = this.mail;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['chat_id'] = chatId;
+    data['from_type'] = fromType;
+    data['from_id'] = fromId;
+    data['to_type'] = toType;
+    data['to_id'] = toId;
+    data['message'] = message;
+    data['attachment'] = attachment;
+    data['chat_key'] = chatKey;
+    data['chat_datetime'] = chatDatetime;
+    data['doctor_profile_pic'] = doctorProfilePic;
+    data['doctor_social_profile_pic'] = doctorSocialProfilePic;
+    data['patient_id'] = patientId;
+    data['patient_first_name'] = patientFirstName;
+    data['patient_last_name'] = patientLastName;
+    data['patient_profile_pic'] = patientProfilePic;
+    data['patient_social_profile_pic'] = patientSocialProfilePic;
+    data['blood_group'] = bloodGroup;
+    data['marital_status'] = maritalStatus;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['emergency_contact'] = emergencyContact;
+    data['case_manager'] = caseManager;
+    data['insurance_eligibility'] = insuranceEligibility;
+    data['tribal_status'] = tribalStatus;
+    data['patient_gender'] = gender;
+    data['patient_email'] = mail;
 
-    data['last_message'] = this.lastMessage;
-    data['unread_messages_count'] = this.unreadMessagesCount;
+    data['last_message'] = lastMessage;
+    data['unread_messages_count'] = unreadMessagesCount;
     return data;
   }
 }

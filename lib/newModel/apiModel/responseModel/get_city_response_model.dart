@@ -12,9 +12,9 @@ String getCityResponseModelToJson(List<GetCityResponseModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class GetCityResponseModel {
-  String id;
-  String stateId;
-  String name;
+  String? id;
+  String? stateId;
+  String? name;
   dynamic createdAt;
   dynamic updatedAt;
 

@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart' as dio;
 
 class EditClassReqModel {
-  String title;
-  String description;
-  String date;
-  String startTime;
-  String endTime;
-  String featuredImage;
+  String? title;
+  String? description;
+  String? date;
+  String? startTime;
+  String? endTime;
+  String? featuredImage;
   EditClassReqModel({
     this.date,
     this.description,
@@ -21,7 +21,9 @@ class EditClassReqModel {
       'date': date,
       'start_time': startTime,
       'end_time': endTime,
-      'featured_image': featuredImage==null||featuredImage==''? '':await dio.MultipartFile.fromFile(featuredImage)
+      'featured_image': featuredImage == null || featuredImage == ''
+          ? ''
+          : await dio.MultipartFile.fromFile(featuredImage!)
     };
   }
 }

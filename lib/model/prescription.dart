@@ -1,21 +1,21 @@
 class Prescription {
-  String id;
-  String doctorId;
-  String patientId;
-  String appointmentId;
-  String medicineName;
-  String medicineRoutine;
-  String additionalNotes;
-  String treatmentDays;
-  String pillsPerDay;
-  String created;
-  String modified;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentPatientFullName;
-  String patientFirstName;
-  String patientLastName;
+  String? id;
+  String? doctorId;
+  String? patientId;
+  String? appointmentId;
+  String? medicineName;
+  String? medicineRoutine;
+  String? additionalNotes;
+  String? treatmentDays;
+  String? pillsPerDay;
+  String? created;
+  String? modified;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentPatientFullName;
+  String? patientFirstName;
+  String? patientLastName;
 
   Prescription(
       {this.id,
@@ -57,32 +57,32 @@ class Prescription {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['patient_id'] = this.patientId;
-    data['appointment_id'] = this.appointmentId;
-    data['medicine_name'] = this.medicineName;
-    data['medicine_routine'] = this.medicineRoutine;
-    data['additional_notes'] = this.additionalNotes;
-    data['treatment_days'] = this.treatmentDays;
-    data['pills_per_day'] = this.pillsPerDay;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['purpose_of_visit'] = this.purposeOfVisit;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_patient_full_name'] = this.appointmentPatientFullName;
-    data['patient_first_name'] = this.patientFirstName;
-    data['patient_last_name'] = this.patientLastName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['patient_id'] = patientId;
+    data['appointment_id'] = appointmentId;
+    data['medicine_name'] = medicineName;
+    data['medicine_routine'] = medicineRoutine;
+    data['additional_notes'] = additionalNotes;
+    data['treatment_days'] = treatmentDays;
+    data['pills_per_day'] = pillsPerDay;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['purpose_of_visit'] = purposeOfVisit;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_patient_full_name'] = appointmentPatientFullName;
+    data['patient_first_name'] = patientFirstName;
+    data['patient_last_name'] = patientLastName;
     return data;
   }
 
   static List<Prescription> getPrescriptionList(List<dynamic> jsonList) {
     List<Prescription> tempList = [];
-    jsonList?.forEach((element) {
+    for (var element in jsonList) {
       tempList.add(Prescription.fromJson(element));
-    });
+    }
     return tempList;
   }
 }

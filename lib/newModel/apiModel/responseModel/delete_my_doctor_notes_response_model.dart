@@ -11,9 +11,9 @@ String deleteNotesResponseModelToJson(DeleteNotesResponseModel data) =>
     json.encode(data.toJson());
 
 class DeleteNotesResponseModel {
-  String status;
-  bool data;
-  String message;
+  String? status;
+  bool? data;
+  String? message;
 
   DeleteNotesResponseModel({
     this.status,

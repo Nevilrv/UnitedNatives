@@ -1,12 +1,12 @@
 import 'dart:developer';
 
-import 'package:doctor_appointment_booking/model/get_all_chat_messeage_doctor.dart';
-import 'package:doctor_appointment_booking/model/get_all_patient_messagelist_model.dart';
-import 'package:doctor_appointment_booking/model/get_sorted_chat_list_doctor_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_new_message.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/add_new_message_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/services/api_service.dart';
-import 'package:doctor_appointment_booking/newModel/services/base_service.dart';
+import 'package:united_natives/model/get_all_chat_messeage_doctor.dart';
+import 'package:united_natives/model/get_all_patient_messagelist_model.dart';
+import 'package:united_natives/model/get_sorted_chat_list_doctor_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_new_message.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/add_new_message_response_model.dart';
+import 'package:united_natives/newModel/services/api_service.dart';
+import 'package:united_natives/newModel/services/base_service.dart';
 
 class AddNewChatMessageRepo extends BaseService {
   /// doctor add new chat msg........
@@ -26,7 +26,7 @@ class AddNewChatMessageRepo extends BaseService {
   }
 
   Future<GetAllChatMessagesDoctor> allChatMessageRepo(
-      {String chatKey, String id}) async {
+      {String? chatKey, String? id}) async {
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
       url: allChatMessageURL,
@@ -40,9 +40,7 @@ class AddNewChatMessageRepo extends BaseService {
   }
 
   Future<GetAllPatientChatMessages> allChatMessagePatientRepo(
-      {String chatKey, String id}) async {
-    print('body---------->>>>>>>>${"chat_key$chatKey"}');
-
+      {String? chatKey, String? id}) async {
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
       url: allChatMessagePatientURL,
@@ -55,7 +53,7 @@ class AddNewChatMessageRepo extends BaseService {
   }
 
   Future<GetSortedChatListDoctor> getDoctorSortedChatList(
-      {String doctorId}) async {
+      {String? doctorId}) async {
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
       url: getSortedChatListDoctorURL,

@@ -1,10 +1,10 @@
 import 'api_state_enum.dart';
 
 class DoctorPrescriptionModel {
-  String status;
-  List<DoctorPrescription> doctorPrescription;
-  String message;
-  APIState apiState;
+  String? status;
+  List<DoctorPrescription>? doctorPrescription;
+  String? message;
+  APIState? apiState;
 
   DoctorPrescriptionModel({this.status, this.doctorPrescription, this.message});
 
@@ -13,10 +13,10 @@ class DoctorPrescriptionModel {
     if (json['data'] != null) {
       doctorPrescription = <DoctorPrescription>[];
       json['data'].forEach((v) {
-        doctorPrescription.add(new DoctorPrescription.fromJson(v));
+        doctorPrescription?.add(DoctorPrescription.fromJson(v));
       });
     }
-    if (doctorPrescription.isEmpty) {
+    if (doctorPrescription!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
       apiState = APIState.COMPLETE;
@@ -25,35 +25,35 @@ class DoctorPrescriptionModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.doctorPrescription != null) {
-      data['data'] = this.doctorPrescription.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (doctorPrescription != null) {
+      data['data'] = doctorPrescription?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class DoctorPrescription {
-  String id;
-  String doctorId;
-  String patientId;
-  String appointmentId;
-  String medicineName;
-  String medicineRoutine;
-  String additionalNotes;
-  String treatmentDays;
-  String pillsPerDay;
-  String created;
-  String modified;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentPatientFullName;
-  String patientFirstName;
-  String patientLastName;
-  String pationtImage;
+  String? id;
+  String? doctorId;
+  String? patientId;
+  String? appointmentId;
+  String? medicineName;
+  String? medicineRoutine;
+  String? additionalNotes;
+  String? treatmentDays;
+  String? pillsPerDay;
+  String? created;
+  String? modified;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentPatientFullName;
+  String? patientFirstName;
+  String? patientLastName;
+  String? pationtImage;
 
   DoctorPrescription(
       {this.id,
@@ -97,25 +97,25 @@ class DoctorPrescription {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['patient_id'] = this.patientId;
-    data['appointment_id'] = this.appointmentId;
-    data['medicine_name'] = this.medicineName;
-    data['medicine_routine'] = this.medicineRoutine;
-    data['additional_notes'] = this.additionalNotes;
-    data['treatment_days'] = this.treatmentDays;
-    data['pills_per_day'] = this.pillsPerDay;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['purpose_of_visit'] = this.purposeOfVisit;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_patient_full_name'] = this.appointmentPatientFullName;
-    data['patient_first_name'] = this.patientFirstName;
-    data['patient_last_name'] = this.patientLastName;
-    data['patient_profile_pic'] = this.pationtImage;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['patient_id'] = patientId;
+    data['appointment_id'] = appointmentId;
+    data['medicine_name'] = medicineName;
+    data['medicine_routine'] = medicineRoutine;
+    data['additional_notes'] = additionalNotes;
+    data['treatment_days'] = treatmentDays;
+    data['pills_per_day'] = pillsPerDay;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['purpose_of_visit'] = purposeOfVisit;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_patient_full_name'] = appointmentPatientFullName;
+    data['patient_first_name'] = patientFirstName;
+    data['patient_last_name'] = patientLastName;
+    data['patient_profile_pic'] = pationtImage;
     return data;
   }
 }

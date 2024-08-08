@@ -1,11 +1,11 @@
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_class_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/edit_class_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/add_class_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/class_detail_doctor_data_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_class_doctor_data_reponse_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/message_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/services/api_service.dart';
-import 'package:doctor_appointment_booking/newModel/services/base_service.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_class_request_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/edit_class_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/add_class_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/class_detail_doctor_data_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_class_doctor_data_reponse_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
+import 'package:united_natives/newModel/services/api_service.dart';
+import 'package:united_natives/newModel/services/base_service.dart';
 
 class ScheduledClassRepo extends BaseService {
   /// doctor add class........
@@ -22,12 +22,11 @@ class ScheduledClassRepo extends BaseService {
 
   /// doctor class data.......
 
-  Future<dynamic> getClassDoctorRepo({String id, String date}) async {
-    String url = getClassListDoctorURL + '/' + id + '/' + date;
+  Future<dynamic> getClassDoctorRepo({String? id, String? date}) async {
+    String url = '$getClassListDoctorURL/$id/$date';
 
     var response =
         await ApiService().getResponse(apiType: APIType.aGet, url: url);
-    print('RESPONSE   $response');
     GetClassDoctorDataResponseModel getClassDoctorDataResponseModel =
         GetClassDoctorDataResponseModel.fromJson(response);
 
@@ -36,8 +35,8 @@ class ScheduledClassRepo extends BaseService {
 
   ///class detail doctor data...
 
-  Future<dynamic> classDetailDoctorRepo({String id, String classId}) async {
-    String url = getClassDetailDoctorURL + '/' + classId + '/' + id;
+  Future<dynamic> classDetailDoctorRepo({String? id, String? classId}) async {
+    String url = '$getClassDetailDoctorURL/$classId/$id';
 
     var response =
         await ApiService().getResponse(apiType: APIType.aGet, url: url);
@@ -50,10 +49,10 @@ class ScheduledClassRepo extends BaseService {
   /// doctor edit class........
 
   Future<AddClassResponseModel> editClassRepo(EditClassReqModel model,
-      {String classId, String id}) async {
+      {String? classId, String? id}) async {
     var body = await model.toJson();
 
-    String url = editClassURL + '/' + classId + '/' + id;
+    String url = '$editClassURL/$classId/$id';
     var response = await ApiService().getResponse(
         apiType: APIType.aPost, url: url, body: body, fileUpload: true);
     // log("add class res :${response}");
@@ -63,8 +62,8 @@ class ScheduledClassRepo extends BaseService {
   }
 
   /// doctor edit class........
-  Future<dynamic> deleteClassRepo({String id, String classId}) async {
-    String url = deleteClassURL + '/' + classId + '/' + id;
+  Future<dynamic> deleteClassRepo({String? id, String? classId}) async {
+    String url = '$deleteClassURL/$classId/$id';
 
     var response =
         await ApiService().getResponse(apiType: APIType.aDelete, url: url);

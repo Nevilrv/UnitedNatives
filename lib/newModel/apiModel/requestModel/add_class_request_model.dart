@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart' as dio;
 
 class AddClassReqModel {
-  String doctorId;
-  String title;
-  String description;
-  String date;
-  String startTime;
-  String endTime;
-  String featuredImage;
-  String streaming;
+  String? doctorId;
+  String? title;
+  String? description;
+  String? date;
+  String? startTime;
+  String? endTime;
+  String? featuredImage;
+  String? streaming;
   AddClassReqModel({
     this.title,
     this.date,
@@ -27,7 +27,7 @@ class AddClassReqModel {
       'start_time': startTime,
       'streaming': streaming,
       'end_time': endTime,
-      'featured_image': await dio.MultipartFile.fromFile(featuredImage)
+      'featured_image': await dio.MultipartFile.fromFile(featuredImage!)
       // 'featured_image': await dio.MultipartFile.fromFile(featuredImage)
     };
   }

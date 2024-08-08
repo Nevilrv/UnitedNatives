@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Discovery extends StatefulWidget {
-  const Discovery({Key key}) : super(key: key);
+  const Discovery({super.key});
 
   @override
   _DiscoveryState createState() {

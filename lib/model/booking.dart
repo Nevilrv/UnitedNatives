@@ -1,18 +1,18 @@
-import 'package:doctor_appointment_booking/model/appointment.dart';
+import 'package:united_natives/model/appointment.dart';
 
 class Booking {
-  String id;
-  Appointment doctor;
-  String doctorId;
-  String userId;
-  String date; // Monday, 3 Feb
-  String formattedDate; // dd-MM-yyyy
-  String time; // 08:00 AM
-  String patient;
-  String mobile;
-  String patientMobile;
-  String email;
-  int healthConcern;
+  String? id;
+  Appointment? doctor;
+  String? doctorId;
+  String? userId;
+  String? date; // Monday, 3 Feb
+  String? formattedDate; // dd-MM-yyyy
+  String? time; // 08:00 AM
+  String? patient;
+  String? mobile;
+  String? patientMobile;
+  String? email;
+  int? healthConcern;
 
   Booking({
     this.id,

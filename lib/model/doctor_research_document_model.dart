@@ -1,8 +1,8 @@
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
+import 'package:united_natives/model/api_state_enum.dart';
 
 class DoctorResearchDocumentModel {
-  String status;
-  List<DoctorResearchDocument> doctorResearchDocument;
+  String? status;
+  List<DoctorResearchDocument>? doctorResearchDocument;
   APIState apiState = APIState.NONE;
 
   DoctorResearchDocumentModel({this.status, this.doctorResearchDocument});
@@ -12,7 +12,7 @@ class DoctorResearchDocumentModel {
     if (json['data'] != null) {
       doctorResearchDocument = <DoctorResearchDocument>[];
       json['data'].forEach((v) {
-        doctorResearchDocument.add(new DoctorResearchDocument.fromJson(v));
+        doctorResearchDocument?.add(DoctorResearchDocument.fromJson(v));
       });
     }
     if (doctorResearchDocument?.isEmpty ?? true) {
@@ -23,30 +23,29 @@ class DoctorResearchDocumentModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.doctorResearchDocument != null) {
-      data['data'] =
-          this.doctorResearchDocument.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (doctorResearchDocument != null) {
+      data['data'] = doctorResearchDocument?.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class DoctorResearchDocument {
-  String id;
-  String doctorId;
-  String researchAuthor;
-  String researchTitle;
-  String researchDescription;
-  String researchDocument;
-  String researchDocumentUrl;
-  String researchImage;
-  String researchVideo;
-  String researchVideoUrl;
-  String status;
-  String created;
-  String modified;
+  String? id;
+  String? doctorId;
+  String? researchAuthor;
+  String? researchTitle;
+  String? researchDescription;
+  String? researchDocument;
+  String? researchDocumentUrl;
+  String? researchImage;
+  String? researchVideo;
+  String? researchVideoUrl;
+  String? status;
+  String? created;
+  String? modified;
 
   DoctorResearchDocument(
       {this.id,
@@ -80,20 +79,20 @@ class DoctorResearchDocument {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['research_author'] = this.researchAuthor;
-    data['research_title'] = this.researchTitle;
-    data['research_description'] = this.researchDescription;
-    data['research_document'] = this.researchDocument;
-    data['research_document_url'] = this.researchDocumentUrl;
-    data['research_image'] = this.researchImage;
-    data['research_video'] = this.researchVideo;
-    data['research_video_url'] = this.researchVideoUrl;
-    data['status'] = this.status;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['research_author'] = researchAuthor;
+    data['research_title'] = researchTitle;
+    data['research_description'] = researchDescription;
+    data['research_document'] = researchDocument;
+    data['research_document_url'] = researchDocumentUrl;
+    data['research_image'] = researchImage;
+    data['research_video'] = researchVideo;
+    data['research_video_url'] = researchVideoUrl;
+    data['status'] = status;
+    data['created'] = created;
+    data['modified'] = modified;
     return data;
   }
 }

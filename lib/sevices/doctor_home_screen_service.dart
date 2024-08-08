@@ -40,7 +40,7 @@ class DoctorHomeScreenService {
 
   final NetworkAPICall _networkAPICall = NetworkAPICall();
 
-  static const BANNER_TOKEN = '43b2fe6fb2cd47eb049520a9f5d94905';
+  static const bannerToken = '43b2fe6fb2cd47eb049520a9f5d94905';
 
   // Map<String, String> headers = {
   //   "Authorization": 'Bearer ${Config.getHeaders()}',
@@ -613,6 +613,9 @@ class DoctorHomeScreenService {
       var result = await _networkAPICall.post(
           Constants.getDoctorAvailability, body,
           header: Config.getHeaders());
+
+      log('result==========>>>>>$result');
+
       /*  if (result['status'] == 'Success') {
           doctorAvailabilityData = DoctorAvailability.fromJson(result['data']);
           print("Success");
@@ -691,6 +694,8 @@ class DoctorHomeScreenService {
       var result = await _networkAPICall.post(
           Constants.multipleDoctorAvailability, body,
           header: Config.getHeaders());
+      log('result==========>>>>>$result');
+
       return doctorMultipleAvailabilityData;
     } catch (e, stackStrace) {
       throw AppException.exceptionHandler(e, stackStrace);

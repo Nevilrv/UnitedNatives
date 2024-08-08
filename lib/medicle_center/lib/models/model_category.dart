@@ -1,19 +1,19 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_image.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/color.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/icon.dart';
+import 'package:united_natives/medicle_center/lib/models/model_image.dart';
+import 'package:united_natives/medicle_center/lib/utils/color.dart';
+import 'package:united_natives/medicle_center/lib/utils/icon.dart';
 import 'package:flutter/cupertino.dart';
 
 enum CategoryType { category, location, feature }
 
 class CategoryModel {
-  final int id;
-  final String title;
-  final int count;
-  final ImageModel image;
-  final IconData icon;
-  final Color color;
-  final CategoryType type;
-  final bool hasChild;
+  final int? id;
+  final String? title;
+  final int? count;
+  final ImageModel? image;
+  final IconData? icon;
+  final Color? color;
+  final CategoryType? type;
+  final bool? hasChild;
 
   CategoryModel({
     this.id,
@@ -34,7 +34,7 @@ class CategoryModel {
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     CategoryType categoryType = CategoryType.category;
-    ImageModel image;
+    ImageModel? image;
     if (json['image'] != null) {
       image = json['image'] == null
           ? ImageModel(id: 0, full: json['image'], thumb: json['image'])

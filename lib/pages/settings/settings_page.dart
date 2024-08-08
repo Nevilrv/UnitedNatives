@@ -1,21 +1,22 @@
 import 'dart:convert';
-
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/theme_controlller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/viewModel/rate_and%20_contactus_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/theme_controlller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/rate_and%20_contactus_viewModel.dart';
 
+import '../../data/pref_manager.dart';
+import '../../utils/constants.dart';
 import 'widgets/widgets.dart';
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage>
@@ -30,11 +31,10 @@ class _SettingsPageState extends State<SettingsPage>
   @override
   void initState() {
     super.initState();
-    print('USERTYPE${Prefs.getString(Prefs.USERTYPE)}');
     getRate();
-    themeController.color = themeController.isDark
+    themeController.color = (themeController.isDark
         ? Colors.white.withOpacity(0.12)
-        : Colors.grey[200];
+        : Colors.grey[200])!;
   }
 
   getRate() async {
@@ -49,21 +49,17 @@ class _SettingsPageState extends State<SettingsPage>
     http.Response response1 = await http.get(
         Uri.parse(Prefs.getString(Prefs.USERTYPE) == '1' ? url : url1),
         headers: header1);
-    print('RESPONSE MEET ENDED${response1.body}');
     var data = jsonDecode(response1.body);
 
     if (data["status"] == 'Fail') {
-      print("<<<<<<<<");
       rateContactUsController.setRate(rate1: '0');
     } else {
-      print('rating ${data["data"]['rating']}');
       rateContactUsController.setRate(rate1: '${data["data"]['rating']}');
     }
-    print(data["status"]);
   }
 
   AdsController adsController = Get.find();
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {

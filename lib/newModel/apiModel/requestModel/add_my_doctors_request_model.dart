@@ -1,7 +1,7 @@
 class AddMyDoctorRequestModel {
-  int patientId;
-  String doctorName;
-  String contactNumber;
+  int? patientId;
+  String? doctorName;
+  String? contactNumber;
 
   AddMyDoctorRequestModel(
       {this.patientId, this.contactNumber, this.doctorName});
@@ -13,10 +13,10 @@ class AddMyDoctorRequestModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['patient_id'] = this.patientId;
-    data['doctor_name'] = this.doctorName;
-    data['doctor_mobile'] = this.contactNumber;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['patient_id'] = patientId;
+    data['doctor_name'] = doctorName;
+    data['doctor_mobile'] = contactNumber;
 
     return data;
   }

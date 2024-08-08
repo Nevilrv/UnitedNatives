@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/api/api.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/application/application_state.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/preferences.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/theme.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_device.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_theme.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils_medicalcenter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/logger.dart';
+import 'package:united_natives/medicle_center/lib/api/api.dart';
+import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
+import 'package:united_natives/medicle_center/lib/blocs/application/application_state.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/configs/preferences.dart';
+import 'package:united_natives/medicle_center/lib/configs/theme.dart';
+import 'package:united_natives/medicle_center/lib/models/model_device.dart';
+import 'package:united_natives/medicle_center/lib/models/model_theme.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils_medicalcenter.dart';
+import 'package:united_natives/medicle_center/lib/utils/logger.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -30,9 +30,9 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     final oldTextScale = Preferences.getDouble(Preferences.textScaleFactor);
     // final oldSetting = Preferences.getString(Preferences.setting);
 
-    DarkOption darkOption;
-    String font;
-    ThemeModel theme;
+    DarkOption? darkOption;
+    String? font;
+    ThemeModel? theme;
 
     ///Setup domain
     if (oldDomain != null) {
@@ -72,12 +72,14 @@ class ApplicationCubit extends Cubit<ApplicationState> {
       }
     }
 
+    /// NEW CODE COMMENT
+
     ///Setup application & setting
-    final results = await Future.wait([
-      PackageInfo.fromPlatform(),
+    final results = await Future.wait({
+      // PackageInfo.fromPlatform(),
       UtilsMedicalCenter.getDeviceInfo(),
       Firebase.initializeApp(),
-    ]);
+    });
 
     Application.packageInfo = results[0] as PackageInfo;
     Application.device = results[1] as DeviceModel;
@@ -96,7 +98,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     ///Setup Theme & Font with dark Option
     AppBloc.themeCubit.onChangeTheme(
       theme: theme,
-      font: font,
+      font: "${font}",
       darkOption: darkOption,
       textScaleFactor: oldTextScale,
     );
@@ -106,7 +108,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
 
     ///First or After upgrade version show intro preview app
     final hasReview = Preferences.containsKey(
-      '${Preferences.reviewIntro}.${Application.packageInfo?.version}',
+      '${Preferences.reviewIntro}.${Application.packageInfo.version}',
     );
     if (hasReview) {
       ///Notify
@@ -120,7 +122,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
   ///On Complete Intro
   void onCompletedIntro() async {
     await Preferences.setBool(
-      '${Preferences.reviewIntro}.${Application.packageInfo?.version}',
+      '${Preferences.reviewIntro}.${Application.packageInfo.version}',
       true,
     );
 

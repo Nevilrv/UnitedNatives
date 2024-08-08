@@ -1,7 +1,7 @@
 class ServicesResponseModel {
-  String status;
-  List<Data> data;
-  String message;
+  String? status;
+  List<Data>? data;
+  String? message;
 
   ServicesResponseModel({this.status, this.data, this.message});
 
@@ -10,30 +10,30 @@ class ServicesResponseModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data?.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
-  String id;
-  String title;
-  String description;
-  String featuredImage;
-  String createdDate;
-  String modifiedDate;
+  String? id;
+  String? title;
+  String? description;
+  String? featuredImage;
+  String? createdDate;
+  String? modifiedDate;
 
   Data(
       {this.id,
@@ -53,13 +53,13 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['featured_image'] = this.featuredImage;
-    data['created_date'] = this.createdDate;
-    data['modified_date'] = this.modifiedDate;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['featured_image'] = featuredImage;
+    data['created_date'] = createdDate;
+    data['modified_date'] = modifiedDate;
     return data;
   }
 }

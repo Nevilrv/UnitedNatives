@@ -1,4 +1,4 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_discovery.dart';
+import 'package:united_natives/medicle_center/lib/models/model_discovery.dart';
 
 abstract class DiscoveryState {}
 

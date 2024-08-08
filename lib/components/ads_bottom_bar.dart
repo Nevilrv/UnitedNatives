@@ -1,19 +1,17 @@
 import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/pages/splash_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdsBottomBar extends StatefulWidget {
-  final BuildContext context;
+  final BuildContext? context;
 
-  final AdsController ads;
+  final AdsController? ads;
 
-  const AdsBottomBar(
-      {key,  this.ads, this.context});
+  const AdsBottomBar({super.key, this.ads, this.context});
 
   @override
   State<AdsBottomBar> createState() => _AdsBottomBarState();
@@ -22,23 +20,19 @@ class AdsBottomBar extends StatefulWidget {
 class _AdsBottomBarState extends State<AdsBottomBar> {
   @override
   Widget build(BuildContext context) {
+    int randomAd = Random().nextInt(tempList.isEmpty ? 1 : tempList.length);
 
-    int randomAd = Random().nextInt(tempList.length == 0 ? 1 : tempList.length) ?? 0;
-
-
-    final h = MediaQuery.of(widget.context).size.height;
-    final w = MediaQuery.of(widget.context).size.width;
-    return tempList.isEmpty || widget.ads.adShow == false
-        ? SizedBox()
-        : Container(
+    final h = MediaQuery.of(widget.context!).size.height;
+    final w = MediaQuery.of(widget.context!).size.width;
+    return tempList.isEmpty || widget.ads?.adShow == false
+        ? const SizedBox()
+        : SizedBox(
             height: h * 0.1,
             child: Stack(
               children: [
                 Positioned.fill(
                   child: GestureDetector(
                     onTap: () async {
-                      print('data');
-
                       await launchUrl(
                         Uri.parse(
                             '${tempList[randomAd]['url'] ?? tempList[0]['url']}'),
@@ -56,13 +50,14 @@ class _AdsBottomBarState extends State<AdsBottomBar> {
                           child: Container(
                             height: h * 0.15,
                             width: w,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                             ),
                           ),
                         );
                       },
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                   ),
                 ),
@@ -71,14 +66,14 @@ class _AdsBottomBarState extends State<AdsBottomBar> {
                   top: 0,
                   child: IconButton(
                     onPressed: () {
-                      widget.ads.adShow = false;
+                      widget.ads?.adShow = false;
                       setState(() {});
-                      widget.ads.timer();
+                      widget.ads?.timer();
                     },
                     icon: CircleAvatar(
                       maxRadius: 15,
                       backgroundColor: Colors.grey.shade700,
-                      child: Icon(Icons.clear),
+                      child: const Icon(Icons.clear),
                     ),
                   ),
                 ),

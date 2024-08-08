@@ -1,9 +1,9 @@
 import 'api_state_enum.dart';
 
 class DoctorResearchDocumentDetailsModel {
-  String status;
-  DoctorResearchDocumentDetails doctorResearchDocumentDetails;
-  APIState apiState;
+  String? status;
+  DoctorResearchDocumentDetails? doctorResearchDocumentDetails;
+  APIState? apiState;
 
   DoctorResearchDocumentDetailsModel(
       {this.status, this.doctorResearchDocumentDetails});
@@ -11,7 +11,7 @@ class DoctorResearchDocumentDetailsModel {
   DoctorResearchDocumentDetailsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     doctorResearchDocumentDetails = json['data'] != null
-        ? new DoctorResearchDocumentDetails.fromJson(json['data'])
+        ? DoctorResearchDocumentDetails.fromJson(json['data'])
         : null;
     if (doctorResearchDocumentDetails == null) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
@@ -21,30 +21,30 @@ class DoctorResearchDocumentDetailsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.doctorResearchDocumentDetails != null) {
-      data['data'] = this.doctorResearchDocumentDetails.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (doctorResearchDocumentDetails != null) {
+      data['data'] = doctorResearchDocumentDetails?.toJson();
     }
     return data;
   }
 }
 
 class DoctorResearchDocumentDetails {
-  String id;
-  String doctorId;
-  String researchAuthor;
-  String researchTitle;
-  String researchDescription;
-  String researchDocument;
-  String researchDocumentUrl;
-  String researchImage;
-  String researchVideo;
-  String researchVideoUrl;
-  String status;
-  String created;
-  String modified;
-  String researcherSpeciality;
+  String? id;
+  String? doctorId;
+  String? researchAuthor;
+  String? researchTitle;
+  String? researchDescription;
+  String? researchDocument;
+  String? researchDocumentUrl;
+  String? researchImage;
+  String? researchVideo;
+  String? researchVideoUrl;
+  String? status;
+  String? created;
+  String? modified;
+  String? researcherSpeciality;
 
   DoctorResearchDocumentDetails(
       {this.id,
@@ -80,21 +80,21 @@ class DoctorResearchDocumentDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['research_author'] = this.researchAuthor;
-    data['research_title'] = this.researchTitle;
-    data['research_description'] = this.researchDescription;
-    data['research_document'] = this.researchDocument;
-    data['research_document_url'] = this.researchDocumentUrl;
-    data['research_image'] = this.researchImage;
-    data['research_video'] = this.researchVideo;
-    data['research_video_url'] = this.researchVideoUrl;
-    data['status'] = this.status;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['researcher_speciality'] = this.researcherSpeciality;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['research_author'] = researchAuthor;
+    data['research_title'] = researchTitle;
+    data['research_description'] = researchDescription;
+    data['research_document'] = researchDocument;
+    data['research_document_url'] = researchDocumentUrl;
+    data['research_image'] = researchImage;
+    data['research_video'] = researchVideo;
+    data['research_video_url'] = researchVideoUrl;
+    data['status'] = status;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['researcher_speciality'] = researcherSpeciality;
     return data;
   }
 }

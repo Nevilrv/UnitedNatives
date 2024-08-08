@@ -1,10 +1,10 @@
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
+import 'package:united_natives/model/api_state_enum.dart';
 
 class GetAllDoctor {
-  String status;
-  List<Doctor> data;
-  String message;
-  APIState apiState;
+  String? status;
+  List<Doctor>? data;
+  String? message;
+  APIState? apiState;
 
   GetAllDoctor({this.status, this.data, this.message});
 
@@ -13,12 +13,12 @@ class GetAllDoctor {
     if (json['data'] != null) {
       data = <Doctor>[];
       json['data'].forEach((v) {
-        data.add(new Doctor.fromJson(v));
+        data?.add(Doctor.fromJson(v));
       });
     }
     message = json['message'];
 
-    if (data.isEmpty) {
+    if (data!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
       apiState = APIState.COMPLETE;
@@ -26,39 +26,39 @@ class GetAllDoctor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Doctor {
-  String id;
-  String userType;
-  String firstName;
-  String lastName;
-  String gender;
-  String email;
-  String loginType;
-  String fbId;
-  String googleId;
-  String contactNumber;
-  String dateOfBirth;
-  String password;
-  String socialProfilePic;
-  String profilePic;
-  String adminReadStat;
-  String modified;
-  String created;
-  String certificateNo;
-  String education;
-  double rating;
-  String speciality;
-  String chatKey;
+  String? id;
+  String? userType;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? email;
+  String? loginType;
+  String? fbId;
+  String? googleId;
+  String? contactNumber;
+  String? dateOfBirth;
+  String? password;
+  String? socialProfilePic;
+  String? profilePic;
+  String? adminReadStat;
+  String? modified;
+  String? created;
+  String? certificateNo;
+  String? education;
+  double? rating;
+  String? speciality;
+  String? chatKey;
 
   Doctor({
     this.id,
@@ -111,29 +111,29 @@ class Doctor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_type'] = this.userType;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['gender'] = this.gender;
-    data['email'] = this.email;
-    data['login_type'] = this.loginType;
-    data['fb_id'] = this.fbId;
-    data['google_id'] = this.googleId;
-    data['contact_number'] = this.contactNumber;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['password'] = this.password;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['profile_pic'] = this.profilePic;
-    data['admin_read_stat'] = this.adminReadStat;
-    data['modified'] = this.modified;
-    data['created'] = this.created;
-    data['certificate_no'] = this.certificateNo;
-    data['education'] = this.education;
-    data['rating'] = this.rating;
-    data['speciality'] = this.speciality;
-    data['chat_key'] = this.chatKey;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_type'] = userType;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['login_type'] = loginType;
+    data['fb_id'] = fbId;
+    data['google_id'] = googleId;
+    data['contact_number'] = contactNumber;
+    data['date_of_birth'] = dateOfBirth;
+    data['password'] = password;
+    data['social_profile_pic'] = socialProfilePic;
+    data['profile_pic'] = profilePic;
+    data['admin_read_stat'] = adminReadStat;
+    data['modified'] = modified;
+    data['created'] = created;
+    data['certificate_no'] = certificateNo;
+    data['education'] = education;
+    data['rating'] = rating;
+    data['speciality'] = speciality;
+    data['chat_key'] = chatKey;
     return data;
   }
 }

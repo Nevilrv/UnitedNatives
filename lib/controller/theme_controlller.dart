@@ -1,11 +1,11 @@
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/utils/app_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/app_themes.dart';
 
 class ThemeController extends GetxController {
   var isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
-  Color color;
+  Color? color;
 
   updateTheme(dynamic darkTheme) {
     isDark = darkTheme;

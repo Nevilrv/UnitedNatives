@@ -1,10 +1,10 @@
 import 'api_state_enum.dart';
 
 class GetSortedPatientChatListModel {
-  String status;
-  List<SortedPatientChat> data;
-  String message;
-  APIState apiState;
+  String? status;
+  List<SortedPatientChat>? data;
+  String? message;
+  APIState? apiState;
 
   GetSortedPatientChatListModel({this.status, this.data, this.message});
 
@@ -13,11 +13,11 @@ class GetSortedPatientChatListModel {
     if (json['data'] != null) {
       data = <SortedPatientChat>[];
       json['data'].forEach((v) {
-        data.add(new SortedPatientChat.fromJson(v));
+        data?.add(SortedPatientChat.fromJson(v));
       });
     }
     message = json['message'];
-    if (data.isEmpty) {
+    if (data!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
       apiState = APIState.COMPLETE;
@@ -25,35 +25,35 @@ class GetSortedPatientChatListModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class SortedPatientChat {
-  String chatId;
-  String fromType;
-  String fromId;
-  String toType;
-  String toId;
-  String message;
-  String attachment;
-  String chatKey;
-  String chatDatetime;
-  String patientProfilePic;
-  String patientSocialProfilePic;
-  String doctorId;
-  String doctorFirstName;
-  String doctorLastName;
-  String doctorProfilePic;
-  String doctorSocialProfilePic;
-  String lastMessage;
-  int unreadMessagesCount;
+  String? chatId;
+  String? fromType;
+  String? fromId;
+  String? toType;
+  String? toId;
+  String? message;
+  String? attachment;
+  String? chatKey;
+  String? chatDatetime;
+  String? patientProfilePic;
+  String? patientSocialProfilePic;
+  String? doctorId;
+  String? doctorFirstName;
+  String? doctorLastName;
+  String? doctorProfilePic;
+  String? doctorSocialProfilePic;
+  String? lastMessage;
+  int? unreadMessagesCount;
 
   SortedPatientChat({
     this.chatId,
@@ -98,25 +98,25 @@ class SortedPatientChat {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['chat_id'] = this.chatId;
-    data['from_type'] = this.fromType;
-    data['from_id'] = this.fromId;
-    data['to_type'] = this.toType;
-    data['to_id'] = this.toId;
-    data['message'] = this.message;
-    data['attachment'] = this.attachment;
-    data['chat_key'] = this.chatKey;
-    data['chat_datetime'] = this.chatDatetime;
-    data['patient_profile_pic'] = this.patientProfilePic;
-    data['patient_social_profile_pic'] = this.patientSocialProfilePic;
-    data['doctor_id'] = this.doctorId;
-    data['doctor_first_name'] = this.doctorFirstName;
-    data['doctor_last_name'] = this.doctorLastName;
-    data['doctor_profile_pic'] = this.doctorProfilePic;
-    data['doctor_social_profile_pic'] = this.doctorSocialProfilePic;
-    data['last_message'] = this.lastMessage;
-    data['unread_messages_count'] = this.unreadMessagesCount;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['chat_id'] = chatId;
+    data['from_type'] = fromType;
+    data['from_id'] = fromId;
+    data['to_type'] = toType;
+    data['to_id'] = toId;
+    data['message'] = message;
+    data['attachment'] = attachment;
+    data['chat_key'] = chatKey;
+    data['chat_datetime'] = chatDatetime;
+    data['patient_profile_pic'] = patientProfilePic;
+    data['patient_social_profile_pic'] = patientSocialProfilePic;
+    data['doctor_id'] = doctorId;
+    data['doctor_first_name'] = doctorFirstName;
+    data['doctor_last_name'] = doctorLastName;
+    data['doctor_profile_pic'] = doctorProfilePic;
+    data['doctor_social_profile_pic'] = doctorSocialProfilePic;
+    data['last_message'] = lastMessage;
+    data['unread_messages_count'] = unreadMessagesCount;
     return data;
   }
 }

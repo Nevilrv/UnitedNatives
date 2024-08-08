@@ -1,15 +1,15 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/routes.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_item.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_product.dart';
+import 'package:united_natives/medicle_center/lib/configs/routes.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_item.dart';
+import 'package:united_natives/medicle_center/lib/models/model_product.dart';
 
 import 'model_user.dart';
 
 class DeepLinkModel {
-  final String action;
-  final String type;
-  final String target;
+  final String? action;
+  final String? type;
+  final String? target;
   final dynamic item;
-  final bool authentication;
+  final bool? authentication;
 
   DeepLinkModel({
     this.action,

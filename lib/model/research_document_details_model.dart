@@ -1,16 +1,16 @@
 import 'api_state_enum.dart';
 
 class ResearchDocumentDetailsModel {
-  String status;
-  ResearchDocumentDetails researchDocumentDetails;
-  APIState apiState;
+  String? status;
+  ResearchDocumentDetails? researchDocumentDetails;
+  APIState? apiState;
 
   ResearchDocumentDetailsModel({this.status, this.researchDocumentDetails});
 
   ResearchDocumentDetailsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     researchDocumentDetails = json['data'] != null
-        ? new ResearchDocumentDetails.fromJson(json['data'])
+        ? ResearchDocumentDetails.fromJson(json['data'])
         : null;
     if (researchDocumentDetails == null) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
@@ -20,46 +20,46 @@ class ResearchDocumentDetailsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.researchDocumentDetails != null) {
-      data['data'] = this.researchDocumentDetails.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (researchDocumentDetails != null) {
+      data['data'] = researchDocumentDetails?.toJson();
     }
     return data;
   }
 }
 
 class ResearchDocumentDetails {
-  String id;
-  String doctorId;
-  String researchAuthor;
-  String researchTitle;
-  String researchDescription;
-  String researchDocument;
-  String researchDocumentUrl;
-  String researchImage;
-  String researchVideo;
-  String researchVideoUrl;
-  String status;
-  String created;
-  String modified;
-  String researcherSpeciality;
+  String? id;
+  String? doctorId;
+  String? researchAuthor;
+  String? researchTitle;
+  String? researchDescription;
+  String? researchDocument;
+  String? researchDocumentUrl;
+  String? researchImage;
+  String? researchVideo;
+  String? researchVideoUrl;
+  String? status;
+  String? created;
+  String? modified;
+  String? researcherSpeciality;
 
-  ResearchDocumentDetails({this.id,
-    this.doctorId,
-    this.researchAuthor,
-    this.researchTitle,
-    this.researchDescription,
-    this.researchDocument,
-    this.researchDocumentUrl,
-    this.researchImage,
-    this.researchVideo,
-    this.researchVideoUrl,
-    this.status,
-    this.created,
-    this.modified,
-    this.researcherSpeciality
-  });
+  ResearchDocumentDetails(
+      {this.id,
+      this.doctorId,
+      this.researchAuthor,
+      this.researchTitle,
+      this.researchDescription,
+      this.researchDocument,
+      this.researchDocumentUrl,
+      this.researchImage,
+      this.researchVideo,
+      this.researchVideoUrl,
+      this.status,
+      this.created,
+      this.modified,
+      this.researcherSpeciality});
 
   ResearchDocumentDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -79,21 +79,21 @@ class ResearchDocumentDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['research_author'] = this.researchAuthor;
-    data['research_title'] = this.researchTitle;
-    data['research_description'] = this.researchDescription;
-    data['research_document'] = this.researchDocument;
-    data['research_document_url'] = this.researchDocumentUrl;
-    data['research_image'] = this.researchImage;
-    data['research_video'] = this.researchVideo;
-    data['research_video_url'] = this.researchVideoUrl;
-    data['status'] = this.status;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['researcher_speciality'] = this.researcherSpeciality;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['research_author'] = researchAuthor;
+    data['research_title'] = researchTitle;
+    data['research_description'] = researchDescription;
+    data['research_document'] = researchDocument;
+    data['research_document_url'] = researchDocumentUrl;
+    data['research_image'] = researchImage;
+    data['research_video'] = researchVideo;
+    data['research_video_url'] = researchVideoUrl;
+    data['status'] = status;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['researcher_speciality'] = researcherSpeciality;
     return data;
   }
 }

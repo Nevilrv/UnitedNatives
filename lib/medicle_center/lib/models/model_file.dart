@@ -1,8 +1,8 @@
 class FileModel {
-  final String name;
-  final String type;
-  final String url;
-  final String size;
+  final String? name;
+  final String? type;
+  final String? url;
+  final String? size;
 
   FileModel({
     this.name,

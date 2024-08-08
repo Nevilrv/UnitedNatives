@@ -11,9 +11,9 @@ String addMyDoctorsResponseModelToJson(AddMyDoctorsResponseModel data) =>
     json.encode(data.toJson());
 
 class AddMyDoctorsResponseModel {
-  String status;
-  bool data;
-  String message;
+  String? status;
+  bool? data;
+  String? message;
 
   AddMyDoctorsResponseModel({
     this.status,

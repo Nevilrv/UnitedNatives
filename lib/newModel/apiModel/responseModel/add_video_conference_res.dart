@@ -13,9 +13,9 @@ String addVideoConferenceResponseModelToJson(
     json.encode(data.toJson());
 
 class AddVideoConferenceResponseModel {
-  String status;
-  bool data;
-  String message;
+  String? status;
+  bool? data;
+  String? message;
 
   AddVideoConferenceResponseModel({
     this.status,

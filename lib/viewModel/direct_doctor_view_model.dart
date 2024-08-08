@@ -19,7 +19,7 @@ class DirectDoctorController extends GetxController {
     update();
     try {
       GetDirectDoctorResponseModel response = await DirectDoctorRepo()
-          .getDirectDoctorRepo(userController.user.value.id);
+          .getDirectDoctorRepo("${userController.user.value.id}");
 
       getDirectDoctorApiResponse = ApiResponse.complete(response);
     } catch (e) {
@@ -35,7 +35,7 @@ class DirectDoctorController extends GetxController {
     update();
     try {
       AddDirectAppointmentResponseModel response = await DirectDoctorRepo()
-          .addDirectRequestRepo(model, userController.user.value.id);
+          .addDirectRequestRepo(model, "${userController.user.value.id}");
       addDirectAppointmentApiResponse = ApiResponse.complete(response);
     } catch (e) {
       addDirectAppointmentApiResponse = ApiResponse.error('error');

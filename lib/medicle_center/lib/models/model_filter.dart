@@ -1,7 +1,7 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_category.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_sort.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils_medicalcenter.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/models/model_category.dart';
+import 'package:united_natives/medicle_center/lib/models/model_sort.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils_medicalcenter.dart';
 import 'package:flutter/material.dart';
 
 class FilterModel {

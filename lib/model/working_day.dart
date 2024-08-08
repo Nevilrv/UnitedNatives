@@ -1,6 +1,6 @@
 class WorkingDay {
-  String name;
-  List<String> hours;
+  String? name;
+  List<String>? hours;
 
   WorkingDay({
     this.name,

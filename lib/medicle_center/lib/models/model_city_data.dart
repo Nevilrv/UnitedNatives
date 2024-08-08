@@ -7,14 +7,14 @@ String cityModelToJson(List<CityModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class CityModel {
-  String id;
-  String stateId;
-  String name;
+  String? id;
+  String? stateId;
+  String? name;
   dynamic createdAt;
   dynamic updatedAt;
-  int doctorsCount;
-  int medicalCenterInState;
-  int medicalCenterInCity;
+  int? doctorsCount;
+  int? medicalCenterInState;
+  int? medicalCenterInCity;
 
   CityModel({
     this.id,

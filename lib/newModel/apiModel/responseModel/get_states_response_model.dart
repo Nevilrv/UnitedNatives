@@ -12,11 +12,11 @@ String getStatesResponseModelToJson(List<GetStatesResponseModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class GetStatesResponseModel {
-  String id;
-  String name;
-  String code;
-  String createdAt;
-  String updatedAt;
+  String? id;
+  String? name;
+  String? code;
+  String? createdAt;
+  String? updatedAt;
 
   GetStatesResponseModel({
     this.id,

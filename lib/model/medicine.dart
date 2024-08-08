@@ -1,9 +1,9 @@
 class Medicine {
-  String id;
-  String name;
-  String category;
-  int daysOfTreat;
-  int pillsPerDay;
+  String? id;
+  String? name;
+  String? category;
+  int? daysOfTreat;
+  int? pillsPerDay;
 
   Medicine({
     this.id,

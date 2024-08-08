@@ -1,35 +1,34 @@
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../utils/constants.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/constants.dart';
 
 bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
 class CustomTextFormField extends StatefulWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String hintText;
-  final TextStyle hintTextStyle;
-  final bool obscureText;
-  final bool enabled;
-  final Widget suffixIcon;
-  final bool suffixIconTap;
-  final bool readOnly;
-  final String error;
-  final TextInputType keyboardType;
-  final Function validator;
-  final TextInputAction textInputAction;
-  final Function onChanged;
-  final Function onTap;
-  final FocusNode focusNode;
-  final int maxLines;
-  final int minLines;
-  final List<TextInputFormatter> inputFormatters;
+  final TextStyle? hintTextStyle;
+  final bool? obscureText;
+  final bool? enabled;
+  final Widget? suffixIcon;
+  final bool? suffixIconTap;
+  final bool? readOnly;
+  final String? error;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onChanged;
+  final Function()? onTap;
+  final FocusNode? focusNode;
+  final int? maxLines;
+  final int? minLines;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextFormField({
-    Key key,
+    super.key,
     this.controller,
-    @required this.hintText,
+    required this.hintText,
     this.hintTextStyle,
     this.inputFormatters,
     this.keyboardType,
@@ -46,14 +45,14 @@ class CustomTextFormField extends StatefulWidget {
     this.focusNode,
     this.maxLines = 1,
     this.minLines = 1,
-  }) : super(key: key);
+  });
 
   @override
-  _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  bool _obscureText;
+  bool? _obscureText;
   @override
   void initState() {
     _obscureText = widget.obscureText;
@@ -78,23 +77,23 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: widget.hintTextStyle ??
-            TextStyle(
+            const TextStyle(
               fontSize: 20,
               color: Color(0xffbcbcbc),
               fontFamily: 'NunitoSans',
             ),
-        errorText: widget.error ?? null,
-        suffixIcon: (widget.obscureText != null && widget.obscureText)
+        errorText: widget.error,
+        suffixIcon: (widget.obscureText != null && widget.obscureText!)
             ? GestureDetector(
                 onTap: () {
                   setState(() {
-                    _obscureText = !_obscureText;
+                    _obscureText = !_obscureText!;
                   });
                 },
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Icon(
-                    !_obscureText ? Icons.visibility : Icons.visibility_off,
+                    !_obscureText! ? Icons.visibility : Icons.visibility_off,
                     size: 25,
                   ),
                 ),
@@ -103,7 +102,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       ),
       style: TextStyle(
         fontSize: 20,
-        color: Theme.of(context).textTheme.subtitle1.color,
+        color: Theme.of(context).textTheme.titleMedium?.color,
       ),
       cursorColor: kColorBlue,
       cursorWidth: 1,
@@ -116,25 +115,25 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 /// OUTER-LINE
 
 class CustomOuterLineTextFormField extends StatelessWidget {
-  final TextEditingController controller;
-  final String hintText;
-  final TextStyle hintTextStyle;
-  final bool enabled;
-  final Widget suffixIcon;
-  final bool suffixIconTap;
-  final bool readOnly;
-  final String error;
-  final TextInputType keyboardType;
-  final Function validator;
-  final TextInputAction textInputAction;
-  final Function onChanged;
-  final Function onTap;
-  final FocusNode focusNode;
-  final List<TextInputFormatter> inputFormatters;
-  final int maxLines;
-  final int minLines;
+  final TextEditingController? controller;
+  final String? hintText;
+  final TextStyle? hintTextStyle;
+  final bool? enabled;
+  final Widget? suffixIcon;
+  final bool? suffixIconTap;
+  final bool? readOnly;
+  final String? error;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onChanged;
+  final void Function()? onTap;
+  final FocusNode? focusNode;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLines;
+  final int? minLines;
   const CustomOuterLineTextFormField(
-      {key,
+      {super.key,
       this.controller,
       this.inputFormatters,
       this.hintText,
@@ -153,6 +152,7 @@ class CustomOuterLineTextFormField extends StatelessWidget {
       this.maxLines,
       this.minLines});
 
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       focusNode: focusNode,
@@ -168,7 +168,7 @@ class CustomOuterLineTextFormField extends StatelessWidget {
       enabled: enabled ?? true,
       readOnly: readOnly ?? false,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(13),
+        contentPadding: const EdgeInsets.all(13),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
               color: _isDark ? Colors.grey.shade600 : Colors.blueGrey.shade400),
@@ -186,7 +186,7 @@ class CustomOuterLineTextFormField extends StatelessWidget {
                     _isDark ? Colors.grey.shade300 : Colors.blueGrey.shade700)),
         errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: BorderSide(color: Colors.red)),
+            borderSide: const BorderSide(color: Colors.red)),
         hintText: hintText,
         hintStyle: hintTextStyle ??
             TextStyle(
@@ -194,12 +194,12 @@ class CustomOuterLineTextFormField extends StatelessWidget {
               color: _isDark ? Colors.grey.shade600 : Colors.blueGrey.shade400,
               fontFamily: 'NunitoSans',
             ),
-        errorText: error ?? null,
+        errorText: error,
         suffixIcon: suffixIcon,
       ),
       style: TextStyle(
         fontSize: 19.5,
-        color: Theme.of(context).textTheme.subtitle1.color,
+        color: Theme.of(context).textTheme.titleMedium?.color,
         fontFamily: 'NunitoSans',
       ),
       cursorColor: kColorBlue,

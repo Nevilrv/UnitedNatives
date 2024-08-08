@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 
 class CustomDisableButton extends StatelessWidget {
   final String text;
-  final Function onPressed;
-  final double elevation;
-  final int borderRadius;
-  final EdgeInsets padding;
-  final double textSize;
+  final Function() onPressed;
+  final double? elevation;
+  final double? borderRadius;
+  final EdgeInsets? padding;
+  final double? textSize;
 
   const CustomDisableButton({
-    Key key,
-    @required this.text,
-    @required this.onPressed,
+    super.key,
+    required this.text,
+    required this.onPressed,
     this.elevation,
     this.borderRadius,
     this.padding,
     this.textSize,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +34,10 @@ class CustomDisableButton extends StatelessWidget {
           children: <Widget>[
             Text(
               text,
-              style: Theme.of(context).textTheme.button.copyWith(
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: Colors.white,
-                  fontSize:
-                  textSize ?? Theme.of(context).textTheme.button.fontSize),
+                  fontSize: textSize ??
+                      Theme.of(context).textTheme.labelLarge?.fontSize),
               textAlign: TextAlign.center,
             ),
           ],

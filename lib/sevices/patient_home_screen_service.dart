@@ -38,7 +38,7 @@ class PatientHomeScreenService {
 
   final NetworkAPICall _networkAPICall = NetworkAPICall();
 
-  static const BANNER_TOKEN = '43b2fe6fb2cd47eb049520a9f5d94905';
+  static const bannerToken = '43b2fe6fb2cd47eb049520a9f5d94905';
   final PatientHomeScreenController patientHomeScreenController =
       Get.find<PatientHomeScreenController>();
 
@@ -296,6 +296,8 @@ class PatientHomeScreenService {
 
     var result = await _networkAPICall.post(Constants.makePayment, body,
         header: Config.getHeaders());
+
+    log('result==========>>>>>$result');
   }
 
   ///***** GetAllDoctors API *****
@@ -356,7 +358,7 @@ class PatientHomeScreenService {
       {required String id}) async {
     var body = json.encode({
       "user_id": id,
-      "device_token": "${Prefs.getString(Prefs.FcmToken.toString())}"
+      "device_token": Prefs.getString(Prefs.FcmToken.toString())
     });
 
     try {

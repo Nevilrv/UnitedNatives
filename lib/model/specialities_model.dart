@@ -1,7 +1,7 @@
 class SpecialitiesModel {
-  String status;
-  List<Specialities> specialities;
-  String message;
+  String? status;
+  List<Specialities>? specialities;
+  String? message;
 
   SpecialitiesModel({this.status, this.specialities, this.message});
 
@@ -10,31 +10,30 @@ class SpecialitiesModel {
     if (json['data'] != null) {
       specialities = <Specialities>[];
       json['data'].forEach((v) {
-        specialities.add(new Specialities.fromJson(v));
+        specialities?.add(Specialities.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.specialities != null) {
-      data['data'] = this.specialities.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (specialities != null) {
+      data['data'] = specialities?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Specialities {
-  String id;
-  String specialityName;
-  String specialityIcon;
-  String created;
-  String modified;
-  String doctorsCount;
-  // bool isCheckedBox = false;
+  String? id;
+  String? specialityName;
+  String? specialityIcon;
+  String? created;
+  String? modified;
+  String? doctorsCount;
 
   Specialities({
     this.id,
@@ -55,13 +54,13 @@ class Specialities {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['speciality_name'] = this.specialityName;
-    data['speciality_image'] = this.specialityIcon;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['doctors_count'] = this.doctorsCount;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['speciality_name'] = specialityName;
+    data['speciality_image'] = specialityIcon;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['doctors_count'] = doctorsCount;
     return data;
   }
 }

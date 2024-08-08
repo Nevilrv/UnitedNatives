@@ -1,7 +1,7 @@
 class NotificationListResponseModel {
-  String status;
-  List<Data> data;
-  String message;
+  String? status;
+  List<Data>? data;
+  String? message;
 
   NotificationListResponseModel({this.status, this.data, this.message});
 
@@ -10,45 +10,45 @@ class NotificationListResponseModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data?.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
-  String id;
-  String type;
-  String isRead;
-  String relationId;
-  String relationType;
-  String subject;
-  String body;
-  String fromUserId;
-  String toUserId;
-  String pushSend;
-  String smsSend;
-  String emailSend;
-  String pushSendTs;
-  String smsSendTs;
-  String emailSendTs;
-  String status;
-  String created;
-  String modified;
+  String? id;
+  String? type;
+  String? isRead;
+  String? relationId;
+  String? relationType;
+  String? subject;
+  String? body;
+  String? fromUserId;
+  String? toUserId;
+  String? pushSend;
+  String? smsSend;
+  String? emailSend;
+  String? pushSendTs;
+  String? smsSendTs;
+  String? emailSendTs;
+  String? status;
+  String? created;
+  String? modified;
   dynamic deleted;
-  FromUserData fromUserData;
-  RelationData relationData;
+  FromUserData? fromUserData;
+  RelationData? relationData;
 
   Data(
       {this.id,
@@ -98,10 +98,10 @@ class Data {
     status = json['status'] == null ? "" : json['status'].toString();
     created = json['created'] == null ? "" : json['created'].toString();
     modified = json['modified'] == null ? "" : json['modified'].toString();
-    deleted = json['deleted'] == null ? false : json['deleted'];
+    deleted = json['deleted'] ?? false;
     fromUserData = json['from_user_data'] == null
         ? null
-        : new FromUserData.fromJson(json['from_user_data']);
+        : FromUserData.fromJson(json['from_user_data']);
     relationData =
         json['relation_data'] == false || json['relation_data'] == null
             ? null
@@ -109,47 +109,47 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['type'] = this.type;
-    data['is_read'] = this.isRead;
-    data['relation_id'] = this.relationId;
-    data['relation_type'] = this.relationType;
-    data['subject'] = this.subject;
-    data['body'] = this.body;
-    data['from_user_id'] = this.fromUserId;
-    data['to_user_id'] = this.toUserId;
-    data['push_send'] = this.pushSend;
-    data['sms_send'] = this.smsSend;
-    data['email_send'] = this.emailSend;
-    data['push_send_ts'] = this.pushSendTs;
-    data['sms_send_ts'] = this.smsSendTs;
-    data['email_send_ts'] = this.emailSendTs;
-    data['status'] = this.status;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['deleted'] = this.deleted;
-    if (this.fromUserData != null) {
-      data['from_user_data'] = this.fromUserData.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['type'] = type;
+    data['is_read'] = isRead;
+    data['relation_id'] = relationId;
+    data['relation_type'] = relationType;
+    data['subject'] = subject;
+    data['body'] = body;
+    data['from_user_id'] = fromUserId;
+    data['to_user_id'] = toUserId;
+    data['push_send'] = pushSend;
+    data['sms_send'] = smsSend;
+    data['email_send'] = emailSend;
+    data['push_send_ts'] = pushSendTs;
+    data['sms_send_ts'] = smsSendTs;
+    data['email_send_ts'] = emailSendTs;
+    data['status'] = status;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['deleted'] = deleted;
+    if (fromUserData != null) {
+      data['from_user_data'] = fromUserData?.toJson();
     }
-    if (this.relationData != null) {
-      data['relation_data'] = this.relationData.toJson();
+    if (relationData != null) {
+      data['relation_data'] = relationData?.toJson();
     }
     return data;
   }
 }
 
 class FromUserData {
-  String id;
-  String firstName;
-  String lastName;
-  String gender;
-  String email;
-  String contactNumber;
-  String dateOfBirth;
-  String socialProfilePic;
-  String profilePic;
-  ChatData chatData;
+  String? id;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? email;
+  String? contactNumber;
+  String? dateOfBirth;
+  String? socialProfilePic;
+  String? profilePic;
+  ChatData? chatData;
 
   FromUserData(
       {this.id,
@@ -183,26 +183,26 @@ class FromUserData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['gender'] = this.gender;
-    data['email'] = this.email;
-    data['contact_number'] = this.contactNumber;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['profile_pic'] = this.profilePic;
-    if (this.chatData != null) {
-      data['chat_data'] = this.chatData.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['contact_number'] = contactNumber;
+    data['date_of_birth'] = dateOfBirth;
+    data['social_profile_pic'] = socialProfilePic;
+    data['profile_pic'] = profilePic;
+    if (chatData != null) {
+      data['chat_data'] = chatData?.toJson();
     }
     return data;
   }
 }
 
 class ChatData {
-  String id;
-  String chatKey;
+  String? id;
+  String? chatKey;
 
   ChatData({
     this.id,
@@ -221,25 +221,25 @@ class ChatData {
 }
 
 class RelationData {
-  String id;
-  String patientId;
-  String doctorId;
-  String appointmentType;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentStatus;
-  String createdDate;
-  String modifiedDate;
-  String appointmentId;
-  String treatmentDays;
-  String pillsPerDay;
-  String created;
-  String modified;
-  String fromUserId;
-  String toUserId;
-  String meetingId;
-  String meetingPassword;
-  String meetingStatus;
+  String? id;
+  String? patientId;
+  String? doctorId;
+  String? appointmentType;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentStatus;
+  String? createdDate;
+  String? modifiedDate;
+  String? appointmentId;
+  String? treatmentDays;
+  String? pillsPerDay;
+  String? created;
+  String? modified;
+  String? fromUserId;
+  String? toUserId;
+  String? meetingId;
+  String? meetingPassword;
+  String? meetingStatus;
 
   RelationData(
       {this.id,
@@ -302,26 +302,26 @@ class RelationData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['patient_id'] = this.patientId;
-    data['doctor_id'] = this.doctorId;
-    data['appointment_type'] = this.appointmentType;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_status'] = this.appointmentStatus;
-    data['created_date'] = this.createdDate;
-    data['modified_date'] = this.modifiedDate;
-    data['appointment_id'] = this.appointmentId;
-    data['treatment_days'] = this.treatmentDays;
-    data['pills_per_day'] = this.pillsPerDay;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['from_user_id'] = this.fromUserId;
-    data['to_user_id'] = this.toUserId;
-    data['meeting_id'] = this.meetingId;
-    data['meeting_password'] = this.meetingPassword;
-    data['meeting_status'] = this.meetingStatus;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['patient_id'] = patientId;
+    data['doctor_id'] = doctorId;
+    data['appointment_type'] = appointmentType;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_status'] = appointmentStatus;
+    data['created_date'] = createdDate;
+    data['modified_date'] = modifiedDate;
+    data['appointment_id'] = appointmentId;
+    data['treatment_days'] = treatmentDays;
+    data['pills_per_day'] = pillsPerDay;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['from_user_id'] = fromUserId;
+    data['to_user_id'] = toUserId;
+    data['meeting_id'] = meetingId;
+    data['meeting_password'] = meetingPassword;
+    data['meeting_status'] = meetingStatus;
     return data;
   }
 }

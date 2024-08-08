@@ -1,6 +1,6 @@
 class AddChatOnlineStatusReqModel {
-  bool isOnline;
-  String lastSeen;
+  bool? isOnline;
+  String? lastSeen;
 
   AddChatOnlineStatusReqModel({
     this.isOnline,

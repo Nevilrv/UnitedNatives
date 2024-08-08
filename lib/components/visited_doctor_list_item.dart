@@ -1,26 +1,26 @@
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/model/patient_homepage_model.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/model/patient_homepage_model.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class VisitedDoctorListItem extends StatelessWidget {
-  final UpcomingAppointments doctor;
-  final bool isHome;
+  final UpcomingAppointments? doctor;
+  final bool? isHome;
 
-  VisitedDoctorListItem({Key key, @required this.doctor, this.isHome = false})
-      : super(key: key);
+  const VisitedDoctorListItem(
+      {super.key, @required this.doctor, this.isHome = false});
   @override
   Widget build(BuildContext context) {
-    bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+    bool isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
     return Container(
       width: 140,
       height: 140,
-      margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.all(5),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: _isDark ? Colors.grey.withOpacity(0.2) : Colors.white,
-        boxShadow: [
+        color: isDark ? Colors.grey.withOpacity(0.2) : Colors.white,
+        boxShadow: const [
           BoxShadow(
               color: Color(0x0c000000),
               offset: Offset(0, 5),
@@ -51,25 +51,25 @@ class VisitedDoctorListItem extends StatelessWidget {
           Utils().patientProfile(doctor?.doctorProfilePic ?? "",
               doctor?.doctorSocialProfilePic ?? "", 30),
 
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Text(
-            "${doctor.doctorFirstName} ${doctor.doctorLastName}",
+            "${doctor?.doctorFirstName} ${doctor?.doctorLastName}",
             style: TextStyle(
               fontSize: 18,
-              color: _isDark ? Colors.white : Colors.black,
+              color: isDark ? Colors.white : Colors.black,
               fontWeight: FontWeight.w400,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
-            isHome
-                ? doctor.purposeOfVisit ?? ""
-                : doctor.doctorSpeciality ?? "",
-            style: TextStyle(
+            isHome!
+                ? doctor?.purposeOfVisit ?? ""
+                : doctor?.doctorSpeciality ?? "",
+            style: const TextStyle(
               color: Colors.grey,
               fontSize: 17,
               fontWeight: FontWeight.w400,

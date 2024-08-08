@@ -3,18 +3,18 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/api/api.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_city_data.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_state_data.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/api/api.dart';
+import 'package:united_natives/medicle_center/lib/models/model_city_data.dart';
+import 'package:united_natives/medicle_center/lib/models/model_state_data.dart';
 import 'cubit.dart';
 
 class FilterCubit extends Cubit<FilterState> {
   FilterCubit() : super(InitialFilterState());
 
-  StateModel selectedState;
+  StateModel? selectedState;
 
-  CityModel selectedCity;
+  CityModel? selectedCity;
 
   List<StateModel> stateList = [];
 
@@ -22,11 +22,13 @@ class FilterCubit extends Cubit<FilterState> {
 
   Future<void> onStateLoad() async {
     selectedState = Prefs.getString(Prefs.stateFilter) != null
-        ? StateModel.fromJson(json.decode(Prefs.getString(Prefs.stateFilter)))
+        ? StateModel.fromJson(
+            json.decode(Prefs.getString(Prefs.stateFilter) ?? ""))
         : null;
 
     selectedCity = Prefs.getString(Prefs.cityFilter) != null
-        ? CityModel.fromJson(json.decode(Prefs.getString(Prefs.cityFilter)))
+        ? CityModel.fromJson(
+            json.decode(Prefs.getString(Prefs.cityFilter) ?? ""))
         : null;
 
     try {
@@ -44,13 +46,15 @@ class FilterCubit extends Cubit<FilterState> {
       //   return;
       // }
       emit(
-        FilterSuccess(stateList: categoryOfStatess ?? []),
+        FilterSuccess(stateList: categoryOfStatess),
       );
       if (categoryOfStatess.isNotEmpty &&
           categoryOfStatess.first.name != 'All States') {
         int stateMedicalCenterCount = 0;
-        categoryOfStatess.forEach((e) => stateMedicalCenterCount =
-            stateMedicalCenterCount + e.medicalCenterInState);
+        for (var e in categoryOfStatess) {
+          stateMedicalCenterCount =
+              stateMedicalCenterCount + e.medicalCenterInState;
+        }
 
         StateModel stateAllModel = StateModel(
           name: 'All States',
@@ -72,7 +76,7 @@ class FilterCubit extends Cubit<FilterState> {
   }
 
   Future<void> onCitiesLoad(
-      {List<StateModel> stateData, String stateId}) async {
+      {List<StateModel>? stateData, String? stateId}) async {
     selectedCity = null;
     try {
       final responseCity = await Api.requestCity(stateId: stateId);
@@ -94,8 +98,10 @@ class FilterCubit extends Cubit<FilterState> {
         if (categoryOfCities.isNotEmpty &&
             categoryOfCities.first.name != 'All Cities') {
           int cityMedicalCenterCount = 0;
-          categoryOfCities.forEach((e) => cityMedicalCenterCount =
-              cityMedicalCenterCount + e.medicalCenterInCity);
+          for (var e in categoryOfCities) {
+            cityMedicalCenterCount =
+                cityMedicalCenterCount + e.medicalCenterInCity;
+          }
           CityModel cityAllModel = CityModel(
             name: 'All Cities',
             medicalCenterInCity: cityMedicalCenterCount,

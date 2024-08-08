@@ -1,14 +1,14 @@
 class AddDirectAppointmentReqModel {
-  String doctorId;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentFor;
-  String fullName;
-  String mobile;
-  String email;
-  String patientMobile;
-  String appointmentNotes;
+  String? doctorId;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentFor;
+  String? fullName;
+  String? mobile;
+  String? email;
+  String? patientMobile;
+  String? appointmentNotes;
   AddDirectAppointmentReqModel(
       {this.doctorId,
       this.email,

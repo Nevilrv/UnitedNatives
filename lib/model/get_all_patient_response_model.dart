@@ -1,10 +1,10 @@
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
+import 'package:united_natives/model/api_state_enum.dart';
 
 class GetAllPatient {
-  String status;
-  List<Patient> data;
-  String message;
-  APIState apiState;
+  String? status;
+  List<Patient>? data;
+  String? message;
+  APIState? apiState;
 
   GetAllPatient({this.status, this.data, this.message});
 
@@ -13,12 +13,12 @@ class GetAllPatient {
     if (json['data'] != null) {
       data = <Patient>[];
       json['data'].forEach((v) {
-        data.add(new Patient.fromJson(v));
+        data?.add(Patient.fromJson(v));
       });
     }
 
     message = json['message'];
-    if (data.isEmpty) {
+    if (data!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
       apiState = APIState.COMPLETE;
@@ -26,46 +26,46 @@ class GetAllPatient {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
 
     return data;
   }
 }
 
 class Patient {
-  String id;
-  String userType;
-  String isAdmin;
-  String firstName;
-  String lastName;
-  String gender;
-  String email;
-  String loginType;
-  String fbId;
-  String googleId;
-  String contactNumber;
-  String dateOfBirth;
-  String password;
-  String socialProfilePic;
-  String profilePic;
-  String deviceTokens;
-  String adminReadStat;
-  String modified;
-  String created;
-  String bloodGroup;
-  String maritalStatus;
-  String height;
-  String weight;
-  String emergencyContact;
-  String caseManager;
-  String insuranceEligibility;
-  String tribalStatus;
-  String chatKey;
+  String? id;
+  String? userType;
+  String? isAdmin;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? email;
+  String? loginType;
+  String? fbId;
+  String? googleId;
+  String? contactNumber;
+  String? dateOfBirth;
+  String? password;
+  String? socialProfilePic;
+  String? profilePic;
+  String? deviceTokens;
+  String? adminReadStat;
+  String? modified;
+  String? created;
+  String? bloodGroup;
+  String? maritalStatus;
+  String? height;
+  String? weight;
+  String? emergencyContact;
+  String? caseManager;
+  String? insuranceEligibility;
+  String? tribalStatus;
+  String? chatKey;
 
   Patient(
       {this.id,
@@ -129,35 +129,35 @@ class Patient {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_type'] = this.userType;
-    data['is_admin'] = this.isAdmin;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['gender'] = this.gender;
-    data['email'] = this.email;
-    data['login_type'] = this.loginType;
-    data['fb_id'] = this.fbId;
-    data['google_id'] = this.googleId;
-    data['contact_number'] = this.contactNumber;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['password'] = this.password;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['profile_pic'] = this.profilePic;
-    data['device_tokens'] = this.deviceTokens;
-    data['admin_read_stat'] = this.adminReadStat;
-    data['modified'] = this.modified;
-    data['created'] = this.created;
-    data['blood_group'] = this.bloodGroup;
-    data['marital_status'] = this.maritalStatus;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['emergency_contact'] = this.emergencyContact;
-    data['case_manager'] = this.caseManager;
-    data['insurance_eligibility'] = this.insuranceEligibility;
-    data['tribal_status'] = this.tribalStatus;
-    data['chat_key'] = this.chatKey;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_type'] = userType;
+    data['is_admin'] = isAdmin;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['login_type'] = loginType;
+    data['fb_id'] = fbId;
+    data['google_id'] = googleId;
+    data['contact_number'] = contactNumber;
+    data['date_of_birth'] = dateOfBirth;
+    data['password'] = password;
+    data['social_profile_pic'] = socialProfilePic;
+    data['profile_pic'] = profilePic;
+    data['device_tokens'] = deviceTokens;
+    data['admin_read_stat'] = adminReadStat;
+    data['modified'] = modified;
+    data['created'] = created;
+    data['blood_group'] = bloodGroup;
+    data['marital_status'] = maritalStatus;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['emergency_contact'] = emergencyContact;
+    data['case_manager'] = caseManager;
+    data['insurance_eligibility'] = insuranceEligibility;
+    data['tribal_status'] = tribalStatus;
+    data['chat_key'] = chatKey;
     return data;
   }
 }

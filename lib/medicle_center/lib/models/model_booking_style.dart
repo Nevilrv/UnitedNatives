@@ -1,7 +1,7 @@
 abstract class BookingStyleModel {
-  String price;
-  int adult;
-  int children;
+  String? price;
+  int? adult;
+  int? children;
 
   BookingStyleModel({
     this.price,

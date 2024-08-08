@@ -125,9 +125,9 @@ class AppNotificationHandler {
         await patientHomeScreenController.getPatientPrescriptions();
         PatientPrescriptionsModel patientPrescriptionsModel =
             patientHomeScreenController.patientPrescriptionsModelData.value;
-        patientPrescriptionsModel.data.forEach((element) async {
+        for (var element in patientPrescriptionsModel.data!) {
           if (element.created == date) {
-            _userController.notificationValue.value = element.appointmentId;
+            _userController.notificationValue.value = element.appointmentId!;
 
             _userController.isPinScreen.value == true
                 ? await Get.to(const PhoneVerification2())?.then((value) {
@@ -139,7 +139,7 @@ class AppNotificationHandler {
                 : Get.to(
                     PrescriptionPage(appointmentId: element.appointmentId));
           }
-        });
+        }
       } else if (type == 'zoomMeeting') {
         _userController.isPinScreen.value == true
             ? await Get.to(const PhoneVerification2())?.then((value) {
@@ -158,7 +158,7 @@ class AppNotificationHandler {
           getSortedChatListDoctor = addNewChatMessageController
               .getDoctorSortedChatListApiResponse.data;
 
-          for (var element in getSortedChatListDoctor.doctorChatList) {
+          for (var element in getSortedChatListDoctor.doctorChatList!) {
             if (relationId.toString() == element.patientId.toString()) {
               doctorChat.add(element);
             }
@@ -189,21 +189,23 @@ class AppNotificationHandler {
             }
           }
         }).then((value) async {
-          patientHomeScreenController.chatKey.value = patientChat[0].chatKey;
+          patientHomeScreenController.chatKey.value =
+              "${patientChat[0].chatKey}";
           patientHomeScreenController.doctorName.value =
-              patientChat[0].doctorFirstName;
+              "${patientChat[0].doctorFirstName}";
           patientHomeScreenController.doctorLastName.value =
-              patientChat[0].doctorLastName;
-          patientHomeScreenController.doctorId.value = patientChat[0].doctorId;
-          patientHomeScreenController.toId.value = patientChat[0].doctorId;
+              "${patientChat[0].doctorLastName}";
+          patientHomeScreenController.doctorId.value =
+              "${patientChat[0].doctorId}";
+          patientHomeScreenController.toId.value = "${patientChat[0].doctorId}";
 
           patientHomeScreenController.doctorProfile =
-              patientChat[0].doctorProfilePic;
+              "${patientChat[0].doctorProfilePic}";
           patientHomeScreenController.doctorSocialProfile =
-              patientChat[0].doctorSocialProfilePic;
+              "${patientChat[0].doctorSocialProfilePic}";
 
           patientHomeScreenController
-              .getAllPatientChatMessages.value?.patientChatList
+              .getAllPatientChatMessages.value.patientChatList
               ?.clear();
 
           patientHomeScreenController
@@ -284,9 +286,10 @@ class AppNotificationHandler {
           await patientHomeScreenController.getPatientPrescriptions();
           PatientPrescriptionsModel patientPrescriptionsModel =
               patientHomeScreenController.patientPrescriptionsModelData.value;
-          patientPrescriptionsModel.data.forEach((element) async {
+          for (var element in patientPrescriptionsModel.data!) {
             if (element.created == data['timestamp']) {
-              _userController.notificationValue.value = element.appointmentId;
+              _userController.notificationValue.value =
+                  "${element.appointmentId}";
               _userController.isPinScreen.value == true
                   ? await Get.to(const PhoneVerification2())?.then((value) {
                       if (_userController.isPinScreen.value == true) {
@@ -299,7 +302,7 @@ class AppNotificationHandler {
                       appointmentId: element.appointmentId,
                     ));
             }
-          });
+          }
           // Get.to(PrescriptionPage());
         } else if (data['screen'] == 'zoomMeeting') {
           _userController.isPinScreen.value == true
@@ -320,7 +323,7 @@ class AppNotificationHandler {
             getSortedChatListDoctor = addNewChatMessageController
                 .getDoctorSortedChatListApiResponse.data;
 
-            for (var element in getSortedChatListDoctor.doctorChatList) {
+            for (var element in getSortedChatListDoctor.doctorChatList!) {
               if (data['relationId'].toString() ==
                   element.patientId.toString()) {
                 doctorChat.add(element);
@@ -356,22 +359,23 @@ class AppNotificationHandler {
           }).then(
             (value) async {
               patientHomeScreenController.chatKey.value =
-                  patientChat[0].chatKey;
+                  patientChat[0].chatKey.toString();
               patientHomeScreenController.doctorName.value =
-                  patientChat[0].doctorFirstName;
+                  patientChat[0].doctorFirstName.toString();
               patientHomeScreenController.doctorLastName.value =
-                  patientChat[0].doctorLastName;
+                  patientChat[0].doctorLastName.toString();
               patientHomeScreenController.doctorId.value =
-                  patientChat[0].doctorId;
-              patientHomeScreenController.toId.value = patientChat[0].doctorId;
+                  patientChat[0].doctorId.toString();
+              patientHomeScreenController.toId.value =
+                  patientChat[0].doctorId.toString();
 
               patientHomeScreenController.doctorProfile =
-                  patientChat[0].doctorProfilePic;
+                  patientChat[0].doctorProfilePic.toString();
               patientHomeScreenController.doctorSocialProfile =
-                  patientChat[0].doctorSocialProfilePic;
+                  patientChat[0].doctorSocialProfilePic.toString();
 
               patientHomeScreenController
-                  .getAllPatientChatMessages.value?.patientChatList
+                  .getAllPatientChatMessages.value.patientChatList
                   ?.clear();
 
               patientHomeScreenController

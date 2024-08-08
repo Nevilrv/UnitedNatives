@@ -1,7 +1,7 @@
 class AddNewChatResponseModel {
-  String status;
-  String fileError;
-  String message;
+  String? status;
+  String? fileError;
+  String? message;
 
   AddNewChatResponseModel({this.status, this.fileError, this.message});
 
@@ -12,10 +12,10 @@ class AddNewChatResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['fileError'] = this.fileError;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['fileError'] = fileError;
+    data['message'] = message;
     return data;
   }
 }

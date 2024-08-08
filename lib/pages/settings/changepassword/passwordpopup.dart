@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter/rendering.dart';
 import 'signin_button.dart';
 import 'teddy_controller.dart';
 import 'tracking_input.dart';
 
 class PasswordPopup extends StatefulWidget {
-  PasswordPopup({Key key, this.title}) : super(key: key);
+  const PasswordPopup({super.key, this.title});
 
-  final String title;
+  final String? title;
 
   @override
-  _PasswordPopupState createState() => _PasswordPopupState();
+  State<PasswordPopup> createState() => _PasswordPopupState();
 }
 
 class _PasswordPopupState extends State<PasswordPopup> {
-  TeddyController _teddyController;
+  TeddyController _teddyController = TeddyController();
   @override
   initState() {
     _teddyController = TeddyController();
@@ -26,8 +25,7 @@ class _PasswordPopupState extends State<PasswordPopup> {
   Widget build(BuildContext context) {
     EdgeInsets devicePadding = MediaQuery.of(context).padding;
 
-    return Container(
-        child: Stack(
+    return Stack(
       children: <Widget>[
         Positioned.fill(
           child: SingleChildScrollView(
@@ -48,7 +46,7 @@ class _PasswordPopupState extends State<PasswordPopup> {
                           controller: _teddyController,
                         )),
                     Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.white,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25.0))),
@@ -69,16 +67,16 @@ class _PasswordPopupState extends State<PasswordPopup> {
                                 label: "Confirm Password",
                                 hint: "Type a New Password",
                                 isObscured: true,
-                                onCaretMoved: (Offset caret) {
+                                onCaretMoved: (Offset? caret) {
                                   _teddyController.coverEyes(caret != null);
-                                  _teddyController.lookAt(null);
+                                  _teddyController.lookAt(const Offset(0, 0));
                                 },
                                 onTextChanged: (String value) {
                                   _teddyController.setPassword(value);
                                 },
                               ),
                               SigninButton(
-                                  child: Text("Okay",
+                                  child: const Text("Okay",
                                       style: TextStyle(
                                           fontFamily: "RobotoMedium",
                                           fontSize: 18,
@@ -92,6 +90,6 @@ class _PasswordPopupState extends State<PasswordPopup> {
                   ])),
         ),
       ],
-    ));
+    );
   }
 }

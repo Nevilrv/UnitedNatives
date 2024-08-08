@@ -15,7 +15,7 @@ class ServicesDataController extends GetxController {
     update();
     try {
       ServicesResponseModel response = await ServicesRepo()
-          .getServicesPatientRepo(userController.user.value.id);
+          .getServicesPatientRepo("${userController.user.value.id}");
 
       getServicesPatientApiResponse = ApiResponse.complete(response);
     } catch (e) {
@@ -30,7 +30,7 @@ class ServicesDataController extends GetxController {
     update();
     try {
       ServicesResponseModel response = await ServicesRepo()
-          .getServicesDoctorRepo(userController.user.value.id);
+          .getServicesDoctorRepo("${userController.user.value.id}");
 
       getServicesDoctorApiResponse = ApiResponse.complete(response);
     } catch (e) {

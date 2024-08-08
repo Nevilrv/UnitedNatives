@@ -1,6 +1,6 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_category.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_sort.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/medicle_center/lib/models/model_category.dart';
+import 'package:united_natives/medicle_center/lib/models/model_sort.dart';
 
 enum ProductViewType { small, grid, list, block, card }
 
@@ -19,36 +19,36 @@ final detailMode = {
 };
 
 class SettingModel {
-  final List<CategoryModel> category;
-  final List<CategoryModel> features;
-  final List<CategoryModel> locations;
-  final List<SortModel> sort;
-  final int perPage;
-  final ProductViewType listMode;
-  final DetailViewType detailViewType;
-  final bool enableSubmit;
-  final double minPrice;
-  final double maxPrice;
-  final List<String> color;
-  final String unit;
-  final TimeOfDay startHour;
-  final TimeOfDay endHour;
-  final bool useViewAddress;
-  final bool useViewPhone;
-  final bool useViewEmail;
-  final bool useViewWebsite;
-  final bool useViewSocial;
-  final bool useViewStatus;
-  final bool useViewDateEstablish;
-  final bool useViewGalleries;
-  final bool useViewAttachment;
-  final bool useViewVideo;
-  final bool useViewMap;
-  final bool useViewPrice;
-  final bool useViewOpenHours;
-  final bool useViewTags;
-  final bool useViewFeature;
-  final bool useViewAdmob;
+  final List<CategoryModel>? category;
+  final List<CategoryModel>? features;
+  final List<CategoryModel>? locations;
+  final List<SortModel>? sort;
+  final int? perPage;
+  final ProductViewType? listMode;
+  final DetailViewType? detailViewType;
+  final bool? enableSubmit;
+  final double? minPrice;
+  final double? maxPrice;
+  final List<String>? color;
+  final String? unit;
+  final TimeOfDay? startHour;
+  final TimeOfDay? endHour;
+  final bool? useViewAddress;
+  final bool? useViewPhone;
+  final bool? useViewEmail;
+  final bool? useViewWebsite;
+  final bool? useViewSocial;
+  final bool? useViewStatus;
+  final bool? useViewDateEstablish;
+  final bool? useViewGalleries;
+  final bool? useViewAttachment;
+  final bool? useViewVideo;
+  final bool? useViewMap;
+  final bool? useViewPrice;
+  final bool? useViewOpenHours;
+  final bool? useViewTags;
+  final bool? useViewFeature;
+  final bool? useViewAdmob;
 
   SettingModel({
     this.category,
@@ -123,8 +123,8 @@ class SettingModel {
     final viewOptions = json['view_option'] ?? {};
     final settingDetailView = settings['mobile_listing_view'];
 
-    TimeOfDay startHour;
-    TimeOfDay endHour;
+    TimeOfDay? startHour;
+    TimeOfDay? endHour;
     if (settings['time_min'] != null) {
       List<String> split = settings['time_min'].split(':');
       startHour = TimeOfDay(

@@ -1,18 +1,18 @@
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/appointment.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/utils/utils.dart';
 
 import 'custom_outline_button.dart';
 
 class UpcomingAppointmentListItem extends StatelessWidget {
   final Appointment patientAppoint;
 
-  UpcomingAppointmentListItem(this.patientAppoint);
+  UpcomingAppointmentListItem(this.patientAppoint, {super.key});
 
   final PatientHomeScreenController _patientHomeScreenController = Get.find();
 
@@ -21,7 +21,6 @@ class UpcomingAppointmentListItem extends StatelessWidget {
     final time = Utils.formattedDate(
         '${DateTime.parse('${patientAppoint.appointmentDate} ${patientAppoint.appointmentTime}')}');
 
-    print('son..===>${patientAppoint.appointmentStatus}');
     return Card(
       child: Row(
         children: <Widget>[
@@ -30,7 +29,7 @@ class UpcomingAppointmentListItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Padding(
@@ -46,23 +45,23 @@ class UpcomingAppointmentListItem extends StatelessWidget {
                               '${DateFormat('EEEE, dd MMM yyyy').format(time)} ',
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                         child: _buildColumn(
                           context: context,
                           title: Translate.of(context).translate('time'),
-                          subtitle: '${DateFormat('hh:mm a').format(time)}',
+                          subtitle: DateFormat('hh:mm a').format(time),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
-                Divider(
+                const Divider(
                   height: 1,
                   thickness: 1,
                   indent: 10,
@@ -77,9 +76,8 @@ class UpcomingAppointmentListItem extends StatelessWidget {
                         child: _buildColumn(
                           context: context,
                           title: 'Doctor Name',
-                          subtitle: '${patientAppoint.doctorFirstName}' +
-                              ' ' +
-                              '${patientAppoint.doctorLastName}',
+                          subtitle:
+                              '${patientAppoint.doctorFirstName} ${patientAppoint.doctorLastName}',
                         ),
                       ),
                       Expanded(
@@ -95,7 +93,7 @@ class UpcomingAppointmentListItem extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           if (patientAppoint.appointmentStatus != '1')
@@ -134,16 +132,16 @@ class UpcomingAppointmentListItem extends StatelessWidget {
                   ),*/
                     GetBuilder<PatientHomeScreenController>(
                         builder: (controller) {
-                      return Container(
+                      return SizedBox(
                         width: double.infinity,
                         child: patientAppoint.appointmentStatus == '1'
-                            ? SizedBox()
+                            ? const SizedBox()
                             : patientAppoint.appointmentStatus == '3'
                                 ? CustomOutlineButton(
                                     text: 'Cancelled',
                                     textSize: 14,
-                                    onPressed: null,
-                                    padding: EdgeInsets.symmetric(
+                                    onPressed: () {},
+                                    padding: const EdgeInsets.symmetric(
                                       vertical: 10,
                                     ),
                                   )
@@ -156,12 +154,12 @@ class UpcomingAppointmentListItem extends StatelessWidget {
                                       Navigator.of(context).pop();
                                       await _patientHomeScreenController
                                           .cancelAppointmentPatient(
-                                              patientAppoint.patientId,
+                                              "${patientAppoint.patientId}",
                                               patientAppoint.id);
                                       _patientHomeScreenController
                                           .getVisitedDoctors();
                                     }),
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                       vertical: 10,
                                     ),
                                   ),
@@ -177,9 +175,9 @@ class UpcomingAppointmentListItem extends StatelessWidget {
   }
 
   Column _buildColumn({
-    @required BuildContext context,
-    @required String title,
-    @required subtitle,
+    required BuildContext context,
+    required String title,
+    required subtitle,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -188,7 +186,7 @@ class UpcomingAppointmentListItem extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.grey,
             fontSize: 18,
             fontWeight: FontWeight.w400,
@@ -199,7 +197,7 @@ class UpcomingAppointmentListItem extends StatelessWidget {
         Text(
           subtitle,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle1.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
         ),
@@ -208,17 +206,17 @@ class UpcomingAppointmentListItem extends StatelessWidget {
   }
 }
 
-_showAlert(BuildContext context, Function onPressed) {
+_showAlert(BuildContext context, Function()? onPressed) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Cancel Client Appointment'),
-        content: Text("Are You Sure Want To Proceed ?"),
+        title: const Text('Cancel Client Appointment'),
+        content: const Text("Are You Sure Want To Proceed ?"),
         actions: <Widget>[
-          MaterialButton(child: Text("YES"), onPressed: onPressed),
+          MaterialButton(onPressed: onPressed, child: const Text("YES")),
           MaterialButton(
-            child: Text("NO"),
+            child: const Text("NO"),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -232,17 +230,17 @@ _showAlert(BuildContext context, Function onPressed) {
 onAlertWithCustomContentPressed(context) {
   Alert(
     context: context,
-    image: Image(
+    image: const Image(
       image: AssetImage('assets/images/Doctor.gif'),
     ),
     title: "Coming Soon",
-    content: Column(
+    content: const Column(
       children: <Widget>[],
     ),
     buttons: [
       DialogButton(
         onPressed: () => Navigator.pop(context),
-        child: Text(
+        child: const Text(
           "Okay",
           style: TextStyle(color: Colors.white, fontSize: 22),
         ),

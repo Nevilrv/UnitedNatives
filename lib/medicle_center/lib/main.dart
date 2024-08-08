@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -10,8 +10,8 @@ class AppBlocObserver extends BlocObserver {
 
   @override
   void onEvent(Bloc bloc, Object event) {
-    UtilLogger.log('BLOC EVENT', event);
     super.onEvent(bloc, event);
+    UtilLogger.log('BLOC EVENT', event);
   }
 
   @override
@@ -26,11 +26,3 @@ class AppBlocObserver extends BlocObserver {
     super.onTransition(bloc, transition);
   }
 }
-
-// void main() {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   BlocOverrides.runZoned(
-//     () => runApp(const App1()),
-//     blocObserver: AppBlocObserver(),
-//   );
-// }

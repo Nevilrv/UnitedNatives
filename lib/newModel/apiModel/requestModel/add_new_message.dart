@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart' as dio;
 
 class AddNewMessageReqModel {
-  String fromType;
-  String fromId;
-  String toType;
-  String toId;
-  String chatKey;
-  String message;
-  String attachment;
+  String? fromType;
+  String? fromId;
+  String? toType;
+  String? toId;
+  String? chatKey;
+  String? message;
+  String? attachment;
 
   AddNewMessageReqModel(
       {this.fromType,
@@ -24,7 +24,7 @@ class AddNewMessageReqModel {
       'to_id': toId,
       'chat_key': chatKey,
       'message': message,
-      'attachment': await dio.MultipartFile.fromFile(attachment),
+      'attachment': await dio.MultipartFile.fromFile(attachment!),
     };
   }
 }

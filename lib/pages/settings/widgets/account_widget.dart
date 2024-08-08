@@ -1,11 +1,11 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import '../../../routes/routes.dart';
 
 class AccountWidget extends StatelessWidget {
   final Color color;
 
-  const AccountWidget({Key key, @required this.color}) : super(key: key);
+  const AccountWidget({super.key, required this.color});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -14,7 +14,7 @@ class AccountWidget extends StatelessWidget {
         Container(
           width: double.infinity,
           color: color,
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child: Text(
             Translate.of(context).translate('accounts'),
             style: TextStyle(
@@ -26,10 +26,10 @@ class AccountWidget extends StatelessWidget {
         ListTile(
           leading: Text(
             Translate.of(context).translate('logout'),
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          trailing: Icon(Icons.exit_to_app, color: Colors.blue),
+          trailing: const Icon(Icons.exit_to_app, color: Colors.blue),
           onTap: () => Navigator.of(context).pushNamed(Routes.doctorlogin),
         ),
       ],

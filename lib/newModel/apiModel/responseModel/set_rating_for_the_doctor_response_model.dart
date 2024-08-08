@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final setRatingForTheDoctorResponseModel = setRatingForTheDoctorResponseModelFromJson(jsonString);
-
 import 'dart:convert';
 
 SetRatingForTheDoctorResponseModel setRatingForTheDoctorResponseModelFromJson(
@@ -13,9 +9,9 @@ String setRatingForTheDoctorResponseModelToJson(
     json.encode(data.toJson());
 
 class SetRatingForTheDoctorResponseModel {
-  String status;
-  bool data;
-  String message;
+  String? status;
+  bool? data;
+  String? message;
 
   SetRatingForTheDoctorResponseModel({
     this.status,

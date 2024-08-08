@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/authentication/authentication_state.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_user.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/user_repository.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils_medicalcenter.dart';
+import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
+import 'package:united_natives/medicle_center/lib/blocs/authentication/authentication_state.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/models/model_user.dart';
+import 'package:united_natives/medicle_center/lib/repository/user_repository.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils_medicalcenter.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit() : super(AuthenticationState.loading);

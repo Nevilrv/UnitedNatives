@@ -1,21 +1,20 @@
 import 'dart:developer';
 
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_direct_appointment_req_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/add_direct_appointment_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_all_doctor.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/services/api_service.dart';
-import 'package:doctor_appointment_booking/newModel/services/base_service.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_direct_appointment_req_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/add_direct_appointment_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_all_doctor.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
+import 'package:united_natives/newModel/services/api_service.dart';
+import 'package:united_natives/newModel/services/base_service.dart';
 
 class DirectDoctorRepo extends BaseService {
   /// get direct doctor .......
 
   Future<dynamic> getDirectDoctorRepo(String id) async {
-    String url = getDirectDoctorURL + '/' + id;
+    String url = '$getDirectDoctorURL/$id';
 
     var response =
         await ApiService().getResponse(apiType: APIType.aGet, url: url);
-    print('RESPONSE   $response');
     GetDirectDoctorResponseModel getDirectDoctorResponseModel =
         GetDirectDoctorResponseModel.fromJson(response);
 
@@ -26,7 +25,7 @@ class DirectDoctorRepo extends BaseService {
   Future<AddDirectAppointmentResponseModel> addDirectRequestRepo(
       AddDirectAppointmentReqModel model, String id) async {
     var body = await model.toJson();
-    String url = addDirectAppointmentURL + '/' + id;
+    String url = '$addDirectAppointmentURL/$id';
 
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
@@ -44,7 +43,6 @@ class DirectDoctorRepo extends BaseService {
 
     var response = await ApiService()
         .getResponse(apiType: APIType.aGet, url: url, withoutTypeHeader: true);
-    print('RESPONSE   $response');
     GetAllDoctorResponseModel getAllDoctor =
         GetAllDoctorResponseModel.fromJson(response);
 

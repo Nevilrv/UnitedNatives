@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/chat_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/message_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/services/api_service.dart';
-import 'package:doctor_appointment_booking/newModel/services/base_service.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/chat_status_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
+import 'package:united_natives/newModel/services/api_service.dart';
+import 'package:united_natives/newModel/services/base_service.dart';
 
 class LogOutRepo extends BaseService {
   /// patient logout
@@ -35,12 +35,11 @@ class LogOutRepo extends BaseService {
   }
 
   /// get chat online status
-  Future<dynamic> chatOnlineStatusRepo({String id}) async {
-    String url = chatStatusURL + '/' + id;
+  Future<dynamic> chatOnlineStatusRepo({String? id}) async {
+    String url = '$chatStatusURL/$id';
 
     var response =
         await ApiService().getResponse(apiType: APIType.aGet, url: url);
-    print('RESPONSE   $response');
 
     ChatStatusResponseModel chatStatusResponseModel =
         ChatStatusResponseModel.fromJson(response);
@@ -50,9 +49,9 @@ class LogOutRepo extends BaseService {
 
   /// add chat online status
   Future<ChatStatusResponseModel> addChatOnlineStatusRepo(
-      {AddChatOnlineStatusReqModel model, String id}) async {
-    String url = chatStatusURL + '/' + id;
-    dynamic body = await model.toJson();
+      {AddChatOnlineStatusReqModel? model, String? id}) async {
+    String url = '$chatStatusURL/$id';
+    dynamic body = await model?.toJson();
 
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,

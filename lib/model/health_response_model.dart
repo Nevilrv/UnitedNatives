@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final healthResponseModel = healthResponseModelFromJson(jsonString);
-
 import 'dart:convert';
 
 HealthResponseModel healthResponseModelFromJson(String str) =>
@@ -17,9 +13,9 @@ class HealthResponseModel {
     this.message,
   });
 
-  String status;
-  List<Datum> data;
-  String message;
+  String? status;
+  List<Datum>? data;
+  String? message;
 
   factory HealthResponseModel.fromJson(Map<String, dynamic> json) =>
       HealthResponseModel(
@@ -30,7 +26,7 @@ class HealthResponseModel {
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
         "message": message,
       };
 }
@@ -46,13 +42,13 @@ class Datum {
     this.created,
   });
 
-  String id;
-  String userId;
-  String reportType;
-  String tableHeaders;
-  String tableData;
-  DateTime modified;
-  DateTime created;
+  String? id;
+  String? userId;
+  String? reportType;
+  String? tableHeaders;
+  String? tableData;
+  DateTime? modified;
+  DateTime? created;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
@@ -70,7 +66,7 @@ class Datum {
         "report_type": reportType,
         "table_headers": tableHeaders,
         "table_data": tableData,
-        "modified": modified.toIso8601String(),
-        "created": created.toIso8601String(),
+        "modified": modified?.toIso8601String(),
+        "created": created?.toIso8601String(),
       };
 }

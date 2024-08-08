@@ -1,56 +1,55 @@
 class PatientUpdateDataModel {
-  String status;
-  PatientUpdateData patientUpdateData;
-  String message;
+  String? status;
+  PatientUpdateData? patientUpdateData;
+  String? message;
 
   PatientUpdateDataModel({this.status, this.patientUpdateData, this.message});
 
   PatientUpdateDataModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    patientUpdateData = json['data'] != null
-        ? new PatientUpdateData.fromJson(json['data'])
-        : null;
+    patientUpdateData =
+        json['data'] != null ? PatientUpdateData.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.patientUpdateData != null) {
-      data['data'] = this.patientUpdateData.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (patientUpdateData != null) {
+      data['data'] = patientUpdateData?.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class PatientUpdateData {
-  String id;
-  String userType;
-  String firstName;
-  String lastName;
-  String gender;
-  String email;
-  String loginType;
-  String fbId;
-  String googleId;
-  String contactNumber;
-  String dateOfBirth;
-  String password;
-  String socialProfilePic;
-  String profilePic;
-  String modified;
-  String created;
-  String height;
-  String weight;
-  String emergencyContact;
-  String caseManager;
-  String certificate;
-  String education;
-  String speciality;
-  String perAppointmentCharge;
-  String stateName;
-  String cityName;
+  String? id;
+  String? userType;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? email;
+  String? loginType;
+  String? fbId;
+  String? googleId;
+  String? contactNumber;
+  String? dateOfBirth;
+  String? password;
+  String? socialProfilePic;
+  String? profilePic;
+  String? modified;
+  String? created;
+  String? height;
+  String? weight;
+  String? emergencyContact;
+  String? caseManager;
+  String? certificate;
+  String? education;
+  String? speciality;
+  String? perAppointmentCharge;
+  String? stateName;
+  String? cityName;
 
   PatientUpdateData(
       {this.id,
@@ -110,33 +109,33 @@ class PatientUpdateData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_type'] = this.userType;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['gender'] = this.gender;
-    data['email'] = this.email;
-    data['login_type'] = this.loginType;
-    data['fb_id'] = this.fbId;
-    data['google_id'] = this.googleId;
-    data['contact_number'] = this.contactNumber;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['password'] = this.password;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['profile_pic'] = this.profilePic;
-    data['modified'] = this.modified;
-    data['created'] = this.created;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['emergency_contact'] = this.emergencyContact;
-    data['case_manager'] = this.caseManager;
-    data['certificate_no'] = this.certificate;
-    data['education'] = this.education;
-    data['speciality'] = this.speciality;
-    data['per_appointment_rate'] = this.perAppointmentCharge;
-    data['city'] = this.cityName;
-    data['state'] = this.stateName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_type'] = userType;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['login_type'] = loginType;
+    data['fb_id'] = fbId;
+    data['google_id'] = googleId;
+    data['contact_number'] = contactNumber;
+    data['date_of_birth'] = dateOfBirth;
+    data['password'] = password;
+    data['social_profile_pic'] = socialProfilePic;
+    data['profile_pic'] = profilePic;
+    data['modified'] = modified;
+    data['created'] = created;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['emergency_contact'] = emergencyContact;
+    data['case_manager'] = caseManager;
+    data['certificate_no'] = certificate;
+    data['education'] = education;
+    data['speciality'] = speciality;
+    data['per_appointment_rate'] = perAppointmentCharge;
+    data['city'] = cityName;
+    data['state'] = stateName;
     return data;
   }
 }

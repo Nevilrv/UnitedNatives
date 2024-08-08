@@ -1,7 +1,7 @@
 class GetDirectDoctorResponseModel {
-  String status;
-  List<Data> data;
-  String message;
+  String? status;
+  List<Data>? data;
+  String? message;
 
   GetDirectDoctorResponseModel({this.status, this.data, this.message});
 
@@ -10,54 +10,54 @@ class GetDirectDoctorResponseModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data?.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class DirectDoctorModel {
-  Data doctorSpecialities;
-  String mySelectedDate;
-  int time;
+  Data? doctorSpecialities;
+  String? mySelectedDate;
+  int? time;
 
   DirectDoctorModel({this.doctorSpecialities, this.mySelectedDate, this.time});
 }
 
 class Data {
-  String id;
-  String userId;
-  String isDirectAvailable;
-  String certificateNo;
-  String speciality;
-  String education;
-  String perAppointmentCharge;
-  String modified;
-  String created;
-  String userType;
-  String firstName;
-  String lastName;
-  String gender;
-  String email;
-  String loginType;
-  Null fbId;
-  Null googleId;
-  String contactNumber;
-  String dateOfBirth;
-  Null socialProfilePic;
-  String profilePic;
-  int rating;
+  String? id;
+  String? userId;
+  String? isDirectAvailable;
+  String? certificateNo;
+  String? speciality;
+  String? education;
+  String? perAppointmentCharge;
+  String? modified;
+  String? created;
+  String? userType;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? email;
+  String? loginType;
+  String? fbId;
+  String? googleId;
+  String? contactNumber;
+  String? dateOfBirth;
+  String? socialProfilePic;
+  String? profilePic;
+  int? rating;
 
   Data(
       {this.id,
@@ -109,29 +109,29 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['is_direct_available'] = this.isDirectAvailable;
-    data['certificate_no'] = this.certificateNo;
-    data['speciality'] = this.speciality;
-    data['education'] = this.education;
-    data['per_appointment_charge'] = this.perAppointmentCharge;
-    data['modified'] = this.modified;
-    data['created'] = this.created;
-    data['user_type'] = this.userType;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['gender'] = this.gender;
-    data['email'] = this.email;
-    data['login_type'] = this.loginType;
-    data['fb_id'] = this.fbId;
-    data['google_id'] = this.googleId;
-    data['contact_number'] = this.contactNumber;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['profile_pic'] = this.profilePic;
-    data['rating'] = this.rating;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['is_direct_available'] = isDirectAvailable;
+    data['certificate_no'] = certificateNo;
+    data['speciality'] = speciality;
+    data['education'] = education;
+    data['per_appointment_charge'] = perAppointmentCharge;
+    data['modified'] = modified;
+    data['created'] = created;
+    data['user_type'] = userType;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['login_type'] = loginType;
+    data['fb_id'] = fbId;
+    data['google_id'] = googleId;
+    data['contact_number'] = contactNumber;
+    data['date_of_birth'] = dateOfBirth;
+    data['social_profile_pic'] = socialProfilePic;
+    data['profile_pic'] = profilePic;
+    data['rating'] = rating;
     return data;
   }
 }

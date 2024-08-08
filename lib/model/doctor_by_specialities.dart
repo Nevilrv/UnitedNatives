@@ -1,10 +1,10 @@
-import 'package:doctor_appointment_booking/model/appointment.dart';
+import 'package:united_natives/model/appointment.dart';
 
 class DoctorBySpecialitiesModel {
-  String status;
-  List<DoctorSpecialities> doctorSpecialities;
-  String message;
-  int doctorsCount;
+  String? status;
+  List<DoctorSpecialities>? doctorSpecialities;
+  String? message;
+  int? doctorsCount;
 
   DoctorBySpecialitiesModel(
       {this.status, this.doctorSpecialities, this.doctorsCount, this.message});
@@ -13,9 +13,8 @@ class DoctorBySpecialitiesModel {
     status = json['status'];
     if (json['data'] != null) {
       doctorSpecialities = <DoctorSpecialities>[];
-      print('==result====>${json['data']}');
       json['data'].forEach((v) {
-        doctorSpecialities.add(new DoctorSpecialities.fromJson(v));
+        doctorSpecialities?.add(DoctorSpecialities.fromJson(v));
       });
     }
     message = json['message'];
@@ -23,24 +22,24 @@ class DoctorBySpecialitiesModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.doctorSpecialities != null) {
-      data['data'] = this.doctorSpecialities.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (doctorSpecialities != null) {
+      data['data'] = doctorSpecialities?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
-    data['doctorsCount'] = this.doctorsCount;
+    data['message'] = message;
+    data['doctorsCount'] = doctorsCount;
     return data;
   }
 }
 
 class NavigationModel {
-  DoctorSpecialities doctorSpecialities;
-  String mySelectedDate;
-  int time;
-  int minute;
-  String utcDateTime;
-  final Appointment doctor;
+  DoctorSpecialities? doctorSpecialities;
+  String? mySelectedDate;
+  int? time;
+  int? minute;
+  String? utcDateTime;
+  final Appointment? doctor;
 
   NavigationModel({
     this.doctorSpecialities,
@@ -53,26 +52,26 @@ class NavigationModel {
 }
 
 class DoctorSpecialities {
-  String id;
-  String userId;
-  String certificateNo;
-  String speciality;
-  String education;
-  String perAppointmentCharge;
-  String modified;
-  String created;
-  String userType;
-  String firstName;
-  String lastName;
-  String gender;
-  String email;
-  String loginType;
-  String fbId;
-  String googleId;
-  String contactNumber;
-  String dateOfBirth;
-  String socialProfilePic;
-  String profilePic;
+  String? id;
+  String? userId;
+  String? certificateNo;
+  String? speciality;
+  String? education;
+  String? perAppointmentCharge;
+  String? modified;
+  String? created;
+  String? userType;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? email;
+  String? loginType;
+  String? fbId;
+  String? googleId;
+  String? contactNumber;
+  String? dateOfBirth;
+  String? socialProfilePic;
+  String? profilePic;
   var rating;
 
   DoctorSpecialities(
@@ -123,28 +122,28 @@ class DoctorSpecialities {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['certificate_no'] = this.certificateNo;
-    data['speciality'] = this.speciality;
-    data['education'] = this.education;
-    data['per_appointment_charge'] = this.perAppointmentCharge;
-    data['modified'] = this.modified;
-    data['created'] = this.created;
-    data['user_type'] = this.userType;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['gender'] = this.gender;
-    data['email'] = this.email;
-    data['login_type'] = this.loginType;
-    data['fb_id'] = this.fbId;
-    data['google_id'] = this.googleId;
-    data['contact_number'] = this.contactNumber;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['profile_pic'] = this.profilePic;
-    data['rating'] = this.rating;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['certificate_no'] = certificateNo;
+    data['speciality'] = speciality;
+    data['education'] = education;
+    data['per_appointment_charge'] = perAppointmentCharge;
+    data['modified'] = modified;
+    data['created'] = created;
+    data['user_type'] = userType;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['login_type'] = loginType;
+    data['fb_id'] = fbId;
+    data['google_id'] = googleId;
+    data['contact_number'] = contactNumber;
+    data['date_of_birth'] = dateOfBirth;
+    data['social_profile_pic'] = socialProfilePic;
+    data['profile_pic'] = profilePic;
+    data['rating'] = rating;
     return data;
   }
 }

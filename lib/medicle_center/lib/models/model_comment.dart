@@ -1,12 +1,12 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_user.dart';
+import 'package:united_natives/medicle_center/lib/models/model_user.dart';
 
 class CommentModel {
-  final int id;
-  final UserModel user;
-  final String postName;
-  final String comment;
-  final DateTime createDate;
-  final double rate;
+  final int? id;
+  final UserModel? user;
+  final String? postName;
+  final String? comment;
+  final DateTime? createDate;
+  final double? rate;
 
   CommentModel({
     this.id,

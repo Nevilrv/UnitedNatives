@@ -1,5 +1,5 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 
 class CustomRecipeItem extends StatelessWidget {
   final String purpose;
@@ -9,13 +9,12 @@ class CustomRecipeItem extends StatelessWidget {
   final String pills;
 
   const CustomRecipeItem(
-      {Key key,
-      @required this.title,
-      @required this.purpose,
-      @required this.subTitle,
-      @required this.days,
-      @required this.pills})
-      : super(key: key);
+      {super.key,
+      required this.title,
+      required this.purpose,
+      required this.subTitle,
+      required this.days,
+      required this.pills});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -29,7 +28,7 @@ class CustomRecipeItem extends StatelessWidget {
               children: [
                 Text(
                   "Purpose of visit : ",
-                  style: Theme.of(context).textTheme.subtitle2.copyWith(
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
                       ),
@@ -37,7 +36,7 @@ class CustomRecipeItem extends StatelessWidget {
                 Expanded(
                   child: Text(
                     purpose,
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w400,
                           fontSize: 20,
                         ),
@@ -45,7 +44,7 @@ class CustomRecipeItem extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               children: <Widget>[
                 CircleAvatar(
@@ -56,7 +55,7 @@ class CustomRecipeItem extends StatelessWidget {
                     fit: BoxFit.fill,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Expanded(
@@ -65,18 +64,18 @@ class CustomRecipeItem extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         title,
-                        style: Theme.of(context).textTheme.subtitle2.copyWith(
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.w700,
                               fontSize: 22,
                               color: Colors.red.shade700,
                             ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 2,
                       ),
                       Text(
                         subTitle,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontFamily: 'NunitoSans',
                           fontWeight: FontWeight.w600,
@@ -87,11 +86,11 @@ class CustomRecipeItem extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(height: 15),
-            Divider(height: 1, color: Colors.white),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
+            const Divider(height: 1, color: Colors.white),
+            const SizedBox(height: 15),
             Padding(
-              padding: EdgeInsets.only(left: 75),
+              padding: const EdgeInsets.only(left: 75),
               child: Row(
                 children: <Widget>[
                   Column(
@@ -105,19 +104,19 @@ class CustomRecipeItem extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
                         days,
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   Column(
@@ -131,12 +130,12 @@ class CustomRecipeItem extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
                         pills,
-                        style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                             ),

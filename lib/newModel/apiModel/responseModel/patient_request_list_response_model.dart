@@ -1,7 +1,7 @@
 class RequestListResponseModel {
-  String status;
-  List<Data> data;
-  String message;
+  String? status;
+  List<Data>? data;
+  String? message;
 
   RequestListResponseModel({this.status, this.data, this.message});
 
@@ -10,29 +10,29 @@ class RequestListResponseModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data?.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
-  String id;
-  String title;
-  String featuredImage;
-  String created;
-  String modified;
+  String? id;
+  String? title;
+  String? featuredImage;
+  String? created;
+  String? modified;
 
   Data({this.id, this.title, this.featuredImage, this.created, this.modified});
 
@@ -45,12 +45,12 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['featured_image'] = this.featuredImage;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['featured_image'] = featuredImage;
+    data['created'] = created;
+    data['modified'] = modified;
     return data;
   }
 }

@@ -1,27 +1,27 @@
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/patient_detail_model.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/patient_detail_model.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/utils.dart';
 
 import '../utils/constants.dart';
 import 'custom_button.dart';
 
 class MyPatientListItem extends StatelessWidget {
-  final PatientData patient;
+  final PatientData? patient;
 
-  MyPatientListItem({Key key, @required this.patient}) : super(key: key);
+  const MyPatientListItem({super.key, @required this.patient});
 
   @override
   Widget build(BuildContext context) {
-    bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+    bool isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: _isDark ? Colors.grey.withOpacity(0.2) : Color(0xffEBF2F5),
+        color: isDark ? Colors.grey.withOpacity(0.2) : const Color(0xffEBF2F5),
       ),
       child: Row(
         children: <Widget>[
@@ -43,7 +43,7 @@ class MyPatientListItem extends StatelessWidget {
           Utils().patientProfile(patient?.patientProfilePic ?? "",
               patient?.patientProfilePic ?? "", 35),
 
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
           Expanded(
@@ -51,9 +51,9 @@ class MyPatientListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "${patient.patientFirstName} ${patient.patientLastName}",
+                  "${patient?.patientFirstName} ${patient?.patientLastName}",
                   style: TextStyle(
-                    color: _isDark ? Colors.white : kColorPrimaryDark,
+                    color: isDark ? Colors.white : kColorPrimaryDark,
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                   ),
@@ -72,7 +72,7 @@ class MyPatientListItem extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           CustomButton(
@@ -81,7 +81,7 @@ class MyPatientListItem extends StatelessWidget {
             onPressed: () {
               Get.toNamed(Routes.patientListVisitPage, arguments: patient);
             },
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 10,
               horizontal: 5,
             ),

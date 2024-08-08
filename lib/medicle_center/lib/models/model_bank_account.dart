@@ -1,10 +1,10 @@
 class BankAccountModel {
-  final String name;
-  final String number;
-  final String bankName;
-  final String bankCode;
-  final String bankIban;
-  final String bankSwift;
+  final String? name;
+  final String? number;
+  final String? bankName;
+  final String? bankCode;
+  final String? bankIban;
+  final String? bankSwift;
 
   BankAccountModel({
     this.name,

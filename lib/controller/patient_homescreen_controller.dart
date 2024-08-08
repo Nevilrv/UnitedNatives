@@ -2,38 +2,37 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/model/aboutus_privacy_policy_model.dart';
-import 'package:doctor_appointment_booking/model/add_patient_appointment_model.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/appointment.dart';
-import 'package:doctor_appointment_booking/model/booked_appointment_data.dart';
-import 'package:doctor_appointment_booking/model/cancle_appointment_patient.dart';
-import 'package:doctor_appointment_booking/model/delete_chat_messages_response_model.dart';
-import 'package:doctor_appointment_booking/model/delete_patiend_side_chatuser_response.dart';
-import 'package:doctor_appointment_booking/model/delete_patient_account_model.dart';
-import 'package:doctor_appointment_booking/model/getSorted_patient_chatList_model.dart';
-import 'package:doctor_appointment_booking/model/get_all_doctor.dart';
-import 'package:doctor_appointment_booking/model/get_all_patient_messagelist_model.dart';
-import 'package:doctor_appointment_booking/model/get_new_message_doctor_model.dart';
-import 'package:doctor_appointment_booking/model/patient_get_appointment_rating.dart';
-import 'package:doctor_appointment_booking/model/patient_homepage_model.dart';
-import 'package:doctor_appointment_booking/model/patient_prescription_model.dart';
-import 'package:doctor_appointment_booking/model/research_document_details_model.dart';
-import 'package:doctor_appointment_booking/model/research_document_model.dart';
-import 'package:doctor_appointment_booking/model/visited_doctor_upcoming_past_model.dart';
-import 'package:doctor_appointment_booking/pages/messages/messages_detail_page.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/sevices/patient_home_screen_service.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/exception.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_new_chat_message_view_model.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/model/aboutus_privacy_policy_model.dart';
+import 'package:united_natives/model/add_patient_appointment_model.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/model/booked_appointment_data.dart';
+import 'package:united_natives/model/cancle_appointment_patient.dart';
+import 'package:united_natives/model/delete_chat_messages_response_model.dart';
+import 'package:united_natives/model/delete_patiend_side_chatuser_response.dart';
+import 'package:united_natives/model/delete_patient_account_model.dart';
+import 'package:united_natives/model/getSorted_patient_chatList_model.dart';
+import 'package:united_natives/model/get_all_doctor.dart';
+import 'package:united_natives/model/get_all_patient_messagelist_model.dart';
+import 'package:united_natives/model/get_new_message_doctor_model.dart';
+import 'package:united_natives/model/patient_get_appointment_rating.dart';
+import 'package:united_natives/model/patient_homepage_model.dart';
+import 'package:united_natives/model/patient_prescription_model.dart';
+import 'package:united_natives/model/research_document_details_model.dart';
+import 'package:united_natives/model/research_document_model.dart';
+import 'package:united_natives/model/visited_doctor_upcoming_past_model.dart';
+import 'package:united_natives/pages/messages/messages_detail_page.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/sevices/patient_home_screen_service.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/exception.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:doctor_appointment_booking/model/patient_prescription_model.dart'
-    as d;
+import 'package:united_natives/model/patient_prescription_model.dart' as d;
 import 'package:http/http.dart' as http;
 
 class PatientHomeScreenController extends GetxController {
@@ -98,12 +97,12 @@ class PatientHomeScreenController extends GetxController {
   RxString doctorLastName = "".obs;
   RxString doctorId = "".obs;
   RxString pationtAppoinmentid = "".obs;
-  Timer timer;
+  Timer? timer;
 
   final pastController = TextEditingController();
   final prescriptionController = TextEditingController();
 
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
   AddNewChatMessageController addNewChatMessageController =
       Get.put(AddNewChatMessageController());
 
@@ -117,7 +116,7 @@ class PatientHomeScreenController extends GetxController {
     try {
       isLoading.value = true;
       patientHomePageData.value = await PatientHomeScreenService()
-          .patientHomePageModel(userId: _userController.user.value.id);
+          .patientHomePageModel(userId: "${_userController.user.value.id}");
 
       isLoading.value = false;
       return patientHomePageData.value;
@@ -128,7 +127,7 @@ class PatientHomeScreenController extends GetxController {
   }
 
   Future<String> getMeetingStatus(String channelsName, String doctorId) async {
-    String url = '${Constants.baseUrl + Constants.doctorZoomMeetStatus}';
+    String url = Constants.baseUrl + Constants.doctorZoomMeetStatus;
     Map<String, dynamic> body = {
       "doctor_id": doctorId,
       "meeting_id": channelsName
@@ -164,26 +163,23 @@ class PatientHomeScreenController extends GetxController {
       visitedDoctorUpcomingPastData.value.apiState = APIState.PROCESSING;
       visitedDoctorUpcomingPastData.value = await PatientHomeScreenService()
           .visitedDoctorUpcomingPastModel(
-              patientId: _userController.user.value.id);
-      print(
-          "visitedDoctorUpcomingPastData.value  ==> ${visitedDoctorUpcomingPastData.value}");
+              patientId: "${_userController.user.value.id}");
 
-      visitedDoctorUpcomingPastData?.value?.past?.sort(
+      visitedDoctorUpcomingPastData.value.past?.sort(
         (a, b) {
           String dateA = "${b.appointmentDate} ${b.appointmentTime}";
           String dateB = "${a.appointmentDate} ${a.appointmentTime}";
           return DateTime.parse(dateA).compareTo(DateTime.parse(dateB));
         },
       );
-      pastAppointmentData.value = visitedDoctorUpcomingPastData.value.past;
+      pastAppointmentData.value = visitedDoctorUpcomingPastData.value.past!;
 
       pastAppointmentData1 = jsonEncode(pastAppointmentData);
     } catch (isBlank) {
       visitedDoctorUpcomingPastData.value.apiState = APIState.ERROR;
-      visitedDoctorUpcomingPastData?.refresh();
+      visitedDoctorUpcomingPastData.refresh();
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
-    print('print');
 
     return visitedDoctorUpcomingPastData.value;
   }
@@ -194,10 +190,10 @@ class PatientHomeScreenController extends GetxController {
     if (searchValue.isNotEmpty) {
       pastAppointmentData.clear();
       for (var element in temp) {
-        if ("${element.doctorFirstName.toLowerCase()}${element.doctorLastName.toLowerCase()}"
+        if ("${element.doctorFirstName?.toLowerCase()}${element.doctorLastName?.toLowerCase()}"
                 .replaceAll(" ", "")
                 .contains(searchValue.toLowerCase().replaceAll(" ", "")) ||
-            element.doctorSpeciality
+            element.doctorSpeciality!
                 .toLowerCase()
                 .toLowerCase()
                 .replaceAll(" ", "")
@@ -218,7 +214,7 @@ class PatientHomeScreenController extends GetxController {
       // isLoading.value = true;
       researchDocumentModelData.value.apiState = APIState.PROCESSING;
       researchDocumentModelData.value = await PatientHomeScreenService()
-          .researchDocumentModel(userId: _userController.user.value.id);
+          .researchDocumentModel(userId: "${_userController.user.value.id}");
     } catch (isBlank) {
       researchDocumentModelData.value.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
@@ -232,12 +228,10 @@ class PatientHomeScreenController extends GetxController {
 
   void getAllChatMessages(String chatKey, String id) {
     if (timer != null) {
-      timer.cancel();
+      timer?.cancel();
     }
 
-    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
-      print('==timer===>$timer');
-
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       addNewChatMessageController.allChatMessagePatient(
           chatKey: chatKey, id: id);
     });
@@ -247,7 +241,7 @@ class PatientHomeScreenController extends GetxController {
 
   Future endTimer() async {
     if (timer != null) {
-      timer.cancel();
+      timer?.cancel();
     }
   }
 
@@ -259,7 +253,8 @@ class PatientHomeScreenController extends GetxController {
       researchDocumentDetailsModelData.value.apiState = APIState.PROCESSING;
       researchDocumentDetailsModelData.value = await PatientHomeScreenService()
           .researchDocumentDetailsModel(
-              userId: _userController.user.value.id, documentId: documentId);
+              userId: "${_userController.user.value.id}",
+              documentId: documentId);
     } catch (isBlank) {
       researchDocumentDetailsModelData.value.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
@@ -275,7 +270,8 @@ class PatientHomeScreenController extends GetxController {
     try {
       getSortedPatientChatListModel.value.apiState = APIState.PROCESSING;
       getSortedPatientChatListModel.value = await PatientHomeScreenService()
-          .getSortedPatientChatList(patientId: _userController.user.value.id);
+          .getSortedPatientChatList(
+              patientId: "${_userController.user.value.id}");
 
       isChatListFirst.value = false;
     } catch (isBlank) {
@@ -283,7 +279,7 @@ class PatientHomeScreenController extends GetxController {
       getSortedPatientChatListModel.refresh();
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
-    newDataList = getSortedPatientChatListModel?.value?.data ?? [];
+    newDataList = getSortedPatientChatListModel.value.data ?? [];
     return getSortedPatientChatListModel.value;
   }
 
@@ -307,11 +303,11 @@ class PatientHomeScreenController extends GetxController {
 
   ///***** DELETE CHAT USER PATIENT *****
   Future<DeleteChatUserResponseModel> deleteChatUserPatient(
-      {String patientId, String chatKey}) async {
+      {String? patientId, String? chatKey}) async {
     try {
       deletePatientChatUserModel.value.apiState = APIState.PROCESSING;
       deletePatientChatUserModel.value = await PatientHomeScreenService()
-          .deletePatientChat(chatKey: chatKey, patientId: patientId);
+          .deletePatientChat(chatKey: '$chatKey', patientId: '$patientId');
     } catch (isBlank) {
       deletePatientChatUserModel.value.apiState = APIState.ERROR;
 
@@ -322,13 +318,13 @@ class PatientHomeScreenController extends GetxController {
 
   ///***** DELETE CHAT MESSAGE *****
   Future<DeleteChatMessageResponseModel> deleteChatMessagePatient(
-      {String patientId, String id}) async {
+      {String? patientId, String? id}) async {
     try {
-      Navigator.of(Get.overlayContext).pop();
+      Navigator.of(Get.overlayContext!).pop();
       isLoadingDeleteChatMsg.value = true;
       // deletePatientChatMessageModel.value.apiState = APIState.PROCESSING;
       deletePatientChatMessageModel.value = await PatientHomeScreenService()
-          .deletePatientChatMessage(id: id, patientId: patientId);
+          .deletePatientChatMessage(id: '$id', patientId: '$patientId');
       isLoadingDeleteChatMsg.value = false;
     } catch (isBlank) {
       // deletePatientChatMessageModel.value.apiState = APIState.ERROR;
@@ -341,11 +337,11 @@ class PatientHomeScreenController extends GetxController {
 
   ///***** DELETE CHAT USER DOCTOR *****
   Future<DeleteChatUserResponseModel> deleteChatUserDoctor(
-      {String doctorId, String chatKey}) async {
+      {String? doctorId, String? chatKey}) async {
     try {
       deletePatientChatUserModel.value.apiState = APIState.PROCESSING;
       deletePatientChatUserModel.value = await PatientHomeScreenService()
-          .deleteDoctorChat(chatKey: chatKey, doctorId: doctorId);
+          .deleteDoctorChat(chatKey: '$chatKey', doctorId: '$doctorId');
     } catch (isBlank) {
       deletePatientChatUserModel.value.apiState = APIState.ERROR;
 
@@ -361,7 +357,7 @@ class PatientHomeScreenController extends GetxController {
     try {
       getAllDoctor.value.apiState = APIState.PROCESSING;
       getAllDoctor.value = await PatientHomeScreenService()
-          .getAllDoctor(patientId: _userController.user.value.id);
+          .getAllDoctor(patientId: "${_userController.user.value.id}");
     } catch (isBlank) {
       getAllDoctor.value.apiState = APIState.ERROR;
       getAllDoctor.refresh();
@@ -374,7 +370,6 @@ class PatientHomeScreenController extends GetxController {
   Future<GetAllPatientChatMessages> getAllPatientChatMessagesList(
       chatId) async {
     try {
-      print("KEY ====>>>> $chatId");
       if (chatId?.isEmpty ?? true) {
         getAllPatientChatMessages.value.patientChatList?.clear();
         getAllPatientChatMessages.value.apiState =
@@ -384,7 +379,7 @@ class PatientHomeScreenController extends GetxController {
       getAllPatientChatMessages.value.apiState = APIState.PROCESSING;
       getAllPatientChatMessages.value = await PatientHomeScreenService()
           .getAllMessageList(
-              chatId: chatId, patientId: _userController.user.value.id);
+              chatId: chatId, patientId: "${_userController.user.value.id}");
     } catch (error) {
       getAllPatientChatMessages.value.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
@@ -395,13 +390,13 @@ class PatientHomeScreenController extends GetxController {
 
   ///*****createNewMessagePatient Controller*****
   Future<CreateNewMessage> createNewMessagePatient(
-      {String fromType,
+      {String? fromType,
       fromId,
       toType,
       toId,
       message,
       chatKey,
-      File attachment}) async {
+      File? attachment}) async {
     try {
       isLoading.value = true;
       createNewMessageModel.value = await PatientHomeScreenService()
@@ -410,7 +405,7 @@ class PatientHomeScreenController extends GetxController {
               fromType: fromType,
               fromId: fromId,
               message: message,
-              attachment: attachment,
+              attachment: attachment!,
               toId: toId,
               toType: toType);
       isLoading.value = false;
@@ -476,17 +471,17 @@ class PatientHomeScreenController extends GetxController {
       patientPrescriptionsModelData.value.apiState = APIState.PROCESSING;
       patientPrescriptionsModelData.value =
           await PatientHomeScreenService().patientPrescriptionsModel(
-        patientId: _userController.user.value.id,
+        patientId: "${_userController.user.value.id}",
       );
       Set appointmentId = {};
-      patientPrescriptionsModelData?.value?.data?.forEach((element) {
+      patientPrescriptionsModelData.value.data?.forEach((element) {
         appointmentId.add(element.appointmentId);
       });
       appointmentId.toList().forEach((element1) {
-        final tempData = patientPrescriptionsModelData?.value?.data
+        final tempData = patientPrescriptionsModelData.value.data
             ?.where((element) => element.appointmentId == element1)
-            ?.toList();
-        preData.add(tempData.first);
+            .toList();
+        preData.add(tempData!.first);
       });
 
       preData.sort(
@@ -502,7 +497,7 @@ class PatientHomeScreenController extends GetxController {
       patientPrescriptionsModelData.value.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
-    patientPrescriptionsModelData?.refresh();
+    patientPrescriptionsModelData.refresh();
     return patientPrescriptionsModelData.value;
   }
 
@@ -512,10 +507,11 @@ class PatientHomeScreenController extends GetxController {
     if (value.isNotEmpty) {
       preData.clear();
       for (var element in temp) {
-        if ("${element.doctorName.toLowerCase()}"
+        if (element.doctorName!
+                .toLowerCase()
                 .replaceAll(" ", "")
                 .contains(value.toLowerCase().replaceAll(" ", "")) ||
-            element.doctorSpeciality
+            element.doctorSpeciality!
                 .toLowerCase()
                 .toLowerCase()
                 .replaceAll(" ", "")
@@ -529,7 +525,7 @@ class PatientHomeScreenController extends GetxController {
     }
   }
 
-  Future<AppointmentBookedModel> addPatientAppointment({
+  Future<AppointmentBookedModel?> addPatientAppointment({
     patientId,
     doctorId,
     purposeOfVisit,
@@ -577,7 +573,7 @@ class PatientHomeScreenController extends GetxController {
       return appointmentBookedModelData.value;
     } catch (e) {
       if (e is AppException) {
-        Utils.showSnackBar('Error Occurred', e.message ?? "");
+        Utils.showSnackBar('Error Occurred', e.message);
       } else {
         Utils.showSnackBar('Error Occurred', 'Please try again later');
       }
@@ -692,7 +688,7 @@ class PatientHomeScreenController extends GetxController {
       }
     } catch (isBlank) {
       Utils.showSnackBar('Error Occurred', 'Please try again later');
-      return null;
+      return false;
     }
   }
 
@@ -706,11 +702,7 @@ class PatientHomeScreenController extends GetxController {
         appointmentId: appointmentId,
         patientId: patientId,
       );
-      if (getAppointmentRatingModel.value != null) {
-        return getAppointmentRatingModel.value;
-      } else {
-        return null;
-      }
+      return getAppointmentRatingModel.value;
     } catch (isBlank) {
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
@@ -721,25 +713,23 @@ class PatientHomeScreenController extends GetxController {
   Future<void> onPatientChatTap(int index, BuildContext context,
       SortedPatientChat sortedPatientChat) async {
     chatKey.value =
-        getSortedPatientChatListModel?.value?.data[index]?.chatKey ?? "";
+        getSortedPatientChatListModel.value.data?[index].chatKey ?? "";
     doctorName.value =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorFirstName ??
-            "";
+        getSortedPatientChatListModel.value.data?[index].doctorFirstName ?? "";
     doctorLastName.value =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorLastName ?? "";
+        getSortedPatientChatListModel.value.data?[index].doctorLastName ?? "";
     doctorId.value =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorId ?? "";
+        getSortedPatientChatListModel.value.data?[index].doctorId ?? "";
     toId.value =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorId ?? "";
+        getSortedPatientChatListModel.value.data?[index].doctorId ?? "";
 
     doctorProfile =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorProfilePic ??
-            '';
+        getSortedPatientChatListModel.value.data?[index].doctorProfilePic ?? '';
     doctorSocialProfile = getSortedPatientChatListModel
-            ?.value?.data[index]?.doctorSocialProfilePic ??
+            .value.data?[index].doctorSocialProfilePic ??
         '';
 
-    getAllPatientChatMessages.value?.patientChatList?.clear();
+    getAllPatientChatMessages.value.patientChatList?.clear();
     Doctor doctor = Doctor(
       chatKey: sortedPatientChat.chatKey,
       firstName: sortedPatientChat.doctorFirstName,
@@ -749,7 +739,7 @@ class PatientHomeScreenController extends GetxController {
       id: sortedPatientChat.doctorId,
     );
     getAllPatientChatMessagesList(
-        getSortedPatientChatListModel?.value?.data[index]?.chatKey ?? "");
+        getSortedPatientChatListModel.value.data?[index].chatKey ?? "");
 
     log('sortedPatientChat---------->>>>>>>>${json.encode(sortedPatientChat)}');
 
@@ -774,7 +764,7 @@ class PatientHomeScreenController extends GetxController {
     doctorProfile = sortedPatientChat.doctorProfilePic ?? '';
     doctorSocialProfile = sortedPatientChat.doctorSocialProfilePic ?? '';
 
-    getAllPatientChatMessages.value?.patientChatList?.clear();
+    getAllPatientChatMessages.value.patientChatList?.clear();
 
     getAllPatientChatMessagesList(sortedPatientChat.chatKey ?? "");
     Doctor doctor = Doctor(
@@ -800,28 +790,26 @@ class PatientHomeScreenController extends GetxController {
   Future<void> onDetailsTap(int index, BuildContext context,
       SortedPatientChat sortedPatientChat) async {
     chatKey.value =
-        getSortedPatientChatListModel?.value?.data[index]?.chatKey ?? "";
+        getSortedPatientChatListModel.value.data?[index].chatKey ?? "";
     doctorName.value =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorFirstName ??
-            "";
+        getSortedPatientChatListModel.value.data?[index].doctorFirstName ?? "";
     doctorLastName.value =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorLastName ?? "";
+        getSortedPatientChatListModel.value.data?[index].doctorLastName ?? "";
     doctorId.value =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorId ?? "";
+        getSortedPatientChatListModel.value.data?[index].doctorId ?? "";
     toId.value =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorId ?? "";
+        getSortedPatientChatListModel.value.data?[index].doctorId ?? "";
 
     doctorProfile =
-        getSortedPatientChatListModel?.value?.data[index]?.doctorProfilePic ??
-            '';
+        getSortedPatientChatListModel.value.data?[index].doctorProfilePic ?? '';
     doctorSocialProfile = getSortedPatientChatListModel
-            ?.value?.data[index]?.doctorSocialProfilePic ??
+            .value.data?[index].doctorSocialProfilePic ??
         '';
 
-    getAllPatientChatMessages.value?.patientChatList?.clear();
+    getAllPatientChatMessages.value.patientChatList?.clear();
 
     getAllPatientChatMessagesList(
-        getSortedPatientChatListModel?.value?.data[index]?.chatKey ?? "");
+        getSortedPatientChatListModel.value.data?[index].chatKey ?? "");
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => MessagesDetailPage(
@@ -833,15 +821,15 @@ class PatientHomeScreenController extends GetxController {
 
   Future<void> onDoctorTapFromDoctorList(
       BuildContext context, Doctor doctor) async {
-    getAllPatientChatMessages.value?.patientChatList?.clear();
+    getAllPatientChatMessages.value.patientChatList?.clear();
     chatKey.value = doctor.chatKey ?? "";
-    doctorName.value = doctor?.firstName ?? "";
-    doctorLastName.value = doctor?.lastName ?? "";
-    toId.value = doctor?.id ?? "";
-    doctorProfile = doctor.profilePic;
+    doctorName.value = doctor.firstName ?? "";
+    doctorLastName.value = doctor.lastName ?? "";
+    toId.value = doctor.id ?? "";
+    doctorProfile = doctor.profilePic ?? "";
 
     await getAllPatientChatMessagesList(doctor.chatKey ?? '');
-
+    if (!context.mounted) return;
     Navigator.of(context).pushNamed(Routes.chatDetail, arguments: doctor);
   }
 
@@ -852,25 +840,18 @@ class PatientHomeScreenController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onClose() {
-    print("ON CLOSE ===>");
-    super.onClose();
-  }
-
-  updateStatus({bool isOnline}) async {
+  updateStatus({bool? isOnline}) async {
     Map<String, String> header = {
       "Authorization": 'Bearer ${Prefs.getString(Prefs.BEARER)}',
       "Content-Type": "application/json",
     };
     final response = await http.post(
       Uri.parse(
-          '${Constants.baseUrl + Constants.chatStatus}${_userController.user.value.id}'),
+          '${Constants.baseUrl + Constants.chatStatus}${"${_userController.user.value.id}"}'),
       headers: header,
       body: {"is_online": isOnline, "last_seen": DateTime.now().toString()},
     );
     if (response.statusCode == 200) {
-      print('response1?:>>>> ${response.body}');
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load post');

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class Notification {
-  int id;
-  String title;
-  String body;
-  String icon;
-  String date;
+  int? id;
+  String? title;
+  String? body;
+  String? icon;
+  String? date;
 
   Notification({
     this.id,
@@ -25,15 +25,13 @@ class Notification {
     };
   }
 
-  factory Notification.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
+  factory Notification.fromMap(Map<String, dynamic>? map) {
     return Notification(
-      id: map['id'],
-      title: map['title'],
-      body: map['body'],
-      icon: map['icon'],
-      date: map['date'],
+      id: map?['id'],
+      title: map?['title'],
+      body: map?['body'],
+      icon: map?['icon'],
+      date: map?['date'],
     );
   }
 

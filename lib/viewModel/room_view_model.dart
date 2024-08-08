@@ -33,8 +33,8 @@ class RoomController extends GetxController {
     getRoomDetailApiResponse = ApiResponse.loading('Loading');
     update();
     try {
-      RoomeDetailResponseModel response =
-          await RoomRepo().getRoomDetailRepo(userController.user.value.id);
+      RoomDetailResponseModel response =
+          await RoomRepo().getRoomDetailRepo("${userController.user.value.id}");
 
       getRoomDetailApiResponse = ApiResponse.complete(response);
     } catch (e) {

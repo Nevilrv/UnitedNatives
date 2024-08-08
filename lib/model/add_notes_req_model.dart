@@ -1,7 +1,7 @@
 class AddNotesModel {
-  int patientId;
-  int doctorId;
-  String notes;
+  int? patientId;
+  int? doctorId;
+  String? notes;
 
   AddNotesModel({this.patientId, this.doctorId, this.notes});
 
@@ -12,10 +12,10 @@ class AddNotesModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['patient_id'] = this.patientId;
-    data['doctor_id'] = this.doctorId;
-    data['notes'] = this.notes;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['patient_id'] = patientId;
+    data['doctor_id'] = doctorId;
+    data['notes'] = notes;
     return data;
   }
 }

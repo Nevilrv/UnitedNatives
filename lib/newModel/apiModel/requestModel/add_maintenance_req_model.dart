@@ -1,5 +1,5 @@
 class AddMaintenanceModel {
-  String state;
+  String? state;
 
   AddMaintenanceModel({
     this.state,

@@ -1,33 +1,33 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/model/aboutus_privacy_policy_doctor_model.dart';
-import 'package:doctor_appointment_booking/model/add_prescription_model.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/cancle_appointment_doctor.dart';
-import 'package:doctor_appointment_booking/model/delete_chat_messages_response_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_availability_display_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_availability_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_get_doctor_Appointments_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_homepage_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_multiple_availability_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_next_appointment_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_prescription_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_research_document_details_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_research_document_model.dart';
-import 'package:doctor_appointment_booking/model/get_all_chat_messeage_doctor.dart';
-import 'package:doctor_appointment_booking/model/get_all_patient_response_model.dart';
-import 'package:doctor_appointment_booking/model/get_new_message_doctor_model.dart';
-import 'package:doctor_appointment_booking/model/get_sorted_chat_list_doctor_model.dart';
-import 'package:doctor_appointment_booking/model/patient_detail_model.dart';
-import 'package:doctor_appointment_booking/model/start_appointment_doctor.dart';
-import 'package:doctor_appointment_booking/model/visited_patient_model.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/sevices/doctor_home_screen_service.dart';
-import 'package:doctor_appointment_booking/utils/exception.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_new_chat_message_view_model.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/model/aboutus_privacy_policy_doctor_model.dart';
+import 'package:united_natives/model/add_prescription_model.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/cancle_appointment_doctor.dart';
+import 'package:united_natives/model/delete_chat_messages_response_model.dart';
+import 'package:united_natives/model/doctor_availability_display_model.dart';
+import 'package:united_natives/model/doctor_availability_model.dart';
+import 'package:united_natives/model/doctor_get_doctor_Appointments_model.dart';
+import 'package:united_natives/model/doctor_homepage_model.dart';
+import 'package:united_natives/model/doctor_multiple_availability_model.dart';
+import 'package:united_natives/model/doctor_next_appointment_model.dart';
+import 'package:united_natives/model/doctor_prescription_model.dart';
+import 'package:united_natives/model/doctor_research_document_details_model.dart';
+import 'package:united_natives/model/doctor_research_document_model.dart';
+import 'package:united_natives/model/get_all_chat_messeage_doctor.dart';
+import 'package:united_natives/model/get_all_patient_response_model.dart';
+import 'package:united_natives/model/get_new_message_doctor_model.dart';
+import 'package:united_natives/model/get_sorted_chat_list_doctor_model.dart';
+import 'package:united_natives/model/patient_detail_model.dart';
+import 'package:united_natives/model/start_appointment_doctor.dart';
+import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/sevices/doctor_home_screen_service.dart';
+import 'package:united_natives/utils/exception.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:intl/intl.dart';
@@ -89,11 +89,9 @@ class DoctorHomeScreenController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoading1 = false.obs;
   GetAllPatient getAllPatient = GetAllPatient();
-  // List<PatientAppoint> pastAppointmentData = [];
   List<ShortedDoctorChat> newDataList = [];
   List<Patient> patient = [];
 
-  // RxString chatKey = "".obs;
   RxString fromType = "".obs;
   RxString fromId = "".obs;
   RxString toType = "".obs;
@@ -105,43 +103,26 @@ class DoctorHomeScreenController extends GetxController {
   RxString doctorLastName = "".obs;
   RxString doctorName = "".obs;
   RxString chatKey = "".obs;
-  Timer timer;
-
-  // RxString patientName = "".obs;
-  // RxString patientLastName = "".obs;
+  Timer? timer;
 
   Rx<ShortedDoctorChat> doctorChat = ShortedDoctorChat().obs;
   Rx<Patient> patientChat = Patient().obs;
 
-  UserController _userController = Get.find<UserController>();
-
-  ///*****getAllChatMessagesDoctor Controller*****
-  // Future<GetAllChatMessagesDoctor> getAllChatMessagesDoctor(chatKey) async {
-  //   try {
-  //     isLoading.value = true;
-  //     getAllChatMessagesDoctorModel.value = await DoctorHomeScreenService()
-  //         .getAllChatMessagesDoctor(chatKey: chatKey);
-  //     isLoading.value = false;
-  //   } catch (isBlank) {
-  //     isLoading.value = false;
-  //     Utils.showSnackBar(
-  //         title: 'Error Occurred', message: 'Something went wrong');
-  //   }
-  //   return getAllChatMessagesDoctorModel.value;
-  // }
+  final UserController _userController = Get.find<UserController>();
 
   final pastController = TextEditingController();
   final prescriptionController = TextEditingController();
 
   Future<GetAllChatMessagesDoctor> getAllChatMessagesDoctor(
-      {bool isAll = false, String chatKey}) async {
+      {bool isAll = false, String? chatKey}) async {
     try {
-      print('de');
       getAllChatMessagesDoctorModel.value.apiState = APIState.PROCESSING;
       getAllChatMessagesDoctorModel.value = await DoctorHomeScreenService()
           .getAllChatMessagesDoctor(
-              chatKey: isAll == true ? chatKey : doctorChat.value.chatKey,
-              id: _userController.user.value.id);
+              chatKey: isAll == true
+                  ? (chatKey ?? "")
+                  : "${doctorChat.value.chatKey}",
+              id: "${_userController.user.value.id}");
     } catch (isBlank) {
       isLoading.value = false;
       getAllChatMessagesDoctorModel.value.apiState = APIState.ERROR;
@@ -153,12 +134,12 @@ class DoctorHomeScreenController extends GetxController {
 
   Future<void> onPatientTapFromDoctorList(
       BuildContext context, Patient doctor) async {
-    chatKey.value = doctor?.chatKey ?? "";
-    doctorName.value = doctor?.firstName ?? "";
-    doctorLastName.value = doctor?.lastName ?? "";
-    toId.value = doctor?.id ?? "";
-    doctorProfile = doctor.profilePic;
-    getAllChatMessagesDoctorModel.value?.doctorChatList?.clear();
+    chatKey.value = doctor.chatKey ?? "";
+    doctorName.value = doctor.firstName ?? "";
+    doctorLastName.value = doctor.lastName ?? "";
+    toId.value = doctor.id ?? "";
+    doctorProfile = "${doctor.profilePic}";
+    getAllChatMessagesDoctorModel.value.doctorChatList?.clear();
 
     getAllChatMessagesDoctor();
 
@@ -171,14 +152,15 @@ class DoctorHomeScreenController extends GetxController {
       isLoading.value = true;
       getSortedChatListDoctorModel.value.apiState = APIState.PROCESSING;
       getSortedChatListDoctorModel.value = await DoctorHomeScreenService()
-          .getSortedChatListDoctor(doctorId: _userController.user.value.id);
+          .getSortedChatListDoctor(
+              doctorId: "${_userController.user.value.id}");
       isLoading.value = false;
     } catch (isBlank) {
       getSortedChatListDoctorModel.value.apiState = APIState.ERROR;
       isLoading.value = false;
       Utils.showSnackBar('Error Occurred', 'Something went wrong');
     }
-    newDataList = getSortedChatListDoctorModel?.value?.doctorChatList ?? [];
+    newDataList = getSortedChatListDoctorModel.value.doctorChatList ?? [];
     return getSortedChatListDoctorModel.value;
   }
 
@@ -186,9 +168,9 @@ class DoctorHomeScreenController extends GetxController {
   Future<DeleteChatMessageResponseModel> deleteDoctorMessage(String id) async {
     try {
       isLoading1.value = true;
-      Navigator.of(Get.overlayContext).pop();
+      Navigator.of(Get.overlayContext!).pop();
       deleteChatMessageResponseModel = await DoctorHomeScreenService()
-          .deleteChatMsg(doctorId: _userController.user.value.id, id: id);
+          .deleteChatMsg(doctorId: "${_userController.user.value.id}", id: id);
       isLoading1.value = false;
     } catch (isBlank) {
       isLoading1.value = false;
@@ -199,29 +181,22 @@ class DoctorHomeScreenController extends GetxController {
 
   ///****call Timer function for chat messages****
   bool isLoadingOne = false;
-  void getAllChatMessages({String chatKey, String id}) {
-    timer = Timer.periodic(Duration(seconds: 1), (Timer t) async {
+  void getAllChatMessages({String? chatKey, String? id}) {
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
       await addNewChatMessageController
           .allChatMessage(chatKey: chatKey, id: id)
           .then((value) {
-        // if (isLoadingOne == true) {
         isLoadingOne = false;
         update();
-        // }
       });
     });
-
-    // timer = Timer.periodic(Duration(seconds: 2), (Timer t) {
-    //   getAllChatMessagesDoctor();
-    // });
   }
 
-  void getAllChatMessagesPatient({String chatKey, String id}) {
+  void getAllChatMessagesPatient({String? chatKey, String? id}) {
     if (chatKey != '') {
-      timer = Timer.periodic(Duration(seconds: 1), (Timer t) async {
+      timer = Timer.periodic(const Duration(seconds: 1), (Timer t) async {
         await addNewChatMessageController.allChatMessage(
             chatKey: chatKey, id: id);
-        // getAllChatMessagesDoctor(isAll: true, chatKey: chatKey);
       });
     }
   }
@@ -229,50 +204,30 @@ class DoctorHomeScreenController extends GetxController {
   ///****End Timer function for chat messages****
   bool isClick = false;
   Future<bool> endTimer() async {
-    // if (isClick == true) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      timer.cancel();
+      timer?.cancel();
     });
     return true;
-    // }
   }
-
-  ///******** PatientPastAppointment ********
-  // Future<PatientAppoint> getPastPatientAppointment(String value) {
-  //   pastAppointmentData = [];
-  //
-  //   for (var element in doctorAppointmentsModelData.past) {
-  //     if (element.patientFirstName
-  //             .toLowerCase()
-  //             .contains(value.toLowerCase()) ||
-  //         element.patientLastName.toLowerCase().contains(value.toLowerCase()) ||
-  //         element.patientFullName.toLowerCase().contains(value.toLowerCase()) ||
-  //         element.purposeOfVisit.toLowerCase().contains(value.toLowerCase())) {
-  //       pastAppointmentData.add(element);
-  //       update();
-  //     }
-  //   }
-  //   debugPrint("/////-------${pastAppointmentData.length}");
-  // }
 
   ///*****createNewMessageDoctor Controller*****
   Future<CreateNewMessage> createNewMessageDoctor(
-      {String fromType,
+      {String? fromType,
       fromId,
       toType,
       toId,
       message,
       chatKey,
-      File attachment}) async {
+      File? attachment}) async {
     try {
       isLoading.value = true;
       createNewMessageDoctorModel.value = await DoctorHomeScreenService()
           .createNewMessageDoctor(
               chatKey: chatKey,
-              fromType: fromType,
+              fromType: fromType!,
               fromId: fromId,
               message: message,
-              attachment: attachment,
+              attachment: attachment!,
               toId: toId,
               toType: toType);
       isLoading.value = false;
@@ -288,43 +243,13 @@ class DoctorHomeScreenController extends GetxController {
     try {
       isLoading.value = true;
       doctorHomePageModelData.value = await DoctorHomeScreenService()
-          .doctorHomePage(userId: _userController.user.value.id);
+          .doctorHomePage(userId: "${_userController.user.value.id}");
 
-      doctorHomePageModelData.value.data.upcomingAppointments.removeWhere(
+      doctorHomePageModelData.value.data?.upcomingAppointments?.removeWhere(
           (element) =>
               element.appointmentStatus == "3" ||
               element.appointmentStatus == "2");
 
-      // doctorHomePageModelData.value.data.upcomingAppointments
-      //     .forEach((element) async {
-      //   var body = {
-      //     "doctor_id": element.doctorId,
-      //     "meeting_id": element.meetingData.id
-      //   };
-      //
-      //   try {
-      //     http.Response call = await http.post(
-      //         Uri.parse(
-      //             "${Constants.baseUrl}${Constants.doctorZoomMeetStatus}"),
-      //         body: body,
-      //         headers: Config.getHeaders());
-      //
-      //     var result = jsonDecode(call.body);
-      //
-      //     if (result['status'] == 'Success') {
-      //       if (result['data']["meeting_status"] == "rejoin") {
-      //         element.isRejoin = true;
-      //       }
-      //     } else {
-      //       element.isRejoin = false;
-      //     }
-      //   } catch (e, stackStrace) {
-      //     throw AppException.exceptionHandler(e, stackStrace);
-      //   }
-      // });
-
-      print(
-          "Doctor Home Page:--->>>>>${doctorHomePageModelData.value.data.pastAppointments}");
       isLoading.value = false;
     } catch (isBlank) {
       isLoading.value = false;
@@ -344,14 +269,14 @@ class DoctorHomeScreenController extends GetxController {
     itemCount = 0;
 
     update();
-    await getDoctorAvailabilityDisplay(_userController.user.value.id,
-        '${DateFormat("yyyy-MM-dd").format(DateTime.now())}');
+    await getDoctorAvailabilityDisplay("${_userController.user.value.id}",
+        DateFormat("yyyy-MM-dd").format(DateTime.now()));
 
-    PostedDateAvailabilityClass iterable =
+    PostedDateAvailabilityClass? iterable =
         doctorAvailabilityForDisplayOnlyModelData
-            ?.value?.data?.postedDateAvailability;
+            .value.data?.postedDateAvailability;
 
-    DateTime date = iterable?.availDate;
+    DateTime? date = iterable?.availDate;
 
     if (date == null) {
       filterLoading = false;
@@ -359,14 +284,14 @@ class DoctorHomeScreenController extends GetxController {
       return;
     }
 
-    PostedDateAvailabilityClass availability = iterable;
+    PostedDateAvailabilityClass? availability = iterable;
 
-    availability.availData.forEach(
+    availability?.availData?.forEach(
       (element) {
         String startTime =
-            "${element.startTime.toLocal().hour > 12 ? element.startTime.toLocal().hour - 12 : element.startTime.toLocal().hour}:${element.startTime.toLocal().minute == 0 ? "00" : element.startTime.toLocal().minute}";
+            "${element.startTime!.toLocal().hour > 12 ? element.startTime!.toLocal().hour - 12 : element.startTime?.toLocal().hour}:${element.startTime?.toLocal().minute == 0 ? "00" : element.startTime?.toLocal().minute}";
         String endTime =
-            "${element.endTime.toLocal().hour > 12 ? element.endTime.toLocal().hour - 12 : element.endTime.toLocal().hour}:${element.endTime.toLocal().minute == 0 ? "00" : element.endTime.toLocal().minute} ${element.endTime.toLocal().hour >= 12 ? "PM" : "AM"}";
+            "${element.endTime!.toLocal().hour > 12 ? element.endTime!.toLocal().hour - 12 : element.endTime!.toLocal().hour}:${element.endTime!.toLocal().minute == 0 ? "00" : element.endTime!.toLocal().minute} ${element.endTime!.toLocal().hour >= 12 ? "PM" : "AM"}";
         if (element.avail == "1") {
           if (startTime == "8:00" && endTime == "9:00 AM") {
             itemCount++;
@@ -502,14 +427,6 @@ class DoctorHomeScreenController extends GetxController {
       startAppointmentDoctorData.value = await DoctorHomeScreenService()
           .startAppointmentDoctor(
               doctorId: doctorId, appointmentId: appointmentId);
-
-      print(
-          '+++++++++++++++++++++++++++${startAppointmentDoctorData.value.message}+++++++++++++++++++');
-      print(
-          '+++++++++++++++++++++++++++${startAppointmentDoctorData.value.status}+++++++++++++++++++');
-      // Utils.showSnackBar(
-      //     title: '${startAppointmentDoctorData.value.message}',
-      //     message: '${startAppointmentDoctorData.value.status}');
     } catch (isBlank) {
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
@@ -518,23 +435,15 @@ class DoctorHomeScreenController extends GetxController {
   }
 
   ///*****getVisitedPatient Controller*****
-  Future<VisitedPatientModel> getVisitedPatient({String patientId}) async {
+  Future<VisitedPatientModel> getVisitedPatient({String? patientId}) async {
     try {
-      print('DEMO');
-      // isLoading.value = true;
       visitedPatientModelData.apiState = APIState.PROCESSING;
-      print('DEMO11');
 
       visitedPatientModelData = await DoctorHomeScreenService()
           .getVisitedPatient(
-              doctorId: _userController.user.value.id, patientId: patientId);
-
-      print('DEMO1341');
-      // isLoading.value = false;
+              doctorId: "${_userController.user.value.id}",
+              patientId: "$patientId");
     } catch (isBlank) {
-      print('DEMO11');
-      print('DEMO>>>>>$isBlank');
-
       visitedPatientModelData.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
@@ -545,20 +454,11 @@ class DoctorHomeScreenController extends GetxController {
   ///*****getPatientDetails Controller*****
   Future<PatientDetailsResponseModel> getPatientDetails() async {
     try {
-      print('DEMO');
-      // isLoading.value = true;
       patientDetailsResponseModel.apiState = APIState.PROCESSING;
-      print('DEMO11');
 
       patientDetailsResponseModel = await DoctorHomeScreenService()
-          .getPatientDetails(doctorId: _userController.user.value.id);
-
-      print('DEMO1341');
-      // isLoading.value = false;
+          .getPatientDetails(doctorId: "${_userController.user.value.id}");
     } catch (isBlank) {
-      print('DEMO11');
-      print('DEMO>>>>>$isBlank');
-
       patientDetailsResponseModel.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
@@ -577,21 +477,21 @@ class DoctorHomeScreenController extends GetxController {
       doctorPrescription1 = '';
       doctorPrescriptionsModelData = await DoctorHomeScreenService()
           .doctorPrescriptionsModel(
-              doctorId: _userController.user.value.id,
+              doctorId: "${_userController.user.value.id}",
               patientId: patientId,
               appointmentId: appointmentId);
 
       if (doctorPrescriptionsModelData.apiState == APIState.COMPLETE) {
-        if (doctorPrescriptionsModelData.doctorPrescription.isNotEmpty) {
+        if (doctorPrescriptionsModelData.doctorPrescription!.isNotEmpty) {
           Set appointmentId = {};
-          doctorPrescriptionsModelData.doctorPrescription.forEach((element) {
+          doctorPrescriptionsModelData.doctorPrescription?.forEach((element) {
             appointmentId.add(element.appointmentId);
           });
           appointmentId.toList().forEach((element1) {
             final tempData = doctorPrescriptionsModelData.doctorPrescription
                 ?.where((element) => element.appointmentId == element1)
-                ?.toList();
-            doctorPrescription.add(tempData.first);
+                .toList();
+            doctorPrescription.add(tempData!.first);
           });
 
           doctorPrescription.sort(
@@ -605,7 +505,7 @@ class DoctorHomeScreenController extends GetxController {
         }
       }
 
-      if (doctorPrescriptionsModelData.doctorPrescription.isEmpty) {
+      if (doctorPrescriptionsModelData.doctorPrescription!.isEmpty) {
         doctorPrescriptionsModelData.apiState = APIState.COMPLETE_WITH_NO_DATA;
       }
     } catch (isBlank) {
@@ -623,10 +523,10 @@ class DoctorHomeScreenController extends GetxController {
     if (value.isNotEmpty) {
       doctorPrescription.clear();
       for (var element in temp) {
-        if ("${element.patientFirstName.toLowerCase()}${element.patientLastName.toLowerCase()}"
+        if ("${element.patientFirstName?.toLowerCase()}${element.patientLastName?.toLowerCase()}"
                 .replaceAll(" ", "")
                 .contains(value.toLowerCase().replaceAll(" ", "")) ||
-            element.purposeOfVisit
+            element.purposeOfVisit!
                 .toLowerCase()
                 .toLowerCase()
                 .replaceAll(" ", "")
@@ -644,16 +544,12 @@ class DoctorHomeScreenController extends GetxController {
 
   ///***** GetPatientList Controller *****
   Future<GetAllPatient> getAllPatients() async {
-    // aboutUsPrivacyPolicy();
     try {
       getAllPatient.apiState = APIState.PROCESSING;
       getAllPatient = await DoctorHomeScreenService()
-          .getAllPatient(doctorId: _userController.user.value.id);
-
-      print('SUCCESS::::::>>>$getAllPatient');
+          .getAllPatient(doctorId: "${_userController.user.value.id}");
     } catch (isBlank) {
       getAllPatient.apiState = APIState.ERROR;
-      // update();
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
     update();
@@ -664,13 +560,11 @@ class DoctorHomeScreenController extends GetxController {
 
   Future<DoctorResearchDocumentModel> getDoctorResearchDocument() async {
     try {
-      // isLoading.value = true;
       doctorResearchDocumentModelData.value.apiState = APIState.PROCESSING;
       doctorResearchDocumentModelData.value = await DoctorHomeScreenService()
-          .doctorResearchDocumentModel(userId: _userController.user.value.id);
-      // isLoading.value = false;
+          .doctorResearchDocumentModel(
+              userId: "${_userController.user.value.id}");
     } catch (isBlank) {
-      // isLoading.value = false;
       doctorResearchDocumentModelData.value.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
@@ -687,7 +581,8 @@ class DoctorHomeScreenController extends GetxController {
           APIState.PROCESSING;
       doctorResearchDocumentDetailsModelData.value =
           await DoctorHomeScreenService().doctorResearchDocumentDetailsModel(
-              userId: _userController.user.value.id, documentId: documentId);
+              userId: "${_userController.user.value.id}",
+              documentId: documentId);
     } catch (isBlank) {
       doctorResearchDocumentDetailsModelData.value.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
@@ -704,7 +599,7 @@ class DoctorHomeScreenController extends GetxController {
       isLoading.value = true;
       doctorNextAppointmentModelData.value =
           await DoctorHomeScreenService().doctorNextAppointmentModel(
-        doctorId: _userController.user.value.id,
+        doctorId: "${_userController.user.value.id}",
       );
       isLoading.value = false;
     } catch (isBlank) {
@@ -721,11 +616,9 @@ class DoctorHomeScreenController extends GetxController {
     try {
       doctorAppointmentsModelData.apiState = APIState.PROCESSING;
       doctorAppointmentsModelData = await DoctorHomeScreenService()
-          .doctorAppoinmentsModel(doctorId: _userController.user.value.id);
+          .doctorAppoinmentsModel(doctorId: "${_userController.user.value.id}");
 
-      print('DOCTOR APPOINTMENT$doctorAppointmentsModelData');
-
-      doctorAppointmentsModelData?.past?.sort(
+      doctorAppointmentsModelData.past?.sort(
         (a, b) {
           String dateA = "${b.appointmentDate} ${b.appointmentTime}";
           String dateB = "${a.appointmentDate} ${a.appointmentTime}";
@@ -733,11 +626,10 @@ class DoctorHomeScreenController extends GetxController {
         },
       );
 
-      pastAppointmentData = doctorAppointmentsModelData.past;
+      pastAppointmentData = doctorAppointmentsModelData.past!;
 
       pastAppointmentData1 = jsonEncode(pastAppointmentData);
     } catch (isBlank) {
-      print('ERROR');
       doctorAppointmentsModelData.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
@@ -752,10 +644,10 @@ class DoctorHomeScreenController extends GetxController {
     if (searchValue.isNotEmpty) {
       pastAppointmentData.clear();
       for (var element in temp) {
-        if ("${element.patientFirstName.toLowerCase()}${element.patientLastName.toLowerCase()}"
+        if ("${element.patientFirstName?.toLowerCase()}${element.patientLastName?.toLowerCase()}"
                 .replaceAll(" ", "")
                 .contains(searchValue.toLowerCase().replaceAll(" ", "")) ||
-            element.purposeOfVisit
+            element.purposeOfVisit!
                 .toLowerCase()
                 .toLowerCase()
                 .replaceAll(" ", "")
@@ -779,10 +671,7 @@ class DoctorHomeScreenController extends GetxController {
       doctorAppointmentsModelData.apiState = APIState.PROCESSING;
       doctorAppointmentsModelData = await DoctorHomeScreenService()
           .doctorAppoinmentsModel(doctorId: doctorId);
-
-      print('DOCTOR APPOINTMENT$doctorAppointmentsModelData');
     } catch (isBlank) {
-      print('ERROR');
       doctorAppointmentsModelData.apiState = APIState.ERROR;
       Utils.showSnackBar('Error Occurred', 'Please try again later');
     }
@@ -802,73 +691,23 @@ class DoctorHomeScreenController extends GetxController {
     return aboutUsPrivacyPolicyDoctorModel.value;
   }
 
-  // ///*****getDoctorAvailability Controller*****
-  //
-  // Future<DoctorAvailabilityModel> getDoctorAvailabilityModel() async {
-  //   try {
-  //     // print("NewdoctorId=======>>>${_userController.user.value.id}");
-  //     doctorAvailabilityModelData.value = await DoctorHomeScreenService()
-  //         .doctorAvailabilityModel(dateTime: DateTime.now(), userId: _userController.user.value.id );
-  //
-  //     // print("NewdoctorData=======>>>${doctorAppointmentsModelData.value.data.past[0].createdDate.toString()}");
-  //   } catch (isBlank) {
-  //     Utils.showSnackBar(
-  //         title: 'Error Occurred', message: 'Please try again later');
-  //   }
-  //
-  //   return doctorAvailabilityModelData.value;
-  // }
   Future<DoctorAvailability> getDoctorAvailability(
     String userId,
     dateTime,
     List<Map<String, dynamic>> availData,
-    /* s0,
-      s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13*/
   ) async {
     try {
-      debugPrint("print1 => $dateTime");
-      // print("print1 => $s0");
-      // print("print1 => $s1");
-      // print("print1 => $s2");
-      // print("print1 => $s3");
-      // print("print1 => $s4");
-      // print("print1 => $s5");
-      // print("print1 => $s6");
-      // print("print1 => $s7");
-      // print("print1 => $s8");
-      // print("print1 => $s9");
-      // print("print1 => $s10");
-      // print("print1 => $s11");
-      // print("print1 => $s12");
-      // print("print1 => $s13");
       doctorAvailabilityData.value =
           await DoctorHomeScreenService().doctorAvailability(
-        userId: userId, dateTime: dateTime, availData: availData,
-        // s0: s0,
-        // s1: s1,
-        // s2: s2,
-        // s3: s3,
-        // s4: s4,
-        // s5: s5,
-        // s6: s6,
-        // s7: s7,
-        // s8: s8,
-        // s9: s9,
-        // s10: s10,
-        // s11: s11,
-        // s12: s12,
-        // s13: s13,
+        userId: userId,
+        dateTime: dateTime,
+        availData: availData,
       );
-      if (doctorAvailabilityData.value != null) {
-        // Get.toNamed(Routes.phoneAuthScreen)
-        Utils.showSnackBar(
-            'Update Successfully', 'Availability Updated Successfully');
-      } else {
-        Utils.showSnackBar('Update Error', 'Please try again later');
-      }
+      Utils.showSnackBar(
+          'Update Successfully', 'Availability Updated Successfully');
     } catch (e) {
       if (e is AppException) {
-        Utils.showSnackBar('Update Error', e.message ?? '');
+        Utils.showSnackBar('Update Error', e.message);
       }
     }
     return doctorAvailabilityData.value;
@@ -879,71 +718,20 @@ class DoctorHomeScreenController extends GetxController {
     startTime,
     endTime,
     List<Map<String, dynamic>> availData,
-
-    /* s0,
-      s1,
-      s2,
-      s3,
-      s4,
-      s5,
-      s6,
-      s7,
-      s8,
-      s9,
-      s10,
-      s11,
-      s12,
-      s13*/
   ) async {
     try {
-      debugPrint("print1 => $startTime");
-      // log("print1 => $endTime");
-      // print("print1 => $s0");
-      // print("print1 => $s1");
-      // print("print1 => $s2");
-      // print("print1 => $s3");
-      // print("print1 => $s4");
-      // print("print1 => $s5");
-      // print("print1 => $s6");
-      // print("print1 => $s7");
-      // print("print1 => $s8");
-      // print("print1 => $s9");
-      // print("print1 => $s10");
-      // print("print1 => $s11");
-      // print("print1 => $s12");
-      // print("print1 => $s13");
       multiPleDoctorAvailability.value = await DoctorHomeScreenService()
           .doctorMultipleAvailability(
               userId: userId,
               startTime: startTime,
               endTime: endTime,
-              availData: availData
-              // s0: s0,
-              // s1: s1,
-              // s2: s2,
-              // s3: s3,
-              // s4: s4,
-              // s5: s5,
-              // s6: s6,
-              // s7: s7,
-              // s8: s8,
-              // s9: s9,
-              // s10: s10,
-              // s11: s11,
-              // s12: s12,
-              // s13: s13,
-              );
-      if (multiPleDoctorAvailability.value != null) {
-        // Get.toNamed(Routes.phoneAuthScreen)
+              availData: availData);
 
-        Utils.showSnackBar(
-            'Update Successfully', 'Availability Updated Successfully');
-      } else {
-        Utils.showSnackBar('Update Error', 'Please try again later');
-      }
+      Utils.showSnackBar(
+          'Update Successfully', 'Availability Updated Successfully');
     } catch (e) {
       if (e is AppException) {
-        Utils.showSnackBar('Update Error', e.message ?? '');
+        Utils.showSnackBar('Update Error', e.message);
       }
     }
     return multiPleDoctorAvailability.value;
@@ -951,12 +739,6 @@ class DoctorHomeScreenController extends GetxController {
 
   @override
   void onInit() async {
-    // getVisitedPatient();
-    // getDoctorPrescriptions();
-    // getDoctorResearchDocument();
-    // getDoctorNextAppointment();
-    // getDoctorAvailability();
-
     await aboutUsPrivacyPolicy();
     super.onInit();
   }

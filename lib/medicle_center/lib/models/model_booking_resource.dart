@@ -1,8 +1,8 @@
 class BookingResourceModel {
-  final String id;
-  final String name;
-  final int quantity;
-  final num total;
+  final String? id;
+  final String? name;
+  final int? quantity;
+  final num? total;
 
   BookingResourceModel({
     this.id,

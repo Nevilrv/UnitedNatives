@@ -1,44 +1,44 @@
-class RoomeDetailResponseModel {
-  String status;
-  List<Data> data;
-  String message;
+class RoomDetailResponseModel {
+  String? status;
+  List<Data>? data;
+  String? message;
 
-  RoomeDetailResponseModel({this.status, this.data, this.message});
+  RoomDetailResponseModel({this.status, this.data, this.message});
 
-  RoomeDetailResponseModel.fromJson(Map<String, dynamic> json) {
+  RoomDetailResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data?.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
-  String id;
-  String name;
-  String staffInChargeName;
-  int status;
-  Null patientId;
-  String patientName;
-  String patientProfilepicture;
-  String patientAdmissiondate;
-  String patientReason;
-  String patientAdmissiontime;
-  String statusDisplay;
+  String? id;
+  String? name;
+  String? staffInChargeName;
+  int? status;
+  String? patientId;
+  String? patientName;
+  String? patientProfilepicture;
+  String? patientAdmissiondate;
+  String? patientReason;
+  String? patientAdmissiontime;
+  String? statusDisplay;
 
   Data(
       {this.id,
@@ -68,18 +68,18 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['staff_incharge_name'] = this.staffInChargeName;
-    data['status'] = this.status;
-    data['patient_id'] = this.patientId;
-    data['patient_name'] = this.patientName;
-    data['patient_profilepicture'] = this.patientProfilepicture;
-    data['patient_admissiondate'] = this.patientAdmissiondate;
-    data['patient_reason'] = this.patientReason;
-    data['patient_admissiontime'] = this.patientAdmissiontime;
-    data['status_display'] = this.statusDisplay;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['staff_incharge_name'] = staffInChargeName;
+    data['status'] = status;
+    data['patient_id'] = patientId;
+    data['patient_name'] = patientName;
+    data['patient_profilepicture'] = patientProfilepicture;
+    data['patient_admissiondate'] = patientAdmissiondate;
+    data['patient_reason'] = patientReason;
+    data['patient_admissiontime'] = patientAdmissiontime;
+    data['status_display'] = statusDisplay;
     return data;
   }
 }

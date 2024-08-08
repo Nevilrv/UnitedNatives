@@ -1,11 +1,11 @@
 class DeviceModel {
-  String uuid;
-  String name;
-  String model;
-  String version;
-  String token;
-  String type;
-  bool used;
+  String? uuid;
+  String? name;
+  String? model;
+  String? version;
+  String? token;
+  String? type;
+  bool? used;
 
   DeviceModel({
     this.uuid,

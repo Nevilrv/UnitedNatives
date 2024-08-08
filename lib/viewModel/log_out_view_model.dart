@@ -19,8 +19,8 @@ class LogOutController extends GetxController {
     patientLogOutApiResponse = ApiResponse.loading('Loading');
     update();
     try {
-      MessageStatusResponseModel response =
-          await LogOutRepo().patientLogOutRepo(userController.user.value.id);
+      MessageStatusResponseModel response = await LogOutRepo()
+          .patientLogOutRepo("${userController.user.value.id}");
       patientLogOutApiResponse = ApiResponse.complete(response);
     } catch (e) {
       patientLogOutApiResponse = ApiResponse.error('error');
@@ -33,8 +33,8 @@ class LogOutController extends GetxController {
     doctorLogOutApiResponse = ApiResponse.loading('Loading');
     update();
     try {
-      MessageStatusResponseModel response =
-          await LogOutRepo().doctorLogOutRepo(userController.user.value.id);
+      MessageStatusResponseModel response = await LogOutRepo()
+          .doctorLogOutRepo("${userController.user.value.id}");
       doctorLogOutApiResponse = ApiResponse.complete(response);
     } catch (e) {
       doctorLogOutApiResponse = ApiResponse.error('error');

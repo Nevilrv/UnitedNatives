@@ -1,7 +1,7 @@
 class ImageModel {
-  int id;
-  String full;
-  String thumb;
+  int? id;
+  String? full;
+  String? thumb;
 
   ImageModel({
     this.id,

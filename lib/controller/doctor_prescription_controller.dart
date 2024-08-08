@@ -1,7 +1,7 @@
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/prescription.dart';
-import 'package:doctor_appointment_booking/sevices/prescription_service.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/prescription.dart';
+import 'package:united_natives/sevices/prescription_service.dart';
 import 'user_controller.dart';
 
 class PrescriptionController extends GetxController {
@@ -21,7 +21,7 @@ class PrescriptionController extends GetxController {
     try {
       apiState.value = APIState.PROCESSING;
       prescriptionList.addAll(await PrescriptionService()
-          .doctorPrescriptions(doctorId: _userController.user.value.id));
+          .doctorPrescriptions(doctorId: "${_userController.user.value.id}"));
       if (prescriptionList.isEmpty) {
         apiState.value = APIState.COMPLETE_WITH_NO_DATA;
       } else {
@@ -33,15 +33,15 @@ class PrescriptionController extends GetxController {
     apiState.refresh();
   }
 
-  void getAppointmentPrescriptions({String appointmentId}) async {
+  void getAppointmentPrescriptions({String? appointmentId}) async {
     try {
       appointmentApiState.value = APIState.PROCESSING;
-      appointmentPrescriptionList?.clear();
+      appointmentPrescriptionList.clear();
       appointmentPrescriptionList.addAll(await PrescriptionService()
-          .getAppointmentPrescriptions(appointmentId: appointmentId));
+          .getAppointmentPrescriptions(appointmentId: "$appointmentId"));
 
       appointmentPrescriptionList
-          .sort((a, b) => a.created.compareTo(b.created));
+          .sort((a, b) => a.created!.compareTo(b.created!));
 
       if (appointmentPrescriptionList.isEmpty) {
         appointmentApiState.value = APIState.COMPLETE_WITH_NO_DATA;

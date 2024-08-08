@@ -24,7 +24,7 @@ class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
   @override
-  _SplashPageState createState() => _SplashPageState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
 class _SplashPageState extends State<SplashPage> {
@@ -45,9 +45,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   final _discoveryCubit = DiscoveryCubit();
-  StreamSubscription? _submitSubscription;
-  StreamSubscription? _reviewSubscription;
-  SearchHistoryDelegate? _delegate;
+  StreamSubscription? submitSubscription;
+  StreamSubscription? reviewSubscription;
+  SearchHistoryDelegate? delegate;
 
   _getMedicalCenterData() {
     /// MEDICAL CENTER
@@ -61,17 +61,17 @@ class _SplashPageState extends State<SplashPage> {
       AppBloc.filterCubit.onStateLoad();
       // }
 
-      _submitSubscription = AppBloc.submitCubit.stream.listen((state) {
+      submitSubscription = AppBloc.submitCubit.stream.listen((state) {
         if (state is Submitted) {
           AppBloc.homeCubit.onLoad();
         }
       });
-      _reviewSubscription = AppBloc.reviewCubit.stream.listen((state) {
+      reviewSubscription = AppBloc.reviewCubit.stream.listen((state) {
         if (state is ReviewSuccess && state.id != null) {
           AppBloc.homeCubit.onLoad();
         }
       });
-      _delegate = SearchHistoryDelegate();
+      delegate = SearchHistoryDelegate();
     });
   }
 
@@ -79,7 +79,7 @@ class _SplashPageState extends State<SplashPage> {
     String email = Config.getEmail();
     String loginType = Config.getLoginType();
     String userType = Config.getUserType();
-    if (email == null) {
+    if (email.isEmpty) {
       _loadScreen();
     } else if (loginType == 'google' && userType == '1') {
       _autoPatientSocialLogin();
@@ -103,7 +103,7 @@ class _SplashPageState extends State<SplashPage> {
           ? Themes().isDark
           : Themes().isLight);
     });
-
+    if (!mounted) return;
     Navigator.of(context).pushReplacementNamed(Routes.phoneAuthScreen5);
     List s = [1, 2];
 
@@ -127,6 +127,8 @@ class _SplashPageState extends State<SplashPage> {
           ? Themes().isDark
           : Themes().isLight);
     });
+
+    if (!mounted) return;
     Navigator.of(context).pushReplacementNamed(Routes.phoneAuthScreen7);
     // if (userController.isInitialNotification == true) {
     //   Navigator.of(context)
@@ -159,6 +161,8 @@ class _SplashPageState extends State<SplashPage> {
           ? Themes().isDark
           : Themes().isLight);
     });
+    if (!mounted) return;
+
     Navigator.of(context).pushReplacementNamed(Routes.phoneAuthScreen2);
     Utils.showSnackBar('${Config.getEmail()} successfully login!',
         'Enter your secret PIN to Continue');
@@ -177,7 +181,8 @@ class _SplashPageState extends State<SplashPage> {
     //         ? AppTheme.DarkTheme
     //         : AppTheme.LightTheme));
 
-    ///
+    if (!mounted) return;
+
     Navigator.of(context).pushReplacementNamed(Routes.intro);
 
     // Bloc.observer = AppBlocObserver();

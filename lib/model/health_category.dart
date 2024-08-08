@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
-
 class HealthCategory {
   int id;
   String name;
   String imagePath;
 
   HealthCategory({
-    @required this.id,
-    @required this.name,
-    @required this.imagePath,
+    required this.id,
+    required this.name,
+    required this.imagePath,
   });
 }
 

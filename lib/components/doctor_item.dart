@@ -1,8 +1,8 @@
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/utils/utils.dart';
 
 import '../utils/constants.dart';
 
@@ -11,37 +11,37 @@ class DoctorItem extends StatefulWidget {
   final String doctorName;
   final String doctorSpeciality;
   final String doctorPrice;
-  final Function onTap;
+  final Function() onTap;
   final String rating;
 
-  DoctorItem(
-      {Key key,
-      @required this.doctorAvatar,
-      @required this.doctorName,
-      @required this.doctorSpeciality,
-      @required this.doctorPrice,
-      @required this.onTap,
-      @required this.rating})
-      : super(key: key);
+  const DoctorItem(
+      {super.key,
+      required this.doctorAvatar,
+      required this.doctorName,
+      required this.doctorSpeciality,
+      required this.doctorPrice,
+      required this.onTap,
+      required this.rating});
 
   @override
   State<DoctorItem> createState() => _DoctorItemState();
 }
 
 class _DoctorItemState extends State<DoctorItem> {
-  BookAppointmentController _bookAppointmentController =
+  final BookAppointmentController _bookAppointmentController =
       Get.find<BookAppointmentController>();
 
+  @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
         onTap: widget.onTap,
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Row(
             children: <Widget>[
-              Utils().imageProfile(widget.doctorAvatar ?? "", 30),
-              SizedBox(
+              Utils().imageProfile(widget.doctorAvatar, 30),
+              const SizedBox(
                 width: 20,
               ),
               Expanded(
@@ -52,55 +52,62 @@ class _DoctorItemState extends State<DoctorItem> {
                       children: <Widget>[
                         Expanded(
                           child: Text(
-                            "${widget.doctorName}",
+                            widget.doctorName,
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle2
-                                .copyWith(fontWeight: FontWeight.w700),
+                                .titleSmall
+                                ?.copyWith(fontWeight: FontWeight.w700),
                           ),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.star,
                           color: kColorBlue,
                           size: 18,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Text(
-                          "${widget.rating}",
-                          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                              fontSize: 16, fontWeight: FontWeight.w300),
+                          widget.rating,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  fontSize: 16, fontWeight: FontWeight.w300),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 3,
                     ),
                     Text(
-                      "${widget.doctorSpeciality}",
+                      widget.doctorSpeciality,
                       style: TextStyle(color: Colors.grey[400], fontSize: 16),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Row(
                       children: [
                         Text(
                           '${Translate.of(context).translate('start_from')} \$${widget.doctorPrice}',
-                          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                              fontSize: 14, fontWeight: FontWeight.w600),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(
+                                  fontSize: 14, fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                         _bookAppointmentController.medicalName ==
                                 "United Natives"
-                            ? SizedBox()
+                            ? const SizedBox()
                             : Text(
-                                '${Translate.of(context).translate('(Other Provider)')}',
+                                Translate.of(context)
+                                    .translate('(Other Provider)'),
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2
-                                    .copyWith(
+                                    .titleSmall
+                                    ?.copyWith(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.red),

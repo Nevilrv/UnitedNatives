@@ -7,8 +7,8 @@ String intakeFormListResponseModelToJson(IntakeFormListResponseModel data) =>
     json.encode(data.toJson());
 
 class IntakeFormListResponseModel {
-  bool success;
-  Data data;
+  bool? success;
+  Data? data;
 
   IntakeFormListResponseModel({
     this.success,
@@ -23,12 +23,12 @@ class IntakeFormListResponseModel {
 
   Map<String, dynamic> toJson() => {
         "success": success,
-        "data": data.toJson(),
+        "data": data?.toJson(),
       };
 }
 
 class Data {
-  List<Form> forms;
+  List<Form>? forms;
 
   Data({
     this.forms,
@@ -39,37 +39,37 @@ class Data {
       );
 
   Map<String, dynamic> toJson() => {
-        "forms": List<dynamic>.from(forms.map((x) => x.toJson())),
+        "forms": List<dynamic>.from(forms!.map((x) => x.toJson())),
       };
 }
 
 class Form {
-  int id;
-  String postAuthor;
-  DateTime postDate;
-  DateTime postDateGmt;
-  String postContent;
-  String postTitle;
-  String postExcerpt;
-  String postStatus;
-  String commentStatus;
-  String pingStatus;
-  String postPassword;
-  String postName;
-  String toPing;
-  String pinged;
-  DateTime postModified;
-  DateTime postModifiedGmt;
-  String postContentFiltered;
-  int postParent;
-  String guid;
-  int menuOrder;
-  String postType;
-  String postMimeType;
-  String commentCount;
-  String filter;
-  bool isDone;
-  String userStatus;
+  int? id;
+  String? postAuthor;
+  DateTime? postDate;
+  DateTime? postDateGmt;
+  String? postContent;
+  String? postTitle;
+  String? postExcerpt;
+  String? postStatus;
+  String? commentStatus;
+  String? pingStatus;
+  String? postPassword;
+  String? postName;
+  String? toPing;
+  String? pinged;
+  DateTime? postModified;
+  DateTime? postModifiedGmt;
+  String? postContentFiltered;
+  int? postParent;
+  String? guid;
+  int? menuOrder;
+  String? postType;
+  String? postMimeType;
+  String? commentCount;
+  String? filter;
+  bool? isDone;
+  String? userStatus;
 
   Form({
     this.id,
@@ -133,8 +133,8 @@ class Form {
         "ID": id,
         "isDone": isDone,
         "post_author": postAuthor,
-        "post_date": postDate.toIso8601String(),
-        "post_date_gmt": postDateGmt.toIso8601String(),
+        "post_date": postDate?.toIso8601String(),
+        "post_date_gmt": postDateGmt?.toIso8601String(),
         "post_content": postContent,
         "post_title": postTitle,
         "post_excerpt": postExcerpt,
@@ -145,8 +145,8 @@ class Form {
         "post_name": postName,
         "to_ping": toPing,
         "pinged": pinged,
-        "post_modified": postModified.toIso8601String(),
-        "post_modified_gmt": postModifiedGmt.toIso8601String(),
+        "post_modified": postModified?.toIso8601String(),
+        "post_modified_gmt": postModifiedGmt?.toIso8601String(),
         "post_content_filtered": postContentFiltered,
         "post_parent": postParent,
         "guid": guid,

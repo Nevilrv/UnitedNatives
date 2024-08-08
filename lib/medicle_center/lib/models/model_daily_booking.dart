@@ -1,12 +1,12 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_style.dart';
 
 class DailyBookingModel extends BookingStyleModel {
-  DateTime startDate;
-  TimeOfDay startTime;
-  DateTime endDate;
-  TimeOfDay endTime;
+  DateTime? startDate;
+  TimeOfDay? startTime;
+  DateTime? endDate;
+  TimeOfDay? endTime;
 
   DailyBookingModel({
     price,
@@ -28,7 +28,7 @@ class DailyBookingModel extends BookingStyleModel {
       'start_time': startTime,
     };
     if (endDate != null) {
-      params['end_date'] = DateFormat('yyyy-MM-dd').format(endDate);
+      params['end_date'] = DateFormat('yyyy-MM-dd').format(endDate!);
     }
     if (endTime != null) {
       params['end_time'] = endTime;
@@ -37,8 +37,8 @@ class DailyBookingModel extends BookingStyleModel {
   }
 
   factory DailyBookingModel.fromJson(Map<String, dynamic> json) {
-    TimeOfDay startTime;
-    TimeOfDay endTime;
+    TimeOfDay? startTime;
+    TimeOfDay? endTime;
     if (json['start_time'] != null) {
       startTime = TimeOfDay.fromDateTime(
         DateFormat('hh:mm').parse(json['start_time']),

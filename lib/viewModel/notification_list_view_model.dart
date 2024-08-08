@@ -21,7 +21,7 @@ class NotificationListController extends GetxController {
     update();
     try {
       NotificationListResponseModel response = await NotificationListRepo()
-          .notificationListRepo(userController.user.value.id);
+          .notificationListRepo("${userController.user.value.id}");
 
       log('response-----NOTIFICATION----->>>>>>>>$response');
 

@@ -1,15 +1,15 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/doctor_get_doctor_Appointments_model.dart';
-import 'package:doctor_appointment_booking/model/visited_patient_model.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/doctor_get_doctor_Appointments_model.dart';
+import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class PastAppointmentListItemDoctor extends StatelessWidget {
   final PatientAppoint patientAppoint;
 
-  PastAppointmentListItemDoctor(this.patientAppoint);
+  const PastAppointmentListItemDoctor(this.patientAppoint, {super.key});
   @override
   Widget build(BuildContext context) {
     final time = Utils.formattedDate(
@@ -27,7 +27,7 @@ class PastAppointmentListItemDoctor extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
@@ -39,27 +39,26 @@ class PastAppointmentListItemDoctor extends StatelessWidget {
                     child: _buildColumn(
                       context: context,
                       title: Translate.of(context).translate('date'),
-                      subtitle:
-                          '${DateFormat('EEEE, dd MMM yyyy').format(time)}',
+                      subtitle: DateFormat('EEEE, dd MMM yyyy').format(time),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                     child: _buildColumn(
                       context: context,
                       title: Translate.of(context).translate('time'),
-                      subtitle: '${DateFormat('hh:mm a').format(time)}',
+                      subtitle: DateFormat('hh:mm a').format(time),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Divider(
+            const Divider(
               height: 1,
               thickness: 1,
               indent: 10,
@@ -82,7 +81,7 @@ class PastAppointmentListItemDoctor extends StatelessWidget {
                     child: _buildColumn(
                       context: context,
                       title: 'Purpose of Visit',
-                      subtitle: '${patientAppoint.purposeOfVisit ?? ""}',
+                      subtitle: patientAppoint.purposeOfVisit ?? "",
                     ),
                   ),
                 ],
@@ -106,13 +105,13 @@ class PastAppointmentListItemDoctor extends StatelessWidget {
                       'See Prescription',
                       style: Theme.of(context)
                           .textTheme
-                          .button
-                          .copyWith(fontSize: 18),
+                          .labelLarge
+                          ?.copyWith(fontSize: 18),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward,
                     ),
                   ],
@@ -126,9 +125,9 @@ class PastAppointmentListItemDoctor extends StatelessWidget {
   }
 
   Column _buildColumn({
-    @required BuildContext context,
-    @required String title,
-    @required subtitle,
+    required BuildContext context,
+    required String title,
+    required subtitle,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -137,7 +136,7 @@ class PastAppointmentListItemDoctor extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.grey,
             fontSize: 18,
             fontWeight: FontWeight.w400,
@@ -148,7 +147,7 @@ class PastAppointmentListItemDoctor extends StatelessWidget {
         Text(
           subtitle,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle1.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
         ),

@@ -1,8 +1,8 @@
 class CreateNewMessage {
-  String status;
-  String fileError;
-  String chatKey;
-  String message;
+  String? status;
+  String? fileError;
+  String? chatKey;
+  String? message;
 
   CreateNewMessage({this.status, this.fileError, this.chatKey, this.message});
 
@@ -14,12 +14,11 @@ class CreateNewMessage {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['fileError'] = this.fileError;
-    data['chatKey'] = this.chatKey;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['fileError'] = fileError;
+    data['chatKey'] = chatKey;
+    data['message'] = message;
     return data;
   }
 }
-

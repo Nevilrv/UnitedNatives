@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final deleteChatUserResponseModel = deleteChatUserResponseModelFromJson(jsonString);
-
 import 'dart:convert';
 
 import 'api_state_enum.dart';
@@ -13,10 +9,10 @@ String deleteChatUserResponseModelToJson(DeleteChatUserResponseModel data) =>
     json.encode(data.toJson());
 
 class DeleteChatUserResponseModel {
-  String status;
-  Data data;
-  String message;
-  APIState apiState;
+  String? status;
+  Data? data;
+  String? message;
+  APIState? apiState;
 
   DeleteChatUserResponseModel({
     this.status,
@@ -36,10 +32,10 @@ class DeleteChatUserResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.toJson();
+      data['data'] = this.data?.toJson();
     }
     return data;
   }
@@ -59,8 +55,8 @@ class DeleteChatUserResponseModel {
 }
 
 class Data {
-  String status;
-  String message;
+  String? status;
+  String? message;
 
   Data({
     this.status,

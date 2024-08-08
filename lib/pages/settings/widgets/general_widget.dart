@@ -1,34 +1,33 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/rate_and%20_contactus_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:http/http.dart' as http;
 import 'package:in_app_review/in_app_review.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/rate_and%20_contactus_viewModel.dart';
 import '../../../routes/routes.dart';
 
 class GeneralWidget extends StatefulWidget {
-  final bool isDark;
-  final Function onDarkPressed;
+  final bool? isDark;
+  final Function? onDarkPressed;
 
-  GeneralWidget({Key key, this.isDark, this.onDarkPressed}) : super(key: key);
+  const GeneralWidget({super.key, this.isDark, this.onDarkPressed});
 
   @override
-  _GeneralWidgetState createState() => _GeneralWidgetState();
+  State<GeneralWidget> createState() => _GeneralWidgetState();
 }
 
 class _GeneralWidgetState extends State<GeneralWidget> {
-  var _darkTheme;
-  UserController _userController = Get.find<UserController>();
+  bool? _darkTheme;
+  final UserController _userController = Get.find<UserController>();
   final PatientHomeScreenController patientHomeScreenController =
       Get.find<PatientHomeScreenController>();
 
@@ -42,7 +41,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
 
   final InAppReview _inAppReview = InAppReview.instance;
 
-  String _appStoreId = '6483363927';
+  final String _appStoreId = '6483363927';
 
   Future<void> _openStoreListing() => _inAppReview.openStoreListing(
         appStoreId: _appStoreId,
@@ -57,10 +56,10 @@ class _GeneralWidgetState extends State<GeneralWidget> {
           children: <Widget>[
             Container(
               width: double.infinity,
-              color: _darkTheme
+              color: _darkTheme!
                   ? Colors.white.withOpacity(0.12)
                   : Colors.grey[200],
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Text(
                 Translate.of(context).translate('general'),
                 style: TextStyle(
@@ -74,7 +73,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
               leading: Text(
                 Translate.of(context).translate('About United Natives'),
                 // 'About United Native Health'.tr(),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
@@ -86,19 +85,19 @@ class _GeneralWidgetState extends State<GeneralWidget> {
             ListTile(
               leading: Text(
                 Translate.of(context).translate('privacy_policy'),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               onTap: () {
-                Navigator.of(context).pushNamed(Routes.privacypolicy);
+                Navigator.of(context).pushNamed(Routes.privacyPolicy);
               },
             ),
             ListTile(
               leading: Text(
                 Translate.of(context).translate('help_and_support'),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
@@ -113,7 +112,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                   leading: Text(
                     Translate.of(context).translate('Rate United Natives'),
                     // 'Rate United Native Health'.tr(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -146,50 +145,48 @@ class _GeneralWidgetState extends State<GeneralWidget> {
             ListTile(
                 leading: Text(
                   Translate.of(context).translate('Change Password'),
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 onTap: () {
-                  print('Change password');
                   _onAlertWithCustomContentPressed(
                       context,
                       () async => await _userController
                           .changePassword(_userController.user.value.email));
                 }),
             SwitchListTile(
-              value: _darkTheme,
+              value: _darkTheme!,
               onChanged: (_) {
                 setState(() {
-                  _darkTheme = !_darkTheme;
-                  widget.onDarkPressed(_darkTheme);
+                  _darkTheme = !_darkTheme!;
+                  widget.onDarkPressed!(_darkTheme);
                 });
               },
-              title: Text(
+              title: const Text(
                 'Dark Theme',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
 
             _userController.user.value.userType.toString() != "1"
-                ? SizedBox()
+                ? const SizedBox()
                 : ListTile(
                     leading: Text(
                       Translate.of(context).translate('Delete your account'),
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                     onTap: () {
-                      print('Delete your account');
-
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Delete Account'),
-                            content: Text(
+                            title: const Text('Delete Account'),
+                            content: const Text(
                                 "Are you sure want to delete your account?"),
                             actions: <Widget>[
                               TextButton(
-                                child: Text("YES"),
+                                child: const Text("YES"),
                                 onPressed: () async {
                                   await patientHomeScreenController
                                       .deletePatientAccount(_userController
@@ -197,7 +194,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                                           .toString())
                                       .then((value) {
                                     Prefs.clear();
-
+                                    if (!context.mounted) return;
                                     Navigator.pushNamedAndRemoveUntil(context,
                                         Routes.login, (route) => false);
                                   });
@@ -219,7 +216,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                                 },
                               ),
                               TextButton(
-                                child: Text("NO"),
+                                child: const Text("NO"),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -245,7 +242,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                     ),
                   ),
                 )
-              : SizedBox();
+              : const SizedBox();
         })
       ],
     );
@@ -263,12 +260,12 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                     height: Get.height * 0.3,
                     width: Get.height * 0.3,
                     decoration: BoxDecoration(
-                        color: _darkTheme ? Colors.black : Colors.white,
+                        color: _darkTheme! ? Colors.black : Colors.white,
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(
                       children: [
                         SizedBox(height: Get.height * 0.02),
-                        _darkTheme
+                        _darkTheme!
                             ? Image.asset(
                                 'assets/images/neww_b_Logo.png',
                                 height: 70,
@@ -280,17 +277,17 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                                 width: 70,
                               ),
                         SizedBox(height: Get.height * 0.015),
-                        Text(
+                        const Text(
                           // 'IH',
                           'United Natives',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 27, fontWeight: FontWeight.bold),
                         ),
-                        Text(
+                        const Text(
                           'Your rating',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: Get.height * 0.015),
@@ -312,7 +309,8 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                         //     print(rating);
                         //   },
                         // )
-                        SmoothStarRating(
+                        /// NEW CODE COMMENT
+                        /*SmoothStarRating(
                             allowHalfRating: false,
                             starCount: 5,
                             rating: double.parse('${controller.rate}.0'),
@@ -323,7 +321,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                             filledIconData: Icons.star,
                             halfFilledIconData: Icons.star_half,
                             defaultIconData: Icons.star_border,
-                            spacing: .5),
+                            spacing: .5),*/
                       ],
                     ),
                   ),
@@ -332,34 +330,32 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                   initialRating: 0,
 
                   // your app's name?
-                  image: _darkTheme
+                  image: _darkTheme!
                       ? Image.asset('assets/images/neww_b_Logo.png',
                           height: 50, width: 50)
                       : Image.asset('assets/images/neww_w_Logo.png',
                           height: 50, width: 50),
-                  title: Text(
+                  title: const Text(
                     // 'IH',
                     'United Natives',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 27, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
                   ),
                   // encourage your user to leave a high rating?
-                  message: Text(
+                  message: const Text(
                     'Tap a star to set your rating',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 17),
+                    style: TextStyle(fontSize: 17),
                   ),
                   // your app's logo?
                   enableComment: false,
                   submitButtonText: 'Submit',
 
-                  onCancelled: () => print('cancelled'),
+                  onCancelled: () => log('cancelled'),
                   starColor: Colors.blue,
                   onSubmitted: (response) async {
                     String rate = response.rating.toString();
                     var rate1 = rate.split('.');
-                    print(rate1.first);
                     String url =
                         '${Constants.baseUrl + Constants.patientRating}/${_userController.user.value.id}';
                     String url1 =
@@ -385,20 +381,18 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                       // Get.back();
                     } else {
                       log('rating ${data["message"]}');
-                      rateContactUsController.setRate(rate1: '${rate1.first}');
+                      rateContactUsController.setRate(rate1: rate1.first);
                     }
-                    print(
-                        'rating: ${response.rating}, comment: ${response.comment}');
                   },
                 );
         });
   }
 }
 
-_onAlertWithCustomContentPressed(context, Function onPressed) {
+_onAlertWithCustomContentPressed(context, Function() onPressed) {
   Alert(
     context: context,
-    image: Image(
+    image: const Image(
       image: AssetImage('assets/images/settings.gif'),
     ),
     // title: "Are you want to sure update password?",
@@ -426,14 +420,14 @@ _onAlertWithCustomContentPressed(context, Function onPressed) {
     buttons: [
       DialogButton(
         onPressed: () => Navigator.pop(context),
-        child: Text(
+        child: const Text(
           "No",
           style: TextStyle(color: Colors.white, fontSize: 22),
         ),
       ),
       DialogButton(
         onPressed: onPressed,
-        child: Text(
+        child: const Text(
           "Yes",
           style: TextStyle(color: Colors.white, fontSize: 22),
         ),

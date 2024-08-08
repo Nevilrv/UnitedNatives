@@ -1,26 +1,26 @@
 class AddPatientAppointment {
-  String patientId;
-  String doctorId;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentFor;
-  String fullName;
-  String mobile;
-  String email;
-  String patientMobile;
+  String? patientId;
+  String? doctorId;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentFor;
+  String? fullName;
+  String? mobile;
+  String? email;
+  String? patientMobile;
 
   AddPatientAppointment(
       {this.patientId,
-        this.doctorId,
-        this.purposeOfVisit,
-        this.appointmentDate,
-        this.appointmentTime,
-        this.appointmentFor,
-        this.fullName,
-        this.mobile,
-        this.email,
-        this.patientMobile});
+      this.doctorId,
+      this.purposeOfVisit,
+      this.appointmentDate,
+      this.appointmentTime,
+      this.appointmentFor,
+      this.fullName,
+      this.mobile,
+      this.email,
+      this.patientMobile});
 
   AddPatientAppointment.fromJson(Map<String, dynamic> json) {
     patientId = json['patient_id'];
@@ -36,17 +36,17 @@ class AddPatientAppointment {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['patient_id'] = this.patientId;
-    data['doctor_id'] = this.doctorId;
-    data['purpose_of_visit'] = this.purposeOfVisit;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_for'] = this.appointmentFor;
-    data['full_name'] = this.fullName;
-    data['mobile'] = this.mobile;
-    data['email'] = this.email;
-    data['patient_mobile'] = this.patientMobile;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['patient_id'] = patientId;
+    data['doctor_id'] = doctorId;
+    data['purpose_of_visit'] = purposeOfVisit;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_for'] = appointmentFor;
+    data['full_name'] = fullName;
+    data['mobile'] = mobile;
+    data['email'] = email;
+    data['patient_mobile'] = patientMobile;
     return data;
   }
 }

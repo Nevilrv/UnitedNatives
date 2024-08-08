@@ -268,7 +268,7 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                                   borderRadius: BorderRadius.circular(2),
                                   onTap: () {
                                     Navigator.of(context)
-                                        .pushNamed(Routes.docsignup);
+                                        .pushNamed(Routes.docSignup);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.all(5),

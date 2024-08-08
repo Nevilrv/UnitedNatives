@@ -10,13 +10,13 @@ class PaypalPaymentModel {
   var email;
   var patientMobile;
   var doctorFees;
-  String firstName;
-  String lastName;
-  String city;
-  String state;
-  String companyName;
-  String providerName;
-  String faxNumber;
+  String? firstName;
+  String? lastName;
+  String? city;
+  String? state;
+  String? companyName;
+  String? providerName;
+  String? faxNumber;
 
   PaypalPaymentModel({
     this.patientId,

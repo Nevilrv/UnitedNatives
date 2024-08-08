@@ -1,10 +1,10 @@
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
+import 'package:united_natives/model/api_state_enum.dart';
 
 class GetAllChatMessagesDoctor {
-  String status;
-  List<DoctorChat> doctorChatList;
-  String message;
-  APIState apiState;
+  String? status;
+  List<DoctorChat>? doctorChatList;
+  String? message;
+  APIState? apiState;
 
   GetAllChatMessagesDoctor({this.status, this.doctorChatList, this.message});
 
@@ -13,10 +13,10 @@ class GetAllChatMessagesDoctor {
     if (json['data'] != null) {
       doctorChatList = <DoctorChat>[];
       json['data'].forEach((v) {
-        doctorChatList.add(new DoctorChat.fromJson(v));
+        doctorChatList?.add(DoctorChat.fromJson(v));
       });
     }
-    if (doctorChatList.isEmpty) {
+    if (doctorChatList!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
       apiState = APIState.COMPLETE;
@@ -25,27 +25,27 @@ class GetAllChatMessagesDoctor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.doctorChatList != null) {
-      data['data'] = this.doctorChatList.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (doctorChatList != null) {
+      data['data'] = doctorChatList?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class DoctorChat {
-  String id;
-  String fromType;
-  String fromId;
-  String toType;
-  String toId;
-  String message;
-  String attachment;
-  String chatKey;
-  String created;
-  String modified;
+  String? id;
+  String? fromType;
+  String? fromId;
+  String? toType;
+  String? toId;
+  String? message;
+  String? attachment;
+  String? chatKey;
+  String? created;
+  String? modified;
 
   DoctorChat(
       {this.id,
@@ -73,17 +73,17 @@ class DoctorChat {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['from_type'] = this.fromType;
-    data['from_id'] = this.fromId;
-    data['to_type'] = this.toType;
-    data['to_id'] = this.toId;
-    data['message'] = this.message;
-    data['attachment'] = this.attachment;
-    data['chat_key'] = this.chatKey;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['from_type'] = fromType;
+    data['from_id'] = fromId;
+    data['to_type'] = toType;
+    data['to_id'] = toId;
+    data['message'] = message;
+    data['attachment'] = attachment;
+    data['chat_key'] = chatKey;
+    data['created'] = created;
+    data['modified'] = modified;
     return data;
   }
 }

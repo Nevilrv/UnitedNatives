@@ -4,25 +4,25 @@ import '../utils/constants.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final Function onPressed;
-  final double elevation;
-  final int borderRadius;
-  final EdgeInsets padding;
-  final double textSize;
-  final Color color;
-  final Color fontColor;
+  final Function() onPressed;
+  final double? elevation;
+  final double? borderRadius;
+  final EdgeInsets? padding;
+  final double? textSize;
+  final Color? color;
+  final Color? fontColor;
 
   const CustomButton({
-    Key key,
-    @required this.text,
-    @required this.onPressed,
+    super.key,
+    required this.text,
+    required this.onPressed,
     this.elevation,
     this.borderRadius,
     this.padding,
     this.textSize,
     this.color,
     this.fontColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class CustomButton extends StatelessWidget {
           children: <Widget>[
             Text(
               text,
-              style: Theme.of(context).textTheme.button.copyWith(
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: fontColor ?? Colors.white, fontSize: textSize),
               textAlign: TextAlign.center,
             ),

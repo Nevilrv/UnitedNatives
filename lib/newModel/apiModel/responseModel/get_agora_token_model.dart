@@ -16,9 +16,9 @@ class GetAgoraToken {
     this.message,
   });
 
-  String status;
-  Data data;
-  String message;
+  String? status;
+  Data? data;
+  String? message;
 
   factory GetAgoraToken.fromJson(Map<String, dynamic> json) => GetAgoraToken(
         status: json["status"],
@@ -28,7 +28,7 @@ class GetAgoraToken {
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "data": data.toJson(),
+        "data": data?.toJson(),
         "message": message,
       };
 }
@@ -39,8 +39,8 @@ class Data {
     this.token,
   });
 
-  String channelName;
-  String token;
+  String? channelName;
+  String? token;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         channelName: json["channel_name"],

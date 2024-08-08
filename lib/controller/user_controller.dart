@@ -1,37 +1,37 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:doctor_appointment_booking/pages/login/phoneAuthScreen3.dart';
+import 'package:united_natives/pages/login/phoneAuthScreen3.dart';
 import 'package:http/http.dart' as http;
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/model/getSorted_patient_chatList_model.dart';
-import 'package:doctor_appointment_booking/model/get_sorted_chat_list_doctor_model.dart';
-import 'package:doctor_appointment_booking/model/login_verification.dart';
-import 'package:doctor_appointment_booking/model/pin_status_model.dart';
-import 'package:doctor_appointment_booking/model/reset_pin_model.dart';
-import 'package:doctor_appointment_booking/model/social_login_google_verification.dart';
-import 'package:doctor_appointment_booking/model/specialities_model.dart';
-import 'package:doctor_appointment_booking/model/user.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_city_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_states_response_model.dart';
-import 'package:doctor_appointment_booking/pages/appointment/doctor_appointment.dart';
-import 'package:doctor_appointment_booking/pages/appointment/my_appointments_page.dart';
-import 'package:doctor_appointment_booking/pages/doctormessages/messages_detail_page.dart';
-import 'package:doctor_appointment_booking/pages/messages/messages_detail_page.dart';
-import 'package:doctor_appointment_booking/pages/notifications/patient_notification_page.dart';
-import 'package:doctor_appointment_booking/pages/prescription/prescription_list_page.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/sevices/user_backend_auth_service.dart';
-import 'package:doctor_appointment_booking/utils/app_enum.dart';
-import 'package:doctor_appointment_booking/utils/app_themes.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/exception.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_new_chat_message_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/get_city_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/get_states_view_model.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/model/getSorted_patient_chatList_model.dart';
+import 'package:united_natives/model/get_sorted_chat_list_doctor_model.dart';
+import 'package:united_natives/model/login_verification.dart';
+import 'package:united_natives/model/pin_status_model.dart';
+import 'package:united_natives/model/reset_pin_model.dart';
+import 'package:united_natives/model/social_login_google_verification.dart';
+import 'package:united_natives/model/specialities_model.dart';
+import 'package:united_natives/model/user.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_city_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_states_response_model.dart';
+import 'package:united_natives/pages/appointment/doctor_appointment.dart';
+import 'package:united_natives/pages/appointment/my_appointments_page.dart';
+import 'package:united_natives/pages/doctormessages/messages_detail_page.dart';
+import 'package:united_natives/pages/messages/messages_detail_page.dart';
+import 'package:united_natives/pages/notifications/patient_notification_page.dart';
+import 'package:united_natives/pages/prescription/prescription_list_page.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/sevices/user_backend_auth_service.dart';
+import 'package:united_natives/utils/app_enum.dart';
+import 'package:united_natives/utils/app_themes.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/exception.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
+import 'package:united_natives/viewModel/get_city_view_model.dart';
+import 'package:united_natives/viewModel/get_states_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,14 +42,14 @@ class UserController extends GetxController {
   Rx<SpecialitiesModel> specialitiesModelData = SpecialitiesModel().obs;
   RxBool isLoading = false.obs;
 
-  User registerData;
-  User loginData;
-  File registerUserProfile;
-  File updateProfilePic;
-  UserCredential authResult;
+  User? registerData;
+  User? loginData;
+  File? registerUserProfile;
+  File? updateProfilePic;
+  UserCredential? authResult;
   bool isShow = false;
-  LoginVerificationData loginVerificationData;
-  PINStatusModel pinStatusModelData;
+  LoginVerificationData? loginVerificationData;
+  PINStatusModel? pinStatusModelData;
   bool isCheck = false;
   // final RoundedLoadingButtonController _btnController =
   //     new RoundedLoadingButtonController();
@@ -88,16 +88,21 @@ class UserController extends GetxController {
     education = ''.obs;
   }
 
-  var _genderItems = <String>['Male', 'Female', 'Non-Binary', 'Gender Neutral'];
-  var _insuranceItems = <String>['Yes', 'No'];
-  var _howYouHereAboutUs = <String>[
+  final _genderItems = <String>[
+    'Male',
+    'Female',
+    'Non-Binary',
+    'Gender Neutral'
+  ];
+  final _insuranceItems = <String>['Yes', 'No'];
+  final _howYouHereAboutUs = <String>[
     "Social media",
     "Flyer",
     "Referred",
     "Other"
   ];
-  var _areYouAUSVeteran = <String>['Yes', 'No'];
-  var _tribalBackgroundStatus = <String>[
+  final _areYouAUSVeteran = <String>['Yes', 'No'];
+  final _tribalBackgroundStatus = <String>[
     'Asian',
     'Black or African American',
     'Hispanic or Latino',
@@ -114,7 +119,7 @@ class UserController extends GetxController {
     'AB+',
     'AB-'
   ];
-  var _maritalItems = <String>[
+  final _maritalItems = <String>[
     'Single',
     'Married',
     'Divorced',
@@ -122,20 +127,20 @@ class UserController extends GetxController {
     'Other',
     'Do Not Wish to Answer'
   ];
-  var _tribalItems = <String>['Yes', 'No'];
-  String userProfile;
+  final _tribalItems = <String>['Yes', 'No'];
+  String? userProfile;
 
-  List<DropdownMenuItem<String>> dropDownGender;
-  List<DropdownMenuItem<String>> dropDownSpeciality;
-  List<DropdownMenuItem<String>> dropDownBlood;
-  List<DropdownMenuItem<String>> dropDownMarital;
-  List<DropdownMenuItem<String>> dropDownInsurance;
-  List<DropdownMenuItem<String>> dropDownTribal;
-  List<DropdownMenuItem<String>> dropDownTribal1;
-  List<DropdownMenuItem<String>> dropDownTribal2;
-  List<DropdownMenuItem<String>> dropDownTribal3;
-  List<DropdownMenuItem<String>> dropDownAreYouAUSVeteran;
-  List<DropdownMenuItem<String>> dropDownHowYouHereAboutUs;
+  List<DropdownMenuItem<String>>? dropDownGender;
+  List<DropdownMenuItem<String>>? dropDownSpeciality;
+  List<DropdownMenuItem<String>>? dropDownBlood;
+  List<DropdownMenuItem<String>>? dropDownMarital;
+  List<DropdownMenuItem<String>>? dropDownInsurance;
+  List<DropdownMenuItem<String>>? dropDownTribal;
+  List<DropdownMenuItem<String>>? dropDownTribal1;
+  List<DropdownMenuItem<String>>? dropDownTribal2;
+  List<DropdownMenuItem<String>>? dropDownTribal3;
+  List<DropdownMenuItem<String>>? dropDownAreYouAUSVeteran;
+  List<DropdownMenuItem<String>>? dropDownHowYouHereAboutUs;
 
   @override
   onInit() {
@@ -153,7 +158,7 @@ class UserController extends GetxController {
     update();
   }
 
-  RxBool _isPinScreen = false.obs;
+  final RxBool _isPinScreen = false.obs;
 
   RxBool get isPinScreen => _isPinScreen;
 
@@ -162,18 +167,17 @@ class UserController extends GetxController {
     update();
   }
 
-  RxString _isScreenName = ''.obs;
+  final RxString _isScreenName = ''.obs;
 
   RxString get isScreenName => _isScreenName;
 
   set isScreenName(RxString value) {
     _isScreenName.value = value.value;
-    print('_isScreenName_isScreenName_isScreenName $_isScreenName');
 
     update();
   }
 
-  RxString _notificationValue = ''.obs;
+  final RxString _notificationValue = ''.obs;
 
   RxString get notificationValue => _notificationValue;
 
@@ -294,48 +298,47 @@ class UserController extends GetxController {
       howYouHereAboutUs.value = value;
 
   Future userRegister(User userData, String userType, String bearerToken,
-      {File useProfilePic}) async {
+      {File? useProfilePic}) async {
     try {
       User userData = User(
-        firstName: registerData.firstName,
-        lastName: registerData.lastName,
+        firstName: registerData?.firstName,
+        lastName: registerData?.lastName,
         gender: selectedGender.value,
-        email: registerData.email,
-        contactNumber: registerData.contactNumber,
-        emergencyContact: registerData.emergencyContact,
-        dateOfBirth: registerData.dateOfBirth ?? "",
-        certificateNo: registerData.certificateNo,
-        perAppointmentCharge: registerData.perAppointmentCharge,
-        password: registerData.password,
+        email: registerData?.email,
+        contactNumber: registerData?.contactNumber,
+        emergencyContact: registerData?.emergencyContact,
+        dateOfBirth: registerData?.dateOfBirth ?? "",
+        certificateNo: registerData?.certificateNo,
+        perAppointmentCharge: registerData?.perAppointmentCharge,
+        password: registerData?.password,
         bloodGroup: selectedBloodGroup.value,
-        allergies: registerData.allergies,
+        allergies: registerData?.allergies,
         maritalStatus: selectedMaritalStatus.value,
         insuranceEligibility: selectedInsuranceEligibility.value,
-        insuranceCompanyName: registerData.insuranceCompanyName,
+        insuranceCompanyName: registerData?.insuranceCompanyName,
         usVeteranStatus: areYouAUSVeteran.value,
         tribalStatus: selectedTribalStatus.value,
-        tribalFederallyMember: registerData.tribalFederallyMember,
-        tribalFederallyState: registerData.tribalFederallyState,
-        tribalBackgroundStatus: registerData.tribalBackgroundStatus,
-        howDidYouHearAboutUs: registerData.howDidYouHearAboutUs,
-        education: registerData.education,
-        speciality: registerData.speciality,
-        state: registerData.state ?? "",
+        tribalFederallyMember: registerData?.tribalFederallyMember,
+        tribalFederallyState: registerData?.tribalFederallyState,
+        tribalBackgroundStatus: registerData?.tribalBackgroundStatus,
+        howDidYouHearAboutUs: registerData?.howDidYouHearAboutUs,
+        education: registerData?.education,
+        speciality: registerData?.speciality,
+        state: registerData?.state ?? "",
         //isAdmin: registerData.isAdmin,
-        city: registerData.city ?? "",
-        isNativeAmerican: registerData.isNativeAmerican ?? "",
-        isIhUser: registerData.isIhUser,
-        medicalCenterID: registerData.medicalCenterID ?? "",
-        providerType: registerData.providerType ?? "",
-        height: registerData.height,
-        weight: registerData.weight,
-        currentCaseManagerInfo: registerData.currentCaseManagerInfo,
+        city: registerData?.city ?? "",
+        isNativeAmerican: registerData?.isNativeAmerican ?? "",
+        isIhUser: registerData?.isIhUser,
+        medicalCenterID: registerData?.medicalCenterID ?? "",
+        providerType: registerData?.providerType ?? "",
+        height: registerData?.height,
+        weight: registerData?.weight,
+        currentCaseManagerInfo: registerData?.currentCaseManagerInfo,
       );
       debugPrint("registerData.providerType----->${jsonEncode(userData)}");
       await UserBackendAuthService().register(userData, userType, bearerToken,
-          profilePic: registerUserProfile);
+          profilePic: registerUserProfile!);
       // await Prefs.setString(Prefs.BEARER, bearerToken);
-      print("Speciality===>${registerData.speciality}");
       if (userType == "1") {
         Get.toNamed(Routes.login);
       } else {
@@ -357,9 +360,9 @@ class UserController extends GetxController {
           await UserBackendAuthService().specialitiesModelDropDown();
 
       dropDownSpeciality = specialitiesModelData.value.specialities
-              .map((map) => DropdownMenuItem<String>(
-                  value: map.id, child: Text(map.specialityName)))
-              ?.toList() ??
+              ?.map((map) => DropdownMenuItem<String>(
+                  value: map.id, child: Text(map.specialityName ?? "")))
+              .toList() ??
           [];
     } catch (isBlank) {
       // Utils.showSnackBar(
@@ -385,11 +388,11 @@ class UserController extends GetxController {
           userType,
       bearerToken,
       // perAppointmentCharge,
-      {File useProfilePic}) async {
+      {File? useProfilePic}) async {
     try {
       await UserBackendAuthService().socialRegister(
           userData, userType, bearerToken,
-          useProfilePic: useProfilePic);
+          useProfilePic: useProfilePic!);
       // await Prefs.setString(Prefs.BEARER, bearerToken);
       if (userType == "1") {
         Get.toNamed(Routes.login);
@@ -456,8 +459,6 @@ class UserController extends GetxController {
       UserCredential authResult =
           await UserBackendAuthService().signInWithGoogle();
 
-      print("Qwerty==>${authResult.user.email}");
-      print("Qwerty==>${authResult.user.photoURL}");
       // await Prefs.setString(Prefs.BEARER, bearerToken);
       // if (userType == "1"){
       //   Get.toNamed(Routes.login);
@@ -468,10 +469,7 @@ class UserController extends GetxController {
       Utils.showSnackBar(
           'Please Enter Secure PIN', 'Google Sign in Successful!');
       return authResult;
-    } catch (e, st) {
-      print("eee==>$st");
-      print("eee1==>$e");
-
+    } catch (e) {
       if (e is AppException) {
         Utils.showSnackBar('Login Error', e.message);
       } else {
@@ -539,23 +537,23 @@ class UserController extends GetxController {
   Future resetPIN(String userId, BuildContext context) async {
     try {
       ResetPIN resetPINData = await UserBackendAuthService().resetPIN(userId);
-      print("PIN Reset Request ID=>${resetPINData.requestId}");
 
       pinStatusModelData = await statusPIN(userId);
 
-      if (pinStatusModelData.pinStatusData.requestStatus == "2") {
+      if (pinStatusModelData?.pinStatusData?.requestStatus == "2") {
+        if (!context.mounted) return;
         Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => PhoneVerification3(
                   loginVerificationData: loginVerificationData,
-                  resetPINId: pinStatusModelData.pinStatusData.id),
+                  resetPINId: "${pinStatusModelData?.pinStatusData?.id}"),
             ));
       } else {
         Get.offAndToNamed(Routes.login);
       }
 
-      Utils.showSnackBar(resetPINData.message,
+      Utils.showSnackBar("${resetPINData.message}",
           "Request ID for reset PIN is ${resetPINData.requestId.toString()}, Please wait...");
       return resetPINData;
     } catch (e) {
@@ -574,14 +572,13 @@ class UserController extends GetxController {
           await UserBackendAuthService().pinStatus(userId);
       return pinStatusModelData;
     } catch (e) {
-      print("pinStatusModelData 3 exception");
       if (e is AppException) {
         Utils.showSnackBar('Error Occurred', e.message);
       } else {
         Utils.showSnackBar(
             'We can\'t check your Secure PIN Status', 'Please try again later');
       }
-      return null;
+      return PINStatusModel();
     }
   }
 
@@ -593,7 +590,6 @@ class UserController extends GetxController {
       // Navigator.pop(context);
       // Utils.showSnackBar( 'PIN Reset',
       //      'Reset link sent to your registered Email');
-      print("Id ==========>>>>>>>>>>>>>>>>>> ${loginVerificationData.id}");
       return loginVerificationData;
     } catch (e) {
       if (e is AppException) {
@@ -622,10 +618,9 @@ class UserController extends GetxController {
       Prefs.setString(Prefs.normalPassword, textPassword);
       Prefs.setString(
           Prefs.isLoginFirst,
-          loginVerification.loginVerificationData.isFirstTime == "1"
+          loginVerification.loginVerificationData?.isFirstTime == "1"
               ? "1"
               : "");
-      print('PREFS PASSWORD  >>>> ${Prefs.getString(Prefs.normalPassword)}');
       Utils.showSnackBar(
           '$email Successfully Login!', 'Enter Your Secret PIN to continue...');
       // }
@@ -649,7 +644,6 @@ class UserController extends GetxController {
       // Navigator.pop(context);
       // Utils.showSnackBar( 'PIN Reset',
       //      'Reset link sent to your registered Email');
-      print("Id ----------> ${socialLoginGoogleData.id}");
       return socialLoginGoogleData;
     } catch (e) {
       if (e is AppException) {
@@ -681,7 +675,7 @@ class UserController extends GetxController {
   static PatientHomeScreenController patientHomeScreenController =
       Get.find<PatientHomeScreenController>();
 
-  static DoctorHomeScreenController _doctorHomeScreenController =
+  static final DoctorHomeScreenController _doctorHomeScreenController =
       Get.find<DoctorHomeScreenController>();
 
   final GetCitiesViewModel getCitiesViewModel = Get.put(GetCitiesViewModel());
@@ -692,20 +686,20 @@ class UserController extends GetxController {
     await getStatesViewModel.getStatesViewModel();
     List<GetStatesResponseModel> data =
         getStatesViewModel.getStatesApiResponse.data;
-    data.forEach((element) {
+    for (var element in data) {
       if (element.id.toString() == user.value.state.toString()) {
-        user.value.stateName = element.name.toLowerCase().capitalizeFirst;
-        stateID = element.id;
+        user.value.stateName = element.name?.toLowerCase().capitalizeFirst;
+        stateID = element.id!;
       }
-    });
+    }
     await getCitiesViewModel.getCitiesViewModel(stateId: stateID);
     List<GetCityResponseModel> data1 =
         getCitiesViewModel.getCitiesApiResponse.data;
-    data1.forEach((e1) {
+    for (var e1 in data1) {
       if (e1.id.toString() == user.value.city.toString()) {
-        user.value.cityName = e1.name.toLowerCase().capitalizeFirst;
+        user.value.cityName = e1.name?.toLowerCase().capitalizeFirst;
       }
-    });
+    }
   }
 
   Future<User> userLogin(LogInType logInType, String userType, String email,
@@ -740,178 +734,146 @@ class UserController extends GetxController {
         }
       }
 
-      print('USER BOETHIUS  >>>> ${jsonEncode(user.value)}');
-
       update();
-      if (user.value != null) {
-        Prefs.setString(Prefs.BEARER, bearerToken);
-        Prefs.setString(Prefs.EMAIL, email);
-        await Prefs.setString(Prefs.profileImage,
-            user.value.profilePic ?? user.value.socialProfilePic);
-        Prefs.setString(Prefs.SOCIALID, user.value.id);
-        Prefs.setString(Prefs.PASSWORD, password);
-        Prefs.setString(Prefs.USERTYPE, userType);
-        Prefs.setString(Prefs.USERTYPE, userType);
-        Prefs.setString(Prefs.IsAdmin, user.value.isAdmin);
-        Prefs.setString(Prefs.SecretPin, secretPin);
-        log("PREFERENCE IsAdmin ${Prefs.getString(Prefs.IsAdmin)}");
-        log("Prefs.getBool(Prefs.DARKTHEME, def: false) ${Prefs.getBool(Prefs.DARKTHEME, def: false)}");
+      Prefs.setString(Prefs.BEARER, bearerToken);
+      Prefs.setString(Prefs.EMAIL, email);
+      await Prefs.setString(Prefs.profileImage,
+          user.value.profilePic ?? user.value.socialProfilePic!);
+      Prefs.setString(Prefs.SOCIALID, "${user.value.id}");
+      Prefs.setString(Prefs.PASSWORD, password);
+      Prefs.setString(Prefs.USERTYPE, userType);
+      Prefs.setString(Prefs.USERTYPE, userType);
+      Prefs.setString(Prefs.IsAdmin, "${user.value.isAdmin}");
+      Prefs.setString(Prefs.SecretPin, secretPin);
+      log("PREFERENCE IsAdmin ${Prefs.getString(Prefs.IsAdmin)}");
+      log("Prefs.getBool(Prefs.DARKTHEME, def: false) ${Prefs.getBool(Prefs.DARKTHEME, def: false)}");
 
-        Get.changeTheme(Prefs.getBool(Prefs.DARKTHEME, def: false)
-            ? Themes().isDark
-            : Themes().isLight);
-        if (userType == "1") {
-          if (isPinScreen.value == true) {
-            if (isScreenName.value == 'patientAppointment') {
-              print('is calling ............  1');
-              Get.offAllNamed(Routes.home);
-              print('is calling ............  3');
-              await Get.to(MyAppointmentsPage());
-              isPinScreen.value = false;
-            } else if (isScreenName.value == 'patientAppointmentPrescription') {
-              print('is calling ............  1');
-              Get.offAllNamed(Routes.home);
-              print('is calling ............  3');
-              await Get.to(PrescriptionPage(
-                appointmentId: notificationValue.value,
-              ));
-              isPinScreen.value = false;
-            } else if (isScreenName.value == 'zoomMeeting') {
-              print('is calling ............  1');
-              Get.offAllNamed(Routes.home);
-              print('is calling ............  3');
-              await Get.to(PatientNotificationPage());
-              isPinScreen.value = false;
-            } else if (isScreenName.value == 'doctorChat') {
-              List<SortedPatientChat> _patientChat = <SortedPatientChat>[];
-              await patientHomeScreenController.getSortedPatientChatList().then(
-                (value) {
-                  patientHomeScreenController.newDataList.forEach(
-                    (element) {
-                      print('ELEMENT>>>>>???  ${element.doctorId}');
-                      if (notificationValue.value ==
-                          element.doctorId.toString()) {
-                        _patientChat.add(element);
-                      }
-                    },
-                  );
-                },
-              ).then(
-                (value) async {
-                  patientHomeScreenController.chatKey.value =
-                      _patientChat[0]?.chatKey ?? "";
-                  patientHomeScreenController.doctorName.value =
-                      _patientChat[0]?.doctorFirstName ?? "";
-                  patientHomeScreenController.doctorLastName.value =
-                      _patientChat[0]?.doctorLastName ?? "";
-                  patientHomeScreenController.doctorId.value =
-                      _patientChat[0]?.doctorId ?? "";
-                  patientHomeScreenController.toId.value =
-                      _patientChat[0]?.doctorId ?? "";
-
-                  patientHomeScreenController.doctorProfile =
-                      _patientChat[0]?.doctorProfilePic ?? '';
-                  patientHomeScreenController.doctorSocialProfile =
-                      _patientChat[0]?.doctorSocialProfilePic ?? '';
-
-                  patientHomeScreenController
-                      .getAllPatientChatMessages.value?.patientChatList
-                      ?.clear();
-
-                  patientHomeScreenController.getAllPatientChatMessagesList(
-                      _patientChat[0]?.chatKey ?? "");
-                  Get.offAllNamed(Routes.home);
-
-                  await Get.to(
-                    MessagesDetailPage(
-                      sortedPatientChat: _patientChat[0],
-                    ),
-                  );
-                  isPinScreen.value = false;
-                },
-              );
-            } else if (isScreenName.value == '') {
-              print('is calling ............  1  other');
-              Get.offAllNamed(Routes.home);
-            }
+      Get.changeTheme(Prefs.getBool(Prefs.DARKTHEME, def: false)
+          ? Themes().isDark
+          : Themes().isLight);
+      if (userType == "1") {
+        if (isPinScreen.value == true) {
+          if (isScreenName.value == 'patientAppointment') {
+            Get.offAllNamed(Routes.home);
+            await Get.to(MyAppointmentsPage());
             isPinScreen.value = false;
-          } else {
-            print('is calling ............  2');
-            Get.offAllNamed(Routes.home2);
+          } else if (isScreenName.value == 'patientAppointmentPrescription') {
+            Get.offAllNamed(Routes.home);
+            await Get.to(PrescriptionPage(
+              appointmentId: notificationValue.value,
+            ));
             isPinScreen.value = false;
+          } else if (isScreenName.value == 'zoomMeeting') {
+            Get.offAllNamed(Routes.home);
+            await Get.to(const PatientNotificationPage());
+            isPinScreen.value = false;
+          } else if (isScreenName.value == 'doctorChat') {
+            List<SortedPatientChat> patientChat = <SortedPatientChat>[];
+            await patientHomeScreenController.getSortedPatientChatList().then(
+              (value) {
+                for (var element in patientHomeScreenController.newDataList) {
+                  if (notificationValue.value == element.doctorId.toString()) {
+                    patientChat.add(element);
+                  }
+                }
+              },
+            ).then(
+              (value) async {
+                patientHomeScreenController.chatKey.value =
+                    patientChat[0].chatKey ?? "";
+                patientHomeScreenController.doctorName.value =
+                    patientChat[0].doctorFirstName ?? "";
+                patientHomeScreenController.doctorLastName.value =
+                    patientChat[0].doctorLastName ?? "";
+                patientHomeScreenController.doctorId.value =
+                    patientChat[0].doctorId ?? "";
+                patientHomeScreenController.toId.value =
+                    patientChat[0].doctorId ?? "";
+
+                patientHomeScreenController.doctorProfile =
+                    patientChat[0].doctorProfilePic ?? '';
+                patientHomeScreenController.doctorSocialProfile =
+                    patientChat[0].doctorSocialProfilePic ?? '';
+
+                patientHomeScreenController
+                    .getAllPatientChatMessages.value.patientChatList
+                    ?.clear();
+
+                patientHomeScreenController.getAllPatientChatMessagesList(
+                    patientChat[0].chatKey ?? "");
+                Get.offAllNamed(Routes.home);
+
+                await Get.to(
+                  MessagesDetailPage(
+                    sortedPatientChat: patientChat[0],
+                  ),
+                );
+                isPinScreen.value = false;
+              },
+            );
+          } else if (isScreenName.value == '') {
+            Get.offAllNamed(Routes.home);
           }
-          print("home:$userType");
+          isPinScreen.value = false;
         } else {
-          print("home2:$userType");
-
-          // final RoundedLoadingButtonController _btnController =
-          //     new RoundedLoadingButtonController();
-          // Get.offAllNamed(Routes.home2);
-          if (isPinScreen.value == true) {
-            if (isScreenName.value == 'doctorAppointment') {
-              print(
-                  'is calling ............  1 111---->>>> doctorAppointment ');
-              Get.offAllNamed(
-                Routes.home2,
-              );
-              print('is calling ............  3');
-              await Get.to(
-                MyAppointmentsDoctor(),
-              );
-              isPinScreen.value = false;
-            } else if (isScreenName.value == 'patientChat') {
-              List<ShortedDoctorChat> _doctorChat = <ShortedDoctorChat>[];
-              await addNewChatMessageController
-                  .getSortedChatListDoctor(
-                doctorId: user.value.id,
-              )
-                  .then(
-                (value) {
-                  getSortedChatListDoctor = addNewChatMessageController
-                      .getDoctorSortedChatListApiResponse.data;
-
-                  getSortedChatListDoctor.doctorChatList.forEach(
-                    (element) {
-                      print(
-                          'ELEMENT>>>>> ......... >>>>> ${element.patientId.runtimeType}');
-                      if (notificationValue.value ==
-                          element.patientId.toString()) {
-                        _doctorChat.add(element);
-                      }
-                    },
-                  );
-                },
-              ).then(
-                (value) async {
-                  _doctorHomeScreenController.doctorChat.value = _doctorChat[0];
-                  print('is calling ............ >>>>> 1');
-                  Get.offAllNamed(
-                    Routes.home2,
-                  );
-                  await Get.to(DoctorMessagesDetailPage());
-                  isPinScreen.value = false;
-                },
-              );
-            } else if (isScreenName.value == '') {
-              print('is calling ............ >>>>> 1  other');
-              Get.offAllNamed(
-                Routes.home2,
-              );
-              isPinScreen.value = false;
-            }
-            isPinScreen.value = false;
-          } else {
-            print('is calling ............ >>>>> 2');
-            Get.offAllNamed(Routes.home2);
-
-            isPinScreen.value = false;
-          }
+          Get.offAllNamed(Routes.home2);
+          isPinScreen.value = false;
         }
       } else {
-        isCheck = false;
+        // final RoundedLoadingButtonController _btnController =
+        //     new RoundedLoadingButtonController();
+        // Get.offAllNamed(Routes.home2);
+        if (isPinScreen.value == true) {
+          if (isScreenName.value == 'doctorAppointment') {
+            Get.offAllNamed(
+              Routes.home2,
+            );
+            await Get.to(
+              MyAppointmentsDoctor(),
+            );
+            isPinScreen.value = false;
+          } else if (isScreenName.value == 'patientChat') {
+            List<ShortedDoctorChat> doctorChat = <ShortedDoctorChat>[];
+            await addNewChatMessageController
+                .getSortedChatListDoctor(
+              doctorId: user.value.id,
+            )
+                .then(
+              (value) {
+                getSortedChatListDoctor = addNewChatMessageController
+                    .getDoctorSortedChatListApiResponse.data;
 
-        Utils.showSnackBar('Login failed', 'Please enter correct pin');
-        update();
+                getSortedChatListDoctor.doctorChatList?.forEach(
+                  (element) {
+                    if (notificationValue.value ==
+                        element.patientId.toString()) {
+                      doctorChat.add(element);
+                    }
+                  },
+                );
+              },
+            ).then(
+              (value) async {
+                _doctorHomeScreenController.doctorChat.value = doctorChat[0];
+                Get.offAllNamed(
+                  Routes.home2,
+                );
+                await Get.to(DoctorMessagesDetailPage());
+                isPinScreen.value = false;
+              },
+            );
+          } else if (isScreenName.value == '') {
+            Get.offAllNamed(
+              Routes.home2,
+            );
+            isPinScreen.value = false;
+          }
+          isPinScreen.value = false;
+        } else {
+          Get.offAllNamed(Routes.home2);
+
+          isPinScreen.value = false;
+        }
       }
     } catch (e) {
       if (e is AppException) {
@@ -931,8 +893,8 @@ class UserController extends GetxController {
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child:
-                              Icon(Icons.clear, color: Colors.black, size: 28),
+                          child: const Icon(Icons.clear,
+                              color: Colors.black, size: 28),
                         ),
                       ),
                       Padding(
@@ -940,15 +902,15 @@ class UserController extends GetxController {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(height: 45),
+                            const SizedBox(height: 45),
                             Align(
                               alignment: Alignment.topCenter,
                               child: Text(
                                 "Please connect with Admin",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
-                                    .copyWith(fontWeight: FontWeight.w700),
+                                    .titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.w700),
                               ),
                             ),
                             Padding(
@@ -960,13 +922,13 @@ class UserController extends GetxController {
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline6
-                                      .copyWith(fontWeight: FontWeight.w400),
+                                      .titleLarge
+                                      ?.copyWith(fontWeight: FontWeight.w400),
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 20),
                               child: ElevatedButton(
                                 onPressed: () {
@@ -975,7 +937,7 @@ class UserController extends GetxController {
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: Size(Get.width, 40),
                                 ),
-                                child: Text(
+                                child: const Text(
                                   "Okay",
                                   style: TextStyle(
                                       fontSize: 20,
@@ -999,7 +961,6 @@ class UserController extends GetxController {
         isCheck = false;
         update();
       } else {
-        print('ERROR --> $e');
         isCheck = false;
         update();
       }

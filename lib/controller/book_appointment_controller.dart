@@ -1,23 +1,21 @@
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/model/doctor_by_specialities.dart';
-import 'package:doctor_appointment_booking/model/doctor_filter_model.dart';
-import 'package:doctor_appointment_booking/model/doctor_specialities_filter_model.dart';
-import 'package:doctor_appointment_booking/model/patient_appointment_model.dart';
-import 'package:doctor_appointment_booking/model/specialities_model.dart';
-import 'package:doctor_appointment_booking/model/specific_appointment_details_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_city_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_states_response_model.dart';
-import 'package:doctor_appointment_booking/sevices/book_appointment_screen_service.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/model/doctor_filter_model.dart';
+import 'package:united_natives/model/doctor_specialities_filter_model.dart';
+import 'package:united_natives/model/patient_appointment_model.dart';
+import 'package:united_natives/model/specialities_model.dart';
+import 'package:united_natives/model/specific_appointment_details_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_city_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_states_response_model.dart';
+import 'package:united_natives/sevices/book_appointment_screen_service.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class BookAppointmentController extends GetxController {
   TextEditingController nameController = TextEditingController();
@@ -63,7 +61,7 @@ class BookAppointmentController extends GetxController {
   Rx<SpecificAppointmentDetailsModel> specificAppointmentDetailsData =
       SpecificAppointmentDetailsModel().obs;
 
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
   RxInt selectedIndex = (-1).obs;
 
   RxString mySelectedDate = ''.obs;
@@ -75,8 +73,8 @@ class BookAppointmentController extends GetxController {
   int allDoctorCount = 0;
   int doctorCount = 0;
   int ihOrNatives = 1;
-  String medicalCenterForm;
-  String medicalCenterId;
+  String? medicalCenterForm;
+  String? medicalCenterId;
 
   changeValue(int value) {
     ihOrNatives = value;
@@ -100,9 +98,9 @@ class BookAppointmentController extends GetxController {
 
   RxBool medicalLoader = true.obs;
 
-  GetStatesResponseModel selectedState;
+  GetStatesResponseModel? selectedState;
   List<GetCityResponseModel> cityList = [];
-  GetCityResponseModel selectedCity;
+  GetCityResponseModel? selectedCity;
 
   changeCityValue(List<GetCityResponseModel> data) {
     cityList = [];
@@ -149,9 +147,8 @@ class BookAppointmentController extends GetxController {
           .specialitiesModel(
               stateId: stateId, medicalCenterId: medicalCenterId);
       allDoctorCount = 0;
-      specialitiesModelData.value.specialities.forEach((element) {
+      specialitiesModelData.value.specialities?.forEach((element) {
         allDoctorCount += int.parse(element.doctorsCount.toString());
-        print('==AllDoctorCount===>$allDoctorCount');
       });
       isLoading.value = false;
     } catch (isBlank) {
@@ -166,16 +163,16 @@ class BookAppointmentController extends GetxController {
 
   Future<DoctorBySpecialitiesModel> getDoctorSpecialities(
       String specialityId, BuildContext context,
-      {String stateId, String medicalCenterId}) async {
+      {String? stateId, String? medicalCenterId}) async {
     try {
       log('medicalCenterId---------->>>>>>>>$medicalCenterId');
 
       isFiltered.value = true;
       isLoading.value = true;
       doctorBySpecialitiesModelData.value = await BookAppointmentScreenService()
-          .doctorBySpecialitiesModel(_userController.user.value.id,
+          .doctorBySpecialitiesModel("${_userController.user.value.id}",
               specialityId, stateId ?? "", medicalCenterId ?? "");
-      doctorCount = doctorBySpecialitiesModelData.value.doctorsCount;
+      doctorCount = doctorBySpecialitiesModelData.value.doctorsCount!;
       update();
     } catch (isBlank) {
       isLoading.value = false;
@@ -196,23 +193,23 @@ class BookAppointmentController extends GetxController {
     try {
       isLoading.value = true;
       final availabilityDate =
-          '${DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc())}';
+          DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc());
       patientAppointmentModelData.value = await BookAppointmentScreenService()
           .patientAppointmentModel(
-              patientId: _userController.user.value.id,
+              patientId: "${_userController.user.value.id}",
               doctorId: doctorId,
               availabilityDate: availabilityDate);
       weekAvailabilityList.clear();
       weekAvailabilityList
-          .addAll(patientAppointmentModelData.value.data.weekAvailability);
+          .addAll(patientAppointmentModelData.value.data!.weekAvailability!);
 
       List<WeekAvailability> iterable = weekAvailabilityList;
 
       List<DateTime> dayList = [];
 
-      iterable.forEach((element) {
-        dayList.add(element.date);
-      });
+      for (var element in iterable) {
+        dayList.add(element.date!);
+      }
 
       DateFormat format = DateFormat("yyyy-MM-dd");
 
@@ -262,12 +259,12 @@ class BookAppointmentController extends GetxController {
       List<DateTime> tempDayList = [];
 
       for (var i = 0; i < iterable.length; i++) {
-        Availability availability = iterable[i].availability;
+        Availability? availability = iterable[i].availability;
         if (availability != null) {
-          availability.availData.forEach(
+          availability.availData?.forEach(
             (e1) {
               if (e1.avail == "1" && e1.status != "Booked") {
-                DateTime startUtcDateTime = e1.startTime.toLocal();
+                DateTime startUtcDateTime = e1.startTime!.toLocal();
                 DateTime startDateTime = DateTime(
                     startUtcDateTime.year,
                     startUtcDateTime.month,
@@ -298,7 +295,7 @@ class BookAppointmentController extends GetxController {
 
         final temp = weekAvailabilityList.indexWhere((element) =>
             mySelectedDate.value.toString() ==
-            DateFormat("yyyy-MM-dd").format(element.date));
+            DateFormat("yyyy-MM-dd").format(element.date!));
         if (temp > 0) {
           selectedIndex.value = temp == 0 ? 0 : temp - 1;
         }
@@ -316,15 +313,13 @@ class BookAppointmentController extends GetxController {
       List<DateTime> dayList, List<WeekAvailability> iterable, int index) {
     DateTime now = DateTime(DateTime.now().year, DateTime.now().month,
         DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
-    tempDayList.forEach(
-      (el2) {
-        if (el2.toString().contains(format.format(dayList[index]))) {
-          if (now.isBefore(el2)) {
-            iterable[index].actualSlotCount++;
-          }
+    for (var el2 in tempDayList) {
+      if (el2.toString().contains(format.format(dayList[index]))) {
+        if (now.isBefore(el2)) {
+          iterable[index].actualSlotCount! + 1;
         }
-      },
-    );
+      }
+    }
   }
 
   Future<DoctorBySpecialitiesModel> getFilteredDoctor(
@@ -383,7 +378,7 @@ class BookAppointmentController extends GetxController {
     update();
   }
 
-  Future getMedicalCenter({String stateName, var chooseStateId}) async {
+  Future getMedicalCenter({String? stateName, var chooseStateId}) async {
     medicalLoader.value = true;
     String url;
     // String state = "";
@@ -397,14 +392,13 @@ class BookAppointmentController extends GetxController {
         .get(Uri.parse(/*stateName != "" ? url1 :*/ url), headers: header);
 
     if (response.statusCode == 200) {
-      if (response.body != "" || response.body != null) {
+      if (response.body != "") {
         var result = jsonDecode(response.body);
-        print("result--->$result");
         categoryOfMedicalCenter = result['data']['locations'];
 
         if (categoryOfMedicalCenter.isNotEmpty ||
-            categoryOfMedicalCenter != null) {
-          categoryOfMedicalCenter.forEach((element) {
+            categoryOfMedicalCenter != []) {
+          for (var element in categoryOfMedicalCenter) {
             if (element['post_title'].toString() == "United Natives") {
               medicalName =
                   categoryOfMedicalCenter.first['post_title'].toString();
@@ -413,13 +407,13 @@ class BookAppointmentController extends GetxController {
               chooseMedicalCenter =
                   categoryOfMedicalCenter.first['ID'].toString();
             }
-          });
+          }
         }
         // getSpecialities(false.obs,
         //     stateId: chooseStateId ?? "",
         //     medicalCenterId: chooseMedicalCenter ?? '');
 
-        getDoctorSpecialities("", Get.overlayContext,
+        getDoctorSpecialities("", Get.overlayContext!,
             stateId: chooseStateId ?? "",
             medicalCenterId: chooseMedicalCenter ?? '');
         //   }
@@ -430,7 +424,6 @@ class BookAppointmentController extends GetxController {
       }
     } else {
       medicalLoader.value = false;
-      print('ERROR IN GETTING MEDICAL CENTER DETAILS');
     }
   }
 
@@ -785,22 +778,22 @@ class BookAppointmentController extends GetxController {
     List<WeekAvailability> iterable = weekAvailabilityList;
     DateFormat format = DateFormat("yyyy-MM-dd");
     for (WeekAvailability element in iterable) {
-      DateTime localTime = element.date.toLocal();
+      DateTime? localTime = element.date?.toLocal();
       String date =
-          "${localTime.year.toString()}-${localTime.month.toString().padLeft(2, '0')}-${localTime.day.toString().padLeft(2, '0')}";
+          "${localTime?.year.toString()}-${localTime?.month.toString().padLeft(2, '0')}-${localTime?.day.toString().padLeft(2, '0')}";
       String date1 =
-          "${localTime.year.toString()}-${localTime.month.toString().padLeft(2, '0')}-${(localTime.day - 1).toString().padLeft(2, '0')}";
+          "${localTime?.year.toString()}-${localTime?.month.toString().padLeft(2, '0')}-${(localTime!.day - 1).toString().padLeft(2, '0')}";
       String date2 =
           "${localTime.year.toString()}-${localTime.month.toString().padLeft(2, '0')}-${(localTime.day + 1).toString().padLeft(2, '0')}";
-      Availability availability = element.availability;
+      Availability? availability = element.availability;
       if (format.format(DateTime.parse(mySelectedDate.value)) == date ||
           format.format(DateTime.parse(mySelectedDate.value)) == date1 ||
           format.format(DateTime.parse(mySelectedDate.value)) == date2) {
         if (availability != null) {
-          availability.availData.forEach(
+          availability.availData?.forEach(
             (e1) {
               if (e1.avail == "1" && e1.status != "Booked") {
-                DateTime startUtcDateTime = e1.startTime.toLocal();
+                DateTime startUtcDateTime = e1.startTime!.toLocal();
                 DateTime startDateTime = DateTime(
                     startUtcDateTime.year,
                     startUtcDateTime.month,

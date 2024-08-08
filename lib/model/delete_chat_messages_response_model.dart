@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final deleteChatMessageResponseModel = deleteChatMessageResponseModelFromJson(jsonString);
-
 import 'dart:convert';
 
 DeleteChatMessageResponseModel deleteChatMessageResponseModelFromJson(
@@ -13,8 +9,8 @@ String deleteChatMessageResponseModelToJson(
     json.encode(data.toJson());
 
 class DeleteChatMessageResponseModel {
-  String status;
-  Data data;
+  String? status;
+  Data? data;
 
   DeleteChatMessageResponseModel({
     this.status,
@@ -29,13 +25,13 @@ class DeleteChatMessageResponseModel {
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "data": data.toJson(),
+        "data": data?.toJson(),
       };
 }
 
 class Data {
-  String status;
-  String message;
+  String? status;
+  String? message;
 
   Data({
     this.status,

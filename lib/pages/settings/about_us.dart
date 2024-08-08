@@ -1,16 +1,15 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
+import 'package:html/parser.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class AboutUNH extends StatefulWidget {
-  String aboutUs;
-  AboutUNH({Key key, this.aboutUs}) : super(key: key);
+  final String? aboutUs;
+  const AboutUNH({super.key, this.aboutUs});
 
   @override
   State<AboutUNH> createState() => _AboutUNHState();
@@ -19,26 +18,30 @@ class AboutUNH extends StatefulWidget {
 class _AboutUNHState extends State<AboutUNH> {
   AdsController adsController = Get.find();
 
+  String? data;
+
+  @override
+  void initState() {
+    data = widget.aboutUs;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (Config.getUserType() == "1") {
-      widget.aboutUs = "";
+      data = "";
       final PatientHomeScreenController patientHomeScreenController =
           Get.find();
-      widget.aboutUs = patientHomeScreenController
-          .aboutUsPrivacyPolicyModel?.value?.data?.aboutUnh;
+      data = patientHomeScreenController
+          .aboutUsPrivacyPolicyModel.value?.data?.aboutUnh;
     } else {
-      widget.aboutUs = "";
+      data = "";
       final DoctorHomeScreenController doctorHomeScreenController = Get.find();
       doctorHomeScreenController.aboutUsPrivacyPolicy();
 
-      widget.aboutUs = doctorHomeScreenController
-          .aboutUsPrivacyPolicyDoctorModel?.value?.data?.aboutUnh;
-      print('ABOUT US=${widget.aboutUs}  ');
-      print(
-          'ABOUT US=${doctorHomeScreenController.aboutUsPrivacyPolicyDoctorModel?.value?.data}');
+      data = doctorHomeScreenController
+          .aboutUsPrivacyPolicyDoctorModel.value?.data?.aboutUnh;
     }
-
-    print('ABOUT_US_DATA=======>>>>>${widget.aboutUs}');
 
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
@@ -50,7 +53,7 @@ class _AboutUNHState extends State<AboutUNH> {
             title: Text('About Us',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                     fontSize: 24),
                 textAlign: TextAlign.center),
             centerTitle: true,
@@ -58,24 +61,16 @@ class _AboutUNHState extends State<AboutUNH> {
             elevation: 1),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: 20),
-                Html(
-                  data: widget.aboutUs ?? '',
-                  /*style: {
-                    "tr": Style(
-                      border: Border(bottom: BorderSide(color: Colors.grey)),
-                    ),
-                    "th": Style(
-                      padding: EdgeInsets.all(6),
-                      backgroundColor: Colors.grey,
-                    ),
-                  }*/
-                ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
+                Builder(builder: (context) {
+                  var document = parse(data ?? "");
+                  return Text(document.body!.text);
+                }),
+                const SizedBox(height: 20),
               ],
             ),
           ),

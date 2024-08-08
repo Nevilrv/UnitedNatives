@@ -111,7 +111,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              Navigator.of(context).pushNamed(Routes.Sober);
+              Navigator.of(context).pushNamed(Routes.sober);
             },
             child: Padding(
               padding:

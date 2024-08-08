@@ -1,8 +1,8 @@
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/utils/constants.dart';
 
 abstract class BaseService<T> {
-  final String baseURL = '${Constants.baseUrl}';
-  final String medicalCenterURL = '${Constants.medicalCenterURL}';
+  final String baseURL = Constants.baseUrl;
+  final String medicalCenterURL = Constants.medicalCenterURL;
   final String addClassURL = 'Doctor/class';
   final String getClassListPatientURL = 'Patient/classes';
   final String getClassListDoctorURL = 'Doctor/classes';

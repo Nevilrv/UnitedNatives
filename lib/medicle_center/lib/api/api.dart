@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:doctor_appointment_booking/medicle_center/lib/api/http_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_file.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_result_api.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/file.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/medicle_center/lib/api/http_manager.dart';
+import 'package:united_natives/medicle_center/lib/models/model_file.dart';
+import 'package:united_natives/medicle_center/lib/models/model_result_api.dart';
+import 'package:united_natives/medicle_center/lib/utils/file.dart';
+import 'package:united_natives/utils/constants.dart';
 
 class Api {
   static final httpManager = HTTPManager();
@@ -47,19 +46,16 @@ class Api {
   static const String bookingRequestList = "/listar/v1/author/booking";
   static const String bookingCancel = "/listar/v1/booking/cancel_by_id";
   static const String deactivate = "/listar/v1/auth/deactivate";
-  static String stateAPI = "${Constants.baseUrl + Constants.getAllStates}";
+  static String stateAPI = Constants.baseUrl + Constants.getAllStates;
   static String cityAPI = "${Constants.baseUrl + Constants.getAllCityByState}/";
 
   ///Login api
   static Future<ResultApiModel> requestLogin(params) async {
     final result = await httpManager.post(url: login, data: params);
-    print('==result===>${jsonEncode(result)}');
 
     ResultApiModel resultApiModel = ResultApiModel.fromJson(result);
 
     if (!resultApiModel.success) {
-      print(
-          '=====>${resultApiModel.message == 'Invalid username or incorrect password.'}');
       log('para==========>>>>>${params['password']}');
       final Map<String, dynamic> registerParams = {
         "username": params['username'].toString().split('@')[0],
@@ -85,8 +81,6 @@ class Api {
   ///Validate token valid
   static Future<ResultApiModel> requestValidateToken() async {
     Map<String, dynamic> result = await httpManager.post(url: authValidate);
-
-    print('requestValidateToken===result===>$result');
 
     result['success'] = result['code'] == 'jwt_auth_valid_token';
     result['message'] = result['code'] ?? result['message'];
@@ -200,7 +194,6 @@ class Api {
 
   ///Get Home
   static Future<ResultApiModel> requestHome() async {
-    print("==HOME URL FOR HEADER==>$home");
     final result = await httpManager.get(url: home);
     return ResultApiModel.fromJson(result);
   }
@@ -212,8 +205,8 @@ class Api {
   }
 
   ///Get City
-  static Future requestCity({String stateId}) async {
-    final result = await httpManager.get(url: cityAPI + stateId);
+  static Future requestCity({String? stateId}) async {
+    final result = await httpManager.get(url: cityAPI + stateId!);
     return result;
   }
 
@@ -293,9 +286,6 @@ class Api {
       url: authorList,
       params: params,
     );
-    print("authorList-----$authorList");
-    print("params-----$params");
-    print("result>>>>>>>>>>$result");
     return ResultApiModel.fromJson(result);
   }
 
@@ -380,10 +370,10 @@ class Api {
   ///Get Booking List
   static Future<ResultApiModel> requestBookingList(
     params, {
-    bool request,
+    bool? request,
   }) async {
     final result = await httpManager.get(
-      url: request ? bookingRequestList : bookingList,
+      url: request! ? bookingRequestList : bookingList,
       params: params,
     );
     return ResultApiModel.fromJson(result);
@@ -401,9 +391,9 @@ class Api {
 
   ///Download file
   static Future<ResultApiModel> requestDownloadFile({
-    FileModel file,
+    required FileModel file,
     progress,
-    String directory,
+    String? directory,
   }) async {
     directory ??= await UtilFile.getFilePath();
     final filePath = '$directory/${file.name}.${file.type}';

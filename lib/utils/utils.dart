@@ -420,30 +420,30 @@ class Config {
   }
 
   static String getEmail() {
-    return Prefs.getString(Prefs.EMAIL);
+    return Prefs.getString(Prefs.EMAIL) ?? "";
   }
 
   static String getPassword() {
-    return Prefs.getString(Prefs.PASSWORD);
+    return Prefs.getString(Prefs.PASSWORD) ?? "";
   }
 
   static String getUserType() {
-    return Prefs.getString(Prefs.USERTYPE);
+    return Prefs.getString(Prefs.USERTYPE) ?? "";
   }
 
   static String getLoginType() {
-    return Prefs.getString(Prefs.LOGINTYPE);
+    return Prefs.getString(Prefs.LOGINTYPE) ?? "";
   }
 
   static String getSocialID() {
-    return Prefs.getString(Prefs.SOCIALID);
+    return Prefs.getString(Prefs.SOCIALID) ?? "";
   }
 
   static String getIsAdmin() {
-    return Prefs.getString(Prefs.IsAdmin);
+    return Prefs.getString(Prefs.IsAdmin) ?? "";
   }
 
   static String getProfileImage() {
-    return Prefs.getString(Prefs.profileImage);
+    return Prefs.getString(Prefs.profileImage) ?? "";
   }
 }

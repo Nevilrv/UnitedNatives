@@ -1,11 +1,11 @@
 class Visit {
-  String id;
-  DateTime date;
-  String address;
-  String diagnosis;
-  String recommendation;
-  String userId;
-  String doctorId;
+  String? id;
+  DateTime? date;
+  String? address;
+  String? diagnosis;
+  String? recommendation;
+  String? userId;
+  String? doctorId;
 
   Visit({
     this.id,

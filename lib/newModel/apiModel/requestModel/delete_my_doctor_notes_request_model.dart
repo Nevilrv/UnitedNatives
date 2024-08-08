@@ -1,7 +1,7 @@
 class DeleteNotesRequestModel {
-  int id;
-  int noteId;
-  int patientId;
+  int? id;
+  int? noteId;
+  int? patientId;
 
   DeleteNotesRequestModel({this.id, this.noteId, this.patientId});
 
@@ -12,10 +12,10 @@ class DeleteNotesRequestModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['note_id'] = this.noteId;
-    data['patient_id'] = this.patientId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['note_id'] = noteId;
+    data['patient_id'] = patientId;
     return data;
   }
 }

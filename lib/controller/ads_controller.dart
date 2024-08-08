@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 
 class AdsController extends GetxController {
   bool adShow = true;
-  Timer _timer;
+  Timer? _timer;
   timer() {
-    const oneDecimal = const Duration(minutes: 15);
+    const oneDecimal = Duration(minutes: 15);
     _timer = Timer.periodic(oneDecimal, (Timer timer) {
       adShow = true;
-      _timer.cancel();
+      _timer?.cancel();
       update();
     });
   }

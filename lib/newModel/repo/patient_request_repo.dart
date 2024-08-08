@@ -1,22 +1,22 @@
 import 'dart:developer';
 
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/patient_add_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/message_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/patient_all_request_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/patient_request_list_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/services/api_service.dart';
-import 'package:doctor_appointment_booking/newModel/services/base_service.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/patient_add_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/patient_all_request_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/patient_request_list_response_model.dart';
+import 'package:united_natives/newModel/services/api_service.dart';
+import 'package:united_natives/newModel/services/base_service.dart';
 
 class RequestRepo extends BaseService {
   /// doctor add class........
 
   Future<MessageStatusResponseModel> addRequestRepo(
-      {AddRequestModel model, String id}) async {
-    String url = addRequestURL + '/' + id;
-    var body = await model.toJson();
+      {AddRequestModel? model, String? id}) async {
+    String url = '$addRequestURL/$id';
+    var body = await model?.toJson();
 
     var response = await ApiService().getResponse(
-        apiType: APIType.aPost, url: url, body: body, withoutTypeHeader: true);
+        apiType: APIType.aPost, url: url, body: body!, withoutTypeHeader: true);
     log("ADD CLASS RESPONSE ::: $response");
     MessageStatusResponseModel messageStatusResponseModel =
         MessageStatusResponseModel.fromJson(response);
@@ -26,11 +26,10 @@ class RequestRepo extends BaseService {
   /// request list.......
 
   Future<dynamic> requestListRepo(String id) async {
-    String url = requestListsURL + '/' + id;
+    String url = '$requestListsURL/$id';
 
     var response =
         await ApiService().getResponse(apiType: APIType.aGet, url: url);
-    print('RESPONSE   $response');
     RequestListResponseModel requestListResponseModel =
         RequestListResponseModel.fromJson(response);
 
@@ -40,11 +39,10 @@ class RequestRepo extends BaseService {
   /// all request.......
 
   Future<dynamic> allRequestRepo(String id) async {
-    String url = allRequestURL + '/' + id;
+    String url = '$allRequestURL/$id';
 
     var response =
         await ApiService().getResponse(apiType: APIType.aGet, url: url);
-    print('RESPONSE   $response');
     AllRequestResponseModel allRequestResponseModel =
         AllRequestResponseModel.fromJson(response);
 

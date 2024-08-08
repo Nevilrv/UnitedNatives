@@ -1,5 +1,5 @@
 class BookWithdrawReqModel {
-  String action;
+  String? action;
 
   BookWithdrawReqModel({
     this.action,

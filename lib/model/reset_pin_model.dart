@@ -1,7 +1,7 @@
 class ResetPIN {
-  String status;
-  int requestId;
-  String message;
+  String? status;
+  int? requestId;
+  String? message;
 
   ResetPIN({this.status, this.requestId, this.message});
 
@@ -12,10 +12,10 @@ class ResetPIN {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['request_id'] = this.requestId;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['request_id'] = requestId;
+    data['message'] = message;
     return data;
   }
 }

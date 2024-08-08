@@ -1,10 +1,10 @@
 import 'api_state_enum.dart';
 
 class GetAllPatientChatMessages {
-  String status;
-  List<PatientChat> patientChatList;
-  String message;
-  APIState apiState;
+  String? status;
+  List<PatientChat>? patientChatList;
+  String? message;
+  APIState? apiState;
 
   GetAllPatientChatMessages({this.status, this.patientChatList, this.message});
 
@@ -13,10 +13,10 @@ class GetAllPatientChatMessages {
     if (json['data'] != null) {
       patientChatList = <PatientChat>[];
       json['data'].forEach((v) {
-        patientChatList.add(new PatientChat.fromJson(v));
+        patientChatList?.add(PatientChat.fromJson(v));
       });
     }
-    if (patientChatList.isEmpty) {
+    if (patientChatList!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
       apiState = APIState.COMPLETE;
@@ -25,27 +25,27 @@ class GetAllPatientChatMessages {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.patientChatList != null) {
-      data['data'] = this.patientChatList.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (patientChatList != null) {
+      data['data'] = patientChatList?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class PatientChat {
-  String id;
-  String fromType;
-  String fromId;
-  String toType;
-  String toId;
-  String message;
-  String attachment;
-  String chatKey;
-  String created;
-  String modified;
+  String? id;
+  String? fromType;
+  String? fromId;
+  String? toType;
+  String? toId;
+  String? message;
+  String? attachment;
+  String? chatKey;
+  String? created;
+  String? modified;
 
   PatientChat(
       {this.id,
@@ -73,17 +73,17 @@ class PatientChat {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['from_type'] = this.fromType;
-    data['from_id'] = this.fromId;
-    data['to_type'] = this.toType;
-    data['to_id'] = this.toId;
-    data['message'] = this.message;
-    data['attachment'] = this.attachment;
-    data['chat_key'] = this.chatKey;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['from_type'] = fromType;
+    data['from_id'] = fromId;
+    data['to_type'] = toType;
+    data['to_id'] = toId;
+    data['message'] = message;
+    data['attachment'] = attachment;
+    data['chat_key'] = chatKey;
+    data['created'] = created;
+    data['modified'] = modified;
     return data;
   }
 }

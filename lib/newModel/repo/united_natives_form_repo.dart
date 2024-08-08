@@ -1,17 +1,17 @@
 import 'dart:developer';
 
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/intake_form_res_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/intake_form_list_res_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/submit_form_res_model.dart';
-import 'package:doctor_appointment_booking/newModel/services/api_service.dart';
-import 'package:doctor_appointment_booking/newModel/services/base_service.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/intake_form_list_res_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/intake_form_res_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/submit_form_res_model.dart';
+import 'package:united_natives/newModel/services/api_service.dart';
+import 'package:united_natives/newModel/services/base_service.dart';
 
 class UnitedNativesFormRepo extends BaseService {
   Future<dynamic> getIntakeFormRepo(
-      {String medicalCenterId, String userId}) async {
+      {String? medicalCenterId, String? userId}) async {
     var response = await ApiService().getResponse(
         apiType: APIType.aGet,
-        url: getIntakeForm + medicalCenterId + "&user_id=$userId",
+        url: "$getIntakeForm$medicalCenterId&user_id=$userId",
         medicalCenter: true,
         withoutTypeHeader: true);
     log('RESPONSE   $response');
@@ -24,13 +24,11 @@ class UnitedNativesFormRepo extends BaseService {
   }
 
   Future<dynamic> intakeFormRepo(
-      {String medicalCenterId, String formId}) async {
+      {String? medicalCenterId, String? formId}) async {
     var response = await ApiService().getResponse(
         apiType: APIType.aGet,
-        url: getUnitedNativesMedicalCenterForm +
-            medicalCenterId +
-            "&form_id=" +
-            formId,
+        url:
+            "$getUnitedNativesMedicalCenterForm$medicalCenterId&form_id=$formId",
         medicalCenter: true,
         withoutTypeHeader: true);
     log('RESPONSE   $response');
@@ -43,10 +41,10 @@ class UnitedNativesFormRepo extends BaseService {
   }
 
   Future<dynamic> unitedNativesSubmitFormRepo(
-      {Map<String, dynamic> body}) async {
+      {Map<String, dynamic>? body}) async {
     var response = await ApiService().getResponse(
       apiType: APIType.aImageUpload,
-      body: body,
+      body: body!,
       url: submitUnitedNativesForm,
       noHeader: true,
       medicalCenter: true,

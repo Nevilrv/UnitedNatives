@@ -32,8 +32,8 @@ class RequestController extends GetxController {
     getRequestListApiResponse = ApiResponse.loading('Loading');
     update();
     try {
-      RequestListResponseModel response =
-          await RequestRepo().requestListRepo(userController.user.value.id);
+      RequestListResponseModel response = await RequestRepo()
+          .requestListRepo("${userController.user.value.id}");
 
       getRequestListApiResponse = ApiResponse.complete(response);
     } catch (e) {
@@ -48,7 +48,7 @@ class RequestController extends GetxController {
     update();
     try {
       AllRequestResponseModel response =
-          await RequestRepo().allRequestRepo(userController.user.value.id);
+          await RequestRepo().allRequestRepo("${userController.user.value.id}");
 
       allRequestApiResponse = ApiResponse.complete(response);
     } catch (e) {

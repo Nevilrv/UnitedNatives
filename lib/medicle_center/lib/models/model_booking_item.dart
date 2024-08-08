@@ -1,31 +1,31 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_resource.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_resource.dart';
+import 'package:united_natives/medicle_center/lib/utils/color.dart';
 
 class BookingItemModel {
-  final int id;
-  final String title;
-  final String status;
-  final Color statusColor;
-  final DateTime date;
-  final String paymentName;
-  final String payment;
-  final String transactionID;
-  final int total;
-  final String currency;
-  final String totalDisplay;
-  final String billFirstName;
-  final String billLastName;
-  final String billPhone;
-  final String billEmail;
-  final String billAddress;
-  final List<BookingResourceModel> resource;
-  final bool allowCancel;
-  final bool allowPayment;
-  final String createdOn;
-  final String paidOn;
-  final String createdVia;
-  final String createdBy;
+  final int? id;
+  final String? title;
+  final String? status;
+  final Color? statusColor;
+  final DateTime? date;
+  final String? paymentName;
+  final String? payment;
+  final String? transactionID;
+  final int? total;
+  final String? currency;
+  final String? totalDisplay;
+  final String? billFirstName;
+  final String? billLastName;
+  final String? billPhone;
+  final String? billEmail;
+  final String? billAddress;
+  final List<BookingResourceModel>? resource;
+  final bool? allowCancel;
+  final bool? allowPayment;
+  final String? createdOn;
+  final String? paidOn;
+  final String? createdVia;
+  final String? createdBy;
 
   BookingItemModel({
     this.id,

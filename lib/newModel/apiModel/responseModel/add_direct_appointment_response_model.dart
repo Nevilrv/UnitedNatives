@@ -1,7 +1,7 @@
 class AddDirectAppointmentResponseModel {
-  String status;
-  int data;
-  String message;
+  String? status;
+  int? data;
+  String? message;
 
   AddDirectAppointmentResponseModel({this.status, this.data, this.message});
 
@@ -12,10 +12,10 @@ class AddDirectAppointmentResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     data['data'] = this.data;
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }

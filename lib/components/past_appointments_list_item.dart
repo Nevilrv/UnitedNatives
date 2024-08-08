@@ -1,15 +1,15 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/appointment.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class PastAppointmentListItem extends StatelessWidget {
   final Appointment patientAppoint;
 
-  PastAppointmentListItem(this.patientAppoint);
+  const PastAppointmentListItem(this.patientAppoint, {super.key});
   @override
   Widget build(BuildContext context) {
     final time = Utils.formattedDate(
@@ -22,7 +22,7 @@ class PastAppointmentListItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
@@ -34,24 +34,23 @@ class PastAppointmentListItem extends StatelessWidget {
                     child: _buildColumn(
                       context: context,
                       title: Translate.of(context).translate('date'),
-                      subtitle:
-                          '${DateFormat('EEEE, dd MMM yyyy').format(time)}',
+                      subtitle: DateFormat('EEEE, dd MMM yyyy').format(time),
                       // subtitle: ,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: _buildColumn(
                       context: context,
                       title: Translate.of(context).translate('time'),
-                      subtitle: '${DateFormat('hh:mm a').format(time)}',
+                      subtitle: DateFormat('hh:mm a').format(time),
                       // subtitle: '${patientAppoint.appointmentTime.toString()}',
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             if (patientAppoint.vcStartTime != null &&
@@ -60,7 +59,7 @@ class PastAppointmentListItem extends StatelessWidget {
                 patientAppoint.vcEndTime != "00:00:00" &&
                 (patientAppoint.vcDuration.toString() != "null" &&
                     int.parse(patientAppoint.vcDuration ?? "0") > 0)) ...[
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 1,
                 indent: 10,
@@ -76,7 +75,7 @@ class PastAppointmentListItem extends StatelessWidget {
                         String finalTime =
                             DateTime.now().toString().split(" ").first;
                         String temp =
-                            "$finalTime " + patientAppoint.vcStartTime;
+                            "$finalTime ${patientAppoint.vcStartTime}";
                         String time = DateFormat('hh:mm:ss')
                             .format(Utils.formattedDate(temp));
 
@@ -84,7 +83,7 @@ class PastAppointmentListItem extends StatelessWidget {
                           context: context,
                           title:
                               Translate.of(context).translate('Start Meeting'),
-                          subtitle: '$time',
+                          subtitle: time,
                         );
                       }),
                     ),
@@ -92,14 +91,14 @@ class PastAppointmentListItem extends StatelessWidget {
                       child: Builder(builder: (context) {
                         String finalTime =
                             DateTime.now().toString().split(" ").first;
-                        String temp = "$finalTime " + patientAppoint.vcEndTime;
+                        String temp = "$finalTime ${patientAppoint.vcEndTime}";
                         String time = DateFormat('hh:mm:ss')
                             .format(Utils.formattedDate(temp));
 
                         return _buildColumn(
                           context: context,
                           title: Translate.of(context).translate('End Meeting'),
-                          subtitle: '$time',
+                          subtitle: time,
                         );
                       }),
                     ),
@@ -114,7 +113,7 @@ class PastAppointmentListItem extends StatelessWidget {
                 ),
               ),
             ],
-            Divider(
+            const Divider(
               height: 1,
               thickness: 1,
               indent: 10,
@@ -129,16 +128,15 @@ class PastAppointmentListItem extends StatelessWidget {
                     child: _buildColumn(
                       context: context,
                       title: Translate.of(context).translate('doctor'),
-                      subtitle: '${patientAppoint.doctorFirstName}' +
-                          ' ' +
-                          '${patientAppoint.doctorLastName}',
+                      subtitle:
+                          '${patientAppoint.doctorFirstName} ${patientAppoint.doctorLastName}',
                     ),
                   ),
                   Expanded(
                     child: _buildColumn(
                       context: context,
                       title: Translate.of(context).translate('speciality'),
-                      subtitle: '${patientAppoint.doctorSpeciality ?? ""}',
+                      subtitle: patientAppoint.doctorSpeciality ?? "",
                     ),
                   ),
                 ],
@@ -159,13 +157,13 @@ class PastAppointmentListItem extends StatelessWidget {
                       'See Prescription',
                       style: Theme.of(context)
                           .textTheme
-                          .button
-                          .copyWith(fontSize: 18),
+                          .labelLarge
+                          ?.copyWith(fontSize: 18),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward,
                     ),
                   ],
@@ -179,9 +177,9 @@ class PastAppointmentListItem extends StatelessWidget {
   }
 
   Column _buildColumn({
-    @required BuildContext context,
-    @required String title,
-    @required subtitle,
+    required BuildContext context,
+    required String title,
+    required subtitle,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -190,7 +188,7 @@ class PastAppointmentListItem extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.grey,
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -201,7 +199,7 @@ class PastAppointmentListItem extends StatelessWidget {
         Text(
           subtitle,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.subtitle1.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
         ),

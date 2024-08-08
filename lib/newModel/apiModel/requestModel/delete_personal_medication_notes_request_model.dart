@@ -1,6 +1,6 @@
 class DeletePersonalMedicationNotesRequestModel {
-  String notesId;
-  String patientId;
+  String? notesId;
+  String? patientId;
 
   DeletePersonalMedicationNotesRequestModel({this.notesId, this.patientId});
 
@@ -11,9 +11,9 @@ class DeletePersonalMedicationNotesRequestModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['notes_id'] = this.notesId;
-    data['patient_id'] = this.patientId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['notes_id'] = notesId;
+    data['patient_id'] = patientId;
     return data;
   }
 }

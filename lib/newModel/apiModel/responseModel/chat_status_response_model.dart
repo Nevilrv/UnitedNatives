@@ -1,30 +1,30 @@
 class ChatStatusResponseModel {
-  String status;
-  Data data;
-  String message;
+  String? status;
+  Data? data;
+  String? message;
 
   ChatStatusResponseModel({this.status, this.data, this.message});
 
   ChatStatusResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.toJson();
+      data['data'] = this.data?.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
-  bool isOnline;
-  String lastSeen;
+  bool? isOnline;
+  String? lastSeen;
 
   Data({this.isOnline, this.lastSeen});
 
@@ -34,9 +34,9 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['is_online'] = this.isOnline;
-    data['last_seen'] = this.lastSeen;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['is_online'] = isOnline;
+    data['last_seen'] = lastSeen;
     return data;
   }
 }

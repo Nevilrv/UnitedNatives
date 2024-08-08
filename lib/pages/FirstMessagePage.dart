@@ -40,7 +40,7 @@ class FirstMessagePage extends StatefulWidget {
       this.patientId});
 
   @override
-  _FisrtMessagePageState createState() => _FisrtMessagePageState();
+  State createState() => _FisrtMessagePageState();
 }
 
 class _FisrtMessagePageState extends State<FirstMessagePage> {
@@ -72,7 +72,7 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
                 type: 'image',
                 loginType: 'patient',
               ))
-            : print('imageW  $imageW');
+            : log('imageW  $imageW');
       } else {}
     });
   }
@@ -314,10 +314,10 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
           // )
         ],
       ),
-      body: WillPopScope(
-        onWillPop: () async {
+      body: PopScope(
+        canPop: true,
+        onPopInvokedWithResult: (didPop, result) async {
           await patientHomeScreenController.endTimer();
-          return true;
         },
         child: Column(
           children: <Widget>[
@@ -598,7 +598,7 @@ class MessageItem extends StatelessWidget {
                                   onTap: () {
                                     Get.to(MessageShowScreen(
                                       file:
-                                          'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                          'https://unhbackend.com/uploads/chat/$attachment',
                                       type: 'image',
                                     ));
                                   },
@@ -617,7 +617,7 @@ class MessageItem extends StatelessWidget {
                                         ),
                                         image: DecorationImage(
                                             image: NetworkImage(
-                                                'https:\/\/unhbackend.com\/uploads\/chat\/$attachment'),
+                                                'https://unhbackend.com/uploads/chat/$attachment'),
                                             fit: BoxFit.fill)),
                                   ),
                                 ),
@@ -658,7 +658,7 @@ class MessageItem extends StatelessWidget {
                                   onTap: () {
                                     Get.to(MessageShowScreen(
                                       file:
-                                          'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                          'https://unhbackend.com/uploads/chat/$attachment',
                                       type: 'pdf',
                                     ));
                                   },
@@ -735,8 +735,8 @@ class MessageItem extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 10,
                     backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(
-                        patientHomeScreenController.doctorProfile ?? ''),
+                    backgroundImage:
+                        NetworkImage(patientHomeScreenController.doctorProfile),
                   ),
                 ),
                 Flexible(
@@ -773,7 +773,7 @@ class MessageItem extends StatelessWidget {
                                     onTap: () {
                                       Get.to(MessageShowScreen(
                                         file:
-                                            'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                            'https://unhbackend.com/uploads/chat/$attachment',
                                         type: 'image',
                                       ));
                                     },
@@ -792,7 +792,7 @@ class MessageItem extends StatelessWidget {
                                           ),
                                           image: DecorationImage(
                                               image: NetworkImage(
-                                                  'https:\/\/unhbackend.com\/uploads\/chat\/$attachment'),
+                                                  'https://unhbackend.com/uploads/chat/$attachment'),
                                               fit: BoxFit.fill)),
                                     ),
                                   ),
@@ -833,7 +833,7 @@ class MessageItem extends StatelessWidget {
                                       onTap: () {
                                         Get.to(MessageShowScreen(
                                           file:
-                                              'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                              'https://unhbackend.com/uploads/chat/$attachment',
                                           type: 'pdf',
                                         ));
                                       },

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_item.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_pagination.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_sort.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/booking_repository.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_item.dart';
+import 'package:united_natives/medicle_center/lib/models/model_pagination.dart';
+import 'package:united_natives/medicle_center/lib/models/model_sort.dart';
+import 'package:united_natives/medicle_center/lib/repository/booking_repository.dart';
 import 'cubit.dart';
 
 class BookingManagementCubit extends Cubit<BookingManagementState> {
@@ -13,26 +13,26 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
   int pageRequest = 1;
   List<BookingItemModel> listBooking = [];
   List<BookingItemModel> listRequest = [];
-  PaginationModel paginationRequest;
-  PaginationModel paginationBooking;
-  SortModel sortRequest;
-  SortModel sortBooking;
-  SortModel statusRequest;
-  SortModel statusBooking;
+  PaginationModel? paginationRequest;
+  PaginationModel? paginationBooking;
+  SortModel? sortRequest;
+  SortModel? sortBooking;
+  SortModel? statusRequest;
+  SortModel? statusBooking;
   List<SortModel> sortOptionRequest = [];
   List<SortModel> sortOptionBooking = [];
   List<SortModel> statusOptionRequest = [];
   List<SortModel> statusOptionBooking = [];
 
   Future<void> onLoad({
-    SortModel sort,
-    SortModel status,
-    String keyword,
-    bool request,
+    SortModel? sort,
+    SortModel? status,
+    String? keyword,
+    bool? request,
   }) async {
     bool loadMoreBooking = false;
     bool loadMoreRequest = false;
-    if (request) {
+    if (request!) {
       pageRequest = 1;
 
       ///Fetch API
@@ -41,13 +41,14 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
         perPage: Application.setting.perPage,
         sort: sort,
         status: status,
-        keyword: keyword,
+        keyword: "$keyword",
         request: request,
       );
       if (result != null) {
         listRequest = result[0];
         paginationRequest = result[1];
-        loadMoreRequest = paginationRequest.page < paginationRequest.maxPage;
+        loadMoreRequest =
+            (paginationRequest!.page < paginationRequest!.maxPage);
         if (sortOptionRequest.isEmpty) {
           sortOptionRequest = result[2];
         }
@@ -64,13 +65,14 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
         perPage: Application.setting.perPage,
         sort: sort,
         status: status,
-        keyword: keyword,
+        keyword: "$keyword",
         request: request,
       );
       if (result != null) {
         listBooking = result[0];
         paginationBooking = result[1];
-        loadMoreBooking = paginationBooking.page < paginationBooking.maxPage;
+        loadMoreBooking =
+            (paginationBooking!.page < paginationBooking!.maxPage);
         if (sortOptionBooking.isEmpty) {
           sortOptionBooking = result[2];
         }
@@ -90,15 +92,15 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
   }
 
   Future<void> onLoadMore({
-    SortModel sort,
-    SortModel status,
-    String keyword,
-    bool request,
+    SortModel? sort,
+    SortModel? status,
+    String? keyword,
+    bool? request,
   }) async {
-    bool loadMoreBooking = paginationBooking.page < paginationBooking.maxPage;
-    bool loadMoreRequest = paginationRequest.page < paginationRequest.maxPage;
+    bool loadMoreBooking = paginationBooking!.page < paginationBooking!.maxPage;
+    bool loadMoreRequest = paginationRequest!.page < paginationRequest!.maxPage;
 
-    if (request) {
+    if (request!) {
       pageRequest = pageRequest + 1;
 
       ///Notify
@@ -116,7 +118,7 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
         perPage: Application.setting.perPage,
         sort: sort,
         status: status,
-        keyword: keyword,
+        keyword: "$keyword",
         request: request,
       );
 
@@ -142,7 +144,7 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
         perPage: Application.setting.perPage,
         sort: sort,
         status: status,
-        keyword: keyword,
+        keyword: "$keyword",
         request: request,
       );
 
@@ -156,8 +158,8 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
     emit(BookingListSuccess(
       listBooking: listBooking,
       listRequest: listRequest,
-      canLoadMoreBooking: paginationBooking.page < paginationBooking.maxPage,
-      canLoadMoreRequest: paginationRequest.page < paginationRequest.maxPage,
+      canLoadMoreBooking: paginationBooking!.page < paginationBooking!.maxPage,
+      canLoadMoreRequest: paginationRequest!.page < paginationRequest!.maxPage,
     ));
   }
 }

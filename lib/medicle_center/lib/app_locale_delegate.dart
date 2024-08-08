@@ -1,6 +1,6 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/medicle_center/lib/configs/language.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 
 class AppLocaleDelegate extends LocalizationsDelegate<Translate> {
   const AppLocaleDelegate();

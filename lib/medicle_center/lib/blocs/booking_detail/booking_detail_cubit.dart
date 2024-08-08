@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/booking_repository.dart';
+import 'package:united_natives/medicle_center/lib/repository/booking_repository.dart';
 
 import 'cubit.dart';
 

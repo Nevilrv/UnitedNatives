@@ -16,8 +16,8 @@ class MessageStatusResponseModel {
     this.message,
   });
 
-  String status;
-  String message;
+  String? status;
+  String? message;
 
   factory MessageStatusResponseModel.fromJson(Map<String, dynamic> json) =>
       MessageStatusResponseModel(

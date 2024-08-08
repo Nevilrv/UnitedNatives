@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 class SocialIcon extends StatelessWidget {
   final List<Color> colors;
   final IconData iconData;
-  final Function onPressed;
+  final Function() onPressed;
 
-  SocialIcon({
-    @required this.colors,
-    @required this.iconData,
-    @required this.onPressed,
+  const SocialIcon({
+    super.key,
+    required this.colors,
+    required this.iconData,
+    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 14),
+      padding: const EdgeInsets.only(left: 14),
       child: Container(
         width: 45,
         height: 45,
@@ -23,7 +24,7 @@ class SocialIcon extends StatelessWidget {
           gradient: LinearGradient(colors: colors, tileMode: TileMode.clamp),
         ),
         child: RawMaterialButton(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           onPressed: onPressed,
           child: Icon(
             iconData,

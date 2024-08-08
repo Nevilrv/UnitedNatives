@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -13,7 +14,9 @@ import 'package:united_natives/controller/book_appointment_controller.dart';
 import 'package:united_natives/controller/patient_homescreen_controller.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/configs/routes.dart';
+import 'package:united_natives/model/booked_appointment_data.dart';
 import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/model/patient_appointment_model.dart';
 import 'package:united_natives/model/paymentPaypalModel.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_city_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_states_response_model.dart';
@@ -52,16 +55,16 @@ class IntakeFormViewModel extends GetxController {
         await imagePicker.pickImage(source: imageSource ?? ImageSource.gallery);
 
     if (pickedImage != null) {
-      resData?.data.formParams[index!].path = pickedImage.path;
-      resData?.data.formParams[index!].controller.text = 'Image Captured';
+      resData?.data?.formParams?[index!].path = pickedImage.path;
+      resData?.data?.formParams?[index!].controller?.text = 'Image Captured';
     }
     update();
   }
 
   cancelSign({int? index}) {
-    resData?.data.formParams[index!].path = "";
-    resData?.data.formParams[index!].path = "";
-    resData?.data.formParams[index!].controller.clear();
+    resData?.data?.formParams?[index!].path = "";
+    resData?.data?.formParams?[index!].path = "";
+    resData?.data?.formParams?[index!].controller?.clear();
     update();
   }
 
@@ -76,8 +79,9 @@ class IntakeFormViewModel extends GetxController {
     File file =
         File('$tempPath/signature${DateTime.now().millisecondsSinceEpoch}.png');
     await file.writeAsBytes(data.buffer.asUint8List());
-    resData?.data.formParams[index!].path = file.path;
-    resData?.data.formParams[index!].controller.text = 'Signature Captured';
+    resData?.data?.formParams?[index!].path = file.path;
+    resData?.data?.formParams?[index!].controller?.text = 'Signature Captured';
+    if (!context.mounted) return;
     Navigator.pop(context);
     update();
   }
@@ -94,7 +98,7 @@ class IntakeFormViewModel extends GetxController {
     );
 
     if (pickedDate != null) {
-      resData?.data.formParams[index].controller.text =
+      resData?.data?.formParams?[index].controller?.text =
           DateFormat('MM/dd/yyyy').format(pickedDate);
       update();
     }
@@ -129,7 +133,7 @@ class IntakeFormViewModel extends GetxController {
         for (var i = 0; i < savedForm.length; i++) {
           if (savedForm[i]["formId"] == fromId) {
             resData = savedForm[i]["formData"];
-            isValue = resData!.data.formParams.isNotEmpty;
+            isValue = resData!.data!.formParams!.isNotEmpty;
             getFormApiResponse = ApiResponse.complete(resData);
             break;
           }
@@ -139,7 +143,7 @@ class IntakeFormViewModel extends GetxController {
             .intakeFormRepo(medicalCenterId: medicalCenterID, formId: fromId);
         getFormApiResponse = ApiResponse.complete(response);
         resData = getFormApiResponse.data;
-        isValue = response.data.formParams.isNotEmpty;
+        isValue = response.data!.formParams!.isNotEmpty;
       }
     } catch (e) {
       getFormApiResponse = ApiResponse.error('error');
@@ -158,42 +162,25 @@ class IntakeFormViewModel extends GetxController {
       "form_id": formId,
     };
 
-    for (var i = 0; i < resData!.data.formParams.length; i++) {
-      if (resData?.data.formParams[i].type != "image" &&
-          resData?.data.formParams[i].type != "text-area") {
-        if (resData?.data.formParams[i].type == "signature") {
+    for (var i = 0; i < resData!.data!.formParams!.length; i++) {
+      if (resData?.data?.formParams?[i].type != "image" &&
+          resData?.data?.formParams?[i].type != "text-area") {
+        if (resData?.data?.formParams?[i].type == "signature") {
           body.addAll({
-            resData!.data.formParams[i].key:
-                resData!.data.formParams[i].path.isNotEmpty
+            "${resData?.data?.formParams?[i].key}":
+                resData!.data!.formParams![i].path!.isNotEmpty
                     ? await dio.MultipartFile.fromFile(
-                        resData?.data.formParams[i].path ?? '',
-                        filename: '${resData?.data.formParams[i].key}.png')
+                        resData?.data?.formParams?[i].path ?? '',
+                        filename: '${resData?.data?.formParams?[i].key}.png')
                     : null
           });
         } else {
           body.addAll({
-            resData!.data.formParams[i].key:
-                resData?.data.formParams[i].controller.text.toString()
+            "${resData?.data?.formParams?[i].key}":
+                resData?.data?.formParams?[i].controller?.text.toString()
           });
         }
       }
-
-      // if (resData.data.formParams[i].type == "image" ||
-      //     resData.data.formParams[i].type == "signature") {
-      //   body.addAll({
-      //     "${resData.data.formParams[i].key}":
-      //     resData.data.formParams[i].path.isNotEmpty
-      //         ? await dio.MultipartFile.fromFile(
-      //         resData.data.formParams[i].path ?? '',
-      //         filename: '${resData.data.formParams[i].key}.png')
-      //         : null
-      //   });
-      // } else {
-      //   body.addAll({
-      //     resData.data.formParams[i].key:
-      //     resData.data.formParams[i].controller.text.toString()
-      //   });
-      // }
     }
 
     savedForm.removeWhere((element) => element["formId"] == formId);
@@ -235,8 +222,8 @@ class IntakeFormViewModel extends GetxController {
 
     bController.updateLoader(true);
     paypalPaymentModel.patientId = userController.user.value.id;
-    paypalPaymentModel.doctorId = navigationModel?.doctorSpecialities.userId ??
-        navigationModel!.doctor.id;
+    paypalPaymentModel.doctorId = navigationModel?.doctorSpecialities?.userId ??
+        navigationModel!.doctor?.id;
     paypalPaymentModel.purposeOfVisit =
         bController.purposeOfVisitController.text;
     // paypalPaymentModel.appointmentDate = DateFormat('dd-MM-yyyy')
@@ -254,11 +241,11 @@ class IntakeFormViewModel extends GetxController {
     paypalPaymentModel.email = bController.emailController.text;
     paypalPaymentModel.patientMobile = bController.phoneController.text;
     paypalPaymentModel.doctorFees =
-        navigationModel?.doctorSpecialities.perAppointmentCharge;
+        navigationModel?.doctorSpecialities?.perAppointmentCharge;
     paypalPaymentModel.firstName = userController.user.value.firstName;
     paypalPaymentModel.lastName = userController.user.value.lastName;
-    paypalPaymentModel.city = bController.selectedCity.id;
-    paypalPaymentModel.state = bController.selectedState.id;
+    paypalPaymentModel.city = bController.selectedCity?.id;
+    paypalPaymentModel.state = bController.selectedState?.id;
     paypalPaymentModel.companyName = bController.companyController.text;
     paypalPaymentModel.providerName = bController.providerController.text;
     paypalPaymentModel.faxNumber = bController.faxController.text;
@@ -284,29 +271,24 @@ class IntakeFormViewModel extends GetxController {
       faxNumber: paypalPaymentModel.faxNumber,
     )
         .then(
-      (value) {
+      (value) async {
         Utils.showSnackBar('Appointment', "Appointment Book Successfully!");
         bController.clearData();
-
         String appointmentId = patientHomeScreenController
             .appointmentBookedModelData.value.data
             .toString();
-
         for (var i = 0; i < savedForm.length; i++) {
           Map<String, dynamic> body = savedForm[i]["formBody"];
           body.addAll({"appointment_id": appointmentId});
-
-          log('body==========>>>>>$body');
-
           submitUnitedNativesForm(body: body);
           if (i + 1 == savedForm.length) {
             savedForm = [];
           }
         }
-
         Get.offAllNamed(Routes.home);
-        return bController.getPatientAppointment(
-            navigationModel!.doctorSpecialities.userId, context);
+        if (!context.mounted) return null;
+        await bController.getPatientAppointment(
+            "${navigationModel?.doctorSpecialities?.userId}", context);
       },
     );
     bController.updateLoader(false);

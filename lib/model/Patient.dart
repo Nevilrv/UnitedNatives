@@ -1,23 +1,23 @@
 import 'working_day.dart';
 
 class Patient {
-  String id;
-  String name;
-  String firstName;
-  String lastName;
-  String email;
-  String phone;
-  String speciality;
-  String about;
-  String avatar;
-  double rating;
-  int price;
-  int idSpeciality;
-  int goodReviews;
-  int totalScore;
-  int satisfaction;
-  int visitDuration;
-  List<WorkingDay> workingDays;
+  String? id;
+  String? name;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? phone;
+  String? speciality;
+  String? about;
+  String? avatar;
+  double? rating;
+  int? price;
+  int? idSpeciality;
+  int? goodReviews;
+  int? totalScore;
+  int? satisfaction;
+  int? visitDuration;
+  List<WorkingDay>? workingDays;
 
   Patient({
     this.id,
@@ -65,7 +65,7 @@ class Patient {
 }
 
 class Patients {
-  List<Patient> patientList;
+  List<Patient>? patientList;
 
   Patients({this.patientList});
 

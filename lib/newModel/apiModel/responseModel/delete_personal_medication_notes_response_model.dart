@@ -9,9 +9,9 @@ String deletePersonalMedicationNotesResponseModelToJson(
     json.encode(data.toJson());
 
 class DeletePersonalMedicationNotesResponseModel {
-  String status;
-  bool data;
-  String message;
+  String? status;
+  bool? data;
+  String? message;
 
   DeletePersonalMedicationNotesResponseModel({
     this.status,

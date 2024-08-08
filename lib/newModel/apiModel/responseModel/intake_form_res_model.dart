@@ -10,8 +10,8 @@ String intakeFormResponseModelToJson(IntakeFormResponseModel data) =>
     json.encode(data.toJson());
 
 class IntakeFormResponseModel {
-  bool success;
-  FromDataTemp data;
+  bool? success;
+  FromDataTemp? data;
 
   IntakeFormResponseModel({
     this.success,
@@ -26,12 +26,12 @@ class IntakeFormResponseModel {
 
   Map<String, dynamic> toJson() => {
         "success": success,
-        "data": data.toJson(),
+        "data": data?.toJson(),
       };
 }
 
 class FromDataTemp {
-  List<FormParam> formParams;
+  List<FormParam>? formParams;
 
   FromDataTemp({
     this.formParams,
@@ -47,17 +47,17 @@ class FromDataTemp {
       );
 
   Map<String, dynamic> toJson() => {
-        "form_params": List<dynamic>.from(formParams.map((x) => x.toJson())),
+        "form_params": List<dynamic>.from(formParams!.map((x) => x.toJson())),
       };
 }
 
 class FormParam {
-  String label;
-  String key;
-  String type;
-  String isRequired;
-  TextEditingController controller;
-  String path;
+  String? label;
+  String? key;
+  String? type;
+  String? isRequired;
+  TextEditingController? controller;
+  String? path;
 
   FormParam(
       {this.label,

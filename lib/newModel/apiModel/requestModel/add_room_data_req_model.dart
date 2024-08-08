@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart' as dio;
 
 class AddRoomDetailsReqModel {
-  String staffInChargeName;
-  String name;
-  String reason;
-  String date;
-  String time;
-  String image;
+  String? staffInChargeName;
+  String? name;
+  String? reason;
+  String? date;
+  String? time;
+  String? image;
 
   AddRoomDetailsReqModel({
     this.staffInChargeName,
@@ -23,19 +23,19 @@ class AddRoomDetailsReqModel {
       'patient_reason': reason,
       'patient_admissiondate': date,
       'patient_admissiontime': time,
-      'patient_profilepicture': await dio.MultipartFile.fromFile(image),
+      'patient_profilepicture': await dio.MultipartFile.fromFile(image!),
     };
   }
 }
 
 class UpdateRoomDetailsReqModel {
-  String action;
-  String staffInChargeName;
-  String name;
-  String reason;
-  String date;
-  String time;
-  String image;
+  String? action;
+  String? staffInChargeName;
+  String? name;
+  String? reason;
+  String? date;
+  String? time;
+  String? image;
 
   UpdateRoomDetailsReqModel({
     this.action,
@@ -54,18 +54,18 @@ class UpdateRoomDetailsReqModel {
       'patient_reason': reason,
       'patient_admissiondate': date,
       'patient_admissiontime': time,
-      'patient_profilepicture': await dio.MultipartFile.fromFile(image),
+      'patient_profilepicture': await dio.MultipartFile.fromFile(image!),
     };
   }
 }
 
 class UpdateRoomWithoutImgReqModel {
-  String action;
-  String staffInChargeName;
-  String name;
-  String reason;
-  String date;
-  String time;
+  String? action;
+  String? staffInChargeName;
+  String? name;
+  String? reason;
+  String? date;
+  String? time;
 
   UpdateRoomWithoutImgReqModel({
     this.action,

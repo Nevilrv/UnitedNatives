@@ -1,24 +1,24 @@
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_my_doctors_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/delete_doctor_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/delete_my_doctor_notes_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/my_doctor_list_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/update_my_doctor_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/add_my_doctors_reposnse_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/delete_my_doctor_notes_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/delete_my_doctor_reponse_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
-import 'package:doctor_appointment_booking/newModel/services/api_service.dart';
-import 'package:doctor_appointment_booking/newModel/services/base_service.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_my_doctors_request_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/delete_doctor_response_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/delete_my_doctor_notes_request_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/my_doctor_list_request_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/update_my_doctor_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/add_my_doctors_reposnse_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/delete_my_doctor_notes_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/delete_my_doctor_reponse_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
+import 'package:united_natives/newModel/services/api_service.dart';
+import 'package:united_natives/newModel/services/base_service.dart';
 
 class MyDoctorScreenRepo extends BaseService {
   /// add doctor
 
-  Future<dynamic> addMyDoctorRepo({AddMyDoctorRequestModel model}) async {
-    var body = model.toJson();
+  Future<dynamic> addMyDoctorRepo({AddMyDoctorRequestModel? model}) async {
+    var body = model?.toJson();
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
       url: addDoctorURL,
-      body: body,
+      body: body!,
     );
 
     AddMyDoctorsResponseModel addMyDoctorsResponseModel =
@@ -28,12 +28,12 @@ class MyDoctorScreenRepo extends BaseService {
 
   /// update doctor
 
-  Future<dynamic> updateDoctorRepo({UpdateDoctorRequestModel model}) async {
-    var body = model.toJson();
+  Future<dynamic> updateDoctorRepo({UpdateDoctorRequestModel? model}) async {
+    var body = model?.toJson();
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
       url: updateMyDoctorURL,
-      body: body,
+      body: body!,
     );
 
     AddMyDoctorsResponseModel addMyDoctorsResponseModel =
@@ -43,12 +43,12 @@ class MyDoctorScreenRepo extends BaseService {
 
   /// get all doctor list
   Future<MyDoctorsListDataResponseModel> getMyDoctorList(
-      {MyDoctorListRequestModel model}) async {
-    var body = model.toJson();
+      {MyDoctorListRequestModel? model}) async {
+    var body = model?.toJson();
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
       url: getMyDoctorListURL,
-      body: body,
+      body: body!,
     );
 
     MyDoctorsListDataResponseModel myDoctorsListResponseModel =
@@ -59,12 +59,12 @@ class MyDoctorScreenRepo extends BaseService {
   /// delete NOTES
 
   Future<DeleteNotesResponseModel> deleteNotesRepo(
-      {DeleteNotesRequestModel model}) async {
-    var body = model.toJson();
+      {DeleteNotesRequestModel? model}) async {
+    var body = model?.toJson();
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
       url: deleteMyDoctorNotesURL,
-      body: body,
+      body: body!,
     );
 
     DeleteNotesResponseModel deleteNotesResponseModel =
@@ -75,12 +75,12 @@ class MyDoctorScreenRepo extends BaseService {
   /// delete Doctors
 
   Future<DeleteMyDoctorResponseModel> deleteDoctorRepo(
-      {DeleteDoctorRequestModel model}) async {
-    var body = model.toJson();
+      {DeleteDoctorRequestModel? model}) async {
+    var body = model?.toJson();
     var response = await ApiService().getResponse(
       apiType: APIType.aPost,
       url: deleteMyDoctorURL,
-      body: body,
+      body: body!,
     );
 
     DeleteMyDoctorResponseModel deleteMyDoctorResponseModel =

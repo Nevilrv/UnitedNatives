@@ -1,45 +1,45 @@
 class ClassDetailPatientResponseModel {
-  String status;
-  Data data;
-  String message;
+  String? status;
+  Data? data;
+  String? message;
 
   ClassDetailPatientResponseModel({this.status, this.data, this.message});
 
   ClassDetailPatientResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.toJson();
+      data['data'] = this.data?.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
-  String id;
-  String doctorId;
-  String title;
-  String description;
-  String classDate;
-  String classStartTime;
-  String classStartTs;
-  String classEndTime;
-  String classEndTs;
-  String classFeaturedImage;
-  String classAttendees;
-  String classStatus;
-  String created;
-  String modified;
-  String doctorFullName;
-  bool isBooked;
-  String classStatusDisplay;
+  String? id;
+  String? doctorId;
+  String? title;
+  String? description;
+  String? classDate;
+  String? classStartTime;
+  String? classStartTs;
+  String? classEndTime;
+  String? classEndTs;
+  String? classFeaturedImage;
+  String? classAttendees;
+  String? classStatus;
+  String? created;
+  String? modified;
+  String? doctorFullName;
+  bool? isBooked;
+  String? classStatusDisplay;
 
   Data(
       {this.id,
@@ -81,24 +81,24 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['class_date'] = this.classDate;
-    data['class_start_time'] = this.classStartTime;
-    data['class_start_ts'] = this.classStartTs;
-    data['class_end_time'] = this.classEndTime;
-    data['class_end_ts'] = this.classEndTs;
-    data['class_featured_image'] = this.classFeaturedImage;
-    data['class_attendees'] = this.classAttendees;
-    data['class_status'] = this.classStatus;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['doctor_full_name'] = this.doctorFullName;
-    data['is_booked'] = this.isBooked;
-    data['class_status_display'] = this.classStatusDisplay;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['title'] = title;
+    data['description'] = description;
+    data['class_date'] = classDate;
+    data['class_start_time'] = classStartTime;
+    data['class_start_ts'] = classStartTs;
+    data['class_end_time'] = classEndTime;
+    data['class_end_ts'] = classEndTs;
+    data['class_featured_image'] = classFeaturedImage;
+    data['class_attendees'] = classAttendees;
+    data['class_status'] = classStatus;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['doctor_full_name'] = doctorFullName;
+    data['is_booked'] = isBooked;
+    data['class_status_display'] = classStatusDisplay;
     return data;
   }
 }

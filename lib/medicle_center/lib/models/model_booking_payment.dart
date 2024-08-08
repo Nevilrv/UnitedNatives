@@ -1,25 +1,23 @@
-
-
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_bank_account.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_payment_method.dart';
+import 'package:united_natives/medicle_center/lib/models/model_bank_account.dart';
+import 'package:united_natives/medicle_center/lib/models/model_payment_method.dart';
 
 class BookingPaymentModel {
-  bool use;
-  String term;
-  PaymentMethodModel method;
-  List<PaymentMethodModel> listMethod;
-  List<BankAccountModel> listAccount;
+  bool? use;
+  String? term;
+  PaymentMethodModel? method;
+  List<PaymentMethodModel>? listMethod;
+  List<BankAccountModel>? listAccount;
 
   BookingPaymentModel({
-     this.use,
-     this.term,
+    this.use,
+    this.term,
     this.method,
-     this.listMethod,
-     this.listAccount,
+    this.listMethod,
+    this.listAccount,
   });
 
   factory BookingPaymentModel.fromJson(Map<String, dynamic> json) {
-    PaymentMethodModel method;
+    PaymentMethodModel? method;
     if (json['use'] == true) {
       method = PaymentMethodModel.fromJson(
           List.from(json['list'] ?? []).firstWhere((e) {

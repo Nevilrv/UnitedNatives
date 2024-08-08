@@ -1,10 +1,6 @@
-// To parse this JSON data, do
-//
-//     final patientDetailsResponseModel = patientDetailsResponseModelFromJson(jsonString);
-
 import 'dart:convert';
 
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
+import 'package:united_natives/model/api_state_enum.dart';
 
 PatientDetailsResponseModel patientDetailsResponseModelFromJson(String str) =>
     PatientDetailsResponseModel.fromJson(json.decode(str));
@@ -13,10 +9,10 @@ String patientDetailsResponseModelToJson(PatientDetailsResponseModel data) =>
     json.encode(data.toJson());
 
 class PatientDetailsResponseModel {
-  String status;
-  List<PatientData> patientData;
-  String message;
-  APIState apiState;
+  String? status;
+  List<PatientData>? patientData;
+  String? message;
+  APIState? apiState;
 
   PatientDetailsResponseModel({
     this.status,
@@ -41,10 +37,10 @@ class PatientDetailsResponseModel {
     if (json['data'] != null) {
       patientData = <PatientData>[];
       json['data'].forEach((v) {
-        patientData.add(new PatientData.fromJson(v));
+        patientData?.add(PatientData.fromJson(v));
       });
     }
-    if (patientData.isEmpty) {
+    if (patientData!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
       apiState = APIState.COMPLETE;
@@ -53,56 +49,56 @@ class PatientDetailsResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.patientData != null) {
-      data['data'] = this.patientData.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (patientData != null) {
+      data['data'] = patientData?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class PatientData {
-  String id;
-  String patientId;
-  String doctorId;
-  String appointmentType;
-  String purposeOfVisit;
-  DateTime appointmentDate;
-  String appointmentTime;
-  String appointmentFor;
-  String patientFullName;
-  String userMobile;
-  String patientMobile;
-  String userEmail;
-  String appointmentNotes;
-  String appointmentStatus;
-  String adminReadStat;
-  DateTime createdDate;
-  DateTime modifiedDate;
-  String city;
-  String state;
-  String companyName;
-  String providerName;
-  String faxNumber;
-  String patientFirstName;
-  String patientLastName;
-  String patientGender;
-  String patientEmail;
-  String patientContactNumber;
-  String patientProfilePic;
+  String? id;
+  String? patientId;
+  String? doctorId;
+  String? appointmentType;
+  String? purposeOfVisit;
+  DateTime? appointmentDate;
+  String? appointmentTime;
+  String? appointmentFor;
+  String? patientFullName;
+  String? userMobile;
+  String? patientMobile;
+  String? userEmail;
+  String? appointmentNotes;
+  String? appointmentStatus;
+  String? adminReadStat;
+  DateTime? createdDate;
+  DateTime? modifiedDate;
+  String? city;
+  String? state;
+  String? companyName;
+  String? providerName;
+  String? faxNumber;
+  String? patientFirstName;
+  String? patientLastName;
+  String? patientGender;
+  String? patientEmail;
+  String? patientContactNumber;
+  String? patientProfilePic;
   dynamic patientSocialProfilePic;
-  String patientBloodGroup;
-  String patientMaritalStatus;
-  String patientHeight;
-  String patientWeight;
-  String patientEmergencyContact;
-  String patientCaseManager;
-  String patientInsuranceEligibility;
-  String patientTribalStatus;
-  DateTime dob;
-  String appointmentId;
+  String? patientBloodGroup;
+  String? patientMaritalStatus;
+  String? patientHeight;
+  String? patientWeight;
+  String? patientEmergencyContact;
+  String? patientCaseManager;
+  String? patientInsuranceEligibility;
+  String? patientTribalStatus;
+  DateTime? dob;
+  String? appointmentId;
 
   PatientData({
     this.id,
@@ -195,7 +191,7 @@ class PatientData {
         "appointment_type": appointmentType,
         "purpose_of_visit": purposeOfVisit,
         "appointment_date":
-            "${appointmentDate.year.toString().padLeft(4, '0')}-${appointmentDate.month.toString().padLeft(2, '0')}-${appointmentDate.day.toString().padLeft(2, '0')}",
+            "${appointmentDate?.year.toString().padLeft(4, '0')}-${appointmentDate?.month.toString().padLeft(2, '0')}-${appointmentDate?.day.toString().padLeft(2, '0')}",
         "appointment_time": appointmentTime,
         "appointment_for": appointmentFor,
         "patient_full_name": patientFullName,
@@ -205,8 +201,8 @@ class PatientData {
         "appointment_notes": appointmentNotes,
         "appointment_status": appointmentStatus,
         "admin_read_stat": adminReadStat,
-        "created_date": createdDate.toIso8601String(),
-        "modified_date": modifiedDate.toIso8601String(),
+        "created_date": createdDate?.toIso8601String(),
+        "modified_date": modifiedDate?.toIso8601String(),
         "city": city,
         "state": state,
         "company_name": companyName,
@@ -228,7 +224,7 @@ class PatientData {
         "patient_insurance_eligibility": patientInsuranceEligibility,
         "patient_tribal_status": patientTribalStatus,
         "dob":
-            "${dob.year.toString().padLeft(4, '0')}-${dob.month.toString().padLeft(2, '0')}-${dob.day.toString().padLeft(2, '0')}",
+            "${dob?.year.toString().padLeft(4, '0')}-${dob?.month.toString().padLeft(2, '0')}-${dob?.day.toString().padLeft(2, '0')}",
         "appointment_id": appointmentId,
       };
 }

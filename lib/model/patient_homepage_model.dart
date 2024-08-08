@@ -1,32 +1,32 @@
 class PatientHomePageModel {
-  String status;
-  Data data;
-  String message;
+  String? status;
+  Data? data;
+  String? message;
 
   PatientHomePageModel({this.status, this.data, this.message});
 
   PatientHomePageModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.toJson();
+      data['data'] = this.data?.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
-  List<UpcomingAppointments> upcomingAppointments;
-  List<PastAppointments> pastAppointments;
-  List<Prescriptions> prescriptions = [];
-  List<ResearchDocs> researchDocs;
+  List<UpcomingAppointments>? upcomingAppointments;
+  List<PastAppointments>? pastAppointments;
+  List<Prescriptions>? prescriptions = [];
+  List<ResearchDocs>? researchDocs;
 
   Data(
       {this.upcomingAppointments,
@@ -38,75 +38,74 @@ class Data {
     if (json['upcoming_appointments'] != null) {
       upcomingAppointments = <UpcomingAppointments>[];
       json['upcoming_appointments'].forEach((v) {
-        upcomingAppointments.add(new UpcomingAppointments.fromJson(v));
+        upcomingAppointments?.add(UpcomingAppointments.fromJson(v));
       });
     }
     if (json['past_appointments'] != null) {
       pastAppointments = <PastAppointments>[];
       json['past_appointments'].forEach((v) {
-        pastAppointments.add(new PastAppointments.fromJson(v));
+        pastAppointments?.add(PastAppointments.fromJson(v));
       });
     }
     if (json['prescriptions'] != null) {
       prescriptions = <Prescriptions>[];
       json['prescriptions'].forEach((v) {
-        prescriptions.add(new Prescriptions.fromJson(v));
+        prescriptions?.add(Prescriptions.fromJson(v));
       });
     }
     if (json['researchDocs'] != null) {
       researchDocs = <ResearchDocs>[];
       json['researchDocs'].forEach((v) {
-        researchDocs.add(new ResearchDocs.fromJson(v));
+        researchDocs?.add(ResearchDocs.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.upcomingAppointments != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (upcomingAppointments != null) {
       data['upcoming_appointments'] =
-          this.upcomingAppointments.map((v) => v.toJson()).toList();
+          upcomingAppointments?.map((v) => v.toJson()).toList();
     }
-    if (this.pastAppointments != null) {
+    if (pastAppointments != null) {
       data['past_appointments'] =
-          this.pastAppointments.map((v) => v.toJson()).toList();
+          pastAppointments?.map((v) => v.toJson()).toList();
     }
-    if (this.prescriptions != null) {
-      data['prescriptions'] =
-          this.prescriptions.map((v) => v.toJson()).toList();
+    if (prescriptions != null) {
+      data['prescriptions'] = prescriptions?.map((v) => v.toJson()).toList();
     }
-    if (this.researchDocs != null) {
-      data['researchDocs'] = this.researchDocs.map((v) => v.toJson()).toList();
+    if (researchDocs != null) {
+      data['researchDocs'] = researchDocs?.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class PastAppointments {
-  String id;
-  String patientId;
-  String doctorId;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentFor;
-  String patientFullName;
-  String userMobile;
-  String patientMobile;
-  String userEmail;
-  String appointmentStatus;
-  String createdDate;
-  String modifiedDate;
-  String doctorFirstName;
-  String doctorLastName;
-  String doctorGender;
-  String doctorEmail;
-  String doctorSocialProfilePic;
-  String doctorProfilePic;
-  String doctorSpeciality;
-  String doctorMobileNumber;
+  String? id;
+  String? patientId;
+  String? doctorId;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentFor;
+  String? patientFullName;
+  String? userMobile;
+  String? patientMobile;
+  String? userEmail;
+  String? appointmentStatus;
+  String? createdDate;
+  String? modifiedDate;
+  String? doctorFirstName;
+  String? doctorLastName;
+  String? doctorGender;
+  String? doctorEmail;
+  String? doctorSocialProfilePic;
+  String? doctorProfilePic;
+  String? doctorSpeciality;
+  String? doctorMobileNumber;
   var doctorRating;
-  int prescriptionCount;
+  int? prescriptionCount;
 
   PastAppointments({
     this.id,
@@ -163,61 +162,61 @@ class PastAppointments {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['patient_id'] = this.patientId;
-    data['doctor_id'] = this.doctorId;
-    data['purpose_of_visit'] = this.purposeOfVisit;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_for'] = this.appointmentFor;
-    data['patient_full_name'] = this.patientFullName;
-    data['user_mobile'] = this.userMobile;
-    data['patient_mobile'] = this.patientMobile;
-    data['user_email'] = this.userEmail;
-    data['appointment_status'] = this.appointmentStatus;
-    data['created_date'] = this.createdDate;
-    data['modified_date'] = this.modifiedDate;
-    data['doctor_first_name'] = this.doctorFirstName;
-    data['doctor_last_name'] = this.doctorLastName;
-    data['doctor_gender'] = this.doctorGender;
-    data['doctor_email'] = this.doctorEmail;
-    data['doctor_social_profile_pic'] = this.doctorSocialProfilePic;
-    data['doctor_profile_pic'] = this.doctorProfilePic;
-    data['doctor_speciality'] = this.doctorSpeciality;
-    data['doctor_contact_number'] = this.doctorMobileNumber;
-    data['doctor_rating'] = this.doctorRating;
-    data['prescription_count'] = this.prescriptionCount;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['patient_id'] = patientId;
+    data['doctor_id'] = doctorId;
+    data['purpose_of_visit'] = purposeOfVisit;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_for'] = appointmentFor;
+    data['patient_full_name'] = patientFullName;
+    data['user_mobile'] = userMobile;
+    data['patient_mobile'] = patientMobile;
+    data['user_email'] = userEmail;
+    data['appointment_status'] = appointmentStatus;
+    data['created_date'] = createdDate;
+    data['modified_date'] = modifiedDate;
+    data['doctor_first_name'] = doctorFirstName;
+    data['doctor_last_name'] = doctorLastName;
+    data['doctor_gender'] = doctorGender;
+    data['doctor_email'] = doctorEmail;
+    data['doctor_social_profile_pic'] = doctorSocialProfilePic;
+    data['doctor_profile_pic'] = doctorProfilePic;
+    data['doctor_speciality'] = doctorSpeciality;
+    data['doctor_contact_number'] = doctorMobileNumber;
+    data['doctor_rating'] = doctorRating;
+    data['prescription_count'] = prescriptionCount;
 
     return data;
   }
 }
 
 class UpcomingAppointments {
-  String id;
-  String patientId;
-  String doctorId;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentFor;
-  String patientFullName;
-  String userMobile;
-  String patientMobile;
-  String userEmail;
-  String appointmentStatus;
-  String createdDate;
-  String modifiedDate;
-  String doctorFirstName;
-  String doctorLastName;
-  String doctorGender;
-  String doctorEmail;
-  String doctorSocialProfilePic;
-  String doctorProfilePic;
-  String doctorSpeciality;
-  int prescriptionCount;
-  MeetingData meetingData;
-  String status;
+  String? id;
+  String? patientId;
+  String? doctorId;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentFor;
+  String? patientFullName;
+  String? userMobile;
+  String? patientMobile;
+  String? userEmail;
+  String? appointmentStatus;
+  String? createdDate;
+  String? modifiedDate;
+  String? doctorFirstName;
+  String? doctorLastName;
+  String? doctorGender;
+  String? doctorEmail;
+  String? doctorSocialProfilePic;
+  String? doctorProfilePic;
+  String? doctorSpeciality;
+  int? prescriptionCount;
+  MeetingData? meetingData;
+  String? status;
 
   UpcomingAppointments({
     this.id,
@@ -276,38 +275,38 @@ class UpcomingAppointments {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['patient_id'] = this.patientId;
-    data['doctor_id'] = this.doctorId;
-    data['purpose_of_visit'] = this.purposeOfVisit;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_for'] = this.appointmentFor;
-    data['patient_full_name'] = this.patientFullName;
-    data['user_mobile'] = this.userMobile;
-    data['patient_mobile'] = this.patientMobile;
-    data['user_email'] = this.userEmail;
-    data['appointment_status'] = this.appointmentStatus;
-    data['created_date'] = this.createdDate;
-    data['modified_date'] = this.modifiedDate;
-    data['status'] = this.status;
-    data['doctor_first_name'] = this.doctorFirstName;
-    data['doctor_last_name'] = this.doctorLastName;
-    data['doctor_gender'] = this.doctorGender;
-    data['doctor_email'] = this.doctorEmail;
-    data['doctor_social_profile_pic'] = this.doctorSocialProfilePic;
-    data['doctor_profile_pic'] = this.doctorProfilePic;
-    data['doctor_speciality'] = this.doctorSpeciality;
-    data['prescription_count'] = this.prescriptionCount;
-    data['meeting_data'] = this.meetingData.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['patient_id'] = patientId;
+    data['doctor_id'] = doctorId;
+    data['purpose_of_visit'] = purposeOfVisit;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_for'] = appointmentFor;
+    data['patient_full_name'] = patientFullName;
+    data['user_mobile'] = userMobile;
+    data['patient_mobile'] = patientMobile;
+    data['user_email'] = userEmail;
+    data['appointment_status'] = appointmentStatus;
+    data['created_date'] = createdDate;
+    data['modified_date'] = modifiedDate;
+    data['status'] = status;
+    data['doctor_first_name'] = doctorFirstName;
+    data['doctor_last_name'] = doctorLastName;
+    data['doctor_gender'] = doctorGender;
+    data['doctor_email'] = doctorEmail;
+    data['doctor_social_profile_pic'] = doctorSocialProfilePic;
+    data['doctor_profile_pic'] = doctorProfilePic;
+    data['doctor_speciality'] = doctorSpeciality;
+    data['prescription_count'] = prescriptionCount;
+    data['meeting_data'] = meetingData?.toJson();
     return data;
   }
 }
 
 class MeetingData {
-  String id;
-  String password;
+  String? id;
+  String? password;
 
   MeetingData({
     this.id,
@@ -326,27 +325,27 @@ class MeetingData {
 }
 
 class Prescriptions {
-  String id;
-  String doctorId;
-  String patientId;
-  String appointmentId;
-  String medicineName;
-  String medicineRoutine;
-  String additionalNotes;
-  String treatmentDays;
-  String pillsPerDay;
-  String created;
-  String modified;
-  String doctorName;
-  String doctorSpeciality;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentFor;
-  String patientFullName;
-  String userMobile;
-  String patientMobile;
-  String userEmail;
+  String? id;
+  String? doctorId;
+  String? patientId;
+  String? appointmentId;
+  String? medicineName;
+  String? medicineRoutine;
+  String? additionalNotes;
+  String? treatmentDays;
+  String? pillsPerDay;
+  String? created;
+  String? modified;
+  String? doctorName;
+  String? doctorSpeciality;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentFor;
+  String? patientFullName;
+  String? userMobile;
+  String? patientMobile;
+  String? userEmail;
 
   Prescriptions(
       {this.id,
@@ -396,46 +395,46 @@ class Prescriptions {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['patient_id'] = this.patientId;
-    data['appointment_id'] = this.appointmentId;
-    data['medicine_name'] = this.medicineName;
-    data['medicine_routine'] = this.medicineRoutine;
-    data['additional_notes'] = this.additionalNotes;
-    data['treatment_days'] = this.treatmentDays;
-    data['pills_per_day'] = this.pillsPerDay;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['doctor_name'] = this.doctorName;
-    data['doctor_speciality'] = this.doctorSpeciality;
-    data['purpose_of_visit'] = this.purposeOfVisit;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_for'] = this.appointmentFor;
-    data['patient_full_name'] = this.patientFullName;
-    data['user_mobile'] = this.userMobile;
-    data['patient_mobile'] = this.patientMobile;
-    data['user_email'] = this.userEmail;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['patient_id'] = patientId;
+    data['appointment_id'] = appointmentId;
+    data['medicine_name'] = medicineName;
+    data['medicine_routine'] = medicineRoutine;
+    data['additional_notes'] = additionalNotes;
+    data['treatment_days'] = treatmentDays;
+    data['pills_per_day'] = pillsPerDay;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['doctor_name'] = doctorName;
+    data['doctor_speciality'] = doctorSpeciality;
+    data['purpose_of_visit'] = purposeOfVisit;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_for'] = appointmentFor;
+    data['patient_full_name'] = patientFullName;
+    data['user_mobile'] = userMobile;
+    data['patient_mobile'] = patientMobile;
+    data['user_email'] = userEmail;
     return data;
   }
 }
 
 class ResearchDocs {
-  String id;
-  String doctorId;
-  String researchAuthor;
-  String researchTitle;
-  String researchDescription;
-  String researchDocument;
-  String researchDocumentUrl;
-  String researchImage;
-  String researchVideo;
-  String researchVideoUrl;
-  String status;
-  String created;
-  String modified;
+  String? id;
+  String? doctorId;
+  String? researchAuthor;
+  String? researchTitle;
+  String? researchDescription;
+  String? researchDocument;
+  String? researchDocumentUrl;
+  String? researchImage;
+  String? researchVideo;
+  String? researchVideoUrl;
+  String? status;
+  String? created;
+  String? modified;
 
   ResearchDocs(
       {this.id,
@@ -469,20 +468,20 @@ class ResearchDocs {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['doctor_id'] = this.doctorId;
-    data['research_author'] = this.researchAuthor;
-    data['research_title'] = this.researchTitle;
-    data['research_description'] = this.researchDescription;
-    data['research_document'] = this.researchDocument;
-    data['research_document_url'] = this.researchDocumentUrl;
-    data['research_image'] = this.researchImage;
-    data['research_video'] = this.researchVideo;
-    data['research_video_url'] = this.researchVideoUrl;
-    data['status'] = this.status;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['doctor_id'] = doctorId;
+    data['research_author'] = researchAuthor;
+    data['research_title'] = researchTitle;
+    data['research_description'] = researchDescription;
+    data['research_document'] = researchDocument;
+    data['research_document_url'] = researchDocumentUrl;
+    data['research_image'] = researchImage;
+    data['research_video'] = researchVideo;
+    data['research_video_url'] = researchVideoUrl;
+    data['status'] = status;
+    data['created'] = created;
+    data['modified'] = modified;
     return data;
   }
 }

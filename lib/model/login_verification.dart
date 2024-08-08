@@ -1,7 +1,7 @@
 class LoginVerification {
-  String status;
-  LoginVerificationData loginVerificationData;
-  String message;
+  String? status;
+  LoginVerificationData? loginVerificationData;
+  String? message;
 
   LoginVerification({this.status, this.loginVerificationData, this.message});
 
@@ -9,30 +9,30 @@ class LoginVerification {
     status = json['status'];
 
     loginVerificationData =
-        json['data'] != null ? new LoginVerificationData.fromJson(json) : null;
+        json['data'] != null ? LoginVerificationData.fromJson(json) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.loginVerificationData != null) {
-      data['data'] = this.loginVerificationData.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (loginVerificationData != null) {
+      data['data'] = loginVerificationData?.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class LoginVerificationData {
-  String id;
-  String firstName;
-  String lastName;
-  String loginType;
-  String email;
-  String profilePic;
-  String socialProfilePic;
-  String isFirstTime;
+  String? id;
+  String? firstName;
+  String? lastName;
+  String? loginType;
+  String? email;
+  String? profilePic;
+  String? socialProfilePic;
+  String? isFirstTime;
 
   LoginVerificationData(
       {this.id,
@@ -56,15 +56,15 @@ class LoginVerificationData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['login_type'] = this.loginType;
-    data['email'] = this.email;
-    data['profile_pic'] = this.profilePic;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['first_time_login'] = this.isFirstTime;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['login_type'] = loginType;
+    data['email'] = email;
+    data['profile_pic'] = profilePic;
+    data['social_profile_pic'] = socialProfilePic;
+    data['first_time_login'] = isFirstTime;
     return data;
   }
 }

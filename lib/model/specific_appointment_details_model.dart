@@ -1,68 +1,71 @@
 class SpecificAppointmentDetailsModel {
-  String status;
-  SpecificAppointmentDetailsData specificAppointmentDetailsData;
-  String message;
+  String? status;
+  SpecificAppointmentDetailsData? specificAppointmentDetailsData;
+  String? message;
 
-  SpecificAppointmentDetailsModel({this.status, this.specificAppointmentDetailsData, this.message});
+  SpecificAppointmentDetailsModel(
+      {this.status, this.specificAppointmentDetailsData, this.message});
 
   SpecificAppointmentDetailsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    specificAppointmentDetailsData = json['data'] != null ? new SpecificAppointmentDetailsData.fromJson(json['data']) : null;
+    specificAppointmentDetailsData = json['data'] != null
+        ? SpecificAppointmentDetailsData.fromJson(json['data'])
+        : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.specificAppointmentDetailsData != null) {
-      data['data'] = this.specificAppointmentDetailsData.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (specificAppointmentDetailsData != null) {
+      data['data'] = specificAppointmentDetailsData?.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class SpecificAppointmentDetailsData {
-  String id;
-  String patientId;
-  String doctorId;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentTime;
-  String appointmentFor;
-  String patientFullName;
-  String userMobile;
-  String patientMobile;
-  String userEmail;
-  String appointmentStatus;
-  String createdDate;
-  String modifiedDate;
-  String doctorFirstName;
-  String doctorLastName;
-  String doctorGender;
-  String doctorEmail;
-  String doctorSpeciality;
+  String? id;
+  String? patientId;
+  String? doctorId;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentTime;
+  String? appointmentFor;
+  String? patientFullName;
+  String? userMobile;
+  String? patientMobile;
+  String? userEmail;
+  String? appointmentStatus;
+  String? createdDate;
+  String? modifiedDate;
+  String? doctorFirstName;
+  String? doctorLastName;
+  String? doctorGender;
+  String? doctorEmail;
+  String? doctorSpeciality;
 
   SpecificAppointmentDetailsData(
       {this.id,
-        this.patientId,
-        this.doctorId,
-        this.purposeOfVisit,
-        this.appointmentDate,
-        this.appointmentTime,
-        this.appointmentFor,
-        this.patientFullName,
-        this.userMobile,
-        this.patientMobile,
-        this.userEmail,
-        this.appointmentStatus,
-        this.createdDate,
-        this.modifiedDate,
-        this.doctorFirstName,
-        this.doctorLastName,
-        this.doctorGender,
-        this.doctorEmail,
-        this.doctorSpeciality});
+      this.patientId,
+      this.doctorId,
+      this.purposeOfVisit,
+      this.appointmentDate,
+      this.appointmentTime,
+      this.appointmentFor,
+      this.patientFullName,
+      this.userMobile,
+      this.patientMobile,
+      this.userEmail,
+      this.appointmentStatus,
+      this.createdDate,
+      this.modifiedDate,
+      this.doctorFirstName,
+      this.doctorLastName,
+      this.doctorGender,
+      this.doctorEmail,
+      this.doctorSpeciality});
 
   SpecificAppointmentDetailsData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -87,26 +90,26 @@ class SpecificAppointmentDetailsData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['patient_id'] = this.patientId;
-    data['doctor_id'] = this.doctorId;
-    data['purpose_of_visit'] = this.purposeOfVisit;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_for'] = this.appointmentFor;
-    data['patient_full_name'] = this.patientFullName;
-    data['user_mobile'] = this.userMobile;
-    data['patient_mobile'] = this.patientMobile;
-    data['user_email'] = this.userEmail;
-    data['appointment_status'] = this.appointmentStatus;
-    data['created_date'] = this.createdDate;
-    data['modified_date'] = this.modifiedDate;
-    data['doctor_first_name'] = this.doctorFirstName;
-    data['doctor_last_name'] = this.doctorLastName;
-    data['doctor_gender'] = this.doctorGender;
-    data['doctor_email'] = this.doctorEmail;
-    data['doctor_speciality'] = this.doctorSpeciality;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['patient_id'] = patientId;
+    data['doctor_id'] = doctorId;
+    data['purpose_of_visit'] = purposeOfVisit;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_for'] = appointmentFor;
+    data['patient_full_name'] = patientFullName;
+    data['user_mobile'] = userMobile;
+    data['patient_mobile'] = patientMobile;
+    data['user_email'] = userEmail;
+    data['appointment_status'] = appointmentStatus;
+    data['created_date'] = createdDate;
+    data['modified_date'] = modifiedDate;
+    data['doctor_first_name'] = doctorFirstName;
+    data['doctor_last_name'] = doctorLastName;
+    data['doctor_gender'] = doctorGender;
+    data['doctor_email'] = doctorEmail;
+    data['doctor_speciality'] = doctorSpeciality;
     return data;
   }
 }

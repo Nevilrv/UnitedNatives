@@ -1,7 +1,7 @@
 class AllRequestResponseModel {
-  String status;
-  List<Data> data;
-  String message;
+  String? status;
+  List<Data>? data;
+  String? message;
 
   AllRequestResponseModel({this.status, this.data, this.message});
 
@@ -10,36 +10,36 @@ class AllRequestResponseModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data?.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
-  String id;
-  String categoryId;
-  String patientId;
-  String date;
-  String time;
-  String timestamp;
-  String notes;
-  String status;
-  String created;
-  String modified;
-  String categoryTitle;
-  String statusDisplay;
+  String? id;
+  String? categoryId;
+  String? patientId;
+  String? date;
+  String? time;
+  String? timestamp;
+  String? notes;
+  String? status;
+  String? created;
+  String? modified;
+  String? categoryTitle;
+  String? statusDisplay;
 
   Data(
       {this.id,
@@ -71,19 +71,19 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['category_id'] = this.categoryId;
-    data['patient_id'] = this.patientId;
-    data['date'] = this.date;
-    data['time'] = this.time;
-    data['timestamp'] = this.timestamp;
-    data['notes'] = this.notes;
-    data['status'] = this.status;
-    data['created'] = this.created;
-    data['modified'] = this.modified;
-    data['category_title'] = this.categoryTitle;
-    data['status_display'] = this.statusDisplay;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['category_id'] = categoryId;
+    data['patient_id'] = patientId;
+    data['date'] = date;
+    data['time'] = time;
+    data['timestamp'] = timestamp;
+    data['notes'] = notes;
+    data['status'] = status;
+    data['created'] = created;
+    data['modified'] = modified;
+    data['category_title'] = categoryTitle;
+    data['status_display'] = statusDisplay;
     return data;
   }
 }

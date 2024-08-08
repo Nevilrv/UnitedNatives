@@ -9,9 +9,9 @@ String updatePersonalMedicationNotesResponseModelToJson(
     json.encode(data.toJson());
 
 class UpdatePersonalMedicationNotesResponseModel {
-  String status;
-  bool data;
-  String message;
+  String? status;
+  bool? data;
+  String? message;
 
   UpdatePersonalMedicationNotesResponseModel({
     this.status,

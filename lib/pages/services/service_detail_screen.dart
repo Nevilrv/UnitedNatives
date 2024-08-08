@@ -1,16 +1,16 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
-  final String image;
-  final String title;
-  final String description;
+  final String? image;
+  final String? title;
+  final String? description;
 
-  ServiceDetailScreen({Key key, this.image, this.title, this.description})
-      : super(key: key);
+  const ServiceDetailScreen(
+      {super.key, this.image, this.title, this.description});
 
   @override
   State<ServiceDetailScreen> createState() => _ServiceDetailScreenState();
@@ -32,8 +32,8 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 child: ListView(
                   children: [
                     headerView(
-                        image: widget.image,
-                        title: widget.title,
+                        image: widget.image.toString(),
+                        title: widget.title.toString(),
                         context: context),
                     // Get.width * 0.05
                     /*Padding(
@@ -51,7 +51,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: Get.width * 0.05),
-                      child: tab1(description: widget.description),
+                      child: tab1(description: widget.description.toString()),
                     ),
                   ],
                 ))),
@@ -59,7 +59,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     });
   }
 
-  Column tab1({String description}) {
+  Column tab1({String? description}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -71,8 +71,9 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     );
   }
 
-  Widget headerView({String image, String title, BuildContext context}) {
-    bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  Widget headerView(
+      {String? image, required String title, required BuildContext context}) {
+    bool isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
     return Stack(
       children: [
         Column(
@@ -97,11 +98,11 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
               padding: EdgeInsets.symmetric(
                   horizontal: Get.width * 0.05, vertical: Get.height * 0.012),
               child: Text(
-                '${title ?? ""}',
+                title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: _isDark ? Colors.white : Colors.black,
+                    color: isDark ? Colors.white : Colors.black,
                     fontSize: Get.height * 0.08,
                     fontWeight: FontWeight.bold),
               ),
@@ -109,7 +110,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             Container(
               width: Get.width * 2,
               height: 2,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               color: Colors.black12,
             ),
             SizedBox(
@@ -127,7 +128,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             child: CircleAvatar(
               backgroundColor: Colors.black.withOpacity(0.5),
               radius: Get.height * 0.02,
-              child: Center(
+              child: const Center(
                 child: Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.white,
@@ -141,25 +142,20 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   }
 
   Container buildContainer({
-    String title,
-    Color colorName,
-    Color colorText,
+    String? title,
+    Color? colorName,
+    Color? colorText,
   }) {
     return Container(
       height: 40,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-      child: Text(
-        "$title",
-        style: TextStyle(
-            color: colorText == null ? Colors.black : colorText, fontSize: 20),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
 
       decoration: BoxDecoration(
           color: colorName,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 4,
@@ -168,28 +164,28 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             )
           ],
           borderRadius: BorderRadius.circular(8)),
+      child: Text(
+        title.toString(),
+        style: TextStyle(color: colorText ?? Colors.black, fontSize: 20),
+      ),
     );
   }
 
   Container buildContainerButton({
-    String title,
-    Color colorName,
-    Color colorText,
+    String? title,
+    Color? colorName,
+    Color? colorText,
   }) {
     return Container(
       height: 50,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.only(bottom: 25, right: 25, left: 25, top: 10),
-      child: Text(
-        "$title",
-        style: TextStyle(color: colorText, fontSize: 20),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.only(bottom: 25, right: 25, left: 25, top: 10),
 
       decoration: BoxDecoration(
           color: colorName,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 4,
@@ -198,6 +194,10 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
             )
           ],
           borderRadius: BorderRadius.circular(8)),
+      child: Text(
+        title.toString(),
+        style: TextStyle(color: colorText, fontSize: 20),
+      ),
     );
   }
 }

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class DocNotification {
-  int id;
-  String title;
-  String body;
-  String icon;
-  String date;
+  int? id;
+  String? title;
+  String? body;
+  String? icon;
+  String? date;
 
   DocNotification({
     this.id,
@@ -25,15 +25,13 @@ class DocNotification {
     };
   }
 
-  factory DocNotification.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
+  factory DocNotification.fromMap(Map<String, dynamic>? map) {
     return DocNotification(
-      id: map['id'],
-      title: map['title'],
-      body: map['body'],
-      icon: map['icon'],
-      date: map['date'],
+      id: map?['id'],
+      title: map?['title'],
+      body: map?['body'],
+      icon: map?['icon'],
+      date: map?['date'],
     );
   }
 
@@ -62,6 +60,4 @@ final notifications = [
     icon: 'assets/images/icon_man.png',
     date: '2d',
   ),
-
-
 ];

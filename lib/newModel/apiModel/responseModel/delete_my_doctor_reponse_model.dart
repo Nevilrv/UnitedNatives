@@ -11,9 +11,9 @@ String deleteMyDoctorResponseModelToJson(DeleteMyDoctorResponseModel data) =>
     json.encode(data.toJson());
 
 class DeleteMyDoctorResponseModel {
-  String status;
-  bool data;
-  String message;
+  String? status;
+  bool? data;
+  String? message;
 
   DeleteMyDoctorResponseModel({
     this.status,

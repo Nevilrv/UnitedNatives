@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final addNotesModel = addNotesModelFromJson(jsonString);
-
 import 'dart:convert';
 
 AddNotesModel addNotesModelFromJson(String str) =>
@@ -15,8 +11,8 @@ class AddNotesModel {
     this.message,
   });
 
-  String status;
-  String message;
+  String? status;
+  String? message;
 
   factory AddNotesModel.fromJson(Map<String, dynamic> json) => AddNotesModel(
         status: json["status"],

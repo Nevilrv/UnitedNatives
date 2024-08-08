@@ -1,9 +1,4 @@
-// To parse this JSON data, do
-//
-//     final doctorAppointmentsModel = doctorAppointmentsModelFromJson(jsonString);
-
 import 'dart:convert';
-
 import 'api_state_enum.dart';
 
 DoctorAppointmentsModel doctorAppointmentsModelFromJson(String str) =>
@@ -20,11 +15,11 @@ class DoctorAppointmentsModel {
     this.message,
   });
 
-  String status;
-  List<PatientAppoint> upcoming;
-  List<PatientAppoint> past;
-  String message;
-  APIState apiState;
+  String? status;
+  List<PatientAppoint>? upcoming;
+  List<PatientAppoint>? past;
+  String? message;
+  APIState? apiState;
 
   DoctorAppointmentsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -32,13 +27,13 @@ class DoctorAppointmentsModel {
       if (json['data']['upcoming'] != null) {
         upcoming = <PatientAppoint>[];
         json['data']['upcoming'].forEach((v) {
-          upcoming.add(new PatientAppoint.fromJson(v));
+          upcoming?.add(PatientAppoint.fromJson(v));
         });
       }
       if (json['data']['past'] != null) {
         past = <PatientAppoint>[];
         json['data']['past'].forEach((v) {
-          past.add(new PatientAppoint.fromJson(v));
+          past?.add(PatientAppoint.fromJson(v));
         });
       }
     }
@@ -49,8 +44,8 @@ class DoctorAppointmentsModel {
   Map<String, dynamic> toJson() => {
         "status": status,
         "data": {
-          "upcoming": this.upcoming.map((v) => v.toJson()).toList(),
-          "past": this.past.map((v) => v.toJson()).toList(),
+          "upcoming": upcoming?.map((v) => v.toJson()).toList(),
+          "past": past?.map((v) => v.toJson()).toList(),
         },
         "message": message,
       };
@@ -62,8 +57,8 @@ class Data {
     this.past,
   });
 
-  List<PatientAppoint> upcoming;
-  List<PatientAppoint> past;
+  List<PatientAppoint>? upcoming;
+  List<PatientAppoint>? past;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         upcoming: List<PatientAppoint>.from(
@@ -73,45 +68,45 @@ class Data {
       );
 
   Map<String, dynamic> toJson() => {
-        "upcoming": List<PatientAppoint>.from(upcoming.map((x) => x.toJson())),
-        "past": List<PatientAppoint>.from(past.map((x) => x.toJson())),
+        "upcoming": List<PatientAppoint>.from(upcoming!.map((x) => x.toJson())),
+        "past": List<PatientAppoint>.from(past!.map((x) => x.toJson())),
       };
 }
 
 class PatientAppoint {
-  String id;
-  String patientId;
-  String doctorId;
-  String purposeOfVisit;
-  String appointmentDate;
-  String appointmentId;
-  String appointmentTime;
-  String appointmentFor;
-  String patientFullName;
-  String userMobile;
-  String patientMobile;
-  String userEmail;
-  String appointmentStatus;
-  String adminReadStat;
-  String createdDate;
-  String modifiedDate;
-  String patientFirstName;
-  String patientLastName;
-  String patientGender;
-  String patientEmail;
-  String patientSocialProfilePic;
-  String patientProfilePic;
-  String patientContactNumber;
-  String patientBloodGroup;
-  String patientMaritalStatus;
-  String patientHeight;
-  String patientWeight;
-  String patientEmergencyContact;
-  String patientCaseManager;
-  String patientInsuranceEligibility;
-  String patientTribalStatus;
-  int prescriptionCount;
-  MeetingData meetingData;
+  String? id;
+  String? patientId;
+  String? doctorId;
+  String? purposeOfVisit;
+  String? appointmentDate;
+  String? appointmentId;
+  String? appointmentTime;
+  String? appointmentFor;
+  String? patientFullName;
+  String? userMobile;
+  String? patientMobile;
+  String? userEmail;
+  String? appointmentStatus;
+  String? adminReadStat;
+  String? createdDate;
+  String? modifiedDate;
+  String? patientFirstName;
+  String? patientLastName;
+  String? patientGender;
+  String? patientEmail;
+  String? patientSocialProfilePic;
+  String? patientProfilePic;
+  String? patientContactNumber;
+  String? patientBloodGroup;
+  String? patientMaritalStatus;
+  String? patientHeight;
+  String? patientWeight;
+  String? patientEmergencyContact;
+  String? patientCaseManager;
+  String? patientInsuranceEligibility;
+  String? patientTribalStatus;
+  int? prescriptionCount;
+  MeetingData? meetingData;
 
   PatientAppoint({
     this.id,
@@ -155,7 +150,7 @@ class PatientAppoint {
     doctorId = json['doctor_id'];
     purposeOfVisit = json['purpose_of_visit'];
     appointmentDate = json['appointment_date'];
-    appointmentId = json['appointment_id'].toString() ?? '';
+    appointmentId = json['appointment_id'].toString();
     appointmentTime = json['appointment_time'];
     appointmentFor = json['appointment_for'];
     patientFullName = json['patient_full_name'];
@@ -190,47 +185,47 @@ class PatientAppoint {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['patient_id'] = this.patientId;
-    data['doctor_id'] = this.doctorId;
-    data['purpose_of_visit'] = this.purposeOfVisit;
-    data['appointment_date'] = this.appointmentDate;
-    data['appointment_id'] = this.appointmentId;
-    data['appointment_time'] = this.appointmentTime;
-    data['appointment_for'] = this.appointmentFor;
-    data['patient_full_name'] = this.patientFullName;
-    data['user_mobile'] = this.userMobile;
-    data['patient_mobile'] = this.patientMobile;
-    data['user_email'] = this.userEmail;
-    data['appointment_status'] = this.appointmentStatus;
-    data['admin_read_stat'] = this.adminReadStat;
-    data['created_date'] = this.createdDate;
-    data['modified_date'] = this.modifiedDate;
-    data['patient_first_name'] = this.patientFirstName;
-    data['patient_last_name'] = this.patientLastName;
-    data['patient_gender'] = this.patientGender;
-    data['patient_email'] = this.patientEmail;
-    data['patient_social_profile_pic'] = this.patientSocialProfilePic;
-    data['patient_profile_pic'] = this.patientProfilePic;
-    data['patient_contact_number'] = this.patientContactNumber;
-    data['patient_blood_group'] = this.patientBloodGroup;
-    data['patient_marital_status'] = this.patientMaritalStatus;
-    data['patient_height'] = this.patientHeight;
-    data['patient_weight'] = this.patientWeight;
-    data['patient_emergency_contact'] = this.patientEmergencyContact;
-    data['patient_case_manager'] = this.patientCaseManager;
-    data['patient_insurance_eligibility'] = this.patientInsuranceEligibility;
-    data['patient_tribal_status'] = this.patientTribalStatus;
-    data['prescription_count'] = this.prescriptionCount;
-    data['meeting_data'] = this.meetingData.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['patient_id'] = patientId;
+    data['doctor_id'] = doctorId;
+    data['purpose_of_visit'] = purposeOfVisit;
+    data['appointment_date'] = appointmentDate;
+    data['appointment_id'] = appointmentId;
+    data['appointment_time'] = appointmentTime;
+    data['appointment_for'] = appointmentFor;
+    data['patient_full_name'] = patientFullName;
+    data['user_mobile'] = userMobile;
+    data['patient_mobile'] = patientMobile;
+    data['user_email'] = userEmail;
+    data['appointment_status'] = appointmentStatus;
+    data['admin_read_stat'] = adminReadStat;
+    data['created_date'] = createdDate;
+    data['modified_date'] = modifiedDate;
+    data['patient_first_name'] = patientFirstName;
+    data['patient_last_name'] = patientLastName;
+    data['patient_gender'] = patientGender;
+    data['patient_email'] = patientEmail;
+    data['patient_social_profile_pic'] = patientSocialProfilePic;
+    data['patient_profile_pic'] = patientProfilePic;
+    data['patient_contact_number'] = patientContactNumber;
+    data['patient_blood_group'] = patientBloodGroup;
+    data['patient_marital_status'] = patientMaritalStatus;
+    data['patient_height'] = patientHeight;
+    data['patient_weight'] = patientWeight;
+    data['patient_emergency_contact'] = patientEmergencyContact;
+    data['patient_case_manager'] = patientCaseManager;
+    data['patient_insurance_eligibility'] = patientInsuranceEligibility;
+    data['patient_tribal_status'] = patientTribalStatus;
+    data['prescription_count'] = prescriptionCount;
+    data['meeting_data'] = meetingData?.toJson();
     return data;
   }
 }
 
 class MeetingData {
-  String id;
-  String password;
+  String? id;
+  String? password;
 
   MeetingData({
     this.id,

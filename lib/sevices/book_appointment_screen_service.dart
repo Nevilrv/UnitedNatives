@@ -23,7 +23,7 @@ class BookAppointmentScreenService {
 
   final NetworkAPICall _networkAPICall = NetworkAPICall();
 
-  static const BANNER_TOKEN = '43b2fe6fb2cd47eb049520a9f5d94905';
+  static const bannerToken = '43b2fe6fb2cd47eb049520a9f5d94905';
 
   // Map<String, String> headers = {
   //   "Authorization": 'Bearer ${Prefs.getString(Prefs.BEARER)}',

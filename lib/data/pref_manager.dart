@@ -1,5 +1,6 @@
-import 'package:doctor_appointment_booking/utils/exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/exception.dart';
 
 class Prefs {
   static const String DARKTHEME = "dark_theme";
@@ -23,19 +24,17 @@ class Prefs {
   static const String vcEndTime = "vcEndTime";
   static const String userType = "userType";
 
-  static SharedPreferences _prefs;
-  static Map<String, dynamic> _memoryPrefs = Map<String, dynamic>();
+  static SharedPreferences? _prefs;
+  static final Map<String, dynamic> _memoryPrefs = <String, dynamic>{};
 
-  static Future<SharedPreferences> load() async {
-    if (_prefs == null) {
-      _prefs = await SharedPreferences.getInstance();
-    }
+  static Future<SharedPreferences?> load() async {
+    _prefs ??= await SharedPreferences.getInstance();
     return _prefs;
   }
 
   static Future<void> setString(String key, String value) async {
     try {
-      await _prefs.setString(key, value);
+      await _prefs?.setString(key, value);
       _memoryPrefs[key] = value;
     } catch (e) {
       AppException.exceptionHandler(e);
@@ -43,95 +42,79 @@ class Prefs {
   }
 
   static void setInt(String key, int value) {
-    _prefs.setInt(key, value);
+    _prefs?.setInt(key, value);
     _memoryPrefs[key] = value;
   }
 
   static void setDouble(String key, double value) {
-    _prefs.setDouble(key, value);
+    _prefs?.setDouble(key, value);
     _memoryPrefs[key] = value;
   }
 
   static void setBool(String key, bool value) {
-    _prefs.setBool(key, value);
+    _prefs?.setBool(key, value);
     _memoryPrefs[key] = value;
   }
 
-  static String getString(String key, {String def}) {
-    String val;
+  static String? getString(String key, {String? def}) {
+    String? val;
     if (_memoryPrefs.containsKey(key)) {
       val = _memoryPrefs[key];
     }
-    if (val == null) {
-      val = _prefs.getString(key);
-    }
-    if (val == null) {
-      val = def;
-    }
+    val ??= _prefs?.getString(key);
+    val ??= def;
     _memoryPrefs[key] = val;
     return val;
   }
 
   static removeKey(String key) {
-    _prefs.remove(key);
+    _prefs?.remove(key);
   }
 
-  static int getInt(String key, {int def}) {
-    int val;
+  static int? getInt(String key, {int? def}) {
+    int? val;
     if (_memoryPrefs.containsKey(key)) {
       val = _memoryPrefs[key];
     }
-    if (val == null) {
-      val = _prefs.getInt(key);
-    }
-    if (val == null) {
-      val = def;
-    }
+    val ??= _prefs?.getInt(key);
+    val ??= def;
     _memoryPrefs[key] = val;
     return val;
   }
 
-  static double getDouble(String key, {double def}) {
-    double val;
+  static double? getDouble(String key, {double? def}) {
+    double? val;
     if (_memoryPrefs.containsKey(key)) {
       val = _memoryPrefs[key];
     }
-    if (val == null) {
-      val = _prefs.getDouble(key);
-    }
-    if (val == null) {
-      val = def;
-    }
+    val ??= _prefs?.getDouble(key);
+    val ??= def;
     _memoryPrefs[key] = val;
     return val;
   }
 
   static bool getBool(String key, {bool def = false}) {
-    bool val;
+    bool? val;
     if (_memoryPrefs.containsKey(key)) {
       val = _memoryPrefs[key];
     }
-    if (val == null) {
-      val = _prefs.getBool(key);
-    }
-    if (val == null) {
-      val = def;
-    }
+    val ??= _prefs?.getBool(key);
+    val ??= def;
     _memoryPrefs[key] = val;
     return val;
   }
 
   static void clear() {
-    _prefs.clear();
+    _prefs?.clear();
   }
 
   static void clearFilter() {
-    _prefs.remove(Prefs.stateFilter);
-    _prefs.remove(Prefs.cityFilter);
+    _prefs?.remove(Prefs.stateFilter);
+    _prefs?.remove(Prefs.cityFilter);
   }
 
   static void clearTempMsg() {
-    _prefs.remove(Prefs.tempMsg);
+    _prefs?.remove(Prefs.tempMsg);
   }
 
   static bool isDark() {

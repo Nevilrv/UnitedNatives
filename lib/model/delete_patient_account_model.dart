@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final deletePatientAccountResponseModel = deletePatientAccountResponseModelFromJson(jsonString);
-
 import 'dart:convert';
 
 DeletePatientAccountResponseModel deletePatientAccountResponseModelFromJson(
@@ -13,8 +9,8 @@ String deletePatientAccountResponseModelToJson(
     json.encode(data.toJson());
 
 class DeletePatientAccountResponseModel {
-  String status;
-  String message;
+  String? status;
+  String? message;
 
   DeletePatientAccountResponseModel({
     this.status,

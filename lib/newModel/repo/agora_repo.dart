@@ -1,8 +1,7 @@
 import 'dart:developer';
-
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_agora_token_model.dart';
-import 'package:doctor_appointment_booking/newModel/services/api_service.dart';
-import 'package:doctor_appointment_booking/newModel/services/base_service.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_agora_token_model.dart';
+import 'package:united_natives/newModel/services/api_service.dart';
+import 'package:united_natives/newModel/services/base_service.dart';
 
 class AgoraRepo extends BaseService {
   Future<GetAgoraToken> agoraRepo(String id) async {

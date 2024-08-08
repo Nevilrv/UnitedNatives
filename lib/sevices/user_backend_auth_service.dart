@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
-import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:united_natives/data/pref_manager.dart';
@@ -34,7 +33,7 @@ class UserBackendAuthService {
   final NetworkAPICall _networkAPICall = NetworkAPICall();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static const BANNER_TOKEN = '43b2fe6fb2cd47eb049520a9f5d94905';
+  static const bannerToken = '43b2fe6fb2cd47eb049520a9f5d94905';
   Map<String, String> headers = {
     "Authorization": 'Bearer 43b2fe6fb2cd47eb049520a9f5d94905',
     "Content-Type": 'application/x-www-form-urlencoded',
@@ -87,15 +86,6 @@ class UserBackendAuthService {
             userType: userType,
             bearerToken: bearerToken);
         Prefs.getString(bearerToken);
-
-        if (userData == null) {
-          // AppPreference().setCustomerToken(null);
-          // Prefs.setString(Prefs.BEARER, $);
-        }
-      }
-      if (userData != null) {
-        debugPrint("ASADMIN ID${userData.isAdmin}");
-        // AppPreference().setLoginType(loginType.toString());
       }
 
       return userData;
@@ -151,43 +141,32 @@ class UserBackendAuthService {
   Future register(User userData, String userType, String bearerToken,
       {required File profilePic}) async {
     try {
-      var body = {
-        'first_name': userData.firstName,
-        'last_name': userData.lastName,
-        'gender': userData.gender,
-        'email': userData.email,
-        'contact_number': userData.contactNumber,
-        'date_of_birth': userData.dateOfBirth,
-        'blood_group': userData.bloodGroup,
-        'allergies': userData.allergies,
-        'marital_status': userData.maritalStatus,
-        'insurance_eligibility': userData.insuranceEligibility,
-        'medical_insurance_name': userData.insuranceCompanyName,
-
-        'us_veteran_status': userData.usVeteranStatus,
-
-        'tribal_status': userData.tribalStatus,
-
-        'tribal_federally_member': userData.tribalFederallyMember,
-
-        'tribal_federally_state': userData.tribalFederallyState,
-
-        'tribal_background_status': userData.tribalBackgroundStatus,
-
-        'how_did_you_hear_about_us': userData.howDidYouHearAboutUs,
-
-        'password': userData.password,
-        // 'profilePic' : userData.profilePic,
-
-        'emergency_contact': userData.emergencyContact,
-
-        'state': userData.state,
-        'city': userData.city,
-
-        "height": userData.height,
-        "weight": userData.weight,
-        "emergency_contact_number": userData.emergencyContact,
-        "case_manager": userData.currentCaseManagerInfo,
+      Map<String, String> body = {
+        'first_name': userData.firstName ?? "",
+        'last_name': userData.lastName ?? "",
+        'gender': userData.gender ?? "",
+        'email': userData.email ?? "",
+        'contact_number': userData.contactNumber ?? "",
+        'date_of_birth': userData.dateOfBirth ?? "",
+        'blood_group': userData.bloodGroup ?? "",
+        'allergies': userData.allergies ?? "",
+        'marital_status': userData.maritalStatus ?? "",
+        'insurance_eligibility': userData.insuranceEligibility ?? "",
+        'medical_insurance_name': userData.insuranceCompanyName ?? "",
+        'us_veteran_status': userData.usVeteranStatus ?? "",
+        'tribal_status': userData.tribalStatus ?? "",
+        'tribal_federally_member': userData.tribalFederallyMember ?? "",
+        'tribal_federally_state': userData.tribalFederallyState ?? "",
+        'tribal_background_status': userData.tribalBackgroundStatus ?? "",
+        'how_did_you_hear_about_us': userData.howDidYouHearAboutUs ?? "",
+        'password': userData.password ?? "",
+        'emergency_contact': userData.emergencyContact ?? "",
+        'state': userData.state ?? "",
+        'city': userData.city ?? "",
+        "height": userData.height ?? "",
+        "weight": userData.weight ?? "",
+        "emergency_contact_number": userData.emergencyContact ?? "",
+        "case_manager": userData.currentCaseManagerInfo ?? "",
 
         // 'is_IH_user': userData.isIhUser,
         //'is_admin':userData.isAdmin
@@ -198,24 +177,23 @@ class UserBackendAuthService {
 
       log('body==========>>>>>${jsonEncode(body)}');
 
-      var bodyDoctor = {
-        'first_name': userData.firstName,
-        'last_name': userData.lastName,
-        'gender': userData.gender,
-        'email': userData.email,
-        'password': userData.password,
-        // 'profilePic': userData.profilePic,
-        'per_appointment_rate': userData.perAppointmentCharge,
-        'contact_number': userData.contactNumber,
-        'date_of_birth': userData.dateOfBirth,
-        'speciality': userData.speciality,
-        'certificate_no': userData.certificateNo,
-        'education': userData.education,
-        'state': userData.state,
-        'city': userData.city,
-        'is_IH_user': userData.isIhUser,
+      Map<String, String> bodyDoctor = {
+        'first_name': userData.firstName ?? "",
+        'last_name': userData.lastName ?? "",
+        'gender': userData.gender ?? "",
+        'email': userData.email ?? "",
+        'password': userData.password ?? "",
+        'per_appointment_rate': userData.perAppointmentCharge ?? "",
+        'contact_number': userData.contactNumber ?? "",
+        'date_of_birth': userData.dateOfBirth ?? "",
+        'speciality': userData.speciality ?? "",
+        'certificate_no': userData.certificateNo ?? "",
+        'education': userData.education ?? "",
+        'state': userData.state ?? "",
+        'city': userData.city ?? "",
+        'is_IH_user': userData.isIhUser ?? "",
         "medical_center_id": userData.medicalCenterID ?? "",
-        'provider_type': userData.providerType,
+        'provider_type': userData.providerType ?? "",
         // 'is_admin':userData.isAdmin
         // 'is_native_american':userData.isNativeAmerican,
       };
@@ -234,6 +212,8 @@ class UserBackendAuthService {
               image1: profilePic,
               image1Key: 'profilePic',
               header: registerHeaders);
+
+          log('userData==========>>>>>$userData');
         } else {
           await _networkAPICall.multipartRequestPost(
               Constants.doctorSignUp, bodyDoctor,
@@ -267,27 +247,25 @@ class UserBackendAuthService {
       // perAppointmentCharge,
       {required File useProfilePic}) async {
     try {
-      var body = {
-        'first_name': userData.firstName,
-        'last_name': userData.lastName,
-        'gender': userData.gender,
-        'email': userData.email,
-        'password': userData.password,
-        // 'profilePic' : userData.profilePic,
-        'blood_group': userData.bloodGroup,
-        'marital_status': userData.maritalStatus,
-        'emergency_contact': userData.emergencyContact,
-        'insurance_eligibility': userData.insuranceEligibility,
-        'tribal_status': userData.tribalStatus,
+      Map<String, String> body = {
+        'first_name': userData.firstName ?? "",
+        'last_name': userData.lastName ?? "",
+        'gender': userData.gender ?? "",
+        'email': userData.email ?? "",
+        'password': userData.password ?? "",
+        'blood_group': userData.bloodGroup ?? "",
+        'marital_status': userData.maritalStatus ?? "",
+        'emergency_contact': userData.emergencyContact ?? "",
+        'insurance_eligibility': userData.insuranceEligibility ?? "",
+        'tribal_status': userData.tribalStatus ?? "",
       };
-      var bodyDoctor = {
-        'first_name': userData.firstName,
-        'last_name': userData.lastName,
-        'gender': userData.gender,
-        'email': userData.email,
-        'password': userData.password,
-        // 'profilePic': profilePic,
-        'per_appointment_rate': userData.perAppointmentCharge,
+      Map<String, String> bodyDoctor = {
+        'first_name': userData.firstName ?? "",
+        'last_name': userData.lastName ?? "",
+        'gender': userData.gender ?? "",
+        'email': userData.email ?? "",
+        'password': userData.password ?? "",
+        'per_appointment_rate': userData.perAppointmentCharge ?? "",
       };
       Map<String, String> registerHeaders = {
         "Authorization": 'Bearer $bearerToken',
@@ -301,6 +279,8 @@ class UserBackendAuthService {
               image1: useProfilePic,
               image1Key: 'profilePic',
               header: registerHeaders);
+
+          log('userData==========>>>>>$userData');
         } else {
           await _networkAPICall.multipartRequestPost(
               Constants.doctorSignUp, bodyDoctor,
@@ -577,51 +557,50 @@ class UserBackendAuthService {
     PatientUpdateDataModel patientUpdateDataModelData =
         PatientUpdateDataModel();
     try {
-      var body = {
-        "user_id": userUpdateData.id,
-        "first_name": userUpdateData.firstName,
-        "last_name": userUpdateData.lastName,
-        "gender": userUpdateData.gender,
-        "contact_number": userUpdateData.contactNumber,
-        "dob": userUpdateData.dateOfBirth,
-        "blood_group": userUpdateData.bloodGroup,
-        "marital_status": userUpdateData.maritalStatus,
-        "height": userUpdateData.height,
-        "weight": userUpdateData.weight,
-        "emergency_contact_number": userUpdateData.emergencyContact,
-        "case_manager": userUpdateData.currentCaseManagerInfo,
-        "insurance_eligibility": userUpdateData.insuranceEligibility,
-        "tribal_status": userUpdateData.tribalStatus,
-        "state": userUpdateData.stateId,
-        "city": userUpdateData.cityId,
-        'allergies': userUpdateData.allergies,
-        'medical_insurance_name': userUpdateData.insuranceCompanyName,
-        'us_veteran_status': userUpdateData.usVeteranStatus,
-        'tribal_federally_member': userUpdateData.tribalFederallyMember,
-        'tribal_federally_state': userUpdateData.tribalFederallyState,
-        'tribal_background_status': userUpdateData.tribalBackgroundStatus,
+      Map<String, String> body = {
+        "user_id": userUpdateData.id ?? "",
+        "first_name": userUpdateData.firstName ?? "",
+        "last_name": userUpdateData.lastName ?? "",
+        "gender": userUpdateData.gender ?? "",
+        "contact_number": userUpdateData.contactNumber ?? "",
+        "dob": userUpdateData.dateOfBirth ?? "",
+        "blood_group": userUpdateData.bloodGroup ?? "",
+        "marital_status": userUpdateData.maritalStatus ?? "",
+        "height": userUpdateData.height ?? "",
+        "weight": userUpdateData.weight ?? "",
+        "emergency_contact_number": userUpdateData.emergencyContact ?? "",
+        "case_manager": userUpdateData.currentCaseManagerInfo ?? "",
+        "insurance_eligibility": userUpdateData.insuranceEligibility ?? "",
+        "tribal_status": userUpdateData.tribalStatus ?? "",
+        "state": userUpdateData.stateId ?? "",
+        "city": userUpdateData.cityId ?? "",
+        'allergies': userUpdateData.allergies ?? "",
+        'medical_insurance_name': userUpdateData.insuranceCompanyName ?? "",
+        'us_veteran_status': userUpdateData.usVeteranStatus ?? "",
+        'tribal_federally_member': userUpdateData.tribalFederallyMember ?? "",
+        'tribal_federally_state': userUpdateData.tribalFederallyState ?? "",
+        'tribal_background_status': userUpdateData.tribalBackgroundStatus ?? "",
 
         // "profile_pic": userUpdateData.profilePic,
       };
 
       log('body==========>>>>>${jsonEncode(body)}');
 
-      var doctorBody = {
-        "user_id": userUpdateData.id,
-        "first_name": userUpdateData.firstName,
-        "last_name": userUpdateData.lastName,
-        "gender": userUpdateData.gender,
-        "contact_number": userUpdateData.contactNumber,
-        "certificate_no": userUpdateData.certificateNo,
-        "speciality": userUpdateData.speciality,
-        // "profile_pic": userUpdateData.profilePic,
-        "education": userUpdateData.education,
-        "per_appointment_rate": userUpdateData.perAppointmentCharge,
-        "dob": userUpdateData.dateOfBirth,
-        "state_id": userUpdateData.stateId,
-        "city_id": userUpdateData.cityId,
-        "medical_center_id": userUpdateData.medicalCenterID,
-        "provider_type": userUpdateData.providerType,
+      Map<String, String> doctorBody = {
+        "user_id": userUpdateData.id ?? "",
+        "first_name": userUpdateData.firstName ?? "",
+        "last_name": userUpdateData.lastName ?? "",
+        "gender": userUpdateData.gender ?? "",
+        "contact_number": userUpdateData.contactNumber ?? "",
+        "certificate_no": userUpdateData.certificateNo ?? "",
+        "speciality": userUpdateData.speciality ?? "",
+        "education": userUpdateData.education ?? "",
+        "per_appointment_rate": userUpdateData.perAppointmentCharge ?? "",
+        "dob": userUpdateData.dateOfBirth ?? "",
+        "state_id": userUpdateData.stateId ?? "",
+        "city_id": userUpdateData.cityId ?? "",
+        "medical_center_id": userUpdateData.medicalCenterID ?? "",
+        "provider_type": userUpdateData.providerType ?? "",
       };
       if (userType == "1") {
         // PatientUpdateData patientUpdateData =

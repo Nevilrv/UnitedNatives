@@ -1,8 +1,8 @@
 class AddRequestModel {
-  String categoryId;
-  String date;
-  String time;
-  String notes;
+  String? categoryId;
+  String? date;
+  String? time;
+  String? notes;
 
   AddRequestModel({this.date, this.notes, this.time, this.categoryId});
   Future<Map<String, dynamic>> toJson() async {

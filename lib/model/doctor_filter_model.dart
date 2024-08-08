@@ -1,7 +1,7 @@
 class DoctorFilterModel {
-  String status;
-  List<FilteredDoctor> filteredDoctor;
-  String message;
+  String? status;
+  List<FilteredDoctor>? filteredDoctor;
+  String? message;
 
   DoctorFilterModel({this.status, this.filteredDoctor, this.message});
 
@@ -10,44 +10,44 @@ class DoctorFilterModel {
     if (json['data'] != null) {
       filteredDoctor = <FilteredDoctor>[];
       json['data'].forEach((v) {
-        filteredDoctor.add(new FilteredDoctor.fromJson(v));
+        filteredDoctor?.add(FilteredDoctor.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.filteredDoctor != null) {
-      data['data'] = this.filteredDoctor.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (filteredDoctor != null) {
+      data['data'] = filteredDoctor?.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class FilteredDoctor {
-  String id;
-  String userId;
-  String certificateNo;
-  String speciality;
-  String education;
-  String perAppointmentCharge;
-  String modified;
-  String created;
-  String userType;
-  String firstName;
-  String lastName;
-  String gender;
-  String email;
-  String loginType;
-  String fbId;
-  String googleId;
-  String contactNumber;
-  String dateOfBirth;
-  String socialProfilePic;
-  String profilePic;
+  String? id;
+  String? userId;
+  String? certificateNo;
+  String? speciality;
+  String? education;
+  String? perAppointmentCharge;
+  String? modified;
+  String? created;
+  String? userType;
+  String? firstName;
+  String? lastName;
+  String? gender;
+  String? email;
+  String? loginType;
+  String? fbId;
+  String? googleId;
+  String? contactNumber;
+  String? dateOfBirth;
+  String? socialProfilePic;
+  String? profilePic;
 
   FilteredDoctor(
       {this.id,
@@ -95,27 +95,27 @@ class FilteredDoctor {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['certificate_no'] = this.certificateNo;
-    data['speciality'] = this.speciality;
-    data['education'] = this.education;
-    data['per_appointment_charge'] = this.perAppointmentCharge;
-    data['modified'] = this.modified;
-    data['created'] = this.created;
-    data['user_type'] = this.userType;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['gender'] = this.gender;
-    data['email'] = this.email;
-    data['login_type'] = this.loginType;
-    data['fb_id'] = this.fbId;
-    data['google_id'] = this.googleId;
-    data['contact_number'] = this.contactNumber;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['social_profile_pic'] = this.socialProfilePic;
-    data['profile_pic'] = this.profilePic;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['certificate_no'] = certificateNo;
+    data['speciality'] = speciality;
+    data['education'] = education;
+    data['per_appointment_charge'] = perAppointmentCharge;
+    data['modified'] = modified;
+    data['created'] = created;
+    data['user_type'] = userType;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['login_type'] = loginType;
+    data['fb_id'] = fbId;
+    data['google_id'] = googleId;
+    data['contact_number'] = contactNumber;
+    data['date_of_birth'] = dateOfBirth;
+    data['social_profile_pic'] = socialProfilePic;
+    data['profile_pic'] = profilePic;
     return data;
   }
 }

@@ -1524,10 +1524,8 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
     showDialog(
       context: context,
       builder: (context) {
-        return WillPopScope(
-          onWillPop: () async {
-            return false;
-          },
+        return PopScope(
+          canPop: false,
           child: StatefulBuilder(
             builder: (context, setState234) {
               return Dialog(

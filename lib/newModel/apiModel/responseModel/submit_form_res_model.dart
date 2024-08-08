@@ -9,8 +9,8 @@ String submitUnitedNativesFormResponseModelToJson(
     json.encode(data.toJson());
 
 class SubmitUnitedNativesFormResponseModel {
-  bool success;
-  String message;
+  bool? success;
+  String? message;
 
   SubmitUnitedNativesFormResponseModel({
     this.success,

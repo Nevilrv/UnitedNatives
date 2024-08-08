@@ -1,5 +1,5 @@
 class GetAllPersonalMedicationNotesRequestModel {
-  int patientId;
+  int? patientId;
 
   GetAllPersonalMedicationNotesRequestModel({this.patientId});
 
@@ -9,8 +9,8 @@ class GetAllPersonalMedicationNotesRequestModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['patient_id'] = this.patientId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['patient_id'] = patientId;
     return data;
   }
 }

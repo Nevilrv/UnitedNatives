@@ -1,12 +1,12 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 
 class SettingsWidget extends StatefulWidget {
   final Color color;
 
-  const SettingsWidget({Key key, @required this.color}) : super(key: key);
+  const SettingsWidget({super.key, required this.color});
   @override
-  _SettingsWidgetState createState() => _SettingsWidgetState();
+  State<SettingsWidget> createState() => _SettingsWidgetState();
 }
 
 class _SettingsWidgetState extends State<SettingsWidget> {
@@ -19,7 +19,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         Container(
           width: double.infinity,
           color: widget.color,
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child: Text(
             Translate.of(context).translate('settings'),
             style: TextStyle(
@@ -40,11 +40,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             children: <Widget>[
               Text(
                 Translate.of(context).translate('health_tips_for_you'),
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
                 Translate.of(context).translate('get_information_tips'),
-                style: TextStyle(
+                style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
                     fontWeight: FontWeight.w400),

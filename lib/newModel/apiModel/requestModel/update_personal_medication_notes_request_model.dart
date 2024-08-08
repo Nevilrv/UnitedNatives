@@ -1,9 +1,9 @@
 class UpdatePersonalMedicationNotesRequestModel {
-  String notesId;
-  String patientId;
-  String title;
-  String notes;
-  String dateTime;
+  String? notesId;
+  String? patientId;
+  String? title;
+  String? notes;
+  String? dateTime;
 
   UpdatePersonalMedicationNotesRequestModel(
       {this.notesId, this.patientId, this.title, this.notes, this.dateTime});
@@ -18,12 +18,12 @@ class UpdatePersonalMedicationNotesRequestModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['notes_id'] = this.notesId;
-    data['patient_id'] = this.patientId;
-    data['title'] = this.title;
-    data['notes'] = this.notes;
-    data['datetime'] = this.dateTime;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['notes_id'] = notesId;
+    data['patient_id'] = patientId;
+    data['title'] = title;
+    data['notes'] = notes;
+    data['datetime'] = dateTime;
     return data;
   }
 }
