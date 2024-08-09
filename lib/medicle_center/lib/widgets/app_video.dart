@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class AppVideo extends StatefulWidget {
-  final String url;
+  final String? url;
   const AppVideo({
-    Key key,
+    super.key,
     this.url,
-  }) : super(key: key);
+  });
 
   @override
-  _AppVideoState createState() => _AppVideoState();
+  State<AppVideo> createState() => _AppVideoState();
 }
 
 class _AppVideoState extends State<AppVideo> {
-  VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   bool _mute = false;
   bool _playing = true;
   bool _showAction = true;
@@ -21,16 +21,17 @@ class _AppVideoState extends State<AppVideo> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.url);
-    _controller.setLooping(true);
-    _controller.initialize();
-    _controller.play();
+    _controller =
+        VideoPlayerController.networkUrl(Uri.parse(widget.url.toString()));
+    _controller?.setLooping(true);
+    _controller?.initialize();
+    _controller?.play();
     _showAction = false;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -40,9 +41,9 @@ class _AppVideoState extends State<AppVideo> {
       _showAction = true;
     });
     if (_playing) {
-      _controller.play();
+      _controller?.play();
     } else {
-      _controller.pause();
+      _controller?.pause();
     }
   }
 
@@ -50,19 +51,19 @@ class _AppVideoState extends State<AppVideo> {
     setState(() {
       _mute = !_mute;
     });
-    _controller.setVolume(_mute ? 0.0 : 1.0);
+    _controller?.setVolume(_mute ? 0.0 : 1.0);
   }
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
+      aspectRatio: _controller!.value.aspectRatio,
       child: Stack(
         alignment: Alignment.center,
         children: [
           InkWell(
             onTap: _onPlay,
-            child: VideoPlayer(_controller),
+            child: VideoPlayer(_controller!),
           ),
           AnimatedOpacity(
             opacity: _showAction ? 1.0 : 0.0,

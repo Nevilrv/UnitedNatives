@@ -52,8 +52,8 @@ class FilterCubit extends Cubit<FilterState> {
           categoryOfStatess.first.name != 'All States') {
         int stateMedicalCenterCount = 0;
         for (var e in categoryOfStatess) {
-          stateMedicalCenterCount =
-              stateMedicalCenterCount + e.medicalCenterInState;
+          stateMedicalCenterCount +=
+              stateMedicalCenterCount + e.medicalCenterInState!;
         }
 
         StateModel stateAllModel = StateModel(
@@ -71,7 +71,7 @@ class FilterCubit extends Cubit<FilterState> {
           stateData: categoryOfStatess,
           stateId: categoryOfStatess.first.id.toString());
     } catch (e) {
-      print('===e===11==>$e');
+      log('e==========>>>>>$e');
     }
   }
 
@@ -81,26 +81,17 @@ class FilterCubit extends Cubit<FilterState> {
     try {
       final responseCity = await Api.requestCity(stateId: stateId);
 
-      List categoryOfCities = [];
+      List<CityModel> categoryOfCities = [];
       if (responseCity != null && responseCity != []) {
-        categoryOfCities = List.from(responseCity ?? []).map((item) {
-          if (item == null) {
-            return null;
-          }
-
-          return CityModel.fromJson(
-            item,
-          );
-        }).toList();
-
-        categoryOfCities.removeWhere((element) => element == null);
+        categoryOfCities = List<CityModel>.from(
+            responseCity.map((x) => CityModel.fromJson(x)));
 
         if (categoryOfCities.isNotEmpty &&
             categoryOfCities.first.name != 'All Cities') {
           int cityMedicalCenterCount = 0;
           for (var e in categoryOfCities) {
             cityMedicalCenterCount =
-                cityMedicalCenterCount + e.medicalCenterInCity;
+                cityMedicalCenterCount + e.medicalCenterInCity!;
           }
           CityModel cityAllModel = CityModel(
             name: 'All Cities',
@@ -113,17 +104,16 @@ class FilterCubit extends Cubit<FilterState> {
       emit(
         FilterSuccess(
           stateList: stateData ?? [],
-          cityList: categoryOfCities ?? [],
+          cityList: categoryOfCities,
         ),
       );
     } catch (e) {
       emit(FilterSuccess(stateList: stateData ?? [], cityList: []));
-      print('===e=====>$e');
     }
   }
 
   void onUpdateStateData(
-      {List<StateModel> stateDataList, StateModel stateData}) async {
+      {List<StateModel>? stateDataList, StateModel? stateData}) async {
     selectedState = stateData;
     selectedCity = null;
 
@@ -135,13 +125,13 @@ class FilterCubit extends Cubit<FilterState> {
     emit(state);
   }
 
-  void onUpdateCityData({CityModel cityData}) {
+  void onUpdateCityData({CityModel? cityData}) {
     selectedCity = cityData;
     emit(state);
   }
 
   void clearAllFilter(
-      {List<StateModel> stateDataList, List<CityModel> cityDataList}) {
+      {List<StateModel>? stateDataList, List<CityModel>? cityDataList}) {
     selectedCity = null;
     selectedState = null;
     emit(FilterSuccess(

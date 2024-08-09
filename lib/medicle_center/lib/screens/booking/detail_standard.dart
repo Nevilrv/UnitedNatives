@@ -1,20 +1,20 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class DetailStandard extends StatefulWidget {
-  final StandardBookingModel bookingStyle;
-  final VoidCallback onCalcPrice;
+  final StandardBookingModel? bookingStyle;
+  final VoidCallback? onCalcPrice;
 
   const DetailStandard({
-    Key key,
+    super.key,
     this.bookingStyle,
     this.onCalcPrice,
-  }) : super(key: key);
+  });
 
   @override
-  _DetailStandardState createState() {
+  State<DetailStandard> createState() {
     return _DetailStandardState();
   }
 }
@@ -34,31 +34,31 @@ class _DetailStandardState extends State<DetailStandard> {
   void _onDatePicker() async {
     final now = DateTime.now();
     final result = await showDatePicker(
-      initialDate: widget.bookingStyle.startDate ?? DateTime.now(),
+      initialDate: widget.bookingStyle?.startDate ?? DateTime.now(),
       firstDate: DateTime(now.year, now.month),
       context: context,
       lastDate: DateTime(now.year + 1),
     );
     if (result != null) {
       setState(() {
-        widget.bookingStyle.startDate = result;
+        widget.bookingStyle?.startDate = result;
       });
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
   ///Show change start time
   void _onTimePicker() async {
     final result = await showTimePicker(
-      initialTime: widget.bookingStyle.startTime ?? TimeOfDay.now(),
+      initialTime: widget.bookingStyle?.startTime ?? TimeOfDay.now(),
       context: context,
     );
 
     if (result != null) {
       setState(() {
-        widget.bookingStyle.startTime = result;
+        widget.bookingStyle?.startTime = result;
       });
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
@@ -73,13 +73,12 @@ class _DetailStandardState extends State<DetailStandard> {
     );
     if (result != null) {
       callback(result);
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('==widget.bookingStyle===>${widget.bookingStyle.price}');
     return Column(
       children: [
         Padding(
@@ -93,12 +92,12 @@ class _DetailStandardState extends State<DetailStandard> {
                     child: AppPickerItem(
                       leading: Icon(Icons.person_outline,
                           color: Theme.of(context).hintColor),
-                      value: widget.bookingStyle.adult?.toString(),
-                      title: Translate.of(context).translate('adult'),
+                      value: widget.bookingStyle?.adult?.toString(),
+                      title: Translate.of(context)?.translate('adult'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.adult, (value) {
+                        _onPicker(widget.bookingStyle!.adult!, (value) {
                           setState(() {
-                            widget.bookingStyle.adult = value;
+                            widget.bookingStyle!.adult = value;
                           });
                         });
                       },
@@ -111,12 +110,12 @@ class _DetailStandardState extends State<DetailStandard> {
                         Icons.child_friendly_outlined,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.children?.toString(),
-                      title: Translate.of(context).translate('children'),
+                      value: widget.bookingStyle?.children?.toString(),
+                      title: Translate.of(context)?.translate('children'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.children, (value) {
+                        _onPicker(widget.bookingStyle!.children!, (value) {
                           setState(() {
-                            widget.bookingStyle.children = value;
+                            widget.bookingStyle!.children = value;
                           });
                         });
                       },
@@ -130,8 +129,8 @@ class _DetailStandardState extends State<DetailStandard> {
                   Icons.calendar_today_outlined,
                   color: Theme.of(context).hintColor,
                 ),
-                value: widget.bookingStyle.startDate?.dateView,
-                title: Translate.of(context).translate('date'),
+                value: widget.bookingStyle?.startDate?.dateView,
+                title: Translate.of(context)?.translate('date'),
                 onPressed: _onDatePicker,
               ),
               const SizedBox(height: 16),
@@ -140,8 +139,8 @@ class _DetailStandardState extends State<DetailStandard> {
                   Icons.more_time,
                   color: Theme.of(context).hintColor,
                 ),
-                value: widget.bookingStyle.startTime?.viewTime,
-                title: Translate.of(context).translate('time'),
+                value: widget.bookingStyle?.startTime?.viewTime,
+                title: Translate.of(context)?.translate('time'),
                 onPressed: _onTimePicker,
               ),
               const SizedBox(height: 8),
@@ -151,14 +150,14 @@ class _DetailStandardState extends State<DetailStandard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    Translate.of(context).translate('total'),
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    Translate.of(context)!.translate('total'),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    widget.bookingStyle.price ?? '',
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    widget.bookingStyle?.price ?? '',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   )

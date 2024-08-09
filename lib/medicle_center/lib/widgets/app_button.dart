@@ -5,26 +5,26 @@ enum ButtonType { normal, outline, text }
 enum ButtonSize { large, small }
 
 class AppButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final String text;
+  final VoidCallback? onPressed;
+  final String? text;
   final bool loading;
   final bool disabled;
   final ButtonType type;
-  final Widget icon;
+  final Widget? icon;
   final MainAxisSize mainAxisSize;
   final ButtonSize size;
 
   const AppButton(
     this.text, {
-    Key key,
-     this.onPressed,
+    super.key,
+    this.onPressed,
     this.icon,
     this.loading = false,
     this.disabled = false,
     this.type = ButtonType.normal,
     this.mainAxisSize = MainAxisSize.min,
     this.size = ButtonSize.large,
-  }) : super(key: key);
+  });
 
   Widget _buildLoading(BuildContext context) {
     if (!loading) return Container();
@@ -67,8 +67,8 @@ class AppButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  text,
-                  style: Theme.of(context).textTheme.button.copyWith(
+                  "$text",
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
                 ),
@@ -91,8 +91,8 @@ class AppButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                text,
-                style: Theme.of(context).textTheme.button.copyWith(
+                '$text',
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold),
               ),
@@ -112,8 +112,8 @@ class AppButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  text,
-                  style: Theme.of(context).textTheme.button.copyWith(
+                  '$text',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
                 ),
@@ -130,8 +130,8 @@ class AppButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                text,
-                style: Theme.of(context).textTheme.button.copyWith(
+                '$text',
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold),
               ),
@@ -156,8 +156,8 @@ class AppButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  text,
-                  style: Theme.of(context).textTheme.button.copyWith(
+                  text ?? "",
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 _buildLoading(context)
@@ -179,11 +179,9 @@ class AppButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                text,
-                style: Theme.of(context)
-                    .textTheme
-                    .button
-                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                text ?? "",
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold),
               ),
               _buildLoading(context)
             ],

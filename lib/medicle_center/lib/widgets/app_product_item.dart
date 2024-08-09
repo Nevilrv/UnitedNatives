@@ -1,28 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class AppProductItem extends StatelessWidget {
   const AppProductItem({
-    Key key,
+    super.key,
     this.item,
     this.onPressed,
     this.type,
     this.trailing,
-  }) : super(key: key);
+  });
 
-  final ProductModel item;
-  final ProductViewType type;
-  final VoidCallback onPressed;
-  final Widget trailing;
+  final ProductModel? item;
+  final ProductViewType? type;
+  final VoidCallback? onPressed;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
     switch (type) {
-
       ///Mode View Small
       case ProductViewType.small:
         if (item == null) {
@@ -66,15 +65,15 @@ class AppProductItem extends StatelessWidget {
           );
         }
 
-        Widget price;
-        if (item.priceDisplay.isNotEmpty) {
+        Widget? price;
+        if (item!.priceDisplay!.isNotEmpty) {
           price = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 4),
               Text(
-                item.priceDisplay,
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                '${item!.priceDisplay}',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor),
               )
@@ -87,7 +86,7 @@ class AppProductItem extends StatelessWidget {
           child: Row(
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl: item.image.thumb,
+                imageUrl: item!.image!.thumb!,
                 imageBuilder: (context, imageProvider) {
                   return Container(
                     width: 84,
@@ -133,32 +132,32 @@ class AppProductItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      item.title,
+                      '${item?.title}',
                       maxLines: 1,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .bodyLarge
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       item?.category?.title ?? '',
                       style: Theme.of(context)
                           .textTheme
-                          .caption
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .bodySmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         AppTag(
-                          "${item.rate}",
+                          "${item?.rate}",
                           type: TagType.rate,
                         ),
                         const SizedBox(width: 4),
                         RatingBar.builder(
-                          initialRating: item.rate,
+                          initialRating: item!.rate!,
                           minRating: 1,
                           allowHalfRating: true,
                           unratedColor: Colors.amber.withAlpha(100),
@@ -227,11 +226,11 @@ class AppProductItem extends StatelessWidget {
           );
         }
 
-        Widget price;
-        if (item.priceDisplay.isNotEmpty) {
+        Widget? price;
+        if (item!.priceDisplay!.isNotEmpty) {
           price = Text(
-            item.priceDisplay,
-            style: Theme.of(context).textTheme.subtitle2.copyWith(
+            '${item?.priceDisplay}',
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).primaryColor),
             textAlign: TextAlign.end,
@@ -244,7 +243,7 @@ class AppProductItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl: item.image.thumb,
+                imageUrl: item!.image!.thumb.toString(),
                 imageBuilder: (context, imageProvider) {
                   return Container(
                     height: 115,
@@ -263,11 +262,11 @@ class AppProductItem extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Builder(builder: (context) {
-                              return item.status.isNotEmpty
+                              return item!.status!.isNotEmpty
                                   ? Padding(
                                       padding: const EdgeInsets.all(2),
                                       child: AppTag(
-                                        item.status,
+                                        '${item?.status}',
                                         type: TagType.status,
                                       ),
                                     )
@@ -281,7 +280,7 @@ class AppProductItem extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(2),
                               child: Icon(
-                                item.favorite
+                                item!.favorite!
                                     ? Icons.favorite
                                     : Icons.favorite_border,
                                 color: Colors.white,
@@ -326,29 +325,29 @@ class AppProductItem extends StatelessWidget {
                 item?.category?.title ?? '',
                 style: Theme.of(context)
                     .textTheme
-                    .caption
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .bodySmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 2),
               Text(
-                item.title,
+                '${item?.title}',
                 maxLines: 1,
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle2
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .titleSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 4),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   AppTag(
-                    "${item.rate}",
+                    "${item?.rate}",
                     type: TagType.rate,
                   ),
                   const SizedBox(width: 4),
                   RatingBar.builder(
-                    initialRating: item.rate,
+                    initialRating: item!.rate!,
                     minRating: 1,
                     allowHalfRating: true,
                     unratedColor: Colors.amber.withAlpha(100),
@@ -368,9 +367,9 @@ class AppProductItem extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                item.address,
+                '${item?.address}',
                 maxLines: 1,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),
@@ -437,15 +436,15 @@ class AppProductItem extends StatelessWidget {
           );
         }
 
-        Widget price;
-        if (item.priceDisplay.isNotEmpty) {
+        Widget? price;
+        if (item!.priceDisplay!.isNotEmpty) {
           price = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
               Text(
-                item.priceDisplay,
-                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                "${item?.priceDisplay}",
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor),
               )
@@ -460,7 +459,7 @@ class AppProductItem extends StatelessWidget {
               Row(
                 children: <Widget>[
                   CachedNetworkImage(
-                    imageUrl: item.image.thumb,
+                    imageUrl: "${item?.image?.thumb}",
                     imageBuilder: (context, imageProvider) {
                       return Container(
                         width: 120,
@@ -478,11 +477,11 @@ class AppProductItem extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            item.status.isNotEmpty
+                            item!.status!.isNotEmpty
                                 ? Padding(
                                     padding: const EdgeInsets.all(4),
                                     child: AppTag(
-                                      item.status,
+                                      "${item?.status}",
                                       type: TagType.status,
                                     ),
                                   )
@@ -530,30 +529,31 @@ class AppProductItem extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           item?.category?.title ?? '',
-                          style: Theme.of(context).textTheme.caption.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          item.title,
+                          "${item?.title}",
                           maxLines: 1,
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle2
-                              .copyWith(fontWeight: FontWeight.bold),
+                              .titleSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             AppTag(
-                              "${item.rate}",
+                              "${item?.rate}",
                               type: TagType.rate,
                             ),
                             const SizedBox(width: 4),
                             RatingBar.builder(
-                              initialRating: item.rate,
+                              initialRating: item!.rate!,
                               minRating: 1,
                               allowHalfRating: true,
                               unratedColor: Colors.amber.withAlpha(100),
@@ -579,9 +579,9 @@ class AppProductItem extends StatelessWidget {
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
-                                item.address,
+                                "${item?.address}",
                                 maxLines: 1,
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             )
                           ],
@@ -596,9 +596,9 @@ class AppProductItem extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                             Expanded(
-                              child: Text(item.phone,
+                              child: Text("${item?.phone}",
                                   maxLines: 1,
-                                  style: Theme.of(context).textTheme.caption),
+                                  style: Theme.of(context).textTheme.bodySmall),
                             )
                           ],
                         ),
@@ -612,7 +612,7 @@ class AppProductItem extends StatelessWidget {
                 bottom: 0,
                 right: 0,
                 child: Icon(
-                  item.favorite ? Icons.favorite : Icons.favorite_border,
+                  item!.favorite! ? Icons.favorite : Icons.favorite_border,
                   color: Theme.of(context).primaryColor,
                 ),
               )
@@ -668,15 +668,15 @@ class AppProductItem extends StatelessWidget {
           );
         }
 
-        Widget price;
-        if (item.priceDisplay.isNotEmpty) {
+        Widget? price;
+        if (item!.priceDisplay!.isNotEmpty) {
           price = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
               Text(
-                item.priceDisplay,
-                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                "${item?.priceDisplay}",
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor),
               )
@@ -690,7 +690,7 @@ class AppProductItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl: item.image.thumb,
+                imageUrl: "${item?.image?.thumb}",
                 imageBuilder: (context, imageProvider) {
                   return Container(
                     height: 200,
@@ -708,14 +708,14 @@ class AppProductItem extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              item.status.isNotEmpty
+                              item!.status!.isNotEmpty
                                   ? AppTag(
-                                      item.status,
+                                      "${item?.status}",
                                       type: TagType.status,
                                     )
                                   : Container(),
                               Icon(
-                                item.favorite
+                                item!.favorite!
                                     ? Icons.favorite
                                     : Icons.favorite_border,
                                 color: Colors.white,
@@ -734,7 +734,7 @@ class AppProductItem extends StatelessWidget {
                                   Row(
                                     children: <Widget>[
                                       AppTag(
-                                        "${item.rate}",
+                                        "${item?.rate}",
                                         type: TagType.rate,
                                       ),
                                       const SizedBox(width: 4),
@@ -746,20 +746,20 @@ class AppProductItem extends StatelessWidget {
                                             padding:
                                                 const EdgeInsets.only(left: 4),
                                             child: Text(
-                                              Translate.of(context).translate(
+                                              Translate.of(context)!.translate(
                                                 'rate',
                                               ),
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .caption
-                                                  .copyWith(
+                                                  .bodySmall
+                                                  ?.copyWith(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                             ),
                                           ),
                                           RatingBar.builder(
-                                            initialRating: item.rate,
+                                            initialRating: item!.rate!,
                                             minRating: 1,
                                             allowHalfRating: true,
                                             unratedColor:
@@ -780,11 +780,11 @@ class AppProductItem extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "${item.numRate} ${Translate.of(context).translate('feedback')}",
+                                    "${item?.numRate} ${Translate.of(context)?.translate('feedback')}",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .caption
-                                        .copyWith(
+                                        .bodySmall
+                                        ?.copyWith(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -833,17 +833,17 @@ class AppProductItem extends StatelessWidget {
                                 item?.category?.title ?? '',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .caption
-                                    .copyWith(fontWeight: FontWeight.bold),
+                                    .bodySmall
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                item.title,
+                                "${item?.title}",
                                 maxLines: 1,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2
-                                    .copyWith(fontWeight: FontWeight.bold),
+                                    .titleSmall
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -862,9 +862,9 @@ class AppProductItem extends StatelessWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            item.address,
+                            "${item?.address}",
                             maxLines: 1,
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         )
                       ],
@@ -880,9 +880,9 @@ class AppProductItem extends StatelessWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            item.phone,
+                            "${item?.phone}",
                             maxLines: 1,
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         )
                       ],
@@ -938,7 +938,7 @@ class AppProductItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: CachedNetworkImage(
-                      imageUrl: item.image.thumb,
+                      imageUrl: "${item?.image?.thumb}",
                       imageBuilder: (context, imageProvider) {
                         return Container(
                           decoration: BoxDecoration(
@@ -983,8 +983,8 @@ class AppProductItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(4),
                   child: Text(
-                    item.title,
-                    style: Theme.of(context).textTheme.caption,
+                    "${item?.title}",
+                    style: Theme.of(context).textTheme.bodySmall,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

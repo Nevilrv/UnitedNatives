@@ -1,20 +1,20 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class DetailSlot extends StatefulWidget {
-  final SlotBookingModel bookingStyle;
-  final VoidCallback onCalcPrice;
+  final SlotBookingModel? bookingStyle;
+  final VoidCallback? onCalcPrice;
 
   const DetailSlot({
-    Key key,
+    super.key,
     this.bookingStyle,
     this.onCalcPrice,
-  }) : super(key: key);
+  });
 
   @override
-  _DetailSlotState createState() {
+  State<DetailSlot> createState() {
     return _DetailSlotState();
   }
 }
@@ -43,7 +43,7 @@ class _DetailSlotState extends State<DetailSlot> {
     );
     if (result != null) {
       callback(result);
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
@@ -64,12 +64,12 @@ class _DetailSlotState extends State<DetailSlot> {
                         Icons.person_outline,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.adult?.toString(),
-                      title: Translate.of(context).translate('adult'),
+                      value: widget.bookingStyle?.adult?.toString(),
+                      title: Translate.of(context)?.translate('adult'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.adult, (value) {
+                        _onPicker(widget.bookingStyle!.adult!, (value) {
                           setState(() {
-                            widget.bookingStyle.adult = value;
+                            widget.bookingStyle!.adult = value;
                           });
                         });
                       },
@@ -82,12 +82,12 @@ class _DetailSlotState extends State<DetailSlot> {
                         Icons.child_friendly_outlined,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.children?.toString(),
-                      title: Translate.of(context).translate('children'),
+                      value: widget.bookingStyle!.children?.toString(),
+                      title: Translate.of(context)!.translate('children'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.children, (value) {
+                        _onPicker(widget.bookingStyle!.children!, (value) {
                           setState(() {
-                            widget.bookingStyle.children = value;
+                            widget.bookingStyle!.children = value;
                           });
                         });
                       },
@@ -102,14 +102,14 @@ class _DetailSlotState extends State<DetailSlot> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    Translate.of(context).translate('total'),
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    Translate.of(context)!.translate('total'),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    widget.bookingStyle.price,
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    widget.bookingStyle!.price!,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   )

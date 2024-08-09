@@ -1,13 +1,14 @@
 import 'dart:developer';
-
-import 'package:doctor_appointment_booking/components/upcoming_appointment_list_item.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/upcoming_appointment_list_item.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UpcomingAppointmentsPage extends StatefulWidget {
+  const UpcomingAppointmentsPage({super.key});
+
   @override
   State<UpcomingAppointmentsPage> createState() =>
       _UpcomingAppointmentsPageState();
@@ -27,13 +28,13 @@ class _UpcomingAppointmentsPageState extends State<UpcomingAppointmentsPage> {
             if (_patientHomeScreenController
                     .visitedDoctorUpcomingPastData.value.apiState ==
                 APIState.COMPLETE) {
-              log('_patientHomeScreenController==========>>>>>${_patientHomeScreenController.visitedDoctorUpcomingPastData?.value?.upcoming}');
+              log('_patientHomeScreenController==========>>>>>${_patientHomeScreenController.visitedDoctorUpcomingPastData.value.upcoming}');
 
               return Obx(
                 () => (_patientHomeScreenController
                             .visitedDoctorUpcomingPastData
-                            ?.value
-                            ?.upcoming
+                            .value
+                            .upcoming
                             ?.isEmpty ??
                         true)
                     ? Center(
@@ -41,8 +42,8 @@ class _UpcomingAppointmentsPageState extends State<UpcomingAppointmentsPage> {
                           "You have no appointments!",
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
+                              .titleLarge
+                              ?.copyWith(fontSize: 20),
                           textAlign: TextAlign.center,
                         ),
                       )
@@ -51,7 +52,7 @@ class _UpcomingAppointmentsPageState extends State<UpcomingAppointmentsPage> {
                             _patientHomeScreenController.getVisitedDoctors,
                         child: Builder(builder: (context) {
                           _patientHomeScreenController
-                              .visitedDoctorUpcomingPastData?.value?.upcoming
+                              .visitedDoctorUpcomingPastData.value.upcoming
                               ?.sort(
                             (a, b) {
                               String dateA =
@@ -64,17 +65,18 @@ class _UpcomingAppointmentsPageState extends State<UpcomingAppointmentsPage> {
                           );
 
                           return ListView.separated(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            separatorBuilder: (context, index) => SizedBox(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
                               height: 15,
                             ),
                             itemCount: _patientHomeScreenController
                                     .visitedDoctorUpcomingPastData
-                                    ?.value
-                                    ?.upcoming
+                                    .value
+                                    .upcoming
                                     ?.length ??
                                 0,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 35,
                               horizontal: 20,
                             ),
@@ -82,8 +84,8 @@ class _UpcomingAppointmentsPageState extends State<UpcomingAppointmentsPage> {
                               return UpcomingAppointmentListItem(
                                   _patientHomeScreenController
                                       .visitedDoctorUpcomingPastData
-                                      ?.value
-                                      ?.upcoming[index]);
+                                      .value
+                                      .upcoming![index]);
                             },
                           );
                         }),
@@ -97,15 +99,15 @@ class _UpcomingAppointmentsPageState extends State<UpcomingAppointmentsPage> {
                   "You have no appointments!",
                   style: Theme.of(context)
                       .textTheme
-                      .headline6
-                      .copyWith(fontSize: 20),
+                      .titleLarge
+                      ?.copyWith(fontSize: 20),
                   textAlign: TextAlign.center,
                 ),
               );
             } else if (_patientHomeScreenController
                     .visitedDoctorUpcomingPastData.value.apiState ==
                 APIState.ERROR) {
-              return Center(
+              return const Center(
                 child: Text("Error"),
               );
             } else if (_patientHomeScreenController
@@ -118,7 +120,7 @@ class _UpcomingAppointmentsPageState extends State<UpcomingAppointmentsPage> {
                 child: Utils.circular(),
               );
             } else {
-              return Center(
+              return const Center(
                 child: Text(""),
               );
             }
@@ -136,7 +138,7 @@ class _UpcomingAppointmentsPageState extends State<UpcomingAppointmentsPage> {
                       child: Utils.circular(),
                     ),
                   )
-                : SizedBox();
+                : const SizedBox();
           },
         )
       ],

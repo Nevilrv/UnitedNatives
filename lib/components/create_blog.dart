@@ -23,7 +23,7 @@ class _CreateBlogState extends State<CreateBlog> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(Translate.of(context).translate('Research and Information'),
+            Text(Translate.of(context)!.translate('Research and Information'),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).textTheme.titleMedium?.color,

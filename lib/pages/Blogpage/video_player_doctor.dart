@@ -1,38 +1,37 @@
 import 'package:chewie/chewie.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
 import 'package:video_player/video_player.dart';
 
 class ChewieDemoDoctor extends StatefulWidget {
+  const ChewieDemoDoctor({super.key});
+
   @override
-  State<StatefulWidget> createState() {
-    return _ChewieDemoDoctorState();
-  }
+  State<StatefulWidget> createState() => _ChewieDemoDoctorState();
 }
 
 class _ChewieDemoDoctorState extends State<ChewieDemoDoctor> {
   // PatientHomeScreenController _patientHomeScreenController
   // = Get.find<PatientHomeScreenController>();
-  DoctorHomeScreenController _doctorHomeScreenController =
+  final DoctorHomeScreenController _doctorHomeScreenController =
       Get.find<DoctorHomeScreenController>();
   // TargetPlatform _platform;
-  VideoPlayerController _videoPlayerController1;
-  VideoPlayerController _videoPlayerController2;
-  ChewieController _chewieController;
+  VideoPlayerController? _videoPlayerController1;
+  VideoPlayerController? _videoPlayerController2;
+  ChewieController? _chewieController;
 
   @override
   void initState() {
     super.initState();
-    _videoPlayerController1 = VideoPlayerController.network(
+    _videoPlayerController1 = VideoPlayerController.networkUrl(Uri.parse(
         "${_doctorHomeScreenController.doctorResearchDocumentDetailsModelData.value.doctorResearchDocumentDetails?.researchVideoUrl}" ??
-            'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4');
-    _videoPlayerController2 = VideoPlayerController.network(
-        'https://www.sample-videos.com/video123/mp4/480/big_buck_bunny_480p_20mb.mp4');
+            'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'));
+    _videoPlayerController2 = VideoPlayerController.networkUrl(Uri.parse(
+        'https://www.sample-videos.com/video123/mp4/480/big_buck_bunny_480p_20mb.mp4'));
     _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController1,
+        videoPlayerController: _videoPlayerController1!,
         aspectRatio: 3 / 2,
         autoPlay: true,
         looping: true,
@@ -40,7 +39,7 @@ class _ChewieDemoDoctorState extends State<ChewieDemoDoctor> {
             Animation<double> secondAnimation, provider) {
           return AnimatedBuilder(
             animation: animation,
-            builder: (BuildContext context, Widget child) {
+            builder: (BuildContext? context, Widget? child) {
               return VideoScaffold(
                 child: Scaffold(
                   resizeToAvoidBottomInset: true,
@@ -72,9 +71,9 @@ class _ChewieDemoDoctorState extends State<ChewieDemoDoctor> {
 
   @override
   void dispose() {
-    _videoPlayerController1.dispose();
-    _videoPlayerController2.dispose();
-    _chewieController.dispose();
+    _videoPlayerController1?.dispose();
+    _videoPlayerController2?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
@@ -86,13 +85,13 @@ class _ChewieDemoDoctorState extends State<ChewieDemoDoctor> {
           Expanded(
             child: Center(
               child: Chewie(
-                controller: _chewieController,
+                controller: _chewieController!,
               ),
             ),
           ),
           MaterialButton(
             onPressed: () {
-              _chewieController.enterFullScreen();
+              _chewieController?.enterFullScreen();
             },
             child: null,
           ),
@@ -102,11 +101,12 @@ class _ChewieDemoDoctorState extends State<ChewieDemoDoctor> {
                 child: MaterialButton(
                   onPressed: () {
                     setState(() {
-                      _chewieController.dispose();
-                      _videoPlayerController2.pause();
-                      _videoPlayerController2.seekTo(Duration(seconds: 0));
+                      _chewieController?.dispose();
+                      _videoPlayerController2?.pause();
+                      _videoPlayerController2
+                          ?.seekTo(const Duration(seconds: 0));
                       _chewieController = ChewieController(
-                        videoPlayerController: _videoPlayerController1,
+                        videoPlayerController: _videoPlayerController1!,
                         aspectRatio: 3 / 2,
                         autoPlay: true,
                         looping: false,
@@ -120,11 +120,12 @@ class _ChewieDemoDoctorState extends State<ChewieDemoDoctor> {
                 child: MaterialButton(
                   onPressed: () {
                     setState(() {
-                      _chewieController.dispose();
-                      _videoPlayerController1.pause();
-                      _videoPlayerController1.seekTo(Duration(seconds: 0));
+                      _chewieController?.dispose();
+                      _videoPlayerController1?.pause();
+                      _videoPlayerController1
+                          ?.seekTo(const Duration(seconds: 0));
                       _chewieController = ChewieController(
-                        videoPlayerController: _videoPlayerController2,
+                        videoPlayerController: _videoPlayerController2!,
                         aspectRatio: 3 / 2,
                         autoPlay: true,
                         looping: false,
@@ -143,9 +144,9 @@ class _ChewieDemoDoctorState extends State<ChewieDemoDoctor> {
 }
 
 class VideoScaffold extends StatefulWidget {
-  const VideoScaffold({Key key, this.child}) : super(key: key);
+  const VideoScaffold({super.key, this.child});
 
-  final Widget child;
+  final Widget? child;
 
   @override
   State<StatefulWidget> createState() => _VideoScaffoldState();
@@ -172,6 +173,6 @@ class _VideoScaffoldState extends State<VideoScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.child!;
   }
 }

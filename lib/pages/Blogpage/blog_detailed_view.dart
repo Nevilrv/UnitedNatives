@@ -9,19 +9,29 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:united_natives/controller/patient_homescreen_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/research_document_details_model.dart';
+import 'package:united_natives/pages/Blogpage/video_player.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class BlogDetailedViewPage extends StatefulWidget {
- final String? id;
+  final String? id;
   const BlogDetailedViewPage({super.key, this.id});
 
   @override
   State<BlogDetailedViewPage> createState() => _BlogDetailedViewPageState();
 }
 
-
 class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
+  final PatientHomeScreenController _patientHomeScreenController = Get.find();
 
-  final PatientHomeScreenController _patientHomeScreenController= Get.find()..getResearchDocumentDetails(id);;
+  @override
+  void initState() {
+    _patientHomeScreenController
+        .getResearchDocumentDetails(widget.id.toString());
+    super.initState();
+  }
 
   bool? isLoading;
 
@@ -41,14 +51,12 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
     return Scaffold(
       body: Obx(
         () {
-          if (widget._patientHomeScreenController
+          if (_patientHomeScreenController
                   .researchDocumentDetailsModelData.value.apiState ==
               APIState.COMPLETE) {
-            ResearchDocumentDetails researchDocumentDetails = widget
-                ._patientHomeScreenController
-                .researchDocumentDetailsModelData
-                .value
-                .researchDocumentDetails;
+            ResearchDocumentDetails? researchDocumentDetails =
+                _patientHomeScreenController.researchDocumentDetailsModelData
+                    .value.researchDocumentDetails;
             return NestedScrollView(
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
@@ -62,16 +70,16 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
                       background: Image.network(
                         "${researchDocumentDetails?.researchImage}",
                         errorBuilder: (
-                          BuildContext context,
-                          Object error,
-                          StackTrace stackTrace,
+                          BuildContext? context,
+                          Object? error,
+                          StackTrace? stackTrace,
                         ) {
                           return Image.network(
-                            '${researchDocumentDetails.researchImage}',
+                            '${researchDocumentDetails?.researchImage}',
                             errorBuilder: (
-                              BuildContext context,
-                              Object error,
-                              StackTrace stackTrace,
+                              BuildContext? context,
+                              Object? error,
+                              StackTrace? stackTrace,
                             ) {
                               return Image.asset(
                                   'assets/images/blog-covid.jpg');
@@ -85,44 +93,46 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
               },
               body: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        Translate.of(context).translate(
+                        Translate.of(context)!.translate(
                             researchDocumentDetails?.researchTitle ?? ''),
                         style: Theme.of(context)
                             .textTheme
-                            .headline6
-                            .copyWith(fontWeight: FontWeight.w700),
+                            .titleLarge
+                            ?.copyWith(fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Text(
-                        "${researchDocumentDetails?.researchDescription ?? ''}",
-                        style: TextStyle(
+                        researchDocumentDetails?.researchDescription ?? '',
+                        style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(children: <Widget>[
                         Expanded(
                           child: Text(
                             'Download Complete Research Data',
-                            style:
-                                Theme.of(context).textTheme.subtitle1.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         IconButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.picture_as_pdf,
                             color: Colors.blue,
                             size: 30.0,
@@ -132,9 +142,8 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
                             // downloadPDF(context);
 
                             getDirectoryPath().then((path) {
-                              File f = File(path + "$extension");
+                              File f = File(path + extension);
 
-                              print("fff ==> ${f.path}");
                               if (f.existsSync()) {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
@@ -151,31 +160,31 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
                           },
                         ),
                       ]),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Divider(
                         height: 1,
                         color: Colors.grey[350],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Container(
-                          margin: EdgeInsets.symmetric(horizontal: 2),
+                          margin: const EdgeInsets.symmetric(horizontal: 2),
                           height: 175,
                           child: ChewieDemo(
-                            videoUrl: widget
-                                ._patientHomeScreenController
-                                .researchDocumentDetailsModelData
-                                .value
-                                .researchDocumentDetails
-                                .researchVideoUrl,
+                            videoUrl: _patientHomeScreenController
+                                    .researchDocumentDetailsModelData
+                                    .value
+                                    .researchDocumentDetails
+                                    ?.researchVideoUrl ??
+                                "",
                           )),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Row(
@@ -184,14 +193,14 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
                             radius: 32,
                             backgroundColor: Colors.transparent,
                             backgroundImage: _isdark
-                                ? AssetImage(
+                                ? const AssetImage(
                                     'assets/images/neww_b_Logo.png',
                                   )
-                                : AssetImage(
+                                : const AssetImage(
                                     'assets/images/neww_w_Logo.png',
                                   ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Expanded(
@@ -199,25 +208,27 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  Translate.of(context)
+                                  Translate.of(context)!
                                       .translate('Released By')
                                       .toUpperCase(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.blue,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
                                 Text(
-                                  "${researchDocumentDetails?.researchAuthor ?? ''}",
+                                  researchDocumentDetails?.researchAuthor ?? '',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle1
-                                      .copyWith(fontWeight: FontWeight.w700),
+                                      .titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.w700),
                                 ),
                                 Text(
-                                  researchDocumentDetails.researcherSpeciality,
-                                  style: TextStyle(
+                                  researchDocumentDetails
+                                          ?.researcherSpeciality ??
+                                      "",
+                                  style: const TextStyle(
                                       color: Colors.grey,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
@@ -232,40 +243,32 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
                 ),
               ),
             );
-          } else if (widget._patientHomeScreenController
+          } else if (_patientHomeScreenController
                   .researchDocumentDetailsModelData.value.apiState ==
               APIState.COMPLETE_WITH_NO_DATA) {
-            return Container(
-              child: Center(
-                child: Text(
-                  "No data to show!",
-                  style: TextStyle(fontSize: 21),
-                ),
+            return const Center(
+              child: Text(
+                "No data to show!",
+                style: TextStyle(fontSize: 21),
               ),
             );
-          } else if (widget._patientHomeScreenController
+          } else if (_patientHomeScreenController
                   .researchDocumentDetailsModelData.value.apiState ==
               APIState.ERROR) {
-            return Container(
-              child: Center(
-                child: Text("Error"),
-              ),
+            return const Center(
+              child: Text("Error"),
             );
-          } else if (widget._patientHomeScreenController
+          } else if (_patientHomeScreenController
                   .researchDocumentDetailsModelData.value.apiState ==
               APIState.PROCESSING) {
-            return Container(
-              child: Center(
-                child: Utils.circular(),
-              ),
+            return Center(
+              child: Utils.circular(),
             );
           } else {
-            return Container(
-              child: Center(
-                child: Text(
-                  "No data!",
-                  style: TextStyle(fontSize: 21),
-                ),
+            return const Center(
+              child: Text(
+                "No data!",
+                style: TextStyle(fontSize: 21),
               ),
             );
           }
@@ -288,8 +291,7 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
   Future<String> getDirectoryPath() async {
     Directory appDocDirectory = await getApplicationDocumentsDirectory();
     Directory directory =
-        await new Directory(appDocDirectory.path + '/' + 'dir')
-            .create(recursive: true);
+        await Directory('${appDocDirectory.path}/dir').create(recursive: true);
     return directory.path;
   }
 
@@ -300,29 +302,29 @@ class _BlogDetailedViewPageState extends State<BlogDetailedViewPage> {
     try {
       ProgressDialog progressDialog = ProgressDialog(context,
           dialogTransitionType: DialogTransitionType.Bubble,
-          title: Text("Downloading File"),
+          title: const Text("Downloading File"),
           message: null);
       progressDialog.show();
       await dio.download(url, path, onReceiveProgress: (rec, total) {
         isLoading = true;
-        progress = ((rec / total) * 100).toStringAsFixed(0) + "%";
+        progress = "${((rec / total) * 100).toStringAsFixed(0)}%";
         progressDialog.setMessage(Text("Downloading $progress"));
       });
       progressDialog.dismiss();
     } catch (e) {
-      print(e.toString());
+      log('e==========>>>>>$e');
     }
   }
 }
 
 class PDFScreen extends StatelessWidget {
   final String pathPDF;
-  PDFScreen(this.pathPDF);
+  PDFScreen(this.pathPDF, {super.key});
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return SfPdfViewer.file(
-      File(pathPDF ?? ''),
+      File(pathPDF),
       key: _pdfViewerKey,
     );
   }

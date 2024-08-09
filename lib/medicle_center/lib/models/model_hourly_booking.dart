@@ -1,10 +1,10 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_style.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_schedule.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_style.dart';
+import 'package:united_natives/medicle_center/lib/models/model_schedule.dart';
 
 class HourlyBookingModel extends BookingStyleModel {
-  DateTime startDate;
-  ScheduleModel schedule;
-  List<ScheduleModel> hourList;
+  DateTime? startDate;
+  ScheduleModel? schedule;
+  List<ScheduleModel>? hourList;
 
   HourlyBookingModel({
     price,

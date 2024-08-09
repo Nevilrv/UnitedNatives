@@ -1,25 +1,25 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class AppTextInput extends StatefulWidget {
-  final String hintText;
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final GestureTapCallback onTap;
-  final ValueChanged<String> onChanged;
-  final ValueChanged<String> onSubmitted;
-  final Widget leading;
-  final Widget trailing;
+  final String? hintText;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final GestureTapCallback? onTap;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final Widget? leading;
+  final Widget? trailing;
   final bool obscureText;
-  final TextInputType keyboardType;
-  final TextInputAction textInputAction;
-  final String errorText;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final String? errorText;
   final int maxLines;
   final bool autofocus;
 
   const AppTextInput({
-    Key key,
+    super.key,
     this.hintText,
     this.controller,
     this.focusNode,
@@ -34,7 +34,7 @@ class AppTextInput extends StatefulWidget {
     this.errorText,
     this.maxLines = 1,
     this.autofocus = false,
-  }) : super(key: key);
+  });
 
   @override
   State<AppTextInput> createState() => _AppTextInputState();
@@ -54,11 +54,11 @@ class _AppTextInputState extends State<AppTextInput> {
             const SizedBox(width: 24),
             Expanded(
               child: Text(
-                Translate.of(context).translate(widget.errorText),
+                Translate.of(context)!.translate(widget.errorText!),
                 style: Theme.of(context)
                     .textTheme
-                    .caption
-                    .copyWith(color: Theme.of(context).errorColor),
+                    .bodySmall
+                    ?.copyWith(color: Theme.of(context).colorScheme.error),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -75,11 +75,11 @@ class _AppTextInputState extends State<AppTextInput> {
         children: [
           Expanded(
             child: Text(
-              Translate.of(context).translate(widget.errorText),
+              Translate.of(context)!.translate(widget.errorText!),
               style: Theme.of(context)
                   .textTheme
-                  .caption
-                  .copyWith(color: Theme.of(context).errorColor),
+                  .bodySmall
+                  ?.copyWith(color: Theme.of(context).colorScheme.error),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -99,13 +99,13 @@ class _AppTextInputState extends State<AppTextInput> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(width: 8),
-          widget.leading,
+          widget.leading!,
           const SizedBox(width: 8),
         ],
       );
     }
 
-    if (widget.controller != null && widget.controller.text.isNotEmpty) {
+    if (widget.controller != null && widget.controller!.text.isNotEmpty) {
       deleteAction = Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -113,10 +113,10 @@ class _AppTextInputState extends State<AppTextInput> {
           GestureDetector(
             dragStartBehavior: DragStartBehavior.down,
             onTap: () {
-              widget.controller.clear();
+              widget.controller?.clear();
               if (widget.onChanged != null) {
                 setState(() {
-                  widget.onChanged(widget.controller.text);
+                  widget.onChanged!(widget.controller!.text);
                 });
               }
             },
@@ -162,7 +162,7 @@ class _AppTextInputState extends State<AppTextInput> {
                     ),
                     border: InputBorder.none,
                   ),
-                  autofocus: widget.autofocus ?? false,
+                  autofocus: widget.autofocus,
                 ),
               )
             ],

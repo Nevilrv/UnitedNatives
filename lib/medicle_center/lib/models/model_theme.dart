@@ -1,10 +1,10 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/color.dart';
+import 'package:united_natives/medicle_center/lib/utils/color.dart';
 import 'package:flutter/material.dart';
 
 class ThemeModel {
-  final String name;
-  final Color primary;
-  final Color secondary;
+  final String? name;
+  final Color? primary;
+  final Color? secondary;
 
   ThemeModel({
     this.name,
@@ -23,8 +23,8 @@ class ThemeModel {
   Map<String, dynamic> toJson() {
     return {
       "name": name,
-      "primary": primary.toHex,
-      "secondary": secondary.toHex,
+      "primary": primary?.toHex,
+      "secondary": secondary?.toHex,
     };
   }
 }

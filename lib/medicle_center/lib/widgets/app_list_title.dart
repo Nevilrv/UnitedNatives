@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
 class AppListTitle extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Widget leading;
-  final Widget trailing;
-  final VoidCallback onPressed;
-  final bool border;
+  final String? title;
+  final String? subtitle;
+  final Widget? leading;
+  final Widget? trailing;
+  final VoidCallback? onPressed;
+  final bool? border;
 
   const AppListTitle({
-    Key key,
+    super.key,
     this.title,
     this.subtitle,
     this.leading,
     this.trailing,
     this.onPressed,
     this.border = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    Border borderWidget;
+    Border? borderWidget;
     Widget subTitle = Container();
     Widget leadingWidget = const SizedBox(width: 16);
     if (leading != null) {
@@ -33,15 +33,15 @@ class AppListTitle extends StatelessWidget {
       subTitle = Padding(
         padding: const EdgeInsets.only(top: 8),
         child: Text(
-          subtitle,
+          subtitle!,
           style: Theme.of(context)
               .textTheme
-              .bodyText2
-              .copyWith(color: Theme.of(context).primaryColor),
+              .bodyMedium
+              ?.copyWith(color: Theme.of(context).primaryColor),
         ),
       );
     }
-    if (border) {
+    if (border!) {
       borderWidget = Border(
         bottom: BorderSide(
           width: 1,
@@ -71,11 +71,11 @@ class AppListTitle extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              title,
+                              '$title',
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle1
-                                  .copyWith(fontWeight: FontWeight.bold),
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             subTitle
                           ],

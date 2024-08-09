@@ -1,9 +1,9 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_schedule.dart';
+import 'package:united_natives/medicle_center/lib/models/model_schedule.dart';
 
 class OpenTimeModel {
-  final int dayOfWeek;
-  final String key;
-  final List<ScheduleModel> schedule;
+  final int? dayOfWeek;
+  final String? key;
+  final List<ScheduleModel>? schedule;
 
   OpenTimeModel({
     this.dayOfWeek,

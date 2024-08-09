@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 
   @override
-  _ForgotPasswordState createState() {
+  State<ForgotPassword> createState() {
     return _ForgotPasswordState();
   }
 }
@@ -15,11 +15,10 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _textEmailController = TextEditingController();
 
-  String _errorEmail;
+  String? _errorEmail;
 
   @override
   void initState() {
-    print('ForgetPassword');
     super.initState();
   }
 
@@ -55,7 +54,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('forgot_password'),
+          Translate.of(context)!.translate('forgot_password'),
         ),
       ),
       body: SafeArea(
@@ -67,15 +66,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  Translate.of(context).translate('email'),
+                  Translate.of(context)!.translate('email'),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 AppTextInput(
-                  hintText: Translate.of(context).translate(
+                  hintText: Translate.of(context)?.translate(
                     'input_email',
                   ),
                   errorText: _errorEmail,
@@ -96,7 +95,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 Padding(
                   padding: const EdgeInsets.only(top: 16),
                   child: AppButton(
-                    Translate.of(context).translate('reset_password'),
+                    Translate.of(context)?.translate('reset_password'),
                     mainAxisSize: MainAxisSize.max,
                     onPressed: _forgotPassword,
                   ),

@@ -1,24 +1,22 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/api/api.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_item.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_payment.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_style.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_daily_booking.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_hourly_booking.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_result_api.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_slot_booking.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_sort.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_standard_booking.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_table_booking.dart';
+import 'package:united_natives/medicle_center/lib/api/api.dart';
+import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_item.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_payment.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_style.dart';
+import 'package:united_natives/medicle_center/lib/models/model_daily_booking.dart';
+import 'package:united_natives/medicle_center/lib/models/model_hourly_booking.dart';
+import 'package:united_natives/medicle_center/lib/models/model_result_api.dart';
+import 'package:united_natives/medicle_center/lib/models/model_slot_booking.dart';
+import 'package:united_natives/medicle_center/lib/models/model_sort.dart';
+import 'package:united_natives/medicle_center/lib/models/model_standard_booking.dart';
+import 'package:united_natives/medicle_center/lib/models/model_table_booking.dart';
 import 'package:flutter/material.dart';
 
 class BookingRepository {
-  static Future<List> loadBookingForm(id) async {
-    print('==resource_id==>$id');
+  static Future<List?> loadBookingForm(id) async {
     final response = await Api.requestBookingForm({'resource_id': id});
-    print('--response.success--->${response.success}');
 
-    if (response.success) {
+    if (response.success!) {
       BookingStyleModel bookingStyle;
       switch (response.data['type']) {
         case 'standard':
@@ -49,27 +47,26 @@ class BookingRepository {
       return [bookingStyle, BookingPaymentModel.fromJson(response.payment)];
     } else {
       ///Notify
-      AppBloc.messageCubit.onShow(response.message);
+      AppBloc.messageCubit.onShow(response.message!);
     }
     return null;
   }
 
-  static Future<String> calcPrice(Map<String, dynamic> params) async {
-    print('calcPrice====>$params');
+  static Future<String?> calcPrice(Map<String, dynamic> params) async {
     final response = await Api.requestPrice(params);
-    if (response.success) {
+    if (response.success!) {
       return response.attr['total_display'];
     } else {
       ///Notify
-      AppBloc.messageCubit.onShow(response.message);
+      AppBloc.messageCubit.onShow(response.message!);
     }
     return null;
   }
 
   static Future<ResultApiModel> order(Map<String, dynamic> params) async {
     final response = await Api.requestOrder(params);
-    if (response.success) {
-      String url;
+    if (response.success!) {
+      String? url;
       switch (params['payment_method']) {
         case 'paypal':
           url = response.payment['links'][1]['href'];
@@ -81,18 +78,18 @@ class BookingRepository {
       return ResultApiModel.fromJson({'success': true, 'data': url});
     } else {
       ///Notify
-      AppBloc.messageCubit.onShow(response.message);
+      AppBloc.messageCubit.onShow(response.message!);
     }
     return response;
   }
 
-  static Future<List> loadList({
-    String keyword,
-    int page,
-    int perPage,
-    SortModel sort,
-    SortModel status,
-    bool request,
+  static Future<List?> loadList({
+    String? keyword,
+    int? page,
+    int? perPage,
+    SortModel? sort,
+    SortModel? status,
+    bool? request,
   }) async {
     Map<String, dynamic> params = {
       "s": keyword,
@@ -110,7 +107,7 @@ class BookingRepository {
       params,
       request: request,
     );
-    if (response.success) {
+    if (response.success!) {
       final list = List.from(response.data ?? []).map((item) {
         return BookingItemModel.fromJson(item);
       }).toList();
@@ -125,32 +122,32 @@ class BookingRepository {
 
       return [list, response.pagination, listSort, listStatus];
     }
-    AppBloc.messageCubit.onShow(response.message);
+    AppBloc.messageCubit.onShow(response.message!);
     return null;
   }
 
-  static Future<BookingItemModel> loadDetail(int id) async {
+  static Future<BookingItemModel?> loadDetail(int id) async {
     final params = {'id': id};
     final response = await Api.requestBookingDetail(params);
-    if (response.success) {
+    if (response.success!) {
       // print('data1234');
       // print('------Booking Response-------$response');
       return BookingItemModel.fromJson(response.data);
     } else {
       ///Notify
-      AppBloc.messageCubit.onShow(response.message);
+      AppBloc.messageCubit.onShow(response.message!);
     }
     return null;
   }
 
-  static Future<BookingItemModel> cancel(int id) async {
+  static Future<BookingItemModel?> cancel(int id) async {
     final params = {'id': id};
     final response = await Api.requestBookingCancel(params);
-    if (response.success) {
+    if (response.success!) {
       return BookingItemModel.fromJson(response.data);
     } else {
       ///Notify
-      AppBloc.messageCubit.onShow(response.message);
+      AppBloc.messageCubit.onShow(response.message!);
     }
     return null;
   }

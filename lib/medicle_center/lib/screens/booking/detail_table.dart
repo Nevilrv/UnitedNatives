@@ -1,20 +1,20 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class DetailTable extends StatefulWidget {
-  final TableBookingModel bookingStyle;
-  final VoidCallback onCalcPrice;
+  final TableBookingModel? bookingStyle;
+  final VoidCallback? onCalcPrice;
 
   const DetailTable({
-    Key key,
-     this.bookingStyle,
-     this.onCalcPrice,
-  }) : super(key: key);
+    super.key,
+    this.bookingStyle,
+    this.onCalcPrice,
+  });
 
   @override
-  _DetailTableState createState() {
+  State<DetailTable> createState() {
     return _DetailTableState();
   }
 }
@@ -34,31 +34,31 @@ class _DetailTableState extends State<DetailTable> {
   void _onDatePicker() async {
     final now = DateTime.now();
     final result = await showDatePicker(
-      initialDate: widget.bookingStyle.startDate ?? DateTime.now(),
+      initialDate: widget.bookingStyle?.startDate ?? DateTime.now(),
       firstDate: DateTime(now.year, now.month),
       context: context,
       lastDate: DateTime(now.year + 1),
     );
     if (result != null) {
       setState(() {
-        widget.bookingStyle.startDate = result;
+        widget.bookingStyle?.startDate = result;
       });
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
   ///Show show change start time
   void _onTimePicker() async {
     final result = await showTimePicker(
-      initialTime: widget.bookingStyle.startTime ?? TimeOfDay.now(),
+      initialTime: widget.bookingStyle?.startTime ?? TimeOfDay.now(),
       context: context,
     );
 
     if (result != null) {
       setState(() {
-        widget.bookingStyle.startTime = result;
+        widget.bookingStyle?.startTime = result;
       });
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
@@ -75,16 +75,16 @@ class _DetailTableState extends State<DetailTable> {
     );
     if (result != null) {
       callback(result);
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
   ///On select table
   void _onSelectTable(Map<String, dynamic> item) {
     setState(() {
-      widget.bookingStyle.selected = [item];
+      widget.bookingStyle?.selected = [item];
     });
-    widget.onCalcPrice();
+    widget.onCalcPrice!();
   }
 
   @override
@@ -104,12 +104,12 @@ class _DetailTableState extends State<DetailTable> {
                         Icons.person_outline,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.adult?.toString(),
-                      title: Translate.of(context).translate('adult'),
+                      value: widget.bookingStyle?.adult?.toString(),
+                      title: Translate.of(context)?.translate('adult'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.adult, (value) {
+                        _onPicker(widget.bookingStyle!.adult!, (value) {
                           setState(() {
-                            widget.bookingStyle.adult = value;
+                            widget.bookingStyle!.adult = value;
                           });
                         });
                       },
@@ -122,12 +122,12 @@ class _DetailTableState extends State<DetailTable> {
                         Icons.child_friendly_outlined,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.children?.toString(),
-                      title: Translate.of(context).translate('children'),
+                      value: widget.bookingStyle?.children?.toString(),
+                      title: Translate.of(context)?.translate('children'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.children, (value) {
+                        _onPicker(widget.bookingStyle!.children!, (value) {
                           setState(() {
-                            widget.bookingStyle.children = value;
+                            widget.bookingStyle!.children = value;
                           });
                         });
                       },
@@ -141,8 +141,8 @@ class _DetailTableState extends State<DetailTable> {
                   Icons.calendar_today_outlined,
                   color: Theme.of(context).hintColor,
                 ),
-                value: widget.bookingStyle.startDate?.dateView,
-                title: Translate.of(context).translate('date'),
+                value: widget.bookingStyle?.startDate?.dateView,
+                title: Translate.of(context)?.translate('date'),
                 onPressed: _onDatePicker,
               ),
               const SizedBox(height: 16),
@@ -151,8 +151,8 @@ class _DetailTableState extends State<DetailTable> {
                   Icons.more_time,
                   color: Theme.of(context).hintColor,
                 ),
-                value: widget.bookingStyle.startTime?.viewTime,
-                title: Translate.of(context).translate('time'),
+                value: widget.bookingStyle?.startTime?.viewTime,
+                title: Translate.of(context)?.translate('time'),
                 onPressed: _onTimePicker,
               ),
               const SizedBox(height: 8),
@@ -174,8 +174,8 @@ class _DetailTableState extends State<DetailTable> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          Translate.of(context).translate('booked'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('booked'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         )
                       ],
                     ),
@@ -194,8 +194,8 @@ class _DetailTableState extends State<DetailTable> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          Translate.of(context).translate('selected'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('selected'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         )
                       ],
                     ),
@@ -214,8 +214,8 @@ class _DetailTableState extends State<DetailTable> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          Translate.of(context).translate('empty'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('empty'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         )
                       ],
                     ),
@@ -224,27 +224,27 @@ class _DetailTableState extends State<DetailTable> {
               ),
               const SizedBox(height: 16),
               Text(
-                Translate.of(context).translate('booking_a_table'),
+                Translate.of(context)!.translate('booking_a_table'),
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle1
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               Wrap(
                 runSpacing: 16,
                 spacing: 32,
                 alignment: WrapAlignment.center,
-                children: widget.bookingStyle.tableList.map((item) {
+                children: widget.bookingStyle!.tableList!.map((item) {
                   final booked = item['use'] == true;
-                  final selected = widget.bookingStyle.selected.contains(item);
-                  Function onPress() {
+                  final selected = widget.bookingStyle?.selected.contains(item);
+                  Function? onPress() {
                     _onSelectTable(item);
                     return null;
                   }
 
                   Color color = Theme.of(context).dividerColor;
-                  if (selected) {
+                  if (selected!) {
                     color = Theme.of(context).colorScheme.secondary;
                   }
                   if (booked) {
@@ -262,7 +262,7 @@ class _DetailTableState extends State<DetailTable> {
                       ),
                       child: Text(
                         '${item['id']}',
-                        style: Theme.of(context).textTheme.button.copyWith(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -278,14 +278,14 @@ class _DetailTableState extends State<DetailTable> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    Translate.of(context).translate('total'),
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    Translate.of(context)!.translate('total'),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    widget.bookingStyle.price,
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    widget.bookingStyle!.price!,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   )

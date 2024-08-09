@@ -1,23 +1,23 @@
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 class WriteReview extends StatefulWidget {
-  final ProductModel product;
+  final ProductModel? product;
 
   const WriteReview({
-    Key key,
+    super.key,
     this.product,
-  }) : super(key: key);
+  });
 
   @override
-  _WriteReviewState createState() {
+  State<WriteReview> createState() {
     return _WriteReviewState();
   }
 }
@@ -25,15 +25,15 @@ class WriteReview extends StatefulWidget {
 class _WriteReviewState extends State<WriteReview> {
   final _textReviewController = TextEditingController();
   final _focusReview = FocusNode();
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
 
-  String _errorReview;
+  String? _errorReview;
   double _rate = 1;
 
   @override
   void initState() {
     super.initState();
-    _rate = widget.product.rate;
+    _rate = widget.product!.rate!;
   }
 
   @override
@@ -51,7 +51,7 @@ class _WriteReviewState extends State<WriteReview> {
     });
     if (_errorReview == null) {
       final result = await AppBloc.reviewCubit.onSave(
-        id: widget.product.id,
+        id: widget.product?.id,
         content: _textReviewController.text,
         rate: _rate,
       );
@@ -68,7 +68,7 @@ class _WriteReviewState extends State<WriteReview> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('feedback'),
+          Translate.of(context)!.translate('feedback'),
         ),
       ),
       body: SafeArea(
@@ -85,14 +85,13 @@ class _WriteReviewState extends State<WriteReview> {
                         Container(
                           width: 60,
                           height: 60,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
                           ),
                           child: Utils().patientProfile(
-                              _userController.user?.value?.profilePic ?? '',
-                              _userController.user?.value?.socialProfilePic ??
-                                  '',
+                              _userController.user.value.profilePic ?? '',
+                              _userController.user.value.socialProfilePic ?? '',
                               40),
                         ),
                         // CachedNetworkImage(
@@ -158,8 +157,8 @@ class _WriteReviewState extends State<WriteReview> {
                       },
                     ),
                     Text(
-                      Translate.of(context).translate('tap_rate'),
-                      style: Theme.of(context).textTheme.caption,
+                      Translate.of(context)!.translate('tap_rate'),
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16),
@@ -169,15 +168,15 @@ class _WriteReviewState extends State<WriteReview> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: Text(
-                              Translate.of(context).translate('description'),
+                              Translate.of(context)!.translate('description'),
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
-                                  .copyWith(fontWeight: FontWeight.bold),
+                                  .titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
                           AppTextInput(
-                            hintText: Translate.of(context).translate(
+                            hintText: Translate.of(context)?.translate(
                               'input_feedback',
                             ),
                             errorText: _errorReview,
@@ -205,7 +204,7 @@ class _WriteReviewState extends State<WriteReview> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: AppButton(
-                Translate.of(context).translate('send'),
+                Translate.of(context)?.translate('send'),
                 onPressed: _onSave,
                 mainAxisSize: MainAxisSize.max,
               ),

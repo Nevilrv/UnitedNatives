@@ -52,8 +52,6 @@ class _AppContainerState extends State<AppContainer> {
         return 0;
       case Routes.discovery:
         return 1;
-      case Routes.discovery:
-        return 2;
       case Routes.wishList:
         return 3;
       default:
@@ -66,7 +64,7 @@ class _AppContainerState extends State<AppContainer> {
     final notification = NotificationModel.fromJson(message!);
     Navigator.pushNamed(
       context,
-      notification.target,
+      notification.target!,
       arguments: notification.item,
     );
   }
@@ -178,7 +176,7 @@ class _AppContainerState extends State<AppContainer> {
               ),
               const SizedBox(height: 2),
               Text(
-                Translate.of(context).translate(title),
+                Translate.of(context)!.translate(title),
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontSize: 12,
                       color: color,
@@ -195,7 +193,7 @@ class _AppContainerState extends State<AppContainer> {
 
   ///Build submit button
   Widget _buildSubmit() {
-    if (Application.setting.enableSubmit) {
+    if (Application.setting.enableSubmit!) {
       return GestureDetector(
         onTap: _onSubmit,
         child: SizedBox(
@@ -224,7 +222,7 @@ class _AppContainerState extends State<AppContainer> {
 
   ///Build bottom menu
   Widget _buildBottomMenu() {
-    if (Application.setting.enableSubmit) {
+    if (Application.setting.enableSubmit!) {
       return BottomAppBar(
         child: SizedBox(
           height: 56,

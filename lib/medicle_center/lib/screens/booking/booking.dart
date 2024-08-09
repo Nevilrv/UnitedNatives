@@ -1,8 +1,8 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
@@ -14,15 +14,15 @@ import 'detail_standard.dart';
 import 'detail_table.dart';
 
 class Booking extends StatefulWidget {
-  final int id;
+  final int? id;
 
   const Booking({
-    Key key,
+    super.key,
     this.id,
-  }) : super(key: key);
+  });
 
   @override
-  _BookingState createState() {
+  State<Booking> createState() {
     return _BookingState();
   }
 }
@@ -45,11 +45,11 @@ class _BookingState extends State<Booking> {
 
   int _active = 0;
   bool _agree = false;
-  String _errorFirstName;
-  String _errorLastName;
-  String _errorPhone;
-  String _errorEmail;
-  String _errorAddress;
+  String? _errorFirstName;
+  String? _errorLastName;
+  String? _errorPhone;
+  String? _errorEmail;
+  String? _errorAddress;
 
   @override
   void initState() {
@@ -77,7 +77,7 @@ class _BookingState extends State<Booking> {
 
   ///Init data
   void _loadData() async {
-    await _bookingCubit.initBooking(widget.id);
+    await _bookingCubit.initBooking(widget.id!);
   }
 
   ///On booking
@@ -92,14 +92,14 @@ class _BookingState extends State<Booking> {
       message: _textMessageController.text,
       form: form,
     );
-    if (result.success) {
+    if (result.success!) {
       if (result.data != null) {
         if (!mounted) return;
         final url = await Navigator.pushNamed(
           context,
           Routes.webView,
           arguments: WebViewModel(
-            title: Translate.of(context).translate('payment'),
+            title: Translate.of(context)!.translate('payment'),
             url: result.data,
             callbackUrl: ['v1/booking/return', 'v1/booking/cancel'],
           ),
@@ -124,24 +124,24 @@ class _BookingState extends State<Booking> {
     );
     if (price != null) {
       setState(() {
-        form.bookingStyle.price = price;
+        form.bookingStyle?.price = price;
       });
     }
   }
 
   ///On next
   void _onNext({
-    FormSuccess form,
-    int step,
+    FormSuccess? form,
+    int? step,
   }) async {
     UtilsMedicalCenter.hiddenKeyboard(context);
     if (step == 0) {
-      if (form.bookingStyle.adult == null) {
+      if (form?.bookingStyle?.adult == null) {
         AppBloc.messageCubit.onShow('choose_adults_message');
         return;
       }
-      if (form.bookingStyle is StandardBookingModel) {
-        final style = form.bookingStyle as StandardBookingModel;
+      if (form?.bookingStyle is StandardBookingModel) {
+        final style = form?.bookingStyle as StandardBookingModel;
         if (style.startDate == null) {
           AppBloc.messageCubit.onShow('choose_date_message');
           return;
@@ -150,14 +150,14 @@ class _BookingState extends State<Booking> {
           AppBloc.messageCubit.onShow('choose_time_message');
           return;
         }
-      } else if (form.bookingStyle is DailyBookingModel) {
-        final style = form.bookingStyle as DailyBookingModel;
+      } else if (form?.bookingStyle is DailyBookingModel) {
+        final style = form?.bookingStyle as DailyBookingModel;
         if (style.startDate == null) {
           AppBloc.messageCubit.onShow('choose_date_message');
           return;
         }
-      } else if (form.bookingStyle is HourlyBookingModel) {
-        final style = form.bookingStyle as HourlyBookingModel;
+      } else if (form?.bookingStyle is HourlyBookingModel) {
+        final style = form?.bookingStyle as HourlyBookingModel;
         if (style.startDate == null) {
           AppBloc.messageCubit.onShow('choose_date_message');
           return;
@@ -166,8 +166,8 @@ class _BookingState extends State<Booking> {
           AppBloc.messageCubit.onShow('choose_time_message');
           return;
         }
-      } else if (form.bookingStyle is TableBookingModel) {
-        final style = form.bookingStyle as TableBookingModel;
+      } else if (form?.bookingStyle is TableBookingModel) {
+        final style = form?.bookingStyle as TableBookingModel;
         if (style.startDate == null) {
           AppBloc.messageCubit.onShow('choose_date_message');
           return;
@@ -186,19 +186,20 @@ class _BookingState extends State<Booking> {
       });
     } else if (step == 1) {
       if (_textFistNameController.text.isEmpty) {
-        _errorFirstName = Translate.of(context).translate('first_name_message');
+        _errorFirstName =
+            Translate.of(context)?.translate('first_name_message');
       }
       if (_textLastNameController.text.isEmpty) {
-        _errorLastName = Translate.of(context).translate('last_name_message');
+        _errorLastName = Translate.of(context)?.translate('last_name_message');
       }
       if (_textPhoneController.text.isEmpty) {
-        _errorPhone = Translate.of(context).translate('phone_message');
+        _errorPhone = Translate.of(context)?.translate('phone_message');
       }
       if (_textEmailController.text.isEmpty) {
-        _errorEmail = Translate.of(context).translate('email_message');
+        _errorEmail = Translate.of(context)?.translate('email_message');
       }
       if (_textAddressController.text.isEmpty) {
-        _errorAddress = Translate.of(context).translate('address_message');
+        _errorAddress = Translate.of(context)?.translate('address_message');
       }
       setState(() {
         if (_errorFirstName == null &&
@@ -206,7 +207,7 @@ class _BookingState extends State<Booking> {
             _errorPhone == null &&
             _errorEmail == null &&
             _errorAddress == null) {
-          if (form.bookingPayment.use) {
+          if (form!.bookingPayment!.use!) {
             _active += 1;
           } else {
             _onOrder(form);
@@ -214,7 +215,7 @@ class _BookingState extends State<Booking> {
         }
       });
     } else if (step == 2) {
-      _onOrder(form);
+      _onOrder(form!);
     }
   }
 
@@ -237,8 +238,8 @@ class _BookingState extends State<Booking> {
       context,
       Routes.webView,
       arguments: WebViewModel(
-        title: Translate.of(context).translate('term_condition'),
-        url: form.bookingPayment.term,
+        title: Translate.of(context)!.translate('term_condition'),
+        url: form.bookingPayment?.term,
       ),
     );
   }
@@ -293,7 +294,7 @@ class _BookingState extends State<Booking> {
         children: [
           const SizedBox(height: 16),
           AppTextInput(
-            hintText: Translate.of(context).translate('input_first_name'),
+            hintText: Translate.of(context)?.translate('input_first_name'),
             errorText: _errorFirstName,
             controller: _textFistNameController,
             focusNode: _focusFistName,
@@ -315,7 +316,7 @@ class _BookingState extends State<Booking> {
           ),
           const SizedBox(height: 16),
           AppTextInput(
-            hintText: Translate.of(context).translate('input_last_name'),
+            hintText: Translate.of(context)?.translate('input_last_name'),
             errorText: _errorLastName,
             controller: _textLastNameController,
             focusNode: _focusLastName,
@@ -337,7 +338,7 @@ class _BookingState extends State<Booking> {
           ),
           const SizedBox(height: 16),
           AppTextInput(
-            hintText: Translate.of(context).translate('input_phone'),
+            hintText: Translate.of(context)?.translate('input_phone'),
             errorText: _errorPhone,
             controller: _textPhoneController,
             focusNode: _focusPhone,
@@ -361,7 +362,7 @@ class _BookingState extends State<Booking> {
           ),
           const SizedBox(height: 16),
           AppTextInput(
-            hintText: Translate.of(context).translate('input_email'),
+            hintText: Translate.of(context)?.translate('input_email'),
             errorText: _errorEmail,
             controller: _textEmailController,
             focusNode: _focusEmail,
@@ -384,7 +385,7 @@ class _BookingState extends State<Booking> {
           ),
           const SizedBox(height: 16),
           AppTextInput(
-            hintText: Translate.of(context).translate('input_address'),
+            hintText: Translate.of(context)?.translate('input_address'),
             errorText: _errorAddress,
             controller: _textAddressController,
             focusNode: _focusAddress,
@@ -407,7 +408,7 @@ class _BookingState extends State<Booking> {
           const SizedBox(height: 16),
           AppTextInput(
             maxLines: 6,
-            hintText: Translate.of(context).translate('input_content'),
+            hintText: Translate.of(context)?.translate('input_content'),
             controller: _textMessageController,
             focusNode: _focusMessage,
             textInputAction: TextInputAction.done,
@@ -422,18 +423,18 @@ class _BookingState extends State<Booking> {
     Widget bankAccountList = Container();
     Widget paymentInfo = Container();
 
-    if (form.bookingPayment.method?.id == 'bank') {
+    if (form.bookingPayment?.method?.id == 'bank') {
       bankAccountList = Column(
-        children: form.bookingPayment.listAccount.map((item) {
+        children: form.bookingPayment!.listAccount!.map((item) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                item.bankName,
+                "${item.bankName}",
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle1
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Row(
@@ -443,23 +444,23 @@ class _BookingState extends State<Booking> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          Translate.of(context).translate('account_name'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('account_name'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          item.name,
-                          style: Theme.of(context).textTheme.button,
+                          "${item.name}",
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          Translate.of(context).translate('iban'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('iban'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          item.bankIban,
-                          style: Theme.of(context).textTheme.button,
+                          "${item.bankIban}",
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ],
                     ),
@@ -470,23 +471,23 @@ class _BookingState extends State<Booking> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          Translate.of(context).translate('account_number'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('account_number'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          item.number,
-                          style: Theme.of(context).textTheme.button,
+                          "${item.number}",
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          Translate.of(context).translate('swift_code'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('swift_code'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          item.bankSwift,
-                          style: Theme.of(context).textTheme.button,
+                          "${item.bankSwift}",
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ],
                     ),
@@ -499,7 +500,7 @@ class _BookingState extends State<Booking> {
         }).toList(),
       );
     }
-    if (form.bookingPayment.method != null) {
+    if (form.bookingPayment?.method != null) {
       paymentInfo = Row(
         children: [
           Expanded(
@@ -513,21 +514,21 @@ class _BookingState extends State<Booking> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    form.bookingPayment.method?.title ?? '',
+                    form.bookingPayment?.method?.title ?? '',
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
-                        .copyWith(fontWeight: FontWeight.bold),
+                        .titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    form.bookingPayment.method?.description ?? '',
-                    style: Theme.of(context).textTheme.caption,
+                    form.bookingPayment?.method?.description ?? '',
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    form.bookingPayment.method?.instruction ?? '',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    form.bookingPayment?.method?.instruction ?? '',
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ),
@@ -541,19 +542,19 @@ class _BookingState extends State<Booking> {
       child: Column(
         children: [
           Column(
-            children: form.bookingPayment.listMethod.map((item) {
-              if (item != form.bookingPayment.listMethod.last) {
+            children: form.bookingPayment!.listMethod!.map((item) {
+              if (item != form.bookingPayment?.listMethod?.last) {
                 return Column(
                   children: [
                     Row(
                       children: [
                         Radio<String>(
                           activeColor: Theme.of(context).primaryColor,
-                          value: item.id,
-                          groupValue: form.bookingPayment.method?.id,
+                          value: "${item.id}",
+                          groupValue: form.bookingPayment?.method?.id,
                           onChanged: (value) {
                             setState(() {
-                              form.bookingPayment.method = item;
+                              form.bookingPayment?.method = item;
                             });
                           },
                         ),
@@ -562,14 +563,14 @@ class _BookingState extends State<Booking> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                item.title,
-                                style: Theme.of(context).textTheme.button,
+                                "${item.title}",
+                                style: Theme.of(context).textTheme.labelLarge,
                               ),
                               Text(
-                                item.instruction,
+                                "${item.instruction}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
@@ -584,11 +585,11 @@ class _BookingState extends State<Booking> {
                 children: [
                   Radio<String>(
                     activeColor: Theme.of(context).primaryColor,
-                    value: item.id,
-                    groupValue: form.bookingPayment.method?.id,
+                    value: "${item.id}",
+                    groupValue: form.bookingPayment?.method?.id,
                     onChanged: (value) {
                       setState(() {
-                        form.bookingPayment.method = item;
+                        form.bookingPayment?.method = item;
                       });
                     },
                   ),
@@ -597,14 +598,14 @@ class _BookingState extends State<Booking> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          item.title,
-                          style: Theme.of(context).textTheme.button,
+                          "${item.title}",
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                         Text(
-                          item.instruction,
+                          "${item.instruction}",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -644,19 +645,19 @@ class _BookingState extends State<Booking> {
           ),
           const SizedBox(height: 8),
           Text(
-            Translate.of(context).translate('booking_success_title'),
+            Translate.of(context)!.translate('booking_success_title'),
             style: Theme.of(context)
                 .textTheme
-                .headline6
-                .copyWith(fontWeight: FontWeight.bold),
+                .titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            Translate.of(context).translate(
+            Translate.of(context)!.translate(
               'booking_success_message',
             ),
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           )
         ],
       ),
@@ -671,7 +672,7 @@ class _BookingState extends State<Booking> {
       case 1:
         return _buildContact();
       case 2:
-        if (!form.bookingPayment.use) {
+        if (!form.bookingPayment!.use!) {
           continue success;
         }
         return _buildPayment(form);
@@ -693,7 +694,7 @@ class _BookingState extends State<Booking> {
             horizontal: 16,
           ),
           child: AppButton(
-            Translate.of(context).translate('next'),
+            Translate.of(context)?.translate('next'),
             onPressed: () {
               _onNext(form: form, step: 0);
             },
@@ -710,7 +711,7 @@ class _BookingState extends State<Booking> {
             children: [
               Expanded(
                 child: AppButton(
-                  Translate.of(context).translate('previous'),
+                  Translate.of(context)?.translate('previous'),
                   onPressed: _onPrevious,
                   mainAxisSize: MainAxisSize.max,
                 ),
@@ -718,7 +719,7 @@ class _BookingState extends State<Booking> {
               const SizedBox(width: 16),
               Expanded(
                 child: AppButton(
-                  Translate.of(context).translate('next'),
+                  Translate.of(context)?.translate('next'),
                   onPressed: () {
                     _onNext(form: form, step: 1);
                   },
@@ -729,7 +730,7 @@ class _BookingState extends State<Booking> {
           ),
         );
       case 2:
-        if (!form.bookingPayment.use) {
+        if (!form.bookingPayment!.use!) {
           continue success;
         }
         return Padding(
@@ -746,13 +747,13 @@ class _BookingState extends State<Booking> {
                     value: _agree,
                     onChanged: (value) {
                       setState(() {
-                        _agree = value;
+                        _agree = value!;
                       });
                     },
                   ),
                   Text(
-                    Translate.of(context).translate('i_agree'),
-                    style: Theme.of(context).textTheme.button,
+                    Translate.of(context)!.translate('i_agree'),
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(width: 2),
                   InkWell(
@@ -760,8 +761,8 @@ class _BookingState extends State<Booking> {
                       _onTerm(form);
                     },
                     child: Text(
-                      Translate.of(context).translate('term_condition'),
-                      style: Theme.of(context).textTheme.button.copyWith(
+                      Translate.of(context)!.translate('term_condition'),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                     ),
@@ -772,7 +773,7 @@ class _BookingState extends State<Booking> {
                 children: [
                   Expanded(
                     child: AppButton(
-                      Translate.of(context).translate('previous'),
+                      Translate.of(context)?.translate('previous'),
                       onPressed: _onPrevious,
                       mainAxisSize: MainAxisSize.max,
                     ),
@@ -780,7 +781,7 @@ class _BookingState extends State<Booking> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: AppButton(
-                      Translate.of(context).translate('next'),
+                      Translate.of(context)?.translate('next'),
                       onPressed: () {
                         _onNext(form: form, step: 2);
                       },
@@ -804,7 +805,7 @@ class _BookingState extends State<Booking> {
             children: [
               Expanded(
                 child: AppButton(
-                  Translate.of(context).translate('back'),
+                  Translate.of(context)?.translate('back'),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -814,7 +815,7 @@ class _BookingState extends State<Booking> {
               const SizedBox(width: 16),
               Expanded(
                 child: AppButton(
-                  Translate.of(context).translate('my_booking'),
+                  Translate.of(context)?.translate('my_booking'),
                   onPressed: _onMyBooking,
                   mainAxisSize: MainAxisSize.max,
                 ),
@@ -833,7 +834,7 @@ class _BookingState extends State<Booking> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('booking'),
+          Translate.of(context)!.translate('booking'),
         ),
       ),
       body: BlocBuilder<BookingCubit, BookingState>(
@@ -843,34 +844,34 @@ class _BookingState extends State<Booking> {
           if (form is FormSuccess) {
             List<StepModel> step = [
               StepModel(
-                title: Translate.of(context).translate('details'),
+                title: Translate.of(context)?.translate('details'),
                 icon: Icons.calendar_today_outlined,
               ),
               StepModel(
-                title: Translate.of(context).translate('contact'),
+                title: Translate.of(context)?.translate('contact'),
                 icon: Icons.contact_mail_outlined,
               ),
               StepModel(
-                title: Translate.of(context).translate('completed'),
+                title: Translate.of(context)?.translate('completed'),
                 icon: Icons.check,
               )
             ];
-            if (form.bookingPayment.use) {
+            if (form.bookingPayment!.use!) {
               step = [
                 StepModel(
-                  title: Translate.of(context).translate('details'),
+                  title: Translate.of(context)?.translate('details'),
                   icon: Icons.calendar_today_outlined,
                 ),
                 StepModel(
-                  title: Translate.of(context).translate('contact'),
+                  title: Translate.of(context)?.translate('contact'),
                   icon: Icons.contact_mail_outlined,
                 ),
                 StepModel(
-                  title: Translate.of(context).translate('payment'),
+                  title: Translate.of(context)?.translate('payment'),
                   icon: Icons.payment_outlined,
                 ),
                 StepModel(
-                  title: Translate.of(context).translate('completed'),
+                  title: Translate.of(context)?.translate('completed'),
                   icon: Icons.check,
                 )
               ];

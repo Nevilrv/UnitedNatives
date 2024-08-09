@@ -1,29 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import '../../routes/routes.dart';
 
 class ContainerBlogPageDoctor extends StatefulWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String hintText;
-  final bool obscureText;
-  final String error;
-  final TextInputType keyboardType;
-  final Function validator;
+  final bool? obscureText;
+  final String? error;
+  final TextInputType? keyboardType;
+  final Function? validator;
 
   const ContainerBlogPageDoctor({
-    Key key,
+    super.key,
     this.controller,
-    @required this.hintText,
+    required this.hintText,
     this.keyboardType,
     this.obscureText,
     this.error,
     this.validator,
-  }) : super(key: key);
+  });
 
   @override
-  _ContainerBlogPageDoctorState createState() =>
+  State<ContainerBlogPageDoctor> createState() =>
       _ContainerBlogPageDoctorState();
 }
 
@@ -33,7 +33,7 @@ class _ContainerBlogPageDoctorState extends State<ContainerBlogPageDoctor> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: InkWell(
           onTap: () {
             Navigator.of(context).pushNamed(Routes.catagoryblogdoctor);
@@ -42,8 +42,8 @@ class _ContainerBlogPageDoctorState extends State<ContainerBlogPageDoctor> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  margin:
-                      EdgeInsets.only(bottom: 16, top: 10, right: 10, left: 10),
+                  margin: const EdgeInsets.only(
+                      bottom: 16, top: 10, right: 10, left: 10),
                   height: 150,
                   child: Stack(
                     children: <Widget>[
@@ -67,7 +67,7 @@ class _ContainerBlogPageDoctorState extends State<ContainerBlogPageDoctor> {
                             child: Utils.circular(),
                           ),
                           errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                              const Icon(Icons.error),
                         ),
                       ),
                       Container(
@@ -76,7 +76,7 @@ class _ContainerBlogPageDoctorState extends State<ContainerBlogPageDoctor> {
                             color: Colors.black45.withOpacity(0.4),
                             borderRadius: BorderRadius.circular(6)),
                       ),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -88,32 +88,32 @@ class _ContainerBlogPageDoctorState extends State<ContainerBlogPageDoctor> {
                                     .pushNamed(Routes.catagoryblogdoctor);
                               },
                               child: Text(
-                                Translate.of(context)
+                                Translate.of(context)!
                                     .translate('Current Research'),
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .button
-                                    .copyWith(
+                                    .labelLarge
+                                    ?.copyWith(
                                         fontSize: 27,
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
-                            Text(
+                            const Text(
                               "USA",
                               style: TextStyle(
                                   fontSize: 19,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w400),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
-                            Text(
+                            const Text(
                               "",
                               style: TextStyle(
                                   fontSize: 16,
@@ -126,7 +126,7 @@ class _ContainerBlogPageDoctorState extends State<ContainerBlogPageDoctor> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 0,
                 ),
                 BlogListItem(),
@@ -138,6 +138,8 @@ class _ContainerBlogPageDoctorState extends State<ContainerBlogPageDoctor> {
 }
 
 class BlogListItem extends StatelessWidget {
+  const BlogListItem({super.key});
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -145,7 +147,7 @@ class BlogListItem extends StatelessWidget {
         Navigator.of(context).pushNamed(Routes.pCatagoryBlog);
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 16, top: 10, right: 10, left: 10),
+        margin: const EdgeInsets.only(bottom: 16, top: 10, right: 10, left: 10),
         height: 150,
         child: Stack(
           children: <Widget>[
@@ -168,7 +170,7 @@ class BlogListItem extends StatelessWidget {
                     Center(
                   child: Utils.circular(),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
             Container(
@@ -177,7 +179,7 @@ class BlogListItem extends StatelessWidget {
                   color: Colors.black45.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(6)),
             ),
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -188,9 +190,9 @@ class BlogListItem extends StatelessWidget {
                       Navigator.of(context).pushNamed(Routes.pCatagoryBlog);
                     },
                     child: Text(
-                      Translate.of(context).translate('Participate'),
+                      Translate.of(context)!.translate('Participate'),
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.button.copyWith(
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           fontSize: 27,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),

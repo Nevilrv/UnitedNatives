@@ -1,8 +1,7 @@
 import 'dart:io';
-
-import 'package:device_info/device_info.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -21,13 +20,13 @@ class UtilsMedicalCenter {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
-  static Future<DeviceModel> getDeviceInfo() async {
+  static Future<DeviceModel?> getDeviceInfo() async {
     final deviceInfoPlugin = DeviceInfoPlugin();
     try {
       if (Platform.isAndroid) {
         final android = await deviceInfoPlugin.androidInfo;
         return DeviceModel(
-          uuid: android.androidId,
+          uuid: android.id,
           model: "Android",
           version: android.version.sdkInt.toString(),
           type: android.model,
@@ -48,15 +47,15 @@ class UtilsMedicalCenter {
     return null;
   }
 
-  static Future<String> getDeviceToken() async {
+  static Future<String?> getDeviceToken() async {
     await FirebaseMessaging.instance.requestPermission();
     return await FirebaseMessaging.instance.getToken();
   }
 
-  static Future<LocationData> getLocation() async {
+  static Future<LocationData?> getLocation() async {
     Location location = Location();
     PermissionStatus permissionGranted;
-    LocationData locationData;
+    LocationData? locationData;
 
     permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {

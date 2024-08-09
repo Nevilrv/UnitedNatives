@@ -1,26 +1,25 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:card_swiper/card_swiper.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_city_data.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_state_data.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_navbar.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_product_item.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/models/model_city_data.dart';
+import 'package:united_natives/medicle_center/lib/models/model_state_data.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_navbar.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_product_item.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class ListProduct2 extends StatefulWidget {
-  final Map<String, dynamic> contentData;
-  const ListProduct2({Key key, @required this.contentData}) : super(key: key);
+  final Map<String, dynamic>? contentData;
+  const ListProduct2({super.key, @required this.contentData});
 
   @override
   State<ListProduct2> createState() => _ListProduct2State();
@@ -28,24 +27,23 @@ class ListProduct2 extends StatefulWidget {
 
 class _ListProduct2State extends State<ListProduct2> {
   String title = '';
-  bool _isdark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isdark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   List<ProductModel> dataList = [];
   List<ProductModel> allDataList = [];
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   bool isBottomSheetOpen = false;
   final searchController = TextEditingController();
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   @override
   void initState() {
     super.initState();
-    title = widget.contentData['title'];
-    dataList = widget.contentData['dataList'];
-    allDataList = widget.contentData['allData'];
+    title = widget.contentData!['title'];
+    dataList = widget.contentData?['dataList'];
+    allDataList = widget.contentData?['allData'];
 
-    print("allDataList----->$allDataList");
-    allDataList.forEach((element) {
-      log("element.-------------------->${element.category.title}");
-    });
+    for (var element in allDataList) {
+      log("element.-------------------->${element.category?.title}");
+    }
   }
 
   ///On navigate product detail
@@ -54,9 +52,9 @@ class _ListProduct2State extends State<ListProduct2> {
   }
 
   final _swipeController = SwiperController();
-  ProductModel _currentItem;
-  MapType _mapType = MapType.normal;
-  GoogleMapController _mapController;
+  ProductModel? _currentItem;
+  final MapType _mapType = MapType.normal;
+  GoogleMapController? _mapController;
 
   ///On tap marker map location
   void _onSelectLocation(int index) {
@@ -70,12 +68,12 @@ class _ListProduct2State extends State<ListProduct2> {
     });
     if (item.location != null) {
       ///Camera animated
-      _mapController.animateCamera(
+      _mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: LatLng(
-              item.location.latitude,
-              item.location.longitude,
+              item.location!.latitude!,
+              item.location!.longitude!,
             ),
             zoom: 15.0,
           ),
@@ -99,28 +97,28 @@ class _ListProduct2State extends State<ListProduct2> {
 
     if (AppBloc.filterCubit.selectedState != null &&
         AppBloc.filterCubit.selectedCity != null) {
-      allDataList.forEach((element) {
-        if (AppBloc.filterCubit.selectedState.name.toString().toLowerCase() ==
+      for (var element in allDataList) {
+        if (AppBloc.filterCubit.selectedState?.name.toString().toLowerCase() ==
                 element.stateName.toString().toLowerCase() &&
-            AppBloc.filterCubit.selectedCity.name.toString().toLowerCase() ==
+            AppBloc.filterCubit.selectedCity?.name.toString().toLowerCase() ==
                 element.cityName.toString().toLowerCase()) {
           data.add(element);
         }
-      });
+      }
     } else if (AppBloc.filterCubit.selectedState != null) {
-      allDataList.forEach((element) {
-        if (AppBloc.filterCubit.selectedState.name.toString().toLowerCase() ==
+      for (var element in allDataList) {
+        if (AppBloc.filterCubit.selectedState?.name.toString().toLowerCase() ==
             element.stateName.toString().toLowerCase()) {
           data.add(element);
         }
-      });
+      }
     } else if (AppBloc.filterCubit.selectedCity != null) {
-      allDataList.forEach((element) {
-        if (AppBloc.filterCubit.selectedCity.name.toString().toLowerCase() ==
+      for (var element in allDataList) {
+        if (AppBloc.filterCubit.selectedCity?.name.toString().toLowerCase() ==
             element.cityName.toString().toLowerCase()) {
           data.add(element);
         }
-      });
+      }
     } else {
       data = dataList;
     }
@@ -142,19 +140,21 @@ class _ListProduct2State extends State<ListProduct2> {
         itemCount: 8,
       );
 
-      if (data != null) {
+      if (data.isNotEmpty) {
         debugPrint("filter--------------->");
         if (AppBloc.filterCubit.selectedState != null &&
             AppBloc.filterCubit.selectedCity != null) {
           // data = allDataList;
           int dataIndex = data.indexWhere((element) =>
-              AppBloc.filterCubit.selectedState.name.toString().toLowerCase() ==
+              AppBloc.filterCubit.selectedState?.name
+                      .toString()
+                      .toLowerCase() ==
                   element.stateName.toString().toLowerCase() &&
-              AppBloc.filterCubit.selectedCity.name.toString().toLowerCase() ==
+              AppBloc.filterCubit.selectedCity?.name.toString().toLowerCase() ==
                   element.cityName.toString().toLowerCase());
           log("data--selectedCity--434------->${data.length}");
           if (dataIndex < 0) {
-            return Center(
+            return const Center(
                 child: Text(
               'No Data available',
               style: TextStyle(fontSize: 21),
@@ -163,12 +163,14 @@ class _ListProduct2State extends State<ListProduct2> {
         } else if (AppBloc.filterCubit.selectedState != null) {
           // data = allDataList;
           int dataIndex = data.indexWhere((element) =>
-              AppBloc.filterCubit.selectedState.name.toString().toLowerCase() ==
+              AppBloc.filterCubit.selectedState?.name
+                  .toString()
+                  .toLowerCase() ==
               element.stateName.toString().toLowerCase());
           log("data--selectedState--------->${data.length}");
           log("dataIndex====>$dataIndex");
           if (dataIndex < 0) {
-            return Center(
+            return const Center(
                 child: Text(
               'No Data available',
               style: TextStyle(fontSize: 21),
@@ -177,12 +179,12 @@ class _ListProduct2State extends State<ListProduct2> {
         } else if (AppBloc.filterCubit.selectedCity != null) {
           // data = allDataList;
           int dataIndex = data.indexWhere((element) =>
-              AppBloc.filterCubit.selectedCity.name.toString().toLowerCase() ==
+              AppBloc.filterCubit.selectedCity?.name.toString().toLowerCase() ==
               element.cityName.toString().toLowerCase());
           log("data--selectedCity--------->${data.length}");
 
           if (dataIndex < 0) {
-            return Center(
+            return const Center(
                 child: Text(
               'No Data available',
               style: TextStyle(fontSize: 21),
@@ -198,11 +200,11 @@ class _ListProduct2State extends State<ListProduct2> {
 
             if (AppBloc.filterCubit.selectedState != null &&
                 AppBloc.filterCubit.selectedCity != null) {
-              if (AppBloc.filterCubit.selectedState.name
+              if (AppBloc.filterCubit.selectedState?.name
                           .toString()
                           .toLowerCase() ==
                       item.stateName.toString().toLowerCase() &&
-                  AppBloc.filterCubit.selectedCity.name
+                  AppBloc.filterCubit.selectedCity?.name
                           .toString()
                           .toLowerCase() ==
                       item.cityName.toString().toLowerCase()) {
@@ -217,10 +219,10 @@ class _ListProduct2State extends State<ListProduct2> {
                   ),
                 );
               } else {
-                return SizedBox();
+                return const SizedBox();
               }
             } else if (AppBloc.filterCubit.selectedState != null) {
-              if (AppBloc.filterCubit.selectedState.name
+              if (AppBloc.filterCubit.selectedState?.name
                       .toString()
                       .toLowerCase() ==
                   item.stateName.toString().toLowerCase()) {
@@ -235,10 +237,10 @@ class _ListProduct2State extends State<ListProduct2> {
                   ),
                 );
               } else {
-                return SizedBox();
+                return const SizedBox();
               }
             } else if (AppBloc.filterCubit.selectedCity != null) {
-              if (AppBloc.filterCubit.selectedCity.name
+              if (AppBloc.filterCubit.selectedCity?.name
                       .toString()
                       .toLowerCase() ==
                   item.cityName.toString().toLowerCase()) {
@@ -253,7 +255,7 @@ class _ListProduct2State extends State<ListProduct2> {
                   ),
                 );
               } else {
-                return SizedBox();
+                return const SizedBox();
               }
             }
 
@@ -295,8 +297,8 @@ class _ListProduct2State extends State<ListProduct2> {
         if (data[0].location != null) {
           initPosition = CameraPosition(
             target: LatLng(
-              data[0].location.latitude ?? 40.697403,
-              data[0].location.longitude ?? -74.1201063,
+              data[0].location!.latitude ?? 40.697403,
+              data[0].location!.longitude ?? -74.1201063,
             ),
             zoom: 14.4746,
           );
@@ -307,15 +309,15 @@ class _ListProduct2State extends State<ListProduct2> {
         for (var item in data) {
           log('item---------->>>>>>>>${data.length}');
 
-          log('item.location != null---------->>>>>>>>${item.location.latitude} ${item.location.longitude}');
+          log('item.location != null---------->>>>>>>>${item.location!.latitude} ${item.location!.longitude}');
 
           if (item.location != null) {
             final markerId = MarkerId(item.id.toString());
             final marker = Marker(
               markerId: markerId,
               position: LatLng(
-                item.location.latitude ?? 40.697403,
-                item.location.longitude ?? -74.1201063,
+                item.location?.latitude ?? 40.697403,
+                item.location!.longitude ?? -74.1201063,
               ),
               infoWindow: InfoWindow(title: item.title),
               onTap: () {
@@ -370,7 +372,7 @@ class _ListProduct2State extends State<ListProduct2> {
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
+                            color: Theme.of(context).colorScheme.surface,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(8),
                             ),
@@ -463,13 +465,12 @@ class _ListProduct2State extends State<ListProduct2> {
           title,
           style: Theme.of(context)
               .appBarTheme
-              .textTheme
-              .headline6
-              .copyWith(fontSize: 20),
+              .titleTextStyle
+              ?.copyWith(fontSize: 20),
         ),
         actions: [
           _pageType != PageType.list
-              ? SizedBox()
+              ? const SizedBox()
               : !isBottomSheetOpen
                   ? GestureDetector(
                       onTap: () async {
@@ -478,16 +479,16 @@ class _ListProduct2State extends State<ListProduct2> {
                       child: Row(
                         children: [
                           Text(
-                            Translate.of(context).translate('filter'),
-                            style: TextStyle(color: Colors.blue),
+                            Translate.of(context)!.translate('filter'),
+                            style: const TextStyle(color: Colors.blue),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           )
                         ],
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
           IconButton(
             icon: Icon(iconAction),
             onPressed: _onChangePageStyle,
@@ -502,39 +503,39 @@ class _ListProduct2State extends State<ListProduct2> {
   void onFilter() async {
     isBottomSheetOpen = true;
     setState(() {});
-    CityModel oldCityName = AppBloc.filterCubit.selectedCity;
-    StateModel oldStateName = AppBloc.filterCubit.selectedState;
+    CityModel? oldCityName = AppBloc.filterCubit.selectedCity;
+    StateModel? oldStateName = AppBloc.filterCubit.selectedState;
     bool isApply = false;
     scaffoldKey.currentState
-        .showBottomSheet((context) {
+        ?.showBottomSheet((context) {
           return StatefulBuilder(
             builder: (context, setState) {
               return BlocBuilder<FilterCubit, FilterState>(
                 builder: (context, state) {
-                  List<StateModel> stateList;
-                  List<CityModel> cityList;
+                  List<StateModel>? stateList;
+                  List<CityModel>? cityList;
 
                   if (state is FilterLoading) {
                     return Utils.circular();
                   }
 
                   if (state is FilterSuccess) {
-                    stateList = state.stateList;
-                    cityList = state.cityList;
+                    stateList = state.stateList!;
+                    cityList = state.cityList!;
                   }
 
                   return Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     color: _isdark ? Colors.black : Colors.white,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          Translate.of(context).translate('State'),
+                          Translate.of(context)!.translate('State'),
                           style: kInputTextStyle,
                         ),
 
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         GestureDetector(
@@ -632,8 +633,9 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                             .width *
                                                                         0.04),
                                                                 suffixIcon:
-                                                                    Icon(Icons
-                                                                        .search),
+                                                                    const Icon(
+                                                                        Icons
+                                                                            .search),
                                                                 enabledBorder:
                                                                     InputBorder
                                                                         .none,
@@ -646,7 +648,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       width: 10,
                                                     ),
                                                     IconButton(
@@ -657,7 +659,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                         searchController
                                                             .clear();
                                                       },
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons.clear,
                                                         color: Colors.black,
                                                         size: 25,
@@ -674,7 +676,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                 Expanded(
                                                   child: Builder(
                                                       builder: (context) {
-                                                    int index = stateList.indexWhere(
+                                                    int? index = stateList?.indexWhere(
                                                         (element) => element
                                                             .name
                                                             .toString()
@@ -684,8 +686,8 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                     .text
                                                                     .toString()
                                                                     .toLowerCase()));
-                                                    if (index < 0) {
-                                                      return Center(
+                                                    if (index! < 0) {
+                                                      return const Center(
                                                         child: Text(
                                                           'No States !',
                                                           style: TextStyle(
@@ -703,10 +705,10 @@ class _ListProduct2State extends State<ListProduct2> {
                                                           const BouncingScrollPhysics(),
                                                       shrinkWrap: true,
                                                       itemCount:
-                                                          stateList.length,
+                                                          stateList!.length,
                                                       itemBuilder:
                                                           (context, index) {
-                                                        if (stateList[index]
+                                                        if (stateList![index]
                                                             .name
                                                             .toString()
                                                             .toLowerCase()
@@ -733,8 +735,8 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                       color: Theme.of(
                                                                               context)
                                                                           .textTheme
-                                                                          .subtitle1
-                                                                          .color,
+                                                                          .titleMedium
+                                                                          ?.color,
                                                                       fontSize:
                                                                           17),
                                                                 ),
@@ -747,12 +749,12 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                       stateDataList:
                                                                           stateList,
                                                                       stateData:
-                                                                          stateList[
+                                                                          stateList?[
                                                                               index]);
 
                                                                   String state =
                                                                       jsonEncode(
-                                                                          stateList[
+                                                                          stateList?[
                                                                               index]);
 
                                                                   Prefs.setString(
@@ -761,7 +763,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                       state);
 
                                                                   cityList
-                                                                      .clear();
+                                                                      ?.clear();
 
                                                                   searchController
                                                                       .clear();
@@ -772,7 +774,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                       .onCitiesLoad(
                                                                           stateData:
                                                                               stateList,
-                                                                          stateId: stateList[index]
+                                                                          stateId: stateList?[index]
                                                                               .id
                                                                               .toString());
                                                                 },
@@ -782,7 +784,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                             ],
                                                           );
                                                         } else {
-                                                          return SizedBox();
+                                                          return const SizedBox();
                                                         }
                                                       },
                                                     );
@@ -808,10 +810,10 @@ class _ListProduct2State extends State<ListProduct2> {
                                       child: Text(
                                         AppBloc.filterCubit.selectedState !=
                                                 null
-                                            ? '${AppBloc.filterCubit.selectedState.name} (${AppBloc.filterCubit.selectedState.medicalCenterInState})'
+                                            ? '${AppBloc.filterCubit.selectedState?.name} (${AppBloc.filterCubit.selectedState?.medicalCenterInState})'
                                             : 'Select State',
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 18,
                                         ),
                                       ),
@@ -824,7 +826,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                     )
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Container(
@@ -867,16 +869,16 @@ class _ListProduct2State extends State<ListProduct2> {
                         // ),
 
                         Text(
-                          Translate.of(context).translate('City'),
+                          Translate.of(context)!.translate('City'),
                           style: kInputTextStyle,
                         ),
 
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (cityList.isNotEmpty || cityList == null) {
+                            if (cityList!.isNotEmpty) {
                               showDialog(
                                 context: context,
                                 builder: (context) {
@@ -971,8 +973,9 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                               .width *
                                                                           0.04),
                                                                   suffixIcon:
-                                                                      Icon(Icons
-                                                                          .search),
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .search),
                                                                   enabledBorder:
                                                                       InputBorder
                                                                           .none,
@@ -985,7 +988,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                           ),
                                                         ),
                                                       ),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         width: 10,
                                                       ),
                                                       IconButton(
@@ -996,7 +999,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                           searchController
                                                               .clear();
                                                         },
-                                                        icon: Icon(
+                                                        icon: const Icon(
                                                           Icons.clear,
                                                           color: Colors.black,
                                                           size: 25,
@@ -1014,7 +1017,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                   Expanded(
                                                     child: Builder(
                                                         builder: (context) {
-                                                      int index = cityList.indexWhere(
+                                                      int index = cityList!.indexWhere(
                                                           (element) => element
                                                               .name
                                                               .toString()
@@ -1025,7 +1028,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                       .toString()
                                                                       .toLowerCase()));
                                                       if (index < 0) {
-                                                        return Center(
+                                                        return const Center(
                                                           child: Text(
                                                             'No City !',
                                                             style: TextStyle(
@@ -1048,7 +1051,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                             cityList.length,
                                                         itemBuilder:
                                                             (context, index) {
-                                                          if (cityList[index]
+                                                          if (cityList![index]
                                                               .name
                                                               .toString()
                                                               .toLowerCase()
@@ -1074,8 +1077,8 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                                 .w600,
                                                                         color: Theme.of(context)
                                                                             .textTheme
-                                                                            .subtitle1
-                                                                            .color,
+                                                                            .titleMedium
+                                                                            ?.color,
                                                                         fontSize:
                                                                             17),
                                                                   ),
@@ -1088,12 +1091,12 @@ class _ListProduct2State extends State<ListProduct2> {
                                                                         .filterCubit
                                                                         .onUpdateCityData(
                                                                             cityData:
-                                                                                cityList[index]);
+                                                                                cityList?[index]);
 
                                                                     String
                                                                         city =
                                                                         jsonEncode(
-                                                                            cityList[index]);
+                                                                            cityList?[index]);
 
                                                                     Prefs.setString(
                                                                         Prefs
@@ -1109,7 +1112,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                                               ],
                                                             );
                                                           } else {
-                                                            return SizedBox();
+                                                            return const SizedBox();
                                                           }
                                                         },
                                                       );
@@ -1135,10 +1138,10 @@ class _ListProduct2State extends State<ListProduct2> {
                                     Expanded(
                                       child: Text(
                                         AppBloc.filterCubit.selectedCity != null
-                                            ? '${AppBloc.filterCubit.selectedCity.name} (${AppBloc.filterCubit.selectedCity.medicalCenterInCity})'
+                                            ? '${AppBloc.filterCubit.selectedCity?.name} (${AppBloc.filterCubit.selectedCity?.medicalCenterInCity})'
                                             : 'Select City',
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 18,
                                         ),
                                         // '${AppBloc.filterCubit.selectedState}',
@@ -1156,7 +1159,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                     )
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Container(
@@ -1203,7 +1206,7 @@ class _ListProduct2State extends State<ListProduct2> {
                                   AppBloc.filterCubit.clearAllFilter(
                                       stateDataList: stateList,
                                       cityDataList: cityList);
-                                  cityList.clear();
+                                  cityList?.clear();
                                   Prefs.clearFilter();
                                   oldStateName = null;
                                   oldCityName = null;
@@ -1211,13 +1214,6 @@ class _ListProduct2State extends State<ListProduct2> {
                                 },
                                 child: Container(
                                   height: 50,
-                                  child: Center(
-                                    child: Text(
-                                      "Clear",
-                                      style: kTextStyleSubtitle1.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: Colors.blue,
@@ -1225,10 +1221,17 @@ class _ListProduct2State extends State<ListProduct2> {
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
+                                  child: Center(
+                                    child: Text(
+                                      "Clear",
+                                      style: kTextStyleSubtitle1.copyWith(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
@@ -1237,16 +1240,16 @@ class _ListProduct2State extends State<ListProduct2> {
                                 },
                                 child: Container(
                                   height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                   child: Center(
                                     child: Text(
                                       "Apply",
                                       style: kTextStyleSubtitle1.copyWith(
                                           fontWeight: FontWeight.w600),
                                     ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                               ),
@@ -1279,7 +1282,7 @@ class _ListProduct2State extends State<ListProduct2> {
         });
   }
 
-  static Container commonContainer({Widget child}) {
+  static Container commonContainer({required Widget child}) {
     return Container(
       height: 60,
       decoration: BoxDecoration(

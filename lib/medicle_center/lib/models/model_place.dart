@@ -1,7 +1,7 @@
 class PlaceModel {
-  final String name;
-  final String placeID;
-  final String address;
+  final String? name;
+  final String? placeID;
+  final String? address;
 
   PlaceModel({
     this.name,

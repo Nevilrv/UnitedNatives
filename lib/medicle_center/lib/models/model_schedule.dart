@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleModel {
-  String view;
-  TimeOfDay start;
-  TimeOfDay end;
+  String? view;
+  TimeOfDay? start;
+  TimeOfDay? end;
 
   ScheduleModel({this.view, this.start, this.end});
 
@@ -30,8 +30,6 @@ class ScheduleModel {
     if (json['end'].toString() == '0') {
       json['end'] = '00:00';
     }
-    print('==start[]====>${json['start']}');
-    print('==end[]====>${json['end']}');
     return ScheduleModel(
       view: json['format'],
       start: json['start'] == null ||

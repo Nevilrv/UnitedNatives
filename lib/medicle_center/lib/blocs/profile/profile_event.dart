@@ -1,12 +1,12 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_filter.dart';
+import 'package:united_natives/medicle_center/lib/models/model_filter.dart';
 
 abstract class ProfileEvent {}
 
 class OnLoad extends ProfileEvent {
-  final FilterModel filter;
-  final String keyword;
-  final int userID;
-  final bool listing;
+  final FilterModel? filter;
+  final String? keyword;
+  final int? userID;
+  final bool? listing;
 
   OnLoad({
     this.filter,
@@ -17,10 +17,10 @@ class OnLoad extends ProfileEvent {
 }
 
 class OnLoadMore extends ProfileEvent {
-  final FilterModel filter;
-  final String keyword;
-  final int userID;
-  final bool listing;
+  final FilterModel? filter;
+  final String? keyword;
+  final int? userID;
+  final bool? listing;
 
   OnLoadMore({
     this.filter,
@@ -31,10 +31,10 @@ class OnLoadMore extends ProfileEvent {
 }
 
 class OnProfileSearch extends ProfileEvent {
-  final FilterModel filter;
-  final String keyword;
-  final int userID;
-  final bool listing;
+  final FilterModel? filter;
+  final String? keyword;
+  final int? userID;
+  final bool? listing;
 
   OnProfileSearch({
     this.filter,

@@ -1,9 +1,8 @@
 import 'dart:convert';
-
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'search_result_list.dart';
@@ -13,20 +12,18 @@ class SearchHistory extends StatefulWidget {
   const SearchHistory({super.key});
 
   @override
-  _SearchHistoryState createState() {
+  State<SearchHistory> createState() {
     return _SearchHistoryState();
   }
 }
 
 class _SearchHistoryState extends State<SearchHistory> {
-  SearchHistoryDelegate _delegate;
+  SearchHistoryDelegate? _delegate;
 
   List<ProductModel> _history = [];
 
   @override
   void initState() {
-    print('Search Location ');
-    print('_history==========>>>>>$_history');
     super.initState();
     AppBloc.searchCubit.onClear();
     _delegate = SearchHistoryDelegate();
@@ -43,9 +40,7 @@ class _SearchHistoryState extends State<SearchHistory> {
 
   ///Load history
   void _loadHistory() async {
-    List<String> historyString = Preferences.getStringList(
-      Preferences.search,
-    );
+    List<String>? historyString = Preferences.getStringList(Preferences.search);
     if (historyString != null) {
       _history = historyString.map((e) {
         return ProductModel.fromJson(
@@ -62,23 +57,19 @@ class _SearchHistoryState extends State<SearchHistory> {
     AppBloc.searchCubit.onClear();
     await showSearch(
       context: context,
-      delegate: _delegate,
+      delegate: _delegate!,
     );
   }
 
-  void onClear({ProductModel item}) async {
+  void onClear({ProductModel? item}) async {
     if (item == null) {
       await Preferences.setStringList(Preferences.search, []);
     } else {
-      List<String> historyString = Preferences.getStringList(
-        Preferences.search,
-      );
+      List<String> historyString =
+          Preferences.getStringList(Preferences.search)!;
       if (historyString != null) {
         historyString.remove(jsonEncode(item.toJson()));
-        await Preferences.setStringList(
-          Preferences.search,
-          historyString,
-        );
+        await Preferences.setStringList(Preferences.search, historyString);
       }
     }
     _loadHistory();
@@ -99,14 +90,14 @@ class _SearchHistoryState extends State<SearchHistory> {
         leading: IconButton(
           icon: AnimatedIcon(
             icon: AnimatedIcons.close_menu,
-            progress: _delegate.transitionAnimation,
+            progress: _delegate!.transitionAnimation,
           ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         centerTitle: true,
-        title: Text(Translate.of(context).translate('search_title')),
+        title: Text(Translate.of(context)!.translate('search_title')),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search),
@@ -118,7 +109,7 @@ class _SearchHistoryState extends State<SearchHistory> {
           ),
         ],
       ),
-      body: SizedBox(),
+      body: const SizedBox(),
       // body: SafeArea(
       //   child: ListView(
       //     padding: const EdgeInsets.all(16),

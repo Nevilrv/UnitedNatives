@@ -1,20 +1,20 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class DetailHourly extends StatefulWidget {
-  final HourlyBookingModel bookingStyle;
-  final VoidCallback onCalcPrice;
+  final HourlyBookingModel? bookingStyle;
+  final VoidCallback? onCalcPrice;
 
   const DetailHourly({
-    Key key,
-     this.bookingStyle,
-     this.onCalcPrice,
-  }) : super(key: key);
+    super.key,
+    this.bookingStyle,
+    this.onCalcPrice,
+  });
 
   @override
-  _DetailHourlyState createState() {
+  State<DetailHourly> createState() {
     return _DetailHourlyState();
   }
 }
@@ -34,16 +34,16 @@ class _DetailHourlyState extends State<DetailHourly> {
   void _onDatePicker() async {
     final now = DateTime.now();
     final result = await showDatePicker(
-      initialDate: widget.bookingStyle.startDate ?? DateTime.now(),
+      initialDate: widget.bookingStyle?.startDate ?? DateTime.now(),
       firstDate: DateTime(now.year, now.month),
       context: context,
       lastDate: DateTime(now.year + 1),
     );
     if (result != null) {
       setState(() {
-        widget.bookingStyle.startDate = result;
+        widget.bookingStyle?.startDate = result;
       });
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
@@ -55,17 +55,17 @@ class _DetailHourlyState extends State<DetailHourly> {
       builder: (BuildContext context) {
         return AppBottomPicker(
           picker: PickerModel(
-            selected: [widget.bookingStyle.schedule],
-            data: widget.bookingStyle.hourList,
+            selected: [widget.bookingStyle?.schedule],
+            data: widget.bookingStyle?.hourList,
           ),
         );
       },
     );
     if (result != null) {
       setState(() {
-        widget.bookingStyle.schedule = result;
+        widget.bookingStyle?.schedule = result;
       });
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
@@ -82,15 +82,15 @@ class _DetailHourlyState extends State<DetailHourly> {
     );
     if (result != null) {
       callback(result);
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    String viewHour;
-    final startTime = widget.bookingStyle.schedule?.start;
-    final endTime = widget.bookingStyle.schedule?.end;
+    String? viewHour;
+    final startTime = widget.bookingStyle?.schedule?.start;
+    final endTime = widget.bookingStyle?.schedule?.end;
     if (startTime?.viewTime != null) {
       viewHour = '${startTime?.viewTime} - ${endTime?.viewTime}';
     }
@@ -109,12 +109,12 @@ class _DetailHourlyState extends State<DetailHourly> {
                         Icons.person_outline,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.adult?.toString(),
-                      title: Translate.of(context).translate('adult'),
+                      value: widget.bookingStyle?.adult?.toString(),
+                      title: Translate.of(context)?.translate('adult'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.adult, (value) {
+                        _onPicker(widget.bookingStyle!.adult!, (value) {
                           setState(() {
-                            widget.bookingStyle.adult = value;
+                            widget.bookingStyle?.adult = value;
                           });
                         });
                       },
@@ -127,12 +127,12 @@ class _DetailHourlyState extends State<DetailHourly> {
                         Icons.child_friendly_outlined,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.children?.toString(),
-                      title: Translate.of(context).translate('children'),
+                      value: widget.bookingStyle?.children?.toString(),
+                      title: Translate.of(context)?.translate('children'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.children, (value) {
+                        _onPicker(widget.bookingStyle!.children!, (value) {
                           setState(() {
-                            widget.bookingStyle.children = value;
+                            widget.bookingStyle?.children = value;
                           });
                         });
                       },
@@ -146,8 +146,8 @@ class _DetailHourlyState extends State<DetailHourly> {
                   Icons.calendar_today_outlined,
                   color: Theme.of(context).hintColor,
                 ),
-                value: widget.bookingStyle.startDate?.dateView,
-                title: Translate.of(context).translate('date'),
+                value: widget.bookingStyle?.startDate?.dateView,
+                title: Translate.of(context)?.translate('date'),
                 onPressed: _onDatePicker,
               ),
               const SizedBox(height: 16),
@@ -157,7 +157,7 @@ class _DetailHourlyState extends State<DetailHourly> {
                   color: Theme.of(context).hintColor,
                 ),
                 value: viewHour,
-                title: Translate.of(context).translate('hour'),
+                title: Translate.of(context)?.translate('hour'),
                 onPressed: _onHourPicker,
               ),
               const SizedBox(height: 8),
@@ -167,14 +167,14 @@ class _DetailHourlyState extends State<DetailHourly> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    Translate.of(context).translate('total'),
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    Translate.of(context)!.translate('total'),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    widget.bookingStyle.price,
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    "${widget.bookingStyle?.price}",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   )

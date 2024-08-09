@@ -1,18 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class AppCommentItem extends StatelessWidget {
-  final CommentModel item;
-  final bool showPostName;
-  final VoidCallback onPressUser;
+  final CommentModel? item;
+  final bool? showPostName;
+  final VoidCallback? onPressUser;
 
   const AppCommentItem(
-      {Key key, this.item, this.onPressUser, this.showPostName})
-      : super(key: key);
+      {super.key, this.item, this.onPressUser, this.showPostName});
 
   @override
   Widget build(BuildContext context) {
@@ -115,10 +113,10 @@ class AppCommentItem extends StatelessWidget {
       postName = Padding(
         padding: const EdgeInsets.only(top: 8),
         child: Text(
-          item.postName,
+          item?.postName ?? "",
           style: Theme.of(context)
               .textTheme
-              .bodyText1
+              .bodyLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
       );
@@ -140,7 +138,7 @@ class AppCommentItem extends StatelessWidget {
               InkWell(
                 onTap: onPressUser,
                 child: CachedNetworkImage(
-                  imageUrl: item.user.image,
+                  imageUrl: item?.user?.image ?? "",
                   imageBuilder: (context, imageProvider) {
                     return Container(
                       width: 48,
@@ -194,23 +192,26 @@ class AppCommentItem extends StatelessWidget {
                         children: <Widget>[
                           Expanded(
                             child: Text(
-                              item.user.name,
+                              item?.user?.name ?? "",
                               maxLines: 1,
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
-                                  .copyWith(fontWeight: FontWeight.bold),
+                                  .titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
+
+                          /// NEW CODE COMMENT
+                          // item.createDate.dateView,
                           Text(
-                            item.createDate.dateView,
-                            style: Theme.of(context).textTheme.caption,
+                            "${item?.createDate}",
+                            style: Theme.of(context).textTheme.bodySmall,
                           )
                         ],
                       ),
                       const SizedBox(height: 4),
                       RatingBar.builder(
-                        initialRating: item.rate,
+                        initialRating: item!.rate!,
                         minRating: 1,
                         allowHalfRating: true,
                         unratedColor: Colors.amber.withAlpha(100),
@@ -232,9 +233,9 @@ class AppCommentItem extends StatelessWidget {
           postName,
           const SizedBox(height: 8),
           Text(
-            item.comment,
+            item!.comment!,
             maxLines: 5,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           )
         ],
       ),

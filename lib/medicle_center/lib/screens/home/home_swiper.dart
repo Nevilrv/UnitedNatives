@@ -2,19 +2,19 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeSwipe extends StatelessWidget {
-  final double height;
-  final List<String> images;
+  final double? height;
+  final List<String>? images;
 
   const HomeSwipe({
-    Key key,
+    super.key,
     this.images,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class HomeSwipe extends StatelessWidget {
           Swiper(
             itemBuilder: (BuildContext context, int index) {
               return CachedNetworkImage(
-                imageUrl: images[index],
+                imageUrl: images![index],
                 placeholder: (context, url) {
                   return AppPlaceholder(
                     child: Container(
@@ -36,7 +36,7 @@ class HomeSwipe extends StatelessWidget {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 2),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).colorScheme.surface,
                       image: DecorationImage(
                         image: imageProvider,
                         fit: BoxFit.cover,
@@ -57,7 +57,7 @@ class HomeSwipe extends StatelessWidget {
             autoplayDelay: 3000,
             autoplayDisableOnInteraction: false,
             autoplay: true,
-            itemCount: images.length,
+            itemCount: images!.length,
             pagination: const SwiperPagination(
               alignment: Alignment(
                 0.0,
@@ -114,7 +114,7 @@ class HomeSwipe extends StatelessWidget {
 
     ///Loading
     return Container(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.surface,
       child: AppPlaceholder(
         child: Container(
           margin: const EdgeInsets.only(bottom: 2),

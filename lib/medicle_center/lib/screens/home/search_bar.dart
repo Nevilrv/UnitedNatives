@@ -1,17 +1,17 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatelessWidget {
-  final VoidCallback onSearch;
-  final VoidCallback onScan;
-  final VoidCallback onFilter;
+  final VoidCallback? onSearch;
+  final VoidCallback? onScan;
+  final VoidCallback? onFilter;
   const SearchBar({
-    Key key,
+    super.key,
     this.onSearch,
     this.onScan,
     this.onFilter,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +35,10 @@ class SearchBar extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      Translate.of(context).translate(
+                      Translate.of(context)!.translate(
                         'search_location',
                       ),
-                      style: Theme.of(context).textTheme.button,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                   const VerticalDivider(),

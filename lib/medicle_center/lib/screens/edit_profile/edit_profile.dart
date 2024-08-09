@@ -2,16 +2,16 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
   @override
-  _EditProfileState createState() {
+  State<EditProfile> createState() {
     return _EditProfileState();
   }
 }
@@ -27,21 +27,21 @@ class _EditProfileState extends State<EditProfile> {
   final _focusInfo = FocusNode();
   final picker = ImagePicker();
 
-  ImageModel _image;
-  String _errorName;
-  String _errorEmail;
-  String _errorWebsite;
-  String _errorInfo;
+  ImageModel? _image;
+  String? _errorName;
+  String? _errorEmail;
+  String? _errorWebsite;
+  String? _errorInfo;
 
   @override
   void initState() {
     super.initState();
     log('initData');
     final user = AppBloc.userCubit.state;
-    _textNameController.text = user.name;
-    _textEmailController.text = user.email;
-    _textWebsiteController.text = user.url;
-    _textInfoController.text = user.description;
+    _textNameController.text = user.name!;
+    _textEmailController.text = user.email!;
+    _textWebsiteController.text = user.url!;
+    _textInfoController.text = user.description!;
   }
 
   @override
@@ -88,7 +88,7 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(Translate.of(context).translate(
+        title: Text(Translate.of(context)!.translate(
           'edit_profile',
         )),
       ),
@@ -123,15 +123,15 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    Translate.of(context).translate('name'),
+                    Translate.of(context)!.translate('name'),
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(fontWeight: FontWeight.bold),
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   AppTextInput(
-                    hintText: Translate.of(context).translate('input_name'),
+                    hintText: Translate.of(context)?.translate('input_name'),
                     errorText: _errorName,
                     focusNode: _focusName,
                     textInputAction: TextInputAction.next,
@@ -153,15 +153,15 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    Translate.of(context).translate('email'),
+                    Translate.of(context)!.translate('email'),
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(fontWeight: FontWeight.bold),
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   AppTextInput(
-                    hintText: Translate.of(context).translate('input_email'),
+                    hintText: Translate.of(context)?.translate('input_email'),
                     errorText: _errorEmail,
                     focusNode: _focusEmail,
                     textInputAction: TextInputAction.next,
@@ -185,15 +185,15 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    Translate.of(context).translate('website'),
+                    Translate.of(context)!.translate('website'),
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(fontWeight: FontWeight.bold),
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   AppTextInput(
-                    hintText: Translate.of(context).translate(
+                    hintText: Translate.of(context)?.translate(
                       'input_website',
                     ),
                     errorText: _errorWebsite,
@@ -217,15 +217,15 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    Translate.of(context).translate('information'),
+                    Translate.of(context)!.translate('information'),
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(fontWeight: FontWeight.bold),
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   AppTextInput(
-                    hintText: Translate.of(context).translate(
+                    hintText: Translate.of(context)?.translate(
                       'input_information',
                     ),
                     errorText: _errorInfo,
@@ -249,7 +249,7 @@ class _EditProfileState extends State<EditProfile> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: AppButton(
-                Translate.of(context).translate('confirm'),
+                Translate.of(context)?.translate('confirm'),
                 mainAxisSize: MainAxisSize.max,
                 onPressed: _updateProfile,
               ),

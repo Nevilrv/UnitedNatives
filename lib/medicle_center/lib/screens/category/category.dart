@@ -1,18 +1,18 @@
 import 'dart:developer';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Category extends StatefulWidget {
-  final CategoryModel item;
-  const Category({Key key, this.item}) : super(key: key);
+  final CategoryModel? item;
+  const Category({super.key, this.item});
 
   @override
-  _CategoryState createState() {
+  State<Category> createState() {
     return _CategoryState();
   }
 }
@@ -47,8 +47,8 @@ class _CategoryState extends State<Category> {
   }
 
   ///On select category
-  void _onCategory(CategoryModel item) {
-    if (item.hasChild) {
+  void _onCategory(CategoryModel? item) {
+    if (item!.hasChild!) {
       Navigator.pushNamed(context, Routes.category, arguments: item);
     } else {
       Navigator.pushNamed(context, Routes.listProduct, arguments: item);
@@ -91,7 +91,7 @@ class _CategoryState extends State<Category> {
   ///Build content list
   Widget _buildContent(List<CategoryModel> category) {
     ///Success
-    if (category != null) {
+    if (category.isNotEmpty) {
       ///Empty
       if (category.isEmpty) {
         return Center(
@@ -102,10 +102,10 @@ class _CategoryState extends State<Category> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  Translate.of(context).translate(
+                  Translate.of(context)!.translate(
                     'category_not_found',
                   ),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
             ],
@@ -148,7 +148,7 @@ class _CategoryState extends State<Category> {
 
   @override
   Widget build(BuildContext context) {
-    String title;
+    String? title;
     if (widget.item?.title != null) {
       title = widget.item?.title;
     }
@@ -156,7 +156,7 @@ class _CategoryState extends State<Category> {
       create: (context) => _categoryCubit,
       child: BlocBuilder<CategoryCubit, CategoryState>(
         builder: (context, state) {
-          List<CategoryModel> category;
+          List<CategoryModel>? category;
           if (state is CategorySuccess) {
             category = state.list;
           }
@@ -164,7 +164,7 @@ class _CategoryState extends State<Category> {
             appBar: AppBar(
               centerTitle: true,
               title: Text(
-                title ?? Translate.of(context).translate('category'),
+                title ?? Translate.of(context)!.translate('category'),
               ),
               actions: <Widget>[
                 IconButton(
@@ -182,14 +182,14 @@ class _CategoryState extends State<Category> {
                   children: <Widget>[
                     const SizedBox(height: 16),
                     AppTextInput(
-                      hintText: Translate.of(context).translate('search'),
+                      hintText: Translate.of(context)?.translate('search'),
                       controller: _textController,
                       onSubmitted: _onSearch,
                       onChanged: _onSearch,
                     ),
                     const SizedBox(height: 16),
                     Expanded(
-                      child: _buildContent(category),
+                      child: _buildContent(category!),
                     )
                   ],
                 ),

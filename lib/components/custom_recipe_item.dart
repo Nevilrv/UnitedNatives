@@ -97,7 +97,7 @@ class CustomRecipeItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        Translate.of(context).translate('days_of_treat'),
+                        Translate.of(context)!.translate('days_of_treat'),
                         style: TextStyle(
                           color: Colors.grey.shade600,
                           fontSize: 20,
@@ -123,7 +123,7 @@ class CustomRecipeItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        Translate.of(context).translate('pill_per_day'),
+                        Translate.of(context)!.translate('pill_per_day'),
                         style: TextStyle(
                           color: Colors.grey.shade600,
                           fontSize: 20,

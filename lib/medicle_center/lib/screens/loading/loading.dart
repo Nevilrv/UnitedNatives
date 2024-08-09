@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
-  _SplashScreenState createState() {
-    return _SplashScreenState();
-  }
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {

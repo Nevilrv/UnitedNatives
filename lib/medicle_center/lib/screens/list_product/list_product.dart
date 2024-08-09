@@ -5,22 +5,19 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class ListProduct extends StatefulWidget {
-  final CategoryModel category;
+  final CategoryModel? category;
 
-  const ListProduct({Key key, this.category}) : super(key: key);
+  const ListProduct({super.key, this.category});
 
   @override
-  _ListProductState createState() {
-    log('calling======');
-    return _ListProductState();
-  }
+  State<ListProduct> createState() => _ListProductState();
 }
 
 class _ListProductState extends State<ListProduct> {
@@ -29,13 +26,13 @@ class _ListProductState extends State<ListProduct> {
   final _scrollController = ScrollController();
   final _endReachedThreshold = 100;
 
-  StreamSubscription _wishlistSubscription;
-  StreamSubscription _reviewSubscription;
-  GoogleMapController _mapController;
-  ProductModel _currentItem;
+  StreamSubscription? _wishlistSubscription;
+  StreamSubscription? _reviewSubscription;
+  GoogleMapController? _mapController;
+  ProductModel? _currentItem;
   MapType _mapType = MapType.normal;
   PageType _pageType = PageType.list;
-  ProductViewType _listMode = Application.setting.listMode;
+  ProductViewType? _listMode = Application.setting.listMode;
 
   FilterModel _filter = FilterModel.fromDefault();
 
@@ -45,23 +42,23 @@ class _ListProductState extends State<ListProduct> {
 
     log('loading======');
     _scrollController.addListener(_onScroll);
-    if (widget.category.type == CategoryType.category) {
-      _filter.categories.add(widget.category);
+    if (widget.category?.type == CategoryType.category) {
+      _filter.categories?.add(widget.category!);
     }
-    if (widget.category.type == CategoryType.feature) {
-      _filter.features.add(widget.category);
+    if (widget.category?.type == CategoryType.feature) {
+      _filter.features?.add(widget.category!);
     }
-    if (widget.category.type == CategoryType.location) {
+    if (widget.category?.type == CategoryType.location) {
       _filter.city = widget.category;
     }
     _wishlistSubscription = AppBloc.wishListCubit.stream.listen((state) {
       if (state is WishListSuccess && state.updateID != null) {
-        _listCubit.onUpdate(state.updateID);
+        _listCubit.onUpdate(state.updateID!);
       }
     });
     _reviewSubscription = AppBloc.reviewCubit.stream.listen((state) {
       if (state is ReviewSuccess && state.id != null) {
-        _listCubit.onUpdate(state.id);
+        _listCubit.onUpdate(state.id!);
       }
     });
     _onRefresh();
@@ -69,8 +66,8 @@ class _ListProductState extends State<ListProduct> {
 
   @override
   void dispose() {
-    _wishlistSubscription.cancel();
-    _reviewSubscription.cancel();
+    _wishlistSubscription?.cancel();
+    _reviewSubscription?.cancel();
     _swipeController.dispose();
     _scrollController.dispose();
     _mapController?.dispose();
@@ -82,7 +79,7 @@ class _ListProductState extends State<ListProduct> {
   void _onScroll() {
     if (_scrollController.position.extentAfter > _endReachedThreshold) return;
     final state = _listCubit.state;
-    if (state is ListSuccess && state.canLoadMore && !state.loadingMore) {
+    if (state is ListSuccess && state.canLoadMore! && !state.loadingMore) {
       _listCubit.onLoadMore(_filter);
     }
   }
@@ -154,7 +151,7 @@ class _ListProductState extends State<ListProduct> {
   void _onChangeFilter() async {
     final result = await Navigator.pushNamed(
       context,
-      Routes.filter_sub_route,
+      Routes.filterSubRoute,
       arguments: _filter.clone(),
     );
     if (result != null && result is FilterModel) {
@@ -193,12 +190,12 @@ class _ListProductState extends State<ListProduct> {
     });
     if (item.location != null) {
       ///Camera animated
-      _mapController.animateCamera(
+      _mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: LatLng(
-              item.location.latitude,
-              item.location.longitude,
+              item.location!.latitude!,
+              item.location!.longitude!,
             ),
             zoom: 15.0,
           ),
@@ -258,8 +255,8 @@ class _ListProductState extends State<ListProduct> {
 
   ///_build Item
   Widget _buildItem({
-    ProductModel item,
-    ProductViewType type,
+    ProductModel? item,
+    ProductViewType? type,
   }) {
     switch (type) {
       case ProductViewType.list:
@@ -337,7 +334,7 @@ class _ListProductState extends State<ListProduct> {
 
           ///Build List
           if (state is ListSuccess) {
-            List list = List.from(state.list);
+            List list = List.from(state.list!);
             if (state.loadingMore) {
               list.add(null);
             }
@@ -380,7 +377,7 @@ class _ListProductState extends State<ListProduct> {
             }
 
             ///Build List empty
-            if (state.list.isEmpty) {
+            if (state.list!.isEmpty) {
               contentList = Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -389,8 +386,8 @@ class _ListProductState extends State<ListProduct> {
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        Translate.of(context).translate('list_is_empty'),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        Translate.of(context)!.translate('list_is_empty'),
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ],
@@ -419,20 +416,20 @@ class _ListProductState extends State<ListProduct> {
           Widget list = Container();
 
           ///Build swipe if list not empty
-          if (state.list.isNotEmpty) {
-            if (state.list[0].location != null) {
+          if (state.list!.isNotEmpty) {
+            if (state.list?[0].location != null) {
               initPosition = CameraPosition(
                 target: LatLng(
-                  state.list[0].location.latitude ?? 40.697403,
-                  state.list[0].location.longitude ?? -74.1201063,
+                  state.list?[0].location?.latitude ?? 40.697403,
+                  state.list![0].location?.longitude ?? -74.1201063,
                 ),
                 zoom: 14.4746,
               );
             }
 
             ///Setup list marker map from list
-            for (var item in state.list) {
-              log('item---------->>>>>>>>${state.list.length}');
+            for (var item in state.list!) {
+              log('item---------->>>>>>>>${state.list?.length}');
 
               log('item.location != null---------->>>>>>>>${item.location}');
 
@@ -441,19 +438,19 @@ class _ListProductState extends State<ListProduct> {
                 final marker = Marker(
                   markerId: markerId,
                   position: LatLng(
-                    item.location.latitude ?? 40.697403,
-                    item.location.longitude ?? -74.1201063,
+                    item.location?.latitude ?? 40.697403,
+                    item.location?.longitude ?? -74.1201063,
                   ),
                   infoWindow: InfoWindow(title: item.title),
                   onTap: () {
-                    _onSelectLocation(state.list.indexOf(item));
+                    _onSelectLocation(state.list!.indexOf(item));
                   },
                 );
                 markers[markerId] = marker;
               }
             }
 
-            for (var item in state.list) {
+            for (var item in state.list!) {
               log('item.id---------->>>>>>>>${item.id}');
             }
 
@@ -487,7 +484,7 @@ class _ListProductState extends State<ListProduct> {
                     Expanded(
                       child: Swiper(
                         itemBuilder: (context, index) {
-                          final ProductModel item = state.list[index];
+                          final ProductModel? item = state.list?[index];
                           bool selected = _currentItem == item;
                           if (index == 0 && _currentItem == null) {
                             selected = true;
@@ -497,7 +494,7 @@ class _ListProductState extends State<ListProduct> {
                             child: Container(
                               padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).backgroundColor,
+                                color: Theme.of(context).colorScheme.surface,
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(8),
                                 ),
@@ -514,7 +511,7 @@ class _ListProductState extends State<ListProduct> {
                               ),
                               child: AppProductItem(
                                 onPressed: () {
-                                  _onProductDetail(item);
+                                  _onProductDetail(item!);
                                 },
                                 item: item,
                                 type: ProductViewType.list,
@@ -524,10 +521,10 @@ class _ListProductState extends State<ListProduct> {
                         },
                         controller: _swipeController,
                         onIndexChanged: (index) {
-                          final item = state.list[index];
-                          _onIndexChange(item);
+                          final item = state.list?[index];
+                          _onIndexChange(item!);
                         },
-                        itemCount: state.list.length,
+                        itemCount: state.list!.length,
                         viewportFraction: 0.8,
                         scale: 0.9,
                       ),
@@ -564,8 +561,6 @@ class _ListProductState extends State<ListProduct> {
 
   @override
   Widget build(BuildContext context) {
-    print('===== HELLO WORLD =====');
-
     IconData iconAction = Icons.map;
     if (_pageType == PageType.map) {
       iconAction = Icons.view_compact;
@@ -576,12 +571,11 @@ class _ListProductState extends State<ListProduct> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            Translate.of(context).translate('listing'),
+            Translate.of(context)!.translate('listing'),
             style: Theme.of(context)
                 .appBarTheme
-                .textTheme
-                .headline6
-                .copyWith(fontSize: 20),
+                .titleTextStyle
+                ?.copyWith(fontSize: 20),
           ),
           actions: <Widget>[
             BlocBuilder<ListCubit, ListState>(

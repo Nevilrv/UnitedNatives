@@ -110,7 +110,7 @@ class MyDoctorMessageLists extends StatelessWidget {
             width: 10,
           ),
           CustomButton(
-            text: Translate.of(context).translate('Message'),
+            text: Translate.of(context)!.translate('Message'),
             textSize: 16,
             onPressed: () async {
               final patientHomeScreenController =

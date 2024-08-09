@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/user_repository.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils_medicalcenter.dart';
+import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/repository/user_repository.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils_medicalcenter.dart';
 
 enum LoginState {
   init,
@@ -15,8 +15,8 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginState.init);
 
   void onLogin({
-    String username,
-    String password,
+    String? username,
+    String? password,
   }) async {
     ///Notify
     emit(LoginState.loading);
@@ -26,10 +26,9 @@ class LoginCubit extends Cubit<LoginState> {
 
     ///login via repository
     final result = await UserRepository.login(
-      username: username,
-      password: password,
+      username: username.toString(),
+      password: password.toString(),
     );
-    print('++++++++++LogIn++++++$result');
     if (result != null) {
       ///Begin start Auth flow
       await AppBloc.authenticateCubit.onSave(result);

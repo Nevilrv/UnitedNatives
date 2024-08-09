@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:location/location.dart';
 
 class GPSPicker extends StatefulWidget {
-  final LocationData picked;
+  final LocationData? picked;
 
-  const GPSPicker({Key key, this.picked}) : super(key: key);
+  const GPSPicker({super.key, this.picked});
 
   @override
-  _GPSPickerState createState() {
+  State<GPSPicker> createState() {
     return _GPSPickerState();
   }
 }
@@ -23,19 +23,19 @@ class _GPSPickerState extends State<GPSPicker> {
     zoom: 16,
   );
   Map<MarkerId, Marker> _markers = {};
-  GoogleMapController _mapController;
+  GoogleMapController? _mapController;
 
   @override
   void initState() {
     super.initState();
     if (widget.picked != null) {
       _onSetMarker(
-        latitude: widget.picked.latitude ?? 40.697403,
-        longitude: widget.picked.longitude ?? -74.1201063,
+        latitude: widget.picked?.latitude ?? 40.697403,
+        longitude: widget.picked?.longitude ?? -74.1201063,
       );
       _initPosition = CameraPosition(
-        target: LatLng(widget.picked.latitude ?? 40.697403,
-            widget.picked.longitude ?? -74.1201063),
+        target: LatLng(widget.picked?.latitude ?? 40.697403,
+            widget.picked?.longitude ?? -74.1201063),
         zoom: 16,
       );
     }
@@ -60,8 +60,8 @@ class _GPSPickerState extends State<GPSPicker> {
 
   ///On set marker
   void _onSetMarker({
-    double latitude,
-    double longitude,
+    required double latitude,
+    required double longitude,
   }) async {
     Map<MarkerId, Marker> markers = {};
     final markerId = MarkerId('$latitude-$longitude');
@@ -94,7 +94,7 @@ class _GPSPickerState extends State<GPSPicker> {
     if (widget.picked?.isMock != false) {
       actions = [
         AppButton(
-          Translate.of(context).translate('apply'),
+          Translate.of(context)?.translate('apply'),
           onPressed: _onApply,
           type: ButtonType.text,
         )
@@ -104,7 +104,7 @@ class _GPSPickerState extends State<GPSPicker> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('location'),
+          Translate.of(context)!.translate('location'),
         ),
         actions: actions,
       ),

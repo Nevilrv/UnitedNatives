@@ -101,7 +101,7 @@ class ProductModel {
 
   factory ProductModel.fromJson(
     Map<String, dynamic> json, {
-    SettingModel setting,
+    SettingModel? setting,
   }) {
     List<ImageModel> galleries = [];
     List<CategoryModel> features = [];
@@ -109,12 +109,12 @@ class ProductModel {
     List<FileModel> attachments = [];
     List<CategoryModel> tags = [];
     Map<String, dynamic> socials = {};
-    UserModel author;
-    CategoryModel category;
-    LocationData location;
-    CategoryModel country;
-    CategoryModel state;
-    CategoryModel city;
+    UserModel? author;
+    CategoryModel? category;
+    LocationData? location;
+    CategoryModel? country;
+    CategoryModel? state;
+    CategoryModel? city;
     String status = '';
     String videoURL = '';
     String address = '';

@@ -1,14 +1,14 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_pagination.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_user.dart';
+import 'package:united_natives/medicle_center/lib/models/model_pagination.dart';
+import 'package:united_natives/medicle_center/lib/models/model_user.dart';
 
 class ResultApiModel {
-  final bool success;
+  final bool? success;
   final dynamic data;
   final dynamic attr;
   final dynamic payment;
-  final PaginationModel pagination;
-  final UserModel user;
-  final String message;
+  final PaginationModel? pagination;
+  final UserModel? user;
+  final String? message;
 
   ResultApiModel({
     this.success,
@@ -21,8 +21,8 @@ class ResultApiModel {
   });
 
   factory ResultApiModel.fromJson(Map<String, dynamic> json) {
-    UserModel user;
-    PaginationModel pagination;
+    UserModel? user;
+    PaginationModel? pagination;
     String message = 'Unknown';
 
     if (json['user'] != null) {

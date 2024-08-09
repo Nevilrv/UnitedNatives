@@ -1,36 +1,35 @@
 import 'dart:developer';
-
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/model/doctor_availability_display_model.dart';
-import 'package:doctor_appointment_booking/pages/Availability_page/checkbox_group.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/model/doctor_availability_display_model.dart';
+import 'package:united_natives/pages/Availability_page/checkbox_group.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UpdateAvailability extends StatefulWidget {
-  UpdateAvailability({key});
+  const UpdateAvailability({super.key});
 
   @override
   State<UpdateAvailability> createState() => _UpdateAvailabilityState();
 }
 
 class _UpdateAvailabilityState extends State<UpdateAvailability> {
-  DoctorHomeScreenController _doctorHomeScreenController =
+  final DoctorHomeScreenController _doctorHomeScreenController =
       Get.find<DoctorHomeScreenController>();
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
   // DateTime dateTime;
   // Duration duration;
   DateTime currentDate = DateTime.now();
-  int index;
-  List<String> checked;
+  int? index;
+  List<String>? checked;
   List<String> selectedItemIndex = [];
   List<String> selectedItem = [];
   List<String> finalDataItem = [];
   List<String> disabledTimeSlot = [];
-  RxBool _isSelectedNotifier = true.obs;
+  final RxBool _isSelectedNotifier = true.obs;
   bool isLoading = false;
   bool selectAll = false;
   bool filterLoading = false;
@@ -69,38 +68,34 @@ class _UpdateAvailabilityState extends State<UpdateAvailability> {
     disabledTimeSlot = [];
     if (DateFormat("dd-MM-yyyy").format(currentDate) ==
         DateFormat("dd-MM-yyyy").format(DateTime.now())) {
-      timeSlot.forEach(
-        (element) {
-          final hour =
-              (int.parse("${element.split(" -").first} ${element.split(" -").first == "11:00" ? "AM" : element.split("- ").last.split(" ").last}"
-                              .toString()
-                              .split(":")
-                              .first) <
-                          12 &&
-                      element.split("- ").last.split(" ").last == "PM" &&
-                      element.split(" -").first != "11:00")
-                  ? int.parse(element.split(" -").first.split(":").first) + 12
-                  : int.parse(element.split(" -").first.split(":").first);
+      for (var element in timeSlot) {
+        final hour =
+            (int.parse("${element.split(" -").first} ${element.split(" -").first == "11:00" ? "AM" : element.split("- ").last.split(" ").last}"
+                            .toString()
+                            .split(":")
+                            .first) <
+                        12 &&
+                    element.split("- ").last.split(" ").last == "PM" &&
+                    element.split(" -").first != "11:00")
+                ? int.parse(element.split(" -").first.split(":").first) + 12
+                : int.parse(element.split(" -").first.split(":").first);
 
-          final checkTime = hour.toString() +
-              ":" +
-              "${element.split(" -").first.split(":").last}"
-                  " ${element.split(" -").first == "11:00" ? "AM" : element.split("- ").last.split(" ").last}";
+        final checkTime =
+            "$hour:${element.split(" -").first.split(":").last} ${element.split(" -").first == "11:00" ? "AM" : element.split("- ").last.split(" ").last}";
 
-          DateTime parsedGivenTime = DateFormat.Hm().parse(checkTime);
+        DateTime parsedGivenTime = DateFormat.Hm().parse(checkTime);
 
-          DateTime combinedGivenTime = DateTime(
-              DateTime.now().year,
-              DateTime.now().month,
-              DateTime.now().day,
-              parsedGivenTime.hour,
-              parsedGivenTime.minute);
+        DateTime combinedGivenTime = DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day,
+            parsedGivenTime.hour,
+            parsedGivenTime.minute);
 
-          if (combinedGivenTime.isBefore(DateTime.now())) {
-            disabledTimeSlot.add(element);
-          }
-        },
-      );
+        if (combinedGivenTime.isBefore(DateTime.now())) {
+          disabledTimeSlot.add(element);
+        }
+      }
     }
   }
 
@@ -113,11 +108,11 @@ class _UpdateAvailabilityState extends State<UpdateAvailability> {
     selectedItem.clear();
     finalDataItem.clear();
 
-    final DateTime pickedDate = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: new DateTime.now().add(new Duration(days: 365)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
     if (pickedDate != null && pickedDate != currentDate) {
       filterData(pickedDate);
@@ -149,15 +144,15 @@ class _UpdateAvailabilityState extends State<UpdateAvailability> {
     DateTime date11 = pickedDate.toUtc();
     log('date11==========>>>>>$date11');
     await _doctorHomeScreenController.getDoctorAvailabilityDisplay(
-        _userController.user.value.id,
-        '${DateFormat("yyyy-MM-dd").format(pickedDate)}');
-    PostedDateAvailabilityClass iterable = _doctorHomeScreenController
-        ?.doctorAvailabilityForDisplayOnlyModelData
-        ?.value
-        ?.data
+        _userController.user.value.id!,
+        DateFormat("yyyy-MM-dd").format(pickedDate));
+    PostedDateAvailabilityClass? iterable = _doctorHomeScreenController
+        .doctorAvailabilityForDisplayOnlyModelData
+        .value
+        .data
         ?.postedDateAvailability;
 
-    DateTime date = iterable?.availDate;
+    DateTime? date = iterable?.availDate;
 
     if (date == null) {
       filterLoading = false;
@@ -165,17 +160,14 @@ class _UpdateAvailabilityState extends State<UpdateAvailability> {
       return;
     }
 
-    print('date:$date');
-    print('currentDate:$currentDate');
+    PostedDateAvailabilityClass? availability = iterable;
 
-    PostedDateAvailabilityClass availability = iterable;
-
-    availability.availData.forEach(
+    availability?.availData?.forEach(
       (element) {
         String startTime =
-            "${element.startTime.toLocal().hour > 12 ? element.startTime.toLocal().hour - 12 : element.startTime.toLocal().hour}:${element.startTime.toLocal().minute == 0 ? "00" : element.startTime.toLocal().minute}";
+            "${element.startTime!.toLocal().hour > 12 ? element.startTime!.toLocal().hour - 12 : element.startTime!.toLocal().hour}:${element.startTime!.toLocal().minute == 0 ? "00" : element.startTime!.toLocal().minute}";
         String endTime =
-            "${element.endTime.toLocal().hour > 12 ? element.endTime.toLocal().hour - 12 : element.endTime.toLocal().hour}:${element.endTime.toLocal().minute == 0 ? "00" : element.endTime.toLocal().minute} ${element.endTime.toLocal().hour >= 12 ? "PM" : "AM"}";
+            "${element.endTime!.toLocal().hour > 12 ? element.endTime!.toLocal().hour - 12 : element.endTime!.toLocal().hour}:${element.endTime!.toLocal().minute == 0 ? "00" : element.endTime!.toLocal().minute} ${element.endTime!.toLocal().hour >= 12 ? "PM" : "AM"}";
         if (element.avail == "1") {
           if (startTime == "8:00" && endTime == "9:00 AM") {
             selectedItem.add("8:00 - 9:00 AM");
@@ -308,148 +300,139 @@ class _UpdateAvailabilityState extends State<UpdateAvailability> {
             Expanded(
               child: _body(),
             ),
-            currentDate == null
-                ? Container()
-                : Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(32.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(32.0),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+                color: Colors.blue,
+              ),
+              child: isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
-                      color: Colors.blue,
-                    ),
-                    child: isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1,
-                              valueColor: new AlwaysStoppedAnimation<Color>(
-                                  Colors.white),
-                            ),
-                          ) /*
+                    ) /*
                         Center(
                             child: Utils.circular(),
                           )*/
-                        : ElevatedButton(
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                              elevation: MaterialStateProperty.all(0),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.white,
-                              ),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                Colors.blue,
-                              ),
-                            ),
-                            onPressed: () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-
-                              List<Map<String, dynamic>> availData = [];
-
-                              timeSlot.forEach((element) {
-                                String startTimeString =
-                                    "${element.split(" -").first} ${element.split(" -").first == "11:00" ? "AM" : element.split("- ").last.split(" ").last.replaceAll(" ", "")}";
-                                var statTemp = startTimeString.split(":");
-                                int startHour =
-                                    statTemp.last.split(" ").last == "AM" ||
-                                            int.parse(statTemp.first) == 12 ||
-                                            startTimeString == "11:00 AM"
-                                        ? int.parse(statTemp.first)
-                                        : int.parse(statTemp.first) + 12;
-                                int startMinute =
-                                    int.parse(statTemp.last.split(" ").first);
-                                DateTime startDateTime = DateTime(
-                                    currentDate.toLocal().year,
-                                    currentDate.toLocal().month,
-                                    currentDate.toLocal().day,
-                                    startHour,
-                                    startMinute);
-
-                                DateTime startUtcDateTime =
-                                    startDateTime.toUtc();
-                                String endTimeString =
-                                    "${element.split("- ").last}";
-
-                                var endTemp = endTimeString.split(":");
-
-                                int endHour =
-                                    endTemp.last.split(" ").last == "AM" ||
-                                            int.parse(endTemp.first) == 12
-                                        ? int.parse(endTemp.first)
-                                        : int.parse(endTemp.first) + 12;
-                                int endMinute =
-                                    int.parse(endTemp.last.split(" ").first);
-
-                                DateTime endDateTime = DateTime(
-                                    currentDate.toLocal().year,
-                                    currentDate.toLocal().month,
-                                    currentDate.toLocal().day,
-                                    endHour,
-                                    endMinute);
-
-                                ///
-
-                                if (endHour < startHour ||
-                                    (endHour == startHour &&
-                                        endMinute <= startMinute)) {
-                                  endDateTime =
-                                      endDateTime.add(Duration(days: 1));
-                                }
-
-                                DateTime endUtcDateTime = endDateTime.toUtc();
-
-                                String avail =
-                                    selectedItem.contains(element) ? "1" : "0";
-
-                                availData.add({
-                                  "start_time":
-                                      startUtcDateTime.toString().trim(),
-                                  "end_time": endUtcDateTime.toString().trim(),
-                                  "avail": avail,
-                                });
-
-                                if (endDateTime.day != startDateTime.day) {
-                                  currentDate =
-                                      currentDate.add(Duration(days: 1));
-                                }
-
-                                ///
-                                // DateTime endUtcDateTime = endDateTime.toUtc();
-                                //
-                                // String avail =
-                                //     selectedItem.contains(element) ? "1" : "0";
-                                //
-                                // availData.add({
-                                //   "start_time": startUtcDateTime.toString(),
-                                //   "end_time": endUtcDateTime.toString(),
-                                //   "avail": avail,
-                                // });
-                              });
-                              await _doctorHomeScreenController
-                                  .getDoctorAvailability(
-                                      _userController.user.value.id,
-                                      currentDate,
-                                      availData);
-
-                              setState(() {
-                                isLoading = false;
-                              });
-                            },
-                            child: Text(
-                              "UPDATE",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18.0),
-                            ),
+                  : ElevatedButton(
+                      style: ButtonStyle(
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                  ),
+                        ),
+                        elevation: WidgetStateProperty.all(0),
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                          Colors.white,
+                        ),
+                        foregroundColor: WidgetStateProperty.all<Color>(
+                          Colors.blue,
+                        ),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+
+                        List<Map<String, dynamic>> availData = [];
+
+                        for (var element in timeSlot) {
+                          String startTimeString =
+                              "${element.split(" -").first} ${element.split(" -").first == "11:00" ? "AM" : element.split("- ").last.split(" ").last.replaceAll(" ", "")}";
+                          var statTemp = startTimeString.split(":");
+                          int startHour =
+                              statTemp.last.split(" ").last == "AM" ||
+                                      int.parse(statTemp.first) == 12 ||
+                                      startTimeString == "11:00 AM"
+                                  ? int.parse(statTemp.first)
+                                  : int.parse(statTemp.first) + 12;
+                          int startMinute =
+                              int.parse(statTemp.last.split(" ").first);
+                          DateTime startDateTime = DateTime(
+                              currentDate.toLocal().year,
+                              currentDate.toLocal().month,
+                              currentDate.toLocal().day,
+                              startHour,
+                              startMinute);
+
+                          DateTime startUtcDateTime = startDateTime.toUtc();
+                          String endTimeString = element.split("- ").last;
+
+                          var endTemp = endTimeString.split(":");
+
+                          int endHour = endTemp.last.split(" ").last == "AM" ||
+                                  int.parse(endTemp.first) == 12
+                              ? int.parse(endTemp.first)
+                              : int.parse(endTemp.first) + 12;
+                          int endMinute =
+                              int.parse(endTemp.last.split(" ").first);
+
+                          DateTime endDateTime = DateTime(
+                              currentDate.toLocal().year,
+                              currentDate.toLocal().month,
+                              currentDate.toLocal().day,
+                              endHour,
+                              endMinute);
+
+                          ///
+
+                          if (endHour < startHour ||
+                              (endHour == startHour &&
+                                  endMinute <= startMinute)) {
+                            endDateTime =
+                                endDateTime.add(const Duration(days: 1));
+                          }
+
+                          DateTime endUtcDateTime = endDateTime.toUtc();
+
+                          String avail =
+                              selectedItem.contains(element) ? "1" : "0";
+
+                          availData.add({
+                            "start_time": startUtcDateTime.toString().trim(),
+                            "end_time": endUtcDateTime.toString().trim(),
+                            "avail": avail,
+                          });
+
+                          if (endDateTime.day != startDateTime.day) {
+                            currentDate =
+                                currentDate.add(const Duration(days: 1));
+                          }
+
+                          ///
+                          // DateTime endUtcDateTime = endDateTime.toUtc();
+                          //
+                          // String avail =
+                          //     selectedItem.contains(element) ? "1" : "0";
+                          //
+                          // availData.add({
+                          //   "start_time": startUtcDateTime.toString(),
+                          //   "end_time": endUtcDateTime.toString(),
+                          //   "avail": avail,
+                          // });
+                        }
+                        await _doctorHomeScreenController.getDoctorAvailability(
+                            _userController.user.value.id!,
+                            currentDate,
+                            availData);
+
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      child: const Text(
+                        "UPDATE",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18.0),
+                      ),
+                    ),
+            ),
           ],
         ),
         filterLoading
@@ -464,7 +447,7 @@ class _UpdateAvailabilityState extends State<UpdateAvailability> {
                   child: Utils.circular(),
                 ),
               )
-            : SizedBox()
+            : const SizedBox()
       ],
     );
   }
@@ -477,161 +460,138 @@ class _UpdateAvailabilityState extends State<UpdateAvailability> {
           children: [
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
+                backgroundColor: WidgetStateProperty.all<Color>(
                   Colors.blue,
                 ),
-                foregroundColor: MaterialStateProperty.all<Color>(
+                foregroundColor: WidgetStateProperty.all<Color>(
                   Colors.white,
                 ),
               ),
               onPressed: () async {
                 _selectDate(context);
               },
-              child: currentDate == null
-                  ? Text("Tap to Select Date")
-                  : Text(
-                      '${DateFormat('EEEE, dd MMMM yyyy').format(currentDate)}'),
+              child: Text(DateFormat('EEEE, dd MMMM yyyy').format(currentDate)),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            currentDate == null
-                ? centerText()
-                : Obx(
-                    () => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            Obx(
+              () => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 13),
+                    child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 13),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                value: selectAll,
-                                onChanged: disabledTimeSlot.length == 26
-                                    ? null
-                                    : (value) {
-                                        selectAll = !selectAll;
-                                        final temp = finalDataItem;
-                                        if (selectAll == true) {
-                                          selectedItem = timeSlot;
-                                          // disabledTimeSlot.forEach((el1) {
-                                          //   selectedItem.removeWhere(
-                                          //       (element) => element == el1);
-                                          // });
+                        Checkbox(
+                          value: selectAll,
+                          onChanged: disabledTimeSlot.length == 26
+                              ? null
+                              : (value) {
+                                  selectAll = !selectAll;
+                                  final temp = finalDataItem;
+                                  if (selectAll == true) {
+                                    selectedItem = timeSlot;
+                                    // disabledTimeSlot.forEach((el1) {
+                                    //   selectedItem.removeWhere(
+                                    //       (element) => element == el1);
+                                    // });
 
-                                          disabledTimeSlot.forEach((element) {
-                                            selectedItem.remove(element);
-                                          });
+                                    for (var element in disabledTimeSlot) {
+                                      selectedItem.remove(element);
+                                    }
 
-                                          temp.forEach((element) {
-                                            selectedItem.add(element);
-                                          });
+                                    for (var element in temp) {
+                                      selectedItem.add(element);
+                                    }
 
-                                          _isSelectedNotifier.value = true;
-                                        } else {
-                                          selectedItem = [];
-                                          temp.forEach((el1) {
-                                            disabledTimeSlot.forEach((el2) {
-                                              if (el1 == el2) {
-                                                selectedItem.add(el2);
-                                              }
-                                            });
-                                          });
+                                    _isSelectedNotifier.value = true;
+                                  } else {
+                                    selectedItem = [];
+                                    for (var el1 in temp) {
+                                      for (var el2 in disabledTimeSlot) {
+                                        if (el1 == el2) {
+                                          selectedItem.add(el2);
                                         }
-                                        timeSlot = <String>[
-                                          "8:00 - 9:00 AM",
-                                          "9:00 - 10:00 AM",
-                                          "10:00 - 11:00 AM",
-                                          "11:00 - 12:00 PM",
-                                          "12:00 - 1:00 PM",
-                                          "1:00 - 2:00 PM",
-                                          "2:00 - 3:00 PM",
-                                          "3:00 - 4:00 PM",
-                                          "4:00 - 5:00 PM",
-                                          "5:00 - 6:00 PM",
-                                          "6:00 - 7:00 PM",
-                                          "7:00 - 8:00 PM",
-                                          "8:00 - 9:00 PM",
-                                        ];
-                                        // disabledSlots();
-                                        setState(() {});
-                                      },
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                "Select all",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: disabledTimeSlot.length == 26
-                                        ? Colors.grey.shade600
-                                        : isDark
-                                            ? Colors.white
-                                            : Colors.black),
-                              ),
-                            ],
-                          ),
+                                      }
+                                    }
+                                  }
+                                  timeSlot = <String>[
+                                    "8:00 - 9:00 AM",
+                                    "9:00 - 10:00 AM",
+                                    "10:00 - 11:00 AM",
+                                    "11:00 - 12:00 PM",
+                                    "12:00 - 1:00 PM",
+                                    "1:00 - 2:00 PM",
+                                    "2:00 - 3:00 PM",
+                                    "3:00 - 4:00 PM",
+                                    "4:00 - 5:00 PM",
+                                    "5:00 - 6:00 PM",
+                                    "6:00 - 7:00 PM",
+                                    "7:00 - 8:00 PM",
+                                    "8:00 - 9:00 PM",
+                                  ];
+                                  // disabledSlots();
+                                  setState(() {});
+                                },
                         ),
-                        // ...List.generate(
-                        //   timeSlot.length,
-                        //   (index) => Padding(
-                        //     padding: const EdgeInsets.only(left: 13),
-                        //     child: Row(
-                        //       children: [
-                        //         Checkbox(
-                        //           value: selectedItem.contains(timeSlot[index])
-                        //               ? true
-                        //               : false,
-                        //           onChanged: (value) {
-                        //             selectedItemIndex.add("$index");
-                        //             _isSelectedNotifier.value = false;
-                        //             setState(() {});
-                        //           },
-                        //         ),
-                        //         SizedBox(width: 10),
-                        //         Text(
-                        //           "${timeSlot[index]}",
-                        //           style: TextStyle(fontSize: 18),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        CheckboxGroup(
-                          disabled: disabledTimeSlot,
-                          checked:
-                              _isSelectedNotifier.value ? selectedItem : null,
-                          labelStyle: TextStyle(fontSize: 18),
-                          labels: timeSlot,
-                          onChange: (bool _isChecked, String label, int index) {
-                            selectedItemIndex.add("$index");
-                            _isSelectedNotifier.value = false;
-                          },
-                          onSelected: (checked) {
-                            selectedItem = checked;
-                            print("index: ${checked.toString()}");
-                            print("selectedItem: $selectedItem");
-                          },
+                        const SizedBox(width: 10),
+                        Text(
+                          "Select all",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: disabledTimeSlot.length == 26
+                                  ? Colors.grey.shade600
+                                  : isDark
+                                      ? Colors.white
+                                      : Colors.black),
                         ),
                       ],
                     ),
                   ),
+                  // ...List.generate(
+                  //   timeSlot.length,
+                  //   (index) => Padding(
+                  //     padding: const EdgeInsets.only(left: 13),
+                  //     child: Row(
+                  //       children: [
+                  //         Checkbox(
+                  //           value: selectedItem.contains(timeSlot[index])
+                  //               ? true
+                  //               : false,
+                  //           onChanged: (value) {
+                  //             selectedItemIndex.add("$index");
+                  //             _isSelectedNotifier.value = false;
+                  //             setState(() {});
+                  //           },
+                  //         ),
+                  //         SizedBox(width: 10),
+                  //         Text(
+                  //           "${timeSlot[index]}",
+                  //           style: TextStyle(fontSize: 18),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  CheckboxGroup(
+                    disabled: disabledTimeSlot,
+                    checked: _isSelectedNotifier.value ? selectedItem : null,
+                    labelStyle: const TextStyle(fontSize: 18),
+                    labels: timeSlot,
+                    onChange: (bool isChecked, String label, int index) {
+                      selectedItemIndex.add("$index");
+                      _isSelectedNotifier.value = false;
+                    },
+                    onSelected: (checked) {
+                      selectedItem = checked;
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  centerText() {
-    return Center(
-      child: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
-          ),
-          Text(
-            'Select Date to Show and Update Your Availability',
-          ),
-        ],
       ),
     );
   }

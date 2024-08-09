@@ -1,13 +1,15 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/home/home_swiper.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/home/search_bar.dart';
+import 'package:united_natives/medicle_center/lib/screens/home/home_swiper.dart';
+
+import 'package:united_natives/medicle_center/lib/screens/home/search_bar.dart'
+    as s;
 import 'package:flutter/material.dart';
 
 class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
-  final double expandedHeight;
-  final List<String> banners;
-  final VoidCallback onSearch;
-  final VoidCallback onScan;
-  final VoidCallback onFilter;
+  final double? expandedHeight;
+  final List<String>? banners;
+  final VoidCallback? onSearch;
+  final VoidCallback? onScan;
+  final VoidCallback? onFilter;
 
   AppBarHomeSliver({
     this.expandedHeight,
@@ -23,24 +25,24 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
       alignment: Alignment.bottomCenter,
       children: [
         HomeSwipe(
-          images: banners,
-          height: expandedHeight,
+          images: banners!,
+          height: expandedHeight!,
         ),
         Container(
           height: 32,
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).colorScheme.surface,
         ),
-        SearchBar(
-          onSearch: onSearch,
-          onScan: onScan,
-          onFilter: onFilter,
+        s.SearchBar(
+          onSearch: onSearch!,
+          onScan: onScan!,
+          onFilter: onFilter!,
         ),
       ],
     );
   }
 
   @override
-  double get maxExtent => expandedHeight;
+  double get maxExtent => expandedHeight!;
 
   @override
   double get minExtent => 120;

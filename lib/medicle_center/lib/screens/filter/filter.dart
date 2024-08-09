@@ -1,24 +1,24 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/repository.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/repository/repository.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 enum TimeType { start, end }
 
 class Filter extends StatefulWidget {
-  final FilterModel filter;
-  const Filter({Key key, this.filter}) : super(key: key);
+  final FilterModel? filter;
+  const Filter({super.key, this.filter});
 
   @override
-  _FilterState createState() {
+  State<Filter> createState() {
     return _FilterState();
   }
 }
 
 class _FilterState extends State<Filter> {
-  FilterModel _filter;
+  FilterModel? _filter;
 
   bool _loadingCity = false;
   bool _loadingState = false;
@@ -27,7 +27,6 @@ class _FilterState extends State<Filter> {
 
   @override
   void initState() {
-    print("??????????$_listCity");
     super.initState();
     _filter = widget.filter;
   }
@@ -52,12 +51,12 @@ class _FilterState extends State<Filter> {
     );
     if (type == TimeType.start && picked != null) {
       setState(() {
-        _filter.startHour = picked;
+        _filter?.startHour = picked;
       });
     }
     if (type == TimeType.end && picked != null) {
       setState(() {
-        _filter.endHour = picked;
+        _filter?.endHour = picked;
       });
     }
   }
@@ -68,19 +67,19 @@ class _FilterState extends State<Filter> {
       context,
       Routes.picker,
       arguments: PickerModel(
-        title: Translate.of(context).translate('choose_country'),
-        selected: [_filter.country],
+        title: Translate.of(context)?.translate('choose_country'),
+        selected: [_filter?.country],
         data: Application.setting.locations,
       ),
     );
     if (selected != null && selected is CategoryModel) {
       setState(() {
-        _filter.country = selected;
-        _filter.city = null;
-        _filter.state = null;
+        _filter?.country = selected;
+        _filter?.city = null;
+        _filter?.state = null;
         _loadingCity = true;
       });
-      final result = await CategoryRepository.loadLocation(selected.id);
+      final result = await CategoryRepository.loadLocation(selected.id!);
       if (result != null) {
         setState(() {
           _listCity = result;
@@ -96,18 +95,18 @@ class _FilterState extends State<Filter> {
       context,
       Routes.picker,
       arguments: PickerModel(
-        title: Translate.of(context).translate('choose_city'),
-        selected: [_filter.city],
+        title: Translate.of(context)?.translate('choose_city'),
+        selected: [_filter?.city],
         data: _listCity,
       ),
     );
     if (selected != null && selected is CategoryModel) {
       setState(() {
-        _filter.city = selected;
-        _filter.state = null;
+        _filter?.city = selected;
+        _filter?.state = null;
         _loadingState = true;
       });
-      final result = await CategoryRepository.loadLocation(selected.id);
+      final result = await CategoryRepository.loadLocation(selected.id!);
       if (result != null) {
         setState(() {
           _listState = result;
@@ -123,14 +122,14 @@ class _FilterState extends State<Filter> {
       context,
       Routes.picker,
       arguments: PickerModel(
-        title: Translate.of(context).translate('choose_state'),
-        selected: [_filter.state],
+        title: Translate.of(context)?.translate('choose_state'),
+        selected: [_filter?.state],
         data: _listState,
       ),
     );
     if (selected != null && selected is CategoryModel) {
       setState(() {
-        _filter.state = selected;
+        _filter?.state = selected;
       });
     }
   }
@@ -142,18 +141,18 @@ class _FilterState extends State<Filter> {
 
   ///Build content
   Widget _buildContent() {
-    String unit = Application.setting.unit;
+    String? unit = Application.setting.unit;
     Widget country = Text(
-      Translate.of(context).translate('choose_country'),
-      style: Theme.of(context).textTheme.caption,
+      Translate.of(context)!.translate('choose_country'),
+      style: Theme.of(context).textTheme.bodySmall,
     );
     Widget city = Text(
-      Translate.of(context).translate('choose_city'),
-      style: Theme.of(context).textTheme.caption,
+      Translate.of(context)!.translate('choose_city'),
+      style: Theme.of(context).textTheme.bodySmall,
     );
     Widget state = Text(
-      Translate.of(context).translate('choose_state'),
-      style: Theme.of(context).textTheme.caption,
+      Translate.of(context)!.translate('choose_state'),
+      style: Theme.of(context).textTheme.bodySmall,
     );
     Widget cityAction = RotatedBox(
       quarterTurns: AppLanguage.isRTL() ? 2 : 0,
@@ -170,35 +169,35 @@ class _FilterState extends State<Filter> {
       ),
     );
 
-    if (_filter.country != null) {
+    if (_filter?.country != null) {
       country = Text(
-        _filter.country.title,
+        "${_filter?.country?.title}",
         style: Theme.of(context)
             .textTheme
-            .caption
-            .copyWith(color: Theme.of(context).primaryColor),
+            .bodySmall
+            ?.copyWith(color: Theme.of(context).primaryColor),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       );
     }
-    if (_filter.city != null) {
+    if (_filter?.city != null) {
       city = Text(
-        _filter.city.title,
+        "${_filter?.city?.title}",
         style: Theme.of(context)
             .textTheme
-            .caption
-            .copyWith(color: Theme.of(context).primaryColor),
+            .bodySmall
+            ?.copyWith(color: Theme.of(context).primaryColor),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       );
     }
-    if (_filter.state != null) {
+    if (_filter?.state != null) {
       state = Text(
-        _filter.state.title,
+        "${_filter?.state?.title}",
         style: Theme.of(context)
             .textTheme
-            .caption
-            .copyWith(color: Theme.of(context).primaryColor),
+            .bodySmall
+            ?.copyWith(color: Theme.of(context).primaryColor),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       );
@@ -237,28 +236,28 @@ class _FilterState extends State<Filter> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              Translate.of(context).translate('category'),
+              Translate.of(context)!.translate('category'),
               style: Theme.of(context)
                   .textTheme
-                  .headline6
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: Application.setting.category.map((item) {
-                final selected = _filter.categories.contains(item);
+              children: Application.setting.category!.map((item) {
+                final selected = _filter?.categories?.contains(item);
                 return SizedBox(
                   height: 32,
                   child: FilterChip(
-                    selected: selected,
-                    label: Text(item.title),
+                    selected: selected!,
+                    label: Text(item.title!),
                     onSelected: (check) {
                       if (check) {
-                        _filter.categories.add(item);
+                        _filter?.categories?.add(item);
                       } else {
-                        _filter.categories.remove(item);
+                        _filter?.categories?.remove(item);
                       }
                       setState(() {});
                     },
@@ -268,28 +267,28 @@ class _FilterState extends State<Filter> {
             ),
             const SizedBox(height: 16),
             Text(
-              Translate.of(context).translate('facilities'),
+              Translate.of(context)!.translate('facilities'),
               style: Theme.of(context)
                   .textTheme
-                  .headline6
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: Application.setting.features.map((item) {
-                final selected = _filter.features.contains(item);
+              children: Application.setting.features!.map((item) {
+                final selected = _filter?.features?.contains(item);
                 return SizedBox(
                   height: 32,
                   child: FilterChip(
-                    selected: selected,
-                    label: Text(item.title),
+                    selected: selected!,
+                    label: Text(item.title!),
                     onSelected: (check) {
                       if (check) {
-                        _filter.features.add(item);
+                        _filter?.features?.add(item);
                       } else {
-                        _filter.features.remove(item);
+                        _filter?.features?.remove(item);
                       }
                       setState(() {});
                     },
@@ -307,11 +306,11 @@ class _FilterState extends State<Filter> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          Translate.of(context).translate('country'),
+                          Translate.of(context)!.translate('country'),
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontWeight: FontWeight.bold),
+                              .titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         country,
                       ],
@@ -328,7 +327,7 @@ class _FilterState extends State<Filter> {
               ),
             ),
             Visibility(
-              visible: _filter.country != null,
+              visible: _filter?.country != null,
               child: Column(
                 children: [
                   const SizedBox(height: 16),
@@ -341,11 +340,11 @@ class _FilterState extends State<Filter> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                Translate.of(context).translate('city'),
+                                Translate.of(context)!.translate('city'),
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
-                                    .copyWith(
+                                    .titleLarge
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -361,7 +360,7 @@ class _FilterState extends State<Filter> {
               ),
             ),
             Visibility(
-              visible: _filter.city != null,
+              visible: _filter?.city != null,
               child: Column(
                 children: [
                   const SizedBox(height: 16),
@@ -374,11 +373,11 @@ class _FilterState extends State<Filter> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                Translate.of(context).translate('state'),
+                                Translate.of(context)!.translate('state'),
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
-                                    .copyWith(
+                                    .titleLarge
+                                    ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -398,11 +397,11 @@ class _FilterState extends State<Filter> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  Translate.of(context).translate('distance'),
+                  Translate.of(context)!.translate('distance'),
                   style: Theme.of(context)
                       .textTheme
-                      .headline6
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 Row(
@@ -411,32 +410,32 @@ class _FilterState extends State<Filter> {
                   children: <Widget>[
                     Text(
                       '0Km',
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
                       '30Km',
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     )
                   ],
                 ),
                 Slider(
-                  value: widget.filter.distance ?? 0,
+                  value: widget.filter?.distance ?? 0,
                   max: 30,
                   min: 0,
                   divisions: 2,
-                  label: '${widget.filter.distance ?? 0}',
+                  label: '${widget.filter?.distance ?? 0}',
                   onChanged: (value) {
                     setState(() {
-                      widget.filter.distance = value;
+                      widget.filter?.distance = value;
                     });
                   },
                 ),
                 Text(
-                  Translate.of(context).translate('price_range'),
+                  Translate.of(context)!.translate('price_range'),
                   style: Theme.of(context)
                       .textTheme
-                      .headline6
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 Row(
@@ -445,11 +444,11 @@ class _FilterState extends State<Filter> {
                   children: <Widget>[
                     Text(
                       '${Application.setting.minPrice}',
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
                       '${Application.setting.maxPrice}',
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     )
                   ],
                 )
@@ -459,16 +458,16 @@ class _FilterState extends State<Filter> {
             SizedBox(
               height: 16,
               child: RangeSlider(
-                min: Application.setting.minPrice,
-                max: Application.setting.maxPrice,
+                min: Application.setting.minPrice!,
+                max: Application.setting.maxPrice!,
                 values: RangeValues(
-                  widget.filter.minPrice ?? Application.setting.minPrice,
-                  widget.filter.maxPrice ?? Application.setting.maxPrice,
+                  widget.filter!.minPrice ?? Application.setting.minPrice!,
+                  widget.filter!.maxPrice ?? Application.setting.maxPrice!,
                 ),
                 onChanged: (range) {
                   setState(() {
-                    widget.filter.minPrice = range.start;
-                    widget.filter.maxPrice = range.end;
+                    widget.filter!.minPrice = range.start;
+                    widget.filter!.maxPrice = range.end;
                   });
                 },
               ),
@@ -479,30 +478,30 @@ class _FilterState extends State<Filter> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  Translate.of(context).translate('avg_price'),
-                  style: Theme.of(context).textTheme.subtitle2,
+                  Translate.of(context)!.translate('avg_price'),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 Text(
-                  '${widget.filter.minPrice?.toInt() ?? Application.setting.minPrice} $unit- ${widget.filter.maxPrice?.toInt() ?? Application.setting.maxPrice} $unit',
-                  style: Theme.of(context).textTheme.subtitle2,
+                  '${widget.filter?.minPrice?.toInt() ?? Application.setting.minPrice} $unit- ${widget.filter?.maxPrice?.toInt() ?? Application.setting.maxPrice} $unit',
+                  style: Theme.of(context).textTheme.titleSmall,
                 )
               ],
             ),
             const SizedBox(height: 16),
             Text(
-              Translate.of(context).translate('business_color'),
+              Translate.of(context)!.translate('business_color'),
               style: Theme.of(context)
                   .textTheme
-                  .headline6
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 16,
               runSpacing: 8,
-              children: Application.setting.color.map((item) {
+              children: Application.setting.color!.map((item) {
                 Widget checked = Container();
-                if (_filter.color == item) {
+                if (_filter?.color == item) {
                   checked = const Icon(
                     Icons.check,
                     color: Colors.white,
@@ -511,7 +510,7 @@ class _FilterState extends State<Filter> {
                 return InkWell(
                   onTap: () {
                     setState(() {
-                      _filter.color = item;
+                      _filter?.color = item;
                     });
                   },
                   child: Container(
@@ -528,11 +527,11 @@ class _FilterState extends State<Filter> {
             ),
             const SizedBox(height: 16),
             Text(
-              Translate.of(context).translate('open_time'),
+              Translate.of(context)!.translate('open_time'),
               style: Theme.of(context)
                   .textTheme
-                  .headline6
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Container(
@@ -556,15 +555,15 @@ class _FilterState extends State<Filter> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              Translate.of(context).translate(
+                              Translate.of(context)!.translate(
                                 'start_time',
                               ),
-                              style: Theme.of(context).textTheme.caption,
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _labelTime(_filter.startHour),
-                              style: Theme.of(context).textTheme.subtitle2,
+                              _labelTime(_filter!.startHour!),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
                           ],
                         ),
@@ -583,15 +582,15 @@ class _FilterState extends State<Filter> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              Translate.of(context).translate(
+                              Translate.of(context)!.translate(
                                 'end_time',
                               ),
-                              style: Theme.of(context).textTheme.caption,
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _labelTime(_filter.endHour),
-                              style: Theme.of(context).textTheme.subtitle2,
+                              _labelTime(_filter!.endHour!),
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
                           ],
                         ),
@@ -613,11 +612,11 @@ class _FilterState extends State<Filter> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('filter'),
+          Translate.of(context)!.translate('filter'),
         ),
         actions: [
           AppButton(
-            Translate.of(context).translate('apply'),
+            Translate.of(context)!.translate('apply'),
             onPressed: _onApply,
             type: ButtonType.text,
           )

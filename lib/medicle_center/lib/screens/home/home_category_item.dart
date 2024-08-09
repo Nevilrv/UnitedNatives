@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_placeholder.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_placeholder.dart';
 
 class HomeCategoryItem extends StatelessWidget {
-  final CategoryModel item;
-  final Function(CategoryModel) onPressed;
+  final CategoryModel? item;
+  final Function(CategoryModel)? onPressed;
 
   const HomeCategoryItem({
-    Key key,
+    super.key,
     this.item,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class HomeCategoryItem extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.21,
       child: GestureDetector(
-        onTap: () => onPressed(item),
+        onTap: () => onPressed!(item!),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -58,10 +58,10 @@ class HomeCategoryItem extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: item.color,
+                color: item?.color,
               ),
               child: FaIcon(
-                item.icon,
+                item?.icon,
                 size: 18,
                 color: Colors.white,
               ),
@@ -70,10 +70,13 @@ class HomeCategoryItem extends StatelessWidget {
               height: 4,
             ),
             Text(
-              item.title,
+              "${item?.title}",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.button.copyWith(fontSize: 14),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge
+                  ?.copyWith(fontSize: 14),
             ),
           ],
         ),

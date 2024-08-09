@@ -38,17 +38,17 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
       ///Fetch API
       final result = await BookingRepository.loadList(
         page: pageRequest,
-        perPage: Application.setting.perPage,
+        perPage: Application.setting.perPage!,
         sort: sort,
         status: status,
         keyword: "$keyword",
         request: request,
       );
-      if (result != null) {
+      if (result!.isNotEmpty) {
         listRequest = result[0];
         paginationRequest = result[1];
         loadMoreRequest =
-            (paginationRequest!.page < paginationRequest!.maxPage);
+            (paginationRequest!.page! < paginationRequest!.maxPage!);
         if (sortOptionRequest.isEmpty) {
           sortOptionRequest = result[2];
         }
@@ -62,17 +62,17 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
       ///Fetch API
       final result = await BookingRepository.loadList(
         page: pageBooking,
-        perPage: Application.setting.perPage,
+        perPage: Application.setting.perPage!,
         sort: sort,
         status: status,
         keyword: "$keyword",
         request: request,
       );
-      if (result != null) {
+      if (result!.isNotEmpty) {
         listBooking = result[0];
         paginationBooking = result[1];
         loadMoreBooking =
-            (paginationBooking!.page < paginationBooking!.maxPage);
+            (paginationBooking!.page! < paginationBooking!.maxPage!);
         if (sortOptionBooking.isEmpty) {
           sortOptionBooking = result[2];
         }
@@ -97,8 +97,10 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
     String? keyword,
     bool? request,
   }) async {
-    bool loadMoreBooking = paginationBooking!.page < paginationBooking!.maxPage;
-    bool loadMoreRequest = paginationRequest!.page < paginationRequest!.maxPage;
+    bool loadMoreBooking =
+        paginationBooking!.page! < paginationBooking!.maxPage!;
+    bool loadMoreRequest =
+        paginationRequest!.page! < paginationRequest!.maxPage!;
 
     if (request!) {
       pageRequest = pageRequest + 1;
@@ -115,14 +117,14 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
       ///Fetch API
       final result = await BookingRepository.loadList(
         page: pageRequest,
-        perPage: Application.setting.perPage,
+        perPage: Application.setting.perPage!,
         sort: sort,
         status: status,
         keyword: "$keyword",
         request: request,
       );
 
-      if (result != null) {
+      if (result!.isNotEmpty) {
         listRequest.addAll(result[0]);
         paginationRequest = result[1];
       }
@@ -141,14 +143,14 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
       ///Fetch API
       final result = await BookingRepository.loadList(
         page: pageBooking,
-        perPage: Application.setting.perPage,
+        perPage: Application.setting.perPage!,
         sort: sort,
         status: status,
         keyword: "$keyword",
         request: request,
       );
 
-      if (result != null) {
+      if (result!.isNotEmpty) {
         listBooking.addAll(result[0]);
         paginationBooking = result[1];
       }
@@ -158,8 +160,10 @@ class BookingManagementCubit extends Cubit<BookingManagementState> {
     emit(BookingListSuccess(
       listBooking: listBooking,
       listRequest: listRequest,
-      canLoadMoreBooking: paginationBooking!.page < paginationBooking!.maxPage,
-      canLoadMoreRequest: paginationRequest!.page < paginationRequest!.maxPage,
+      canLoadMoreBooking:
+          paginationBooking!.page! < paginationBooking!.maxPage!,
+      canLoadMoreRequest:
+          paginationRequest!.page! < paginationRequest!.maxPage!,
     ));
   }
 }

@@ -1,15 +1,13 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class SubmitSuccess extends StatefulWidget {
   const SubmitSuccess({super.key});
 
   @override
-  _SubmitSuccessState createState() {
-    return _SubmitSuccessState();
-  }
+  State<SubmitSuccess> createState() => _SubmitSuccessState();
 }
 
 class _SubmitSuccessState extends State<SubmitSuccess> {
@@ -34,7 +32,7 @@ class _SubmitSuccessState extends State<SubmitSuccess> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('completed'),
+          Translate.of(context)!.translate('completed'),
         ),
       ),
       body: SafeArea(
@@ -62,19 +60,19 @@ class _SubmitSuccessState extends State<SubmitSuccess> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        Translate.of(context).translate('completed'),
+                        Translate.of(context)!.translate('completed'),
                         style: Theme.of(context)
                             .textTheme
-                            .headline6
-                            .copyWith(fontWeight: FontWeight.bold),
+                            .titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        Translate.of(context).translate(
+                        Translate.of(context)!.translate(
                           'submit_success_message',
                         ),
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       )
                     ],
                   ),
@@ -83,7 +81,7 @@ class _SubmitSuccessState extends State<SubmitSuccess> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: AppButton(
-                  Translate.of(context).translate('add_more'),
+                  Translate.of(context)?.translate('add_more'),
                   mainAxisSize: MainAxisSize.max,
                   onPressed: _onSuccess,
                 ),

@@ -1,23 +1,21 @@
 import 'dart:developer';
 
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
+import 'package:united_natives/data/pref_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class Review extends StatefulWidget {
-  final ProductModel product;
+  final ProductModel? product;
 
-  const Review({Key key, this.product}) : super(key: key);
+  const Review({super.key, this.product});
 
   @override
-  _ReviewState createState() {
-    return _ReviewState();
-  }
+  State<Review> createState() => _ReviewState();
 }
 
 class _ReviewState extends State<Review> {
@@ -28,7 +26,7 @@ class _ReviewState extends State<Review> {
   }
 
   _getData() {
-    AppBloc.reviewCubit.onLoad(widget.product.id);
+    AppBloc.reviewCubit.onLoad(widget.product!.id!);
   }
 
   @override
@@ -40,7 +38,7 @@ class _ReviewState extends State<Review> {
 
   ///On refresh
   Future<void> _onRefresh() async {
-    await AppBloc.reviewCubit.onLoad(widget.product.id);
+    await AppBloc.reviewCubit.onLoad(widget.product!.id!);
   }
 
   ///On navigate write review
@@ -79,12 +77,12 @@ class _ReviewState extends State<Review> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('review'),
+          Translate.of(context)!.translate('review'),
         ),
         actions: [
           if (!isWriteShow)
             AppButton(
-              Translate.of(context).translate('write'),
+              Translate.of(context)!.translate('write'),
               onPressed: _onWriteReview,
               type: ButtonType.text,
             ),
@@ -93,7 +91,7 @@ class _ReviewState extends State<Review> {
       body: SafeArea(
         child: BlocBuilder<ReviewCubit, ReviewState>(
           builder: (context, state) {
-            RateModel rate;
+            RateModel? rate;
 
             ///Loading
             Widget content = ListView(
@@ -109,10 +107,10 @@ class _ReviewState extends State<Review> {
 
             ///Success
             if (state is ReviewSuccess) {
-              rate = state.rate;
+              rate = state.rate!;
 
               ///Empty
-              if (state.list.isEmpty) {
+              if (state.list!.isEmpty) {
                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                   setState(() {
                     isWriteShow = false;
@@ -126,8 +124,8 @@ class _ReviewState extends State<Review> {
                       Padding(
                         padding: const EdgeInsets.all(4),
                         child: Text(
-                          Translate.of(context).translate('review_not_found'),
-                          style: Theme.of(context).textTheme.bodyText1,
+                          Translate.of(context)!.translate('review_not_found'),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ),
                     ],
@@ -135,8 +133,8 @@ class _ReviewState extends State<Review> {
                 );
               } else {
                 int index = -1;
-                index = state.list.indexWhere((element) =>
-                    element.user.email.toString() ==
+                index = state.list!.indexWhere((element) =>
+                    element.user!.email.toString() ==
                     "${Prefs.getString(Prefs.EMAIL)}");
 
                 log('index < 0 == !isWriteShow---------->>>>>>>>${index <= 0 == isWriteShow}');
@@ -156,18 +154,18 @@ class _ReviewState extends State<Review> {
                 content = RefreshIndicator(
                   onRefresh: _onRefresh,
                   child: ListView.builder(
-                    itemCount: state.list.length,
+                    itemCount: state.list!.length,
                     itemBuilder: (context, index) {
-                      final item = state.list[index];
+                      final item = state.list![index];
 
-                      log('item.user===========>>>>>${item.user.image}');
+                      log('item.user===========>>>>>${item.user?.image}');
 
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: AppCommentItem(
                           item: item,
                           onPressUser: () {
-                            _onProfile(item.user);
+                            _onProfile(item.user!);
                           },
                         ),
                       );

@@ -1,14 +1,14 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class GalleryUpload extends StatefulWidget {
-  final List<ImageModel> images;
-  const GalleryUpload({Key key,  this.images}) : super(key: key);
+  final List<ImageModel>? images;
+  const GalleryUpload({super.key, this.images});
 
   @override
-  _GalleryUploadState createState() {
+  State<GalleryUpload> createState() {
     return _GalleryUploadState();
   }
 }
@@ -19,7 +19,7 @@ class _GalleryUploadState extends State<GalleryUpload> {
   @override
   void initState() {
     super.initState();
-    _images = List<ImageModel>.from(widget.images);
+    _images = List<ImageModel>.from(widget.images!);
   }
 
   @override
@@ -31,9 +31,9 @@ class _GalleryUploadState extends State<GalleryUpload> {
   void _onAddItem() {
     final emptyUpload = _images.where((item) => item == null).isEmpty;
     if (emptyUpload) {
-      ImageModel item;
+      ImageModel? item;
       setState(() {
-        _images.add(item);
+        _images.add(item!);
       });
     }
   }
@@ -71,11 +71,11 @@ class _GalleryUploadState extends State<GalleryUpload> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('gallery'),
+          Translate.of(context)!.translate('gallery'),
         ),
         actions: [
           AppButton(
-            Translate.of(context).translate('apply'),
+            Translate.of(context)!.translate('apply'),
             onPressed: _onSave,
             type: ButtonType.text,
           )
@@ -114,7 +114,7 @@ class _GalleryUploadState extends State<GalleryUpload> {
                 return Stack(
                   children: [
                     AppUploadImage(
-                      key: Key(item?.id.toString() ?? ''),
+                      key: Key(item.id.toString()),
                       image: item,
                       onChange: (result) {
                         _onUpdate(item, result);

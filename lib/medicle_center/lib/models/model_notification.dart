@@ -1,12 +1,12 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/routes.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_item.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_product.dart';
+import 'package:united_natives/medicle_center/lib/configs/routes.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_item.dart';
+import 'package:united_natives/medicle_center/lib/models/model_product.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationModel {
-  final String type;
-  final String action;
-  final String target;
+  final String? type;
+  final String? action;
+  final String? target;
   final dynamic item;
 
   NotificationModel({
@@ -28,7 +28,7 @@ class NotificationModel {
       }
     }
 
-    String targetScreen(json) {
+    String? targetScreen(json) {
       switch (json['type']) {
         case 'booking':
           return Routes.bookingDetail;

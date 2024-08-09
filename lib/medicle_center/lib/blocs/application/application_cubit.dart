@@ -98,7 +98,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     ///Setup Theme & Font with dark Option
     AppBloc.themeCubit.onChangeTheme(
       theme: theme,
-      font: "${font}",
+      font: "$font",
       darkOption: darkOption,
       textScaleFactor: oldTextScale,
     );
@@ -108,7 +108,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
 
     ///First or After upgrade version show intro preview app
     final hasReview = Preferences.containsKey(
-      '${Preferences.reviewIntro}.${Application.packageInfo.version}',
+      '${Preferences.reviewIntro}.${Application.packageInfo?.version}',
     );
     if (hasReview) {
       ///Notify
@@ -122,7 +122,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
   ///On Complete Intro
   void onCompletedIntro() async {
     await Preferences.setBool(
-      '${Preferences.reviewIntro}.${Application.packageInfo.version}',
+      '${Preferences.reviewIntro}.${Application.packageInfo?.version}',
       true,
     );
 

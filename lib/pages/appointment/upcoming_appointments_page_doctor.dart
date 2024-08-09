@@ -1,11 +1,13 @@
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../components/upcoming_appointment_list_item_doctor.dart';
 
 class UpcomingAppointmentsPageDoctor extends StatefulWidget {
+  const UpcomingAppointmentsPageDoctor({super.key});
+
   @override
   State<UpcomingAppointmentsPageDoctor> createState() =>
       _UpcomingAppointmentsPageDoctorState();
@@ -18,7 +20,6 @@ class _UpcomingAppointmentsPageDoctorState
 
   @override
   void initState() {
-    print('THIS SCREEN');
     super.initState();
   }
 
@@ -28,24 +29,24 @@ class _UpcomingAppointmentsPageDoctorState
       children: [
         RefreshIndicator(
           onRefresh: _doctorHomeScreenController.getDoctorAppointmentsModel,
-          child: Container(
+          child: SizedBox(
               height: double.maxFinite,
               child: GetBuilder<DoctorHomeScreenController>(
                 builder: (controller) {
                   if (_doctorHomeScreenController
                           .doctorAppointmentsModelData.apiState ==
                       APIState.COMPLETE) {
-                    return (controller.doctorAppointmentsModelData?.upcoming
+                    return (controller.doctorAppointmentsModelData.upcoming
                                 ?.isEmpty ??
                             true)
-                        ? Center(
+                        ? const Center(
                             child: Text(
                               "You have no appointments!",
                               style: TextStyle(fontSize: 21),
                             ),
                           )
                         : Builder(builder: (context) {
-                            controller.doctorAppointmentsModelData?.upcoming
+                            controller.doctorAppointmentsModelData.upcoming
                                 ?.sort(
                               (a, b) {
                                 String dateA =
@@ -58,27 +59,24 @@ class _UpcomingAppointmentsPageDoctorState
                             );
                             return ListView.separated(
                               separatorBuilder: (context, index) {
-                                return SizedBox(
+                                return const SizedBox(
                                   height: 15,
                                 );
                               },
                               itemCount: controller.doctorAppointmentsModelData
-                                      ?.upcoming?.length ??
+                                      .upcoming?.length ??
                                   0,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 35, horizontal: 20),
                               itemBuilder: (context, index) {
-                                print('DATA OF UPCOMING');
-
                                 return UpcomingAppointmentListItemDoctor(
                                   controller.doctorAppointmentsModelData
-                                          ?.upcoming[index] ??
-                                      "",
+                                      .upcoming![index],
                                   controller
-                                      .doctorAppointmentsModelData?.upcoming
-                                      ?.map((e) =>
+                                      .doctorAppointmentsModelData.upcoming!
+                                      .map((e) =>
                                           "${e.appointmentDate} ${e.appointmentTime}")
-                                      ?.toList(),
+                                      .toList(),
                                 );
                               },
                             );
@@ -86,32 +84,25 @@ class _UpcomingAppointmentsPageDoctorState
                   } else if (controller.doctorAppointmentsModelData.apiState ==
                       APIState.COMPLETE_WITH_NO_DATA) {
                     return Center(
-                      child: Container(
-                        child: Text(
-                          "You have no appointments!",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
-                          textAlign: TextAlign.center,
-                        ),
+                      child: Text(
+                        "You have no appointments!",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontSize: 20),
+                        textAlign: TextAlign.center,
                       ),
                     );
                   } else if (controller.doctorAppointmentsModelData.apiState ==
                       APIState.ERROR) {
-                    return Center(child: Text("Error"));
+                    return const Center(child: Text("Error"));
                   } else if (controller.doctorAppointmentsModelData.apiState ==
                       APIState.PROCESSING) {
-                    return Container(
-                      child: /* Center(
-                        child: CircularProgressIndicator(),
-                      )*/
-                          Center(
-                        child: Utils.circular(),
-                      ),
+                    return Center(
+                      child: Utils.circular(),
                     );
                   } else {
-                    return Center(
+                    return const Center(
                       child: Text(""),
                     );
                   }
@@ -129,7 +120,7 @@ class _UpcomingAppointmentsPageDoctorState
                         Center(
                       child: Utils.circular(),
                     ))
-                : SizedBox();
+                : const SizedBox();
           },
         )
       ],

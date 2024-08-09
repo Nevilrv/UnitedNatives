@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/routes.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/search_history/search_history.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/routes.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/screens/search_history/search_history.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,18 +14,17 @@ class Discovery extends StatefulWidget {
   const Discovery({super.key});
 
   @override
-  _DiscoveryState createState() {
+  State<Discovery> createState() {
     return _DiscoveryState();
   }
 }
 
 class _DiscoveryState extends State<Discovery> {
   final _discoveryCubit = DiscoveryCubit();
-  StreamSubscription _submitSubscription;
-  SearchHistoryDelegate _delegate;
+  StreamSubscription? _submitSubscription;
+  SearchHistoryDelegate? _delegate;
   @override
   void initState() {
-    print('printData');
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -41,7 +40,7 @@ class _DiscoveryState extends State<Discovery> {
 
   @override
   void dispose() {
-    _submitSubscription.cancel();
+    _submitSubscription?.cancel();
     _discoveryCubit.close();
     super.dispose();
   }
@@ -62,7 +61,7 @@ class _DiscoveryState extends State<Discovery> {
     AppBloc.searchCubit.onClear();
     await showSearch(
       context: context,
-      delegate: _delegate,
+      delegate: _delegate!,
     );
   }
 
@@ -77,13 +76,11 @@ class _DiscoveryState extends State<Discovery> {
 
   ///On navigate product detail
   void _onProductDetail(ProductModel item) {
-    print('===>=====>');
     Navigator.pushNamed(context, Routes.productDetail, arguments: item);
   }
 
   @override
   Widget build(BuildContext context) {
-    print('printData');
     return Scaffold(
       body: Column(
         children: [
@@ -115,11 +112,13 @@ class _DiscoveryState extends State<Discovery> {
                                   children: [
                                     Icon(CupertinoIcons.search,
                                         color: Theme.of(context).primaryColor),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Text(
-                                      Translate.of(context)
+                                      Translate.of(context)!
                                           .translate('search_location'),
-                                      style: Theme.of(context).textTheme.button,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
                                     ),
                                   ],
                                 ),
@@ -204,10 +203,10 @@ class _DiscoveryState extends State<Discovery> {
                     content = SliverFillRemaining(
                       child: Center(
                         child: Text(
-                          Translate.of(context).translate(
+                          Translate.of(context)!.translate(
                             'can_not_found_data',
                           ),
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     );
@@ -218,15 +217,15 @@ class _DiscoveryState extends State<Discovery> {
                     content = SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          discovery.list[index].list.sort((a, b) => a.title
+                          discovery.list[index].list?.sort((a, b) => a.title!
                               .toLowerCase()
-                              .compareTo(b.title.toLowerCase()));
+                              .compareTo(b.title!.toLowerCase()));
 
                           final item = discovery.list[index];
 
-                          item.list.sort((a, b) => a.title
+                          item.list!.sort((a, b) => a.title!
                               .toLowerCase()
-                              .compareTo(b.title.toLowerCase()));
+                              .compareTo(b.title!.toLowerCase()));
 
                           return AppDiscoveryItem(
                             item: item,

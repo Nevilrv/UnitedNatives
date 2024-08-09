@@ -1,32 +1,29 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class WishList extends StatefulWidget {
   const WishList({super.key});
 
   @override
-  _WishListState createState() {
-    return _WishListState();
-  }
+  State<WishList> createState() => _WishListState();
 }
 
 class _WishListState extends State<WishList> {
-  StreamSubscription _submitSubscription;
-  StreamSubscription _reviewSubscription;
+  StreamSubscription? _submitSubscription;
+  StreamSubscription? _reviewSubscription;
   final _scrollController = ScrollController();
   final _endReachedThreshold = 500;
   int selector = 0;
 
   @override
   void initState() {
-    print('WishListData');
     super.initState();
     _scrollController.addListener(_onScroll);
     _submitSubscription = AppBloc.submitCubit.stream.listen((state) {
@@ -43,8 +40,8 @@ class _WishListState extends State<WishList> {
 
   @override
   void dispose() {
-    _submitSubscription.cancel();
-    _reviewSubscription.cancel();
+    _submitSubscription?.cancel();
+    _reviewSubscription?.cancel();
     _scrollController.dispose();
     super.dispose();
   }
@@ -53,7 +50,7 @@ class _WishListState extends State<WishList> {
   void _onScroll() {
     if (_scrollController.position.extentAfter > _endReachedThreshold) return;
     final state = AppBloc.wishListCubit.state;
-    if (state is WishListSuccess && state.canLoadMore && !state.loadingMore) {
+    if (state is WishListSuccess && state.canLoadMore! && !state.loadingMore!) {
       AppBloc.wishListCubit.onLoadMore();
     }
   }
@@ -114,14 +111,14 @@ class _WishListState extends State<WishList> {
                       children: [
                         bookingItem,
                         AppListTitle(
-                          title: Translate.of(context).translate("remove"),
+                          title: Translate.of(context)?.translate("remove"),
                           leading: const Icon(Icons.delete_outline),
                           onPressed: () {
                             Navigator.pop(context, "remove");
                           },
                         ),
                         AppListTitle(
-                          title: Translate.of(context).translate("share"),
+                          title: Translate.of(context)?.translate("share"),
                           leading: const Icon(Icons.share_outlined),
                           onPressed: () {
                             Navigator.pop(context, "share");
@@ -178,10 +175,9 @@ class _WishListState extends State<WishList> {
 
         ///Success
         if (state is WishListSuccess) {
-          print('wishListIsSuccess');
-          int count = state.list.length;
-          if (state.loadingMore) {
-            count = count + 1;
+          int? count = state.list?.length;
+          if (state.loadingMore!) {
+            count = (count! + 1);
           }
           content = RefreshIndicator(
             onRefresh: _onRefresh,
@@ -196,7 +192,7 @@ class _WishListState extends State<WishList> {
               itemCount: count,
               itemBuilder: (context, index) {
                 ///Loading loadMore item
-                if (index == state.list.length) {
+                if (index == state.list?.length) {
                   return const Padding(
                     padding: EdgeInsets.only(bottom: 16),
                     child: AppProductItem(
@@ -205,22 +201,22 @@ class _WishListState extends State<WishList> {
                   );
                 }
 
-                state.list.sort((a, b) =>
-                    a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+                state.list?.sort((a, b) =>
+                    a.title!.toLowerCase().compareTo(b.title!.toLowerCase()));
 
-                final item = state.list[index];
+                final item = state.list?[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: AppProductItem(
                     onPressed: () {
-                      _onProductDetail(item);
+                      _onProductDetail(item!);
                     },
                     item: item,
                     type: ProductViewType.small,
                     trailing: IconButton(
                       icon: const Icon(Icons.more_vert),
                       onPressed: () {
-                        _onAction(item);
+                        _onAction(item!);
                       },
                     ),
                   ),
@@ -230,7 +226,7 @@ class _WishListState extends State<WishList> {
           );
 
           ///Empty
-          if (state.list.isEmpty) {
+          if (state.list!.isEmpty) {
             content = Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -239,8 +235,8 @@ class _WishListState extends State<WishList> {
                   Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text(
-                      Translate.of(context).translate('list_is_empty'),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      Translate.of(context)!.translate('list_is_empty'),
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ],
@@ -251,7 +247,7 @@ class _WishListState extends State<WishList> {
 
         ///Icon Remove
         Widget icon = Container();
-        if (state is WishListSuccess && state.list.isNotEmpty) {
+        if (state is WishListSuccess && state.list!.isNotEmpty) {
           icon = IconButton(
             icon: const Icon(Icons.delete_outline),
             onPressed: _clearWishList,
@@ -262,8 +258,8 @@ class _WishListState extends State<WishList> {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              Translate.of(context).translate('wish_list'),
-              style: TextStyle(color: Colors.black),
+              Translate.of(context)!.translate('wish_list'),
+              style: const TextStyle(color: Colors.black),
             ),
             actions: <Widget>[icon],
           ),

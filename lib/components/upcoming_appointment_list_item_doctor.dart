@@ -96,7 +96,7 @@ class _UpcomingAppointmentListItemDoctorState
                           Expanded(
                             child: _buildColumn(
                               context: context,
-                              title: Translate.of(context).translate('date'),
+                              title: Translate.of(context)!.translate('date'),
                               subtitle:
                                   DateFormat('EEEE, dd MMM yyyy').format(time),
                             ),
@@ -107,7 +107,7 @@ class _UpcomingAppointmentListItemDoctorState
                           Expanded(
                             child: _buildColumn(
                               context: context,
-                              title: Translate.of(context).translate('time'),
+                              title: Translate.of(context)!.translate('time'),
                               subtitle: DateFormat('hh:mm a').format(time),
                             ),
                           ),
@@ -131,7 +131,7 @@ class _UpcomingAppointmentListItemDoctorState
                           Expanded(
                             child: _buildColumn(
                               context: context,
-                              title: Translate.of(context)
+                              title: Translate.of(context)!
                                   .translate('Client Name'),
                               subtitle:
                                   '${widget.patientAppoint.patientFirstName} ${widget.patientAppoint.patientLastName}',
@@ -165,7 +165,7 @@ class _UpcomingAppointmentListItemDoctorState
                             ? const SizedBox()
                             : widget.patientAppoint.appointmentStatus == '1'
                                 ? CustomDisableButton(
-                                    text: Translate.of(context)
+                                    text: Translate.of(context)!
                                         .translate('Accepted'),
                                     textSize: 16,
                                     onPressed: () {},
@@ -181,7 +181,7 @@ class _UpcomingAppointmentListItemDoctorState
                                         ),
                                       )
                                     : CustomButton(
-                                        text: Translate.of(context)
+                                        text: Translate.of(context)!
                                             .translate('Accept'),
                                         textSize: 16,
                                         onPressed: () async {
@@ -211,7 +211,7 @@ class _UpcomingAppointmentListItemDoctorState
                         child: widget.patientAppoint.appointmentStatus != '2'
                             ? rejoin
                                 ? CustomButton(
-                                    text: Translate.of(context)
+                                    text: Translate.of(context)!
                                         .translate('Add prescription'),
                                     textSize: 14,
                                     onPressed: () async {
@@ -224,7 +224,7 @@ class _UpcomingAppointmentListItemDoctorState
                                   )
                                 : const SizedBox()
                             : CustomButton(
-                                text: Translate.of(context)
+                                text: Translate.of(context)!
                                     .translate('Add prescription'),
                                 textSize: 14,
                                 onPressed: () async {
@@ -250,7 +250,7 @@ class _UpcomingAppointmentListItemDoctorState
                                             vertical: 10),
                                       )
                                     : CustomOutlineButton(
-                                        text: Translate.of(context)
+                                        text: Translate.of(context)!
                                             .translate('Decline'),
                                         textSize: 14,
                                         onPressed: () => _showAlert(
@@ -629,6 +629,8 @@ class _UpcomingAppointmentListItemDoctorState
         };
         http.Response response1 = await http.post(Uri.parse(url1),
             body: jsonEncode(body1), headers: header1);
+
+        log('response1==========>>>>>$response1');
       }
     } else {
       log('Please try again');

@@ -1,10 +1,10 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/api/api.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/repository.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/api/api.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/repository/repository.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -12,16 +12,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 
 class Submit extends StatefulWidget {
-  final ProductModel item;
-  const Submit({
-    Key key,
-    this.item,
-  }) : super(key: key);
+  final ProductModel? item;
+  const Submit({super.key, this.item});
 
   @override
-  _SubmitState createState() {
-    return _SubmitState();
-  }
+  State<Submit> createState() => _SubmitState();
 }
 
 class _SubmitState extends State<Submit> {
@@ -54,40 +49,40 @@ class _SubmitState extends State<Submit> {
 
   bool _processing = false;
 
-  String _errorTitle;
-  String _errorContent;
-  String _errorAddress;
-  String _errorZipCode;
-  String _errorPhone;
-  String _errorFax;
-  String _errorEmail;
-  String _errorWebsite;
-  String _errorStatus;
-  String _errorPrice;
-  String _errorPriceMin;
-  String _errorPriceMax;
+  String? _errorTitle;
+  String? _errorContent;
+  String? _errorAddress;
+  String? _errorZipCode;
+  String? _errorPhone;
+  String? _errorFax;
+  String? _errorEmail;
+  String? _errorWebsite;
+  String? _errorStatus;
+  String? _errorPrice;
+  String? _errorPriceMin;
+  String? _errorPriceMax;
 
   /// Data
   List<CategoryModel> _listCategory = [];
   List<CategoryModel> _listFacilities = [];
-  List<CategoryModel> _listCountry;
-  List<CategoryModel> _listState;
-  List<CategoryModel> _listCity;
-  ImageModel _featureImage;
+  List<CategoryModel>? _listCountry;
+  List<CategoryModel>? _listState;
+  List<CategoryModel>? _listCity;
+  ImageModel? _featureImage;
   List<ImageModel> _galleryImage = [];
   List<CategoryModel> _categories = [];
   List<CategoryModel> _facilities = [];
   List<String> _tags = [];
-  CategoryModel _country;
-  CategoryModel _state;
-  CategoryModel _city;
-  LocationData _gps;
-  Color _color;
-  IconModel _icon;
-  String _date;
-  String _bookingStyle;
-  List<OpenTimeModel> _time;
-  Map<String, dynamic> _socials;
+  CategoryModel? _country;
+  CategoryModel? _state;
+  CategoryModel? _city;
+  LocationData? _gps;
+  Color? _color;
+  IconModel? _icon;
+  String? _date;
+  String? _bookingStyle;
+  List<OpenTimeModel>? _time;
+  Map<String, dynamic>? _socials;
 
   @override
   void initState() {
@@ -131,10 +126,10 @@ class _SubmitState extends State<Submit> {
     });
     Map<String, dynamic> params = {};
     if (widget.item != null) {
-      params['post_id'] = widget.item.id;
+      params['post_id'] = widget.item?.id;
     }
     final response = await Api.requestSubmitSetting(params);
-    if (response.success) {
+    if (response.success!) {
       _listCategory = List.from(
         response.data['categories'] ?? [],
       ).map((item) {
@@ -145,60 +140,55 @@ class _SubmitState extends State<Submit> {
         return CategoryModel.fromJson(item);
       }).toList();
 
-      print('-countries--${response.data['countries']}');
-
       _listCountry = List.from(response.data['countries'] ?? []).map((item) {
         return CategoryModel.fromJson(item);
       }).toList();
 
-      print('states--${response.data['states']}');
       _listState = List.from(response.data['states'] ?? []).map((item) {
         return CategoryModel.fromJson(item);
       }).toList();
-
-      print('-cities--${response.data['cities']}');
 
       _listCity = List.from(response.data['cities'] ?? []).map((item) {
         return CategoryModel.fromJson(item);
       }).toList();
     } else {
-      AppBloc.messageCubit.onShow(response.message);
+      AppBloc.messageCubit.onShow(response.message!);
     }
 
     if (widget.item != null) {
-      final result = await ListRepository.loadProduct(widget.item.id);
+      final result = await ListRepository.loadProduct(widget.item?.id);
       if (result != null) {
         _featureImage = result.image;
-        _galleryImage = result.galleries;
-        _textTitleController.text = result.title;
-        _textContentController.text = result.description;
+        _galleryImage = result.galleries!;
+        _textTitleController.text = result.title!;
+        _textContentController.text = result.description!;
         _categories = List<CategoryModel>.from([result.category]);
-        _facilities = result.features;
-        _tags = result.tags.map((e) => e.title).toList();
+        _facilities = result.features!;
+        _tags = result.tags!.map((e) => e.title!).toList();
         _country = result.country;
         _state = result.state;
         _city = result.city;
         _gps = result.location;
-        _textAddressController.text = result.address;
-        _textZipCodeController.text = result.zipCode;
-        _textPhoneController.text = result.phone;
-        _textFaxController.text = result.fax;
-        _textEmailController.text = result.email;
-        _textWebsiteController.text = result.website;
-        _color = UtilColor.getColorFromHex(result.color);
+        _textAddressController.text = result.address!;
+        _textZipCodeController.text = result.zipCode!;
+        _textPhoneController.text = result.phone!;
+        _textFaxController.text = result.fax!;
+        _textEmailController.text = result.email!;
+        _textWebsiteController.text = result.website!;
+        _color = UtilColor.getColorFromHex(result.color!);
         _icon = IconModel(
           title: result.icon,
           value: result.icon,
           icon: FaIcon(
-            UtilIcon.getIconFromCss(result.icon),
+            UtilIcon.getIconFromCss(result.icon!),
             color: Colors.grey,
           ),
         );
-        _textStatusController.text = result.status;
+        _textStatusController.text = result.status!;
         _date = result.dateEstablish;
-        _textPriceController.text = result.price.replaceAll(regInt, '');
-        _textPriceMinController.text = result.priceMin.replaceAll(regInt, '');
-        _textPriceMaxController.text = result.priceMax.replaceAll(regInt, '');
+        _textPriceController.text = result.price!.replaceAll(regInt, '');
+        _textPriceMinController.text = result.priceMin!.replaceAll(regInt, '');
+        _textPriceMaxController.text = result.priceMax!.replaceAll(regInt, '');
         _bookingStyle = result.bookingStyle;
         _time = result.openHours;
         _socials = result.socials;
@@ -237,7 +227,7 @@ class _SubmitState extends State<Submit> {
       context,
       Routes.categoryPicker,
       arguments: PickerModel(
-        title: Translate.of(context).translate('choose_category'),
+        title: Translate.of(context)?.translate('choose_category'),
         selected: _categories,
         data: _listCategory,
       ),
@@ -255,7 +245,7 @@ class _SubmitState extends State<Submit> {
       context,
       Routes.categoryPicker,
       arguments: PickerModel(
-        title: Translate.of(context).translate('choose_facilities'),
+        title: Translate.of(context)?.translate('choose_facilities'),
         selected: _facilities,
         data: _listFacilities,
       ),
@@ -287,7 +277,7 @@ class _SubmitState extends State<Submit> {
       context,
       Routes.picker,
       arguments: PickerModel(
-        title: Translate.of(context).translate('choose_country'),
+        title: Translate.of(context)?.translate('choose_country'),
         selected: [_country],
         data: _listCountry ?? [],
       ),
@@ -299,7 +289,7 @@ class _SubmitState extends State<Submit> {
         _state = null;
         _city = null;
       });
-      final result = await CategoryRepository.loadLocation(selected.id);
+      final result = await CategoryRepository.loadLocation(selected.id!);
       if (result != null) {
         setState(() {
           _listState = result;
@@ -318,7 +308,7 @@ class _SubmitState extends State<Submit> {
       context,
       Routes.picker,
       arguments: PickerModel(
-        title: Translate.of(context).translate('choose_state'),
+        title: Translate.of(context)?.translate('choose_state'),
         selected: [_state],
         data: _listState ?? [],
       ),
@@ -329,7 +319,7 @@ class _SubmitState extends State<Submit> {
         _listCity = null;
         _city = null;
       });
-      final result = await CategoryRepository.loadLocation(selected.id);
+      final result = await CategoryRepository.loadLocation(selected.id!);
       if (result != null) {
         setState(() {
           _listCity = result;
@@ -348,7 +338,7 @@ class _SubmitState extends State<Submit> {
       context,
       Routes.picker,
       arguments: PickerModel(
-        title: Translate.of(context).translate('choose_city'),
+        title: Translate.of(context)?.translate('choose_city'),
         selected: [_city],
         data: _listCity ?? [],
       ),
@@ -379,9 +369,9 @@ class _SubmitState extends State<Submit> {
     final result = await showDialog<Color>(
       context: context,
       builder: (BuildContext context) {
-        Color selected;
+        Color? selected;
         return AlertDialog(
-          title: Text(Translate.of(context).translate('choose_color')),
+          title: Text(Translate.of(context)!.translate('choose_color')),
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: Theme.of(context).primaryColor,
@@ -393,14 +383,14 @@ class _SubmitState extends State<Submit> {
           ),
           actions: <Widget>[
             AppButton(
-              Translate.of(context).translate('close'),
+              Translate.of(context)?.translate('close'),
               onPressed: () {
                 Navigator.pop(context);
               },
               type: ButtonType.text,
             ),
             AppButton(
-              Translate.of(context).translate('apply'),
+              Translate.of(context)?.translate('apply'),
               onPressed: () {
                 Navigator.pop(context, selected);
               },
@@ -427,7 +417,7 @@ class _SubmitState extends State<Submit> {
       )),
     );
     final picker = PickerModel(
-      title: Translate.of(context).translate('choose_icon'),
+      title: Translate.of(context)?.translate('choose_icon'),
       data: data,
       selected: [_icon],
     );
@@ -526,7 +516,7 @@ class _SubmitState extends State<Submit> {
         status: _textStatusController.text,
         date: _date,
         featureImage: _featureImage?.id,
-        galleryImage: _galleryImage.map((e) => e.id).toList(),
+        galleryImage: _galleryImage.map((e) => e.id!).toList(),
         price: _textPriceController.text,
         priceMin: _textPriceMinController.text,
         priceMax: _textPriceMaxController.text,
@@ -623,7 +613,7 @@ class _SubmitState extends State<Submit> {
     final min = num.tryParse(_textPriceMinController.text) ?? 0;
     final max = num.tryParse(_textPriceMaxController.text) ?? 0;
     if (min > max) {
-      _errorPriceMax = Translate.of(context).translate('min_value_not_valid');
+      _errorPriceMax = Translate.of(context)?.translate('min_value_not_valid');
     }
 
     if (_errorTitle != null ||
@@ -670,13 +660,13 @@ class _SubmitState extends State<Submit> {
 
   ///Build gallery
   Widget _buildGallery() {
-    DecorationImage decorationImage;
+    DecorationImage? decorationImage;
     IconData icon = Icons.add;
     if (_galleryImage.isNotEmpty) {
       icon = Icons.dashboard_customize_outlined;
       decorationImage = DecorationImage(
         image: NetworkImage(
-          _galleryImage.first.full,
+          _galleryImage.first.full!,
         ),
         fit: BoxFit.cover,
       );
@@ -715,13 +705,13 @@ class _SubmitState extends State<Submit> {
 
   ///Build content
   Widget _buildContent() {
-    String textActionOpenTime = Translate.of(context).translate('add');
+    String textActionOpenTime = Translate.of(context)!.translate('add');
     Widget icon = Icon(
       Icons.help_outline,
       color: Theme.of(context).hintColor,
     );
     if (_time != null) {
-      textActionOpenTime = Translate.of(context).translate('edit');
+      textActionOpenTime = Translate.of(context)!.translate('edit');
     }
     if (_processing) {
       return const Center(
@@ -740,7 +730,7 @@ class _SubmitState extends State<Submit> {
             SizedBox(
               height: 180,
               child: AppUploadImage(
-                title: Translate.of(context).translate('upload_feature_image'),
+                title: Translate.of(context)!.translate('upload_feature_image'),
                 image: _featureImage,
                 onChange: (result) {
                   setState(() {
@@ -757,15 +747,15 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 16),
             Text(
-              Translate.of(context).translate('title'),
+              Translate.of(context)!.translate('title'),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             AppTextInput(
-              hintText: Translate.of(context).translate('input_title'),
+              hintText: Translate.of(context)?.translate('input_title'),
               errorText: _errorTitle,
               controller: _textTitleController,
               focusNode: _focusTitle,
@@ -787,16 +777,16 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 16),
             Text(
-              Translate.of(context).translate('content'),
+              Translate.of(context)!.translate('content'),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             AppTextInput(
               maxLines: 6,
-              hintText: Translate.of(context).translate('input_content'),
+              hintText: Translate.of(context)?.translate('input_content'),
               errorText: _errorContent,
               controller: _textContentController,
               focusNode: _focusContent,
@@ -811,43 +801,43 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 16),
             Text(
-              Translate.of(context).translate('category'),
+              Translate.of(context)!.translate('category'),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             AppPickerItem(
-              title: Translate.of(context).translate('choose_category'),
+              title: Translate.of(context)?.translate('choose_category'),
               value: _categories.map((e) => e.title).join(", "),
               onPressed: _onSelectCategory,
             ),
             const SizedBox(height: 16),
             Text(
-              Translate.of(context).translate('facilities'),
+              Translate.of(context)!.translate('facilities'),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             AppPickerItem(
-              title: Translate.of(context).translate('choose_facilities'),
+              title: Translate.of(context)?.translate('choose_facilities'),
               value: _facilities.map((e) => e.title).join(", "),
               onPressed: _onSelectFacilities,
             ),
             const SizedBox(height: 16),
             Text(
-              Translate.of(context).translate('tags'),
+              Translate.of(context)!.translate('tags'),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             AppPickerItem(
-              title: Translate.of(context).translate('choose_tags'),
+              title: Translate.of(context)?.translate('choose_tags'),
               value: _tags.isEmpty ? null : _tags.join(","),
               onPressed: _onChooseTag,
             ),
@@ -855,7 +845,7 @@ class _SubmitState extends State<Submit> {
             const Divider(),
             const SizedBox(height: 16),
             AppPickerItem(
-              title: Translate.of(context).translate('choose_country'),
+              title: Translate.of(context)?.translate('choose_country'),
               value: _country?.title,
               onPressed: _onSelectCountry,
             ),
@@ -864,7 +854,7 @@ class _SubmitState extends State<Submit> {
               children: [
                 Expanded(
                   child: AppPickerItem(
-                    title: Translate.of(context).translate('choose_state'),
+                    title: Translate.of(context)?.translate('choose_state'),
                     value: _state?.title,
                     loading: _country != null && _listState == null,
                     onPressed: _onSelectState,
@@ -873,7 +863,7 @@ class _SubmitState extends State<Submit> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: AppPickerItem(
-                    title: Translate.of(context).translate('choose_city'),
+                    title: Translate.of(context)?.translate('choose_city'),
                     value: _city?.title,
                     loading: _state != null && _listCity == null,
                     onPressed: _onSelectCity,
@@ -889,17 +879,17 @@ class _SubmitState extends State<Submit> {
                 Icons.location_on_outlined,
                 color: Theme.of(context).hintColor,
               ),
-              title: Translate.of(context).translate(
+              title: Translate.of(context)?.translate(
                 'choose_gps_location',
               ),
               value: _gps != null
-                  ? '${_gps.latitude?.toStringAsFixed(3)},${_gps.latitude?.toStringAsFixed(3)}'
+                  ? '${_gps?.latitude?.toStringAsFixed(3)},${_gps?.latitude?.toStringAsFixed(3)}'
                   : null,
               onPressed: _onSelectAddress,
             ),
             const SizedBox(height: 8),
             AppTextInput(
-              hintText: Translate.of(context).translate('input_address'),
+              hintText: Translate.of(context)?.translate('input_address'),
               errorText: _errorAddress,
               controller: _textAddressController,
               focusNode: _focusAddress,
@@ -925,7 +915,7 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 8),
             AppTextInput(
-              hintText: Translate.of(context).translate('input_zipcode'),
+              hintText: Translate.of(context)?.translate('input_zipcode'),
               errorText: _errorZipCode,
               controller: _textZipCodeController,
               focusNode: _focusZipCode,
@@ -953,7 +943,7 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 8),
             AppTextInput(
-              hintText: Translate.of(context).translate('input_phone'),
+              hintText: Translate.of(context)?.translate('input_phone'),
               errorText: _errorPhone,
               controller: _textPhoneController,
               focusNode: _focusPhone,
@@ -981,7 +971,7 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 8),
             AppTextInput(
-              hintText: Translate.of(context).translate('input_fax'),
+              hintText: Translate.of(context)?.translate('input_fax'),
               errorText: _errorFax,
               controller: _textFaxController,
               focusNode: _focusFax,
@@ -1009,7 +999,7 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 8),
             AppTextInput(
-              hintText: Translate.of(context).translate('input_email'),
+              hintText: Translate.of(context)?.translate('input_email'),
               errorText: _errorEmail,
               controller: _textEmailController,
               focusNode: _focusEmail,
@@ -1037,7 +1027,7 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 8),
             AppTextInput(
-              hintText: Translate.of(context).translate('input_website'),
+              hintText: Translate.of(context)?.translate('input_website'),
               errorText: _errorWebsite,
               controller: _textWebsiteController,
               focusNode: _focusWebsite,
@@ -1065,11 +1055,11 @@ class _SubmitState extends State<Submit> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Translate.of(context).translate('color'),
+                        Translate.of(context)!.translate('color'),
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle1
-                            .copyWith(fontWeight: FontWeight.bold),
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       AppPickerItem(
@@ -1081,8 +1071,8 @@ class _SubmitState extends State<Submit> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        value: _color?.value?.toRadixString(16),
-                        title: Translate.of(context).translate(
+                        value: _color?.value.toRadixString(16),
+                        title: Translate.of(context)?.translate(
                           'choose_color',
                         ),
                         onPressed: _onSelectColor,
@@ -1096,17 +1086,17 @@ class _SubmitState extends State<Submit> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Translate.of(context).translate('icon'),
+                        Translate.of(context)!.translate('icon'),
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle1
-                            .copyWith(fontWeight: FontWeight.bold),
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       AppPickerItem(
                         leading: _icon?.icon ?? icon,
                         value: _icon?.value,
-                        title: Translate.of(context).translate('choose_icon'),
+                        title: Translate.of(context)?.translate('choose_icon'),
                         onPressed: _onSelectIcon,
                       ),
                     ],
@@ -1116,15 +1106,15 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 8),
             Text(
-              Translate.of(context).translate('status'),
+              Translate.of(context)!.translate('status'),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             AppTextInput(
-              hintText: Translate.of(context).translate(
+              hintText: Translate.of(context)?.translate(
                 'input_status',
               ),
               errorText: _errorStatus,
@@ -1145,13 +1135,13 @@ class _SubmitState extends State<Submit> {
             ),
             const SizedBox(height: 8),
             Text(
-              Translate.of(context).translate(
+              Translate.of(context)!.translate(
                 'date_established',
               ),
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             AppPickerItem(
@@ -1160,7 +1150,7 @@ class _SubmitState extends State<Submit> {
                 color: Theme.of(context).hintColor,
               ),
               value: _date,
-              title: Translate.of(context).translate(
+              title: Translate.of(context)?.translate(
                 'choose_date',
               ),
               onPressed: _onShowDatePicker,
@@ -1173,15 +1163,15 @@ class _SubmitState extends State<Submit> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Translate.of(context).translate('price_min'),
+                        Translate.of(context)!.translate('price_min'),
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle1
-                            .copyWith(fontWeight: FontWeight.bold),
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       AppTextInput(
-                        hintText: Translate.of(context).translate(
+                        hintText: Translate.of(context)?.translate(
                           'input_price',
                         ),
                         errorText: _errorPriceMin,
@@ -1205,8 +1195,8 @@ class _SubmitState extends State<Submit> {
                           );
                         },
                         trailing: Text(
-                          Application.setting.unit,
-                          style: Theme.of(context).textTheme.caption,
+                          Application.setting.unit!,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -1218,15 +1208,15 @@ class _SubmitState extends State<Submit> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Translate.of(context).translate('price_max'),
+                        Translate.of(context)!.translate('price_max'),
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle1
-                            .copyWith(fontWeight: FontWeight.bold),
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       AppTextInput(
-                        hintText: Translate.of(context).translate(
+                        hintText: Translate.of(context)?.translate(
                           'input_price',
                         ),
                         errorText: _errorPriceMax,
@@ -1247,8 +1237,8 @@ class _SubmitState extends State<Submit> {
                           _onBookingStylePicker();
                         },
                         trailing: Text(
-                          Application.setting.unit,
-                          style: Theme.of(context).textTheme.caption,
+                          Application.setting.unit!,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -1264,16 +1254,16 @@ class _SubmitState extends State<Submit> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Translate.of(context).translate('booking_style'),
+                        Translate.of(context)!.translate('booking_style'),
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle1
-                            .copyWith(fontWeight: FontWeight.bold),
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       AppPickerItem(
-                        value: Translate.of(context).translate(_bookingStyle),
-                        title: Translate.of(context).translate(
+                        value: Translate.of(context)?.translate(_bookingStyle!),
+                        title: Translate.of(context)?.translate(
                           'choose_booking_style',
                         ),
                         onPressed: _onBookingStylePicker,
@@ -1287,15 +1277,15 @@ class _SubmitState extends State<Submit> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Translate.of(context).translate('price'),
+                        Translate.of(context)!.translate('price'),
                         style: Theme.of(context)
                             .textTheme
-                            .subtitle1
-                            .copyWith(fontWeight: FontWeight.bold),
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
                       AppTextInput(
-                        hintText: Translate.of(context).translate(
+                        hintText: Translate.of(context)?.translate(
                           'input_price',
                         ),
                         errorText: _errorPrice,
@@ -1312,8 +1302,8 @@ class _SubmitState extends State<Submit> {
                           });
                         },
                         trailing: Text(
-                          Application.setting.unit,
-                          style: Theme.of(context).textTheme.caption,
+                          Application.setting.unit!,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                     ],
@@ -1326,17 +1316,17 @@ class _SubmitState extends State<Submit> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  Translate.of(context).translate('open_time'),
+                  Translate.of(context)!.translate('open_time'),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle1
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 TextButton(
                   onPressed: _onOpenTime,
                   child: Text(
                     textActionOpenTime,
-                    style: Theme.of(context).textTheme.button.copyWith(
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),
@@ -1347,17 +1337,17 @@ class _SubmitState extends State<Submit> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  Translate.of(context).translate('social_network'),
+                  Translate.of(context)!.translate('social_network'),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle1
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 TextButton(
                   onPressed: _onSocialNetwork,
                   child: Text(
                     textActionOpenTime,
-                    style: Theme.of(context).textTheme.button.copyWith(
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),
@@ -1372,11 +1362,11 @@ class _SubmitState extends State<Submit> {
 
   @override
   Widget build(BuildContext context) {
-    String textTitle = Translate.of(context).translate('add_new_listing');
-    String textAction = Translate.of(context).translate('add');
+    String? textTitle = Translate.of(context)?.translate('add_new_listing');
+    String? textAction = Translate.of(context)?.translate('add');
     if (widget.item != null) {
-      textTitle = Translate.of(context).translate('update_listing');
-      textAction = Translate.of(context).translate('update');
+      textTitle = Translate.of(context)?.translate('update_listing');
+      textAction = Translate.of(context)?.translate('update');
     }
 
     return GestureDetector(
@@ -1385,12 +1375,11 @@ class _SubmitState extends State<Submit> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            textTitle,
+            textTitle!,
             style: Theme.of(context)
                 .appBarTheme
-                .textTheme
-                .headline6
-                .copyWith(fontSize: 20),
+                .titleTextStyle
+                ?.copyWith(fontSize: 20),
           ),
           actions: [
             AppButton(

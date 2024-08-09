@@ -1,21 +1,20 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class AppDiscoveryItem extends StatelessWidget {
-  final DiscoveryModel item;
-  final Function(CategoryModel) onSeeMore;
-  final Function(ProductModel) onProductDetail;
+  final DiscoveryModel? item;
+  final Function(CategoryModel)? onSeeMore;
+  final Function(ProductModel)? onProductDetail;
 
   const AppDiscoveryItem({
-    Key key,
+    super.key,
     this.item,
     this.onSeeMore,
     this.onProductDetail,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +31,12 @@ class AppDiscoveryItem extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color:
-                      item.list.isNotEmpty ? Color(0xff58d68d) : Colors.black,
+                  color: item!.list!.isNotEmpty
+                      ? const Color(0xff58d68d)
+                      : Colors.black,
                 ),
                 child: FaIcon(
-                  item.category.icon,
+                  item?.category?.icon,
                   size: 18,
                   color: Colors.white,
                 ),
@@ -49,16 +49,16 @@ class AppDiscoveryItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      item.category.title,
+                      "${item?.category?.title}",
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${item.category.count} ${Translate.of(context).translate('location')}',
-                      style: Theme.of(context).textTheme.caption,
+                      '${item?.category?.count} ${Translate.of(context)?.translate('location')}',
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -66,22 +66,19 @@ class AppDiscoveryItem extends StatelessWidget {
               const SizedBox(width: 8),
               TextButton(
                 onPressed: () {
-                  log('item.category---------->>>>>>>>$item');
-                  onSeeMore(item.category);
+                  onSeeMore!(item!.category!);
                 },
                 child: Text(
-                  Translate.of(context).translate('see_more'),
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      .copyWith(color: Theme.of(context).colorScheme.secondary),
+                  Translate.of(context)!.translate('see_more'),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
               const SizedBox(width: 8),
             ],
           ),
           const SizedBox(height: 15),
-          item.list.isNotEmpty
+          item!.list!.isNotEmpty
               ? Builder(builder: (context) {
                   return SizedBox(
                     height: 195,
@@ -90,23 +87,23 @@ class AppDiscoveryItem extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8)
                           .copyWith(bottom: 15),
                       itemBuilder: (context, index) {
-                        final product = item.list[index];
+                        final product = item!.list![index];
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: AppProductItem(
                             item: product,
                             type: ProductViewType.card,
                             onPressed: () {
-                              onProductDetail(product);
+                              onProductDetail!(product);
                             },
                           ),
                         );
                       },
-                      itemCount: item.list.length,
+                      itemCount: item!.list!.length,
                     ),
                   );
                 })
-              : SizedBox(),
+              : const SizedBox(),
         ],
       );
     }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
-import 'package:united_natives/medicle_center/lib/models/model_open_time.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class OpenTime extends StatefulWidget {
   final List<OpenTimeModel> selected;
@@ -10,9 +9,7 @@ class OpenTime extends StatefulWidget {
   const OpenTime({super.key, required this.selected});
 
   @override
-  _OpenTimeState createState() {
-    return _OpenTimeState();
-  }
+  State<OpenTime> createState() => _OpenTimeState();
 }
 
 class _OpenTimeState extends State<OpenTime> {
@@ -24,7 +21,7 @@ class _OpenTimeState extends State<OpenTime> {
   @override
   void initState() {
     super.initState();
-    if (widget.selected != null) {
+    if (widget.selected.isNotEmpty) {
       _time = widget.selected;
     } else {
       _time = [
@@ -102,11 +99,11 @@ class _OpenTimeState extends State<OpenTime> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('open_time'),
+          Translate.of(context)!.translate('open_time'),
         ),
         actions: [
           AppButton(
-            Translate.of(context).translate('apply'),
+            Translate.of(context)!.translate('apply'),
             onPressed: _onSave,
             type: ButtonType.text,
           )
@@ -121,11 +118,11 @@ class _OpenTimeState extends State<OpenTime> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  Translate.of(context).translate(item.key),
+                  Translate.of(context)!.translate(item.key!),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle1
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 ListView.separated(
@@ -133,17 +130,17 @@ class _OpenTimeState extends State<OpenTime> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     final addAction = index == 0;
-                    final element = item.schedule[index];
+                    final element = item.schedule?[index];
                     return Row(
                       children: [
                         Expanded(
                           child: AppPickerItem(
-                            value: element.start.viewTime,
-                            title: Translate.of(context).translate(
+                            value: element?.start?.viewTime,
+                            title: Translate.of(context)?.translate(
                               'choose_hours',
                             ),
                             onPressed: () {
-                              _onTimePicker(element.start, (time) {
+                              _onTimePicker(element!.start!, (time) {
                                 setState(() {
                                   element.start = time;
                                 });
@@ -154,12 +151,12 @@ class _OpenTimeState extends State<OpenTime> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: AppPickerItem(
-                            value: element.end.viewTime,
-                            title: Translate.of(context).translate(
+                            value: element?.end?.viewTime,
+                            title: Translate.of(context)?.translate(
                               'choose_hours',
                             ),
                             onPressed: () {
-                              _onTimePicker(element.end, (time) {
+                              _onTimePicker(element!.end!, (time) {
                                 setState(() {
                                   element.end = time;
                                 });
@@ -171,14 +168,14 @@ class _OpenTimeState extends State<OpenTime> {
                         InkWell(
                           onTap: () {
                             if (addAction) {
-                              item.schedule.add(
+                              item.schedule?.add(
                                 ScheduleModel(
                                   start: _defaultStartTime,
                                   end: _defaultEndTime,
                                 ),
                               );
                             } else {
-                              item.schedule.remove(element);
+                              item.schedule?.remove(element);
                             }
                             setState(() {});
                           },
@@ -201,7 +198,7 @@ class _OpenTimeState extends State<OpenTime> {
                   separatorBuilder: (context, index) {
                     return const SizedBox(height: 8);
                   },
-                  itemCount: item.schedule.length,
+                  itemCount: item.schedule!.length,
                 )
               ],
             );

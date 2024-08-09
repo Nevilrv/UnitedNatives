@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/list_repository.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/repository/list_repository.dart';
 import 'cubit.dart';
 
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(InitialSearchState());
-  Timer timer;
-  String searchValue;
+  Timer? timer;
+  String? searchValue;
   int page = 1;
   bool isMax = false;
   List<ProductModel> datList = [];
@@ -31,10 +31,10 @@ class SearchCubit extends Cubit<SearchState> {
         }
         final result = await ListRepository.loadList(
           keyword: keyword,
-          perPage: Application.setting.perPage,
+          perPage: Application.setting.perPage!,
           page: page,
         );
-        if (result != null) {
+        if (result!.isNotEmpty) {
           datList.addAll(result[0]);
 
           isMax = result[2] ?? false;

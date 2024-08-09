@@ -1,4 +1,4 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_style.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_style.dart';
 
 class SlotBookingModel extends BookingStyleModel {
   SlotBookingModel({

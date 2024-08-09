@@ -90,7 +90,7 @@ class _DoctorItemState extends State<DoctorItem> {
                     Row(
                       children: [
                         Text(
-                          '${Translate.of(context).translate('start_from')} \$${widget.doctorPrice}',
+                          '${Translate.of(context)?.translate('start_from')} \$${widget.doctorPrice}',
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall
@@ -102,7 +102,7 @@ class _DoctorItemState extends State<DoctorItem> {
                                 "United Natives"
                             ? const SizedBox()
                             : Text(
-                                Translate.of(context)
+                                Translate.of(context)!
                                     .translate('(Other Provider)'),
                                 style: Theme.of(context)
                                     .textTheme

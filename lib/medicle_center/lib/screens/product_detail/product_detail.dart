@@ -6,22 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetail extends StatefulWidget {
-  const ProductDetail({Key key, this.item}) : super(key: key);
+  const ProductDetail({super.key, this.item});
 
-  final ProductModel item;
+  final ProductModel? item;
 
   @override
-  _ProductDetailState createState() {
+  State<ProductDetail> createState() {
     return _ProductDetailState();
   }
 }
@@ -29,7 +29,7 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   final _scrollController = ScrollController();
   final _productDetailCubit = ProductDetailCubit();
-  StreamSubscription _reviewSubscription;
+  StreamSubscription? _reviewSubscription;
 
   Color _iconColor = Colors.white;
   bool _showCategoryLocation = true;
@@ -41,19 +41,19 @@ class _ProductDetailState extends State<ProductDetail> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    _productDetailCubit.onLoad(widget.item.id);
+    _productDetailCubit.onLoad(widget.item!.id!);
     _reviewSubscription = AppBloc.reviewCubit.stream.listen((state) {
       if (state is ReviewSuccess &&
           state.id != null &&
-          state.id == widget.item.id) {
-        _productDetailCubit.onLoad(widget.item.id);
+          state.id == widget.item!.id) {
+        _productDetailCubit.onLoad(widget.item!.id!);
       }
     });
   }
 
   @override
   void dispose() {
-    _reviewSubscription.cancel();
+    _reviewSubscription?.cancel();
     _productDetailCubit.close();
     _scrollController.dispose();
     super.dispose();
@@ -61,13 +61,13 @@ class _ProductDetailState extends State<ProductDetail> {
 
   ///Handle icon theme
   void _onScroll() {
-    Color color;
+    Color? color;
     if (_scrollController.position.extentBefore < 110) {
       color = Colors.white;
     }
     if (color != _iconColor) {
       setState(() {
-        _iconColor = color;
+        _iconColor = color!;
       });
     }
   }
@@ -99,21 +99,21 @@ class _ProductDetailState extends State<ProductDetail> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            Translate.of(context).translate('explore_product'),
+            Translate.of(context)!.translate('explore_product'),
           ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(
                   message,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             ),
           ),
           actions: <Widget>[
             AppButton(
-              Translate.of(context).translate('close'),
+              Translate.of(context)?.translate('close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -127,7 +127,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   void _onCopy(ProductModel item) {
     Clipboard.setData(
-      ClipboardData(text: item.link),
+      ClipboardData(text: item.link!),
     );
     AppBloc.messageCubit.onShow('listing_link_copied');
   }
@@ -170,7 +170,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         Row(
                           children: [
                             CachedNetworkImage(
-                              imageUrl: item.image.thumb,
+                              imageUrl: item.image?.thumb ?? "",
                               placeholder: (context, url) {
                                 return AppPlaceholder(
                                   child: Container(
@@ -215,17 +215,17 @@ class _ProductDetailState extends State<ProductDetail> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.title,
+                                  item.title!,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
+                                      .titleSmall
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  Translate.of(context).translate(
+                                  Translate.of(context)!.translate(
                                     'share_qr_listing',
                                   ),
-                                  style: Theme.of(context).textTheme.caption,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 )
                               ],
                             )
@@ -238,7 +238,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               child: Column(
                                 children: [
                                   AppButton(
-                                    Translate.of(context).translate('share'),
+                                    Translate.of(context)?.translate('share'),
                                     mainAxisSize: MainAxisSize.max,
                                     size: ButtonSize.small,
                                     type: ButtonType.outline,
@@ -247,7 +247,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     },
                                   ),
                                   AppButton(
-                                    Translate.of(context).translate('copy'),
+                                    Translate.of(context)?.translate('copy'),
                                     mainAxisSize: MainAxisSize.max,
                                     size: ButtonSize.small,
                                     onPressed: () {
@@ -262,7 +262,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               alignment: Alignment.center,
                               width: 150,
                               height: 150,
-                              child: QrImage(
+                              child: QrImageView(
                                 data: link,
                                 size: 150,
                                 backgroundColor: Colors.white,
@@ -273,9 +273,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                   );
                                 },
                                 padding: EdgeInsets.zero,
-                                embeddedImage: NetworkImage(item.image.thumb),
-                                embeddedImageStyle: QrEmbeddedImageStyle(
-                                  size: const Size(24, 24),
+                                embeddedImage: NetworkImage(item.image!.thumb!),
+                                embeddedImageStyle: const QrEmbeddedImageStyle(
+                                  size: Size(24, 24),
                                 ),
                               ),
                             )
@@ -311,7 +311,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   ///On navigate review
-  void _onReview(ProductModel product) async {
+  void _onReview(ProductModel? product) async {
     if (AppBloc.userCubit.state == null) {
       final result = await Navigator.pushNamed(
         context,
@@ -355,7 +355,7 @@ class _ProductDetailState extends State<ProductDetail> {
     Navigator.pushNamed(
       context,
       Routes.booking,
-      arguments: widget.item.id,
+      arguments: widget.item?.id,
     );
   }
 
@@ -465,7 +465,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
       // launch(url);
     } catch (e) {
-      _showMessage(Translate.of(context).translate('cannot_make_action'));
+      _showMessage(Translate.of(context)!.translate('cannot_make_action'));
     }
   }
 
@@ -745,7 +745,7 @@ class _ProductDetailState extends State<ProductDetail> {
     Widget priceRange = Container();
     Widget price = Container();
     Widget booking = Container();
-    Color backgroundAction;
+    Color? backgroundAction;
 
     /// Build Detail
     if (product != null) {
@@ -756,7 +756,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Action Galleries
-      if (product.galleries.isNotEmpty) {
+      if (product.galleries!.isNotEmpty) {
         actionGalleries = Row(
           children: [
             const SizedBox(width: 8),
@@ -778,16 +778,16 @@ class _ProductDetailState extends State<ProductDetail> {
 
       ///Action Map View
       if (product.location != null) {
-        log("product.location.longitude----------->${product.location.longitude}");
-        log("product.location.latitude----------->${product.location.latitude}");
+        log("product.location.longitude----------->${product.location?.longitude}");
+        log("product.location.latitude----------->${product.location?.latitude}");
         actionMapView = Row(
           children: [
             const SizedBox(width: 8),
-            product.location.longitude == null &&
-                        product.location.latitude == null ||
-                    product.location.longitude.toString() == "" &&
-                        product.location.longitude.toString() == ""
-                ? SizedBox()
+            product.location?.longitude == null &&
+                        product.location?.latitude == null ||
+                    product.location?.longitude.toString() == "" &&
+                        product.location?.longitude.toString() == ""
+                ? const SizedBox()
                 : Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -805,7 +805,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Status
-      if (product.status.isNotEmpty) {
+      if (product.status!.isNotEmpty) {
         status = AppTag(
           product.status,
           type: TagType.status,
@@ -813,7 +813,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Latest
-      if (product.latest.isNotEmpty) {
+      if (product.latest!.isNotEmpty) {
         latest = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -824,11 +824,11 @@ class _ProductDetailState extends State<ProductDetail> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                Translate.of(context).translate('latest'),
+                Translate.of(context)!.translate('latest'),
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 8),
@@ -838,20 +838,20 @@ class _ProductDetailState extends State<ProductDetail> {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 itemBuilder: (context, index) {
-                  final ProductModel item = product.latest[index];
+                  final ProductModel? item = product.latest?[index];
                   return Container(
                     width: MediaQuery.of(context).size.width / 2,
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: AppProductItem(
                       onPressed: () {
-                        _onProductDetail(item);
+                        _onProductDetail(item!);
                       },
                       item: item,
                       type: ProductViewType.grid,
                     ),
                   );
                 },
-                itemCount: product.latest.length,
+                itemCount: product.latest?.length,
               ),
             )
           ],
@@ -859,18 +859,18 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Related list
-      if (product.related.isNotEmpty) {
+      if (product.related!.isNotEmpty) {
         related = Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                Translate.of(context).translate('related'),
+                Translate.of(context)!.translate('related'),
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
-                    .copyWith(fontWeight: FontWeight.bold),
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               ListView.separated(
@@ -878,10 +878,10 @@ class _ProductDetailState extends State<ProductDetail> {
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) {
-                  final item = product.related[index];
+                  final item = product.related?[index];
                   return AppProductItem(
                     onPressed: () {
-                      _onProductDetail(item);
+                      _onProductDetail(item!);
                     },
                     item: item,
                     type: ProductViewType.small,
@@ -890,7 +890,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 separatorBuilder: (context, index) {
                   return const SizedBox(height: 16);
                 },
-                itemCount: product.related.length,
+                itemCount: product.related!.length,
               ),
             ],
           ),
@@ -918,7 +918,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
       ///Banner
       banner = CachedNetworkImage(
-        imageUrl: product.image.full,
+        imageUrl: product.image!.full!,
         placeholder: (context, url) {
           return AppPlaceholder(
             child: Container(
@@ -951,7 +951,7 @@ class _ProductDetailState extends State<ProductDetail> {
       );
 
       ///Video
-      if (product.videoURL.isNotEmpty) {
+      if (product.videoURL!.isNotEmpty) {
         banner = Stack(
           children: [
             banner,
@@ -961,7 +961,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Address
-      if (product.address.isNotEmpty) {
+      if (product.address!.isNotEmpty) {
         address = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -972,7 +972,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   child: InkWell(
                     onTap: () {
                       _makeAction(
-                        'https://www.google.com/maps/search/?api=1&query=${product.location.latitude},${product.location.longitude}',
+                        'https://www.google.com/maps/search/?api=1&query=${product.location?.latitude},${product.location?.longitude}',
                       );
                     },
                     child: Row(
@@ -996,17 +996,17 @@ class _ProductDetailState extends State<ProductDetail> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                Translate.of(context).translate('address'),
-                                style: Theme.of(context).textTheme.caption,
+                                Translate.of(context)!.translate('address'),
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                               Text(
-                                product.address,
+                                product.address!,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1
-                                    .copyWith(fontWeight: FontWeight.bold),
+                                    .bodyLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -1031,15 +1031,15 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
             Visibility(
               visible: _showCategoryLocation &&
-                  (product.country.title.isNotEmpty ||
-                      product.city.title.isNotEmpty ||
-                      product.state.title.isNotEmpty),
+                  (product.country!.title!.isNotEmpty ||
+                      product.city!.title!.isNotEmpty ||
+                      product.state!.title!.isNotEmpty),
               child: Container(
                 margin: const EdgeInsets.only(left: 42),
                 padding: const EdgeInsets.only(top: 12),
                 child: Text(
                   '${product.country?.title}, ${product.city?.title}, ${product.state?.title}',
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
             ),
@@ -1048,14 +1048,14 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Phone
-      if (product.phone.isNotEmpty) {
+      if (product.phone!.isNotEmpty) {
         phone = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
             InkWell(
               onTap: () {
-                _phoneAction(product.phone);
+                _phoneAction(product.phone!);
               },
               child: Row(
                 children: <Widget>[
@@ -1078,17 +1078,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          Translate.of(context).translate('phone'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('phone'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
-                          product.phone,
+                          product.phone!,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
-                              .copyWith(fontWeight: FontWeight.bold),
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1101,7 +1101,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Fax
-      if (product.fax.isNotEmpty) {
+      if (product.fax!.isNotEmpty) {
         fax = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1131,17 +1131,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          Translate.of(context).translate('fax'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('fax'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
-                          product.fax,
+                          product.fax ?? "",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
-                              .copyWith(fontWeight: FontWeight.bold),
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1154,7 +1154,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Email
-      if (product.email.isNotEmpty) {
+      if (product.email!.isNotEmpty) {
         email = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1184,17 +1184,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          Translate.of(context).translate('email'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('email'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
-                          product.email,
+                          product.email ?? "",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
-                              .copyWith(fontWeight: FontWeight.bold),
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1207,7 +1207,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Website
-      if (product.website.isNotEmpty) {
+      if (product.website!.isNotEmpty) {
         log('product.website==========>>>>>${product.website}');
         website = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1215,7 +1215,7 @@ class _ProductDetailState extends State<ProductDetail> {
             const SizedBox(height: 16),
             InkWell(
               onTap: () {
-                _makeAction(product.website);
+                _makeAction("${product.website}");
               },
               child: Row(
                 children: <Widget>[
@@ -1238,17 +1238,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          Translate.of(context).translate('website'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('website'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         Text(
-                          product.website,
+                          "${product.website}",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1
-                              .copyWith(fontWeight: FontWeight.bold),
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -1261,7 +1261,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Open hours
-      if (product.openHours.isNotEmpty) {
+      if (product.openHours!.isNotEmpty) {
         openHours = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1292,8 +1292,8 @@ class _ProductDetailState extends State<ProductDetail> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          Translate.of(context).translate('open_time'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('open_time'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -1310,18 +1310,18 @@ class _ProductDetailState extends State<ProductDetail> {
               visible: _showHour,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: product.openHours.map((item) {
-                  final hour = item.schedule
+                children: product.openHours!.map((item) {
+                  final hour = item.schedule!
                       .map((e) {
                         if (e.start == null && e.end == null) {
                           return '00:00-00:00';
                         } else if (e.start == null) {
-                          return '00:00-${e.end.viewTime}';
+                          return '00:00-${e.end!.viewTime}';
                         } else if (e.end == null) {
-                          return '${e.start.viewTime}-00:00';
+                          return '${e.start!.viewTime}-00:00';
                         }
 
-                        return '${e.start.viewTime}-${e.end.viewTime}';
+                        return '${e.start!.viewTime}-${e.end!.viewTime}';
                       })
                       .toList()
                       .join(",");
@@ -1340,8 +1340,8 @@ class _ProductDetailState extends State<ProductDetail> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          Translate.of(context).translate(item.key),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate("${item.key}"),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -1359,8 +1359,8 @@ class _ProductDetailState extends State<ProductDetail> {
                               finalTime,
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
-                                  .copyWith(
+                                  .bodySmall
+                                  ?.copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
@@ -1382,7 +1382,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///File attachments
-      if (product.attachments.isNotEmpty) {
+      if (product.attachments!.isNotEmpty) {
         attachments = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1416,15 +1416,15 @@ class _ProductDetailState extends State<ProductDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              Translate.of(context).translate('attachments'),
-                              style: Theme.of(context).textTheme.caption,
+                              Translate.of(context)!.translate('attachments'),
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                             Text(
-                              '${product.attachments.length} ${Translate.of(context).translate('files')}',
+                              '${product.attachments!.length} ${Translate.of(context)!.translate('files')}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1
-                                  .copyWith(fontWeight: FontWeight.bold),
+                                  .bodyLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -1443,7 +1443,7 @@ class _ProductDetailState extends State<ProductDetail> {
               visible: _showFile,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: product.attachments.map((item) {
+                children: product.attachments!.map((item) {
                   return Container(
                     margin: const EdgeInsets.only(left: 42),
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -1453,7 +1453,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         Expanded(
                           child: Text(
                             '${item.name}.${item.type}',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -1462,11 +1462,11 @@ class _ProductDetailState extends State<ProductDetail> {
                         Row(
                           children: [
                             Text(
-                              item.size,
+                              "${item.size}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
-                                  .copyWith(
+                                  .bodySmall
+                                  ?.copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
@@ -1487,56 +1487,56 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Date established
-      if (product.dateEstablish.isNotEmpty) {
+      if (product.dateEstablish!.isNotEmpty) {
         dateEstablish = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              Translate.of(context).translate(
+              Translate.of(context)!.translate(
                 'date_established',
               ),
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 4),
             Text(
-              product.dateEstablish,
+              "${product.dateEstablish}",
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             )
           ],
         );
       }
 
       ///Price range
-      if (product.priceMin.isNotEmpty || product.priceMax.isNotEmpty) {
+      if (product.priceMin!.isNotEmpty || product.priceMax!.isNotEmpty) {
         priceRange = Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             Text(
-              Translate.of(context).translate('price_range'),
-              style: Theme.of(context).textTheme.caption,
+              Translate.of(context)!.translate('price_range'),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 4),
             Text(
               "${product.priceMin} - ${product.priceMax}",
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             )
           ],
         );
       }
 
       ///Price
-      if (product.priceDisplay.isNotEmpty) {
+      if (product.priceDisplay!.isNotEmpty) {
         price = Row(
           children: [
             Text(
-              product.priceDisplay,
-              style: Theme.of(context).textTheme.subtitle2?.copyWith(
+              "${product.priceDisplay}",
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
@@ -1547,7 +1547,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Booking button
-      if (product.bookingUse && product.bookingStyle.isNotEmpty) {
+      if (product.bookingUse! && product.bookingStyle!.isNotEmpty) {
         booking = InkWell(
           onTap: _onBooking,
           child: Container(
@@ -1559,18 +1559,18 @@ class _ProductDetailState extends State<ProductDetail> {
               color: Theme.of(context).primaryColor.withOpacity(0.3),
             ),
             child: Text(
-              Translate.of(context).translate('book_now'),
+              Translate.of(context)!.translate('book_now'),
               style: Theme.of(context)
                   .textTheme
-                  .button
-                  .copyWith(color: Theme.of(context).primaryColor),
+                  .labelLarge
+                  ?.copyWith(color: Theme.of(context).primaryColor),
             ),
           ),
         );
       }
 
       ///Feature
-      if (product.features.isNotEmpty) {
+      if (product.features!.isNotEmpty) {
         feature = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1578,17 +1578,17 @@ class _ProductDetailState extends State<ProductDetail> {
             const Divider(),
             const SizedBox(height: 8),
             Text(
-              Translate.of(context).translate('featured'),
+              Translate.of(context)!.translate('featured'),
               style: Theme.of(context)
                   .textTheme
-                  .headline6
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: product.features.map((item) {
+              children: product.features!.map((item) {
                 return IntrinsicWidth(
                   child: AppTag(
                     item.title,
@@ -1609,7 +1609,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///Tags
-      if (product.tags.isNotEmpty) {
+      if (product.tags!.isNotEmpty) {
         tags = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1617,17 +1617,17 @@ class _ProductDetailState extends State<ProductDetail> {
             const Divider(),
             const SizedBox(height: 8),
             Text(
-              Translate.of(context).translate('tags'),
+              Translate.of(context)!.translate('tags'),
               style: Theme.of(context)
                   .textTheme
-                  .headline6
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: product.tags.map((item) {
+              children: product.tags!.map((item) {
                 return IntrinsicWidth(
                   child: AppTag(
                     item.title,
@@ -1641,7 +1641,7 @@ class _ProductDetailState extends State<ProductDetail> {
       }
 
       ///socials
-      if (product.socials.isNotEmpty) {
+      if (product.socials!.isNotEmpty) {
         socials = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1672,8 +1672,8 @@ class _ProductDetailState extends State<ProductDetail> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          Translate.of(context).translate('social_network'),
-                          style: Theme.of(context).textTheme.caption,
+                          Translate.of(context)!.translate('social_network'),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -1693,7 +1693,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 child: Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: product.socials.entries.map((entry) {
+                  children: product.socials!.entries.map((entry) {
                     return InkWell(
                       onTap: () {
                         _makeAction(entry.value ?? '');
@@ -1731,11 +1731,11 @@ class _ProductDetailState extends State<ProductDetail> {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    product.title,
+                    product.title ?? "",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(fontWeight: FontWeight.bold),
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -1756,7 +1756,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       product.category?.title ?? '',
                       style: Theme.of(context)
                           .textTheme
-                          .caption
+                          .bodySmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
@@ -1773,7 +1773,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                           const SizedBox(width: 4),
                           RatingBar.builder(
-                            initialRating: product.rate,
+                            initialRating: product.rate!,
                             unratedColor: Colors.amber.withAlpha(100),
                             itemCount: 5,
                             itemSize: 14.0,
@@ -1787,7 +1787,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           const SizedBox(width: 4),
                           Text(
                             "(${product.numRate})",
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ],
                       ),
@@ -1796,7 +1796,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 IconButton(
                   icon: Icon(
-                    product.favorite ? Icons.favorite : Icons.favorite_border,
+                    product.favorite! ? Icons.favorite : Icons.favorite_border,
                     color: Theme.of(context).primaryColor,
                   ),
                   onPressed: _onFavorite,
@@ -1813,8 +1813,8 @@ class _ProductDetailState extends State<ProductDetail> {
             socials,
             const SizedBox(height: 16),
             Text(
-              product.description,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              product.description ?? '',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     height: 1.3,
                   ),
             ),
@@ -1894,11 +1894,11 @@ class _ProductDetailState extends State<ProductDetail> {
         create: (context) => _productDetailCubit,
         child: BlocBuilder<ProductDetailCubit, ProductDetailState>(
           builder: (context, state) {
-            ProductModel product;
+            ProductModel? product;
             if (state is ProductDetailSuccess) {
               product = state.product;
             }
-            return _buildContent(product);
+            return _buildContent(product!);
           },
         ),
       ),

@@ -1,18 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class Gallery extends StatefulWidget {
-  final ProductModel product;
-  const Gallery({Key key, this.product}) : super(key: key);
+  final ProductModel? product;
+  const Gallery({super.key, this.product});
 
   @override
-  _GalleryState createState() {
+  State<Gallery> createState() {
     return _GalleryState();
   }
 }
@@ -53,7 +53,7 @@ class _GalleryState extends State<Gallery> {
           },
           scrollPhysics: const BouncingScrollPhysics(),
           builder: _buildItem,
-          itemCount: widget.product.galleries.length,
+          itemCount: widget.product?.galleries?.length,
           pageController: _pageController,
           scrollDirection: Axis.horizontal,
         );
@@ -94,10 +94,10 @@ class _GalleryState extends State<Gallery> {
 
   ///Build Item
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final String item = widget.product.galleries[index].full;
+    final String? item = widget.product!.galleries?[index].full;
 
     return PhotoViewGalleryPageOptions(
-        imageProvider: NetworkImage(item),
+        imageProvider: NetworkImage(item!),
         initialScale: PhotoViewComputedScale.contained,
         minScale: PhotoViewComputedScale.contained,
         maxScale: PhotoViewComputedScale.covered * 1.1);
@@ -134,7 +134,7 @@ class _GalleryState extends State<Gallery> {
                       _onPreviewPhoto(index);
                     },
                     child: CachedNetworkImage(
-                      imageUrl: widget.product.galleries[index].full,
+                      imageUrl: "${widget.product!.galleries?[index].full}",
                       imageBuilder: (context, imageProvider) {
                         return Container(
                           decoration: BoxDecoration(
@@ -158,7 +158,7 @@ class _GalleryState extends State<Gallery> {
                     ),
                   );
                 },
-                itemCount: widget.product.galleries.length,
+                itemCount: widget.product!.galleries!.length,
                 pagination: const SwiperPagination(
                   alignment: Alignment(0.0, 0.9),
                   builder: DotSwiperPaginationBuilder(
@@ -173,18 +173,18 @@ class _GalleryState extends State<Gallery> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    widget.product.title,
+                    "${widget.product?.title}",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(color: Colors.white),
+                        .titleSmall
+                        ?.copyWith(color: Colors.white),
                   ),
                   Text(
-                    "${_index + 1}/${widget.product.galleries.length}",
+                    "${_index + 1}/${widget.product?.galleries?.length}",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(color: Colors.white),
+                        .titleSmall
+                        ?.copyWith(color: Colors.white),
                   )
                 ],
               ),
@@ -196,10 +196,10 @@ class _GalleryState extends State<Gallery> {
                 controller: _listController,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 scrollDirection: Axis.horizontal,
-                itemCount: widget.product.galleries.length,
+                itemCount: widget.product?.galleries?.length,
                 itemBuilder: (context, index) {
-                  Border border;
-                  final item = widget.product.galleries[index];
+                  Border? border;
+                  final item = widget.product!.galleries?[index];
                   if (index == _index) {
                     border = Border.all(
                       color: Theme.of(context).primaryColor,
@@ -211,7 +211,7 @@ class _GalleryState extends State<Gallery> {
                       _onSelectImage(index);
                     },
                     child: CachedNetworkImage(
-                      imageUrl: item.thumb,
+                      imageUrl: "${item?.thumb}",
                       imageBuilder: (context, imageProvider) {
                         return Container(
                           width: 70,

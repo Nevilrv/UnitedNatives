@@ -19,4 +19,4 @@ export 'submit/cubit.dart';
 export 'theme/cubit.dart';
 export 'user/cubit.dart';
 export 'wishlist/cubit.dart';
-export 'package:doctor_appointment_booking/medicle_center/lib/blocs/filter/cubit.dart';
+export 'package:united_natives/medicle_center/lib/blocs/filter/cubit.dart';

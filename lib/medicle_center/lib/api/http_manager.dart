@@ -34,11 +34,9 @@ class HTTPManager {
             "Type": Application.device?.type,
             "Device-Token": Application.device?.token,
           };
-          String token = AppBloc.userCubit.state?.token;
+          String? token = AppBloc.userCubit.state.token;
 
-          if (token != null) {
-            headers["Authorization"] = "Bearer $token";
-          }
+          headers["Authorization"] = "Bearer $token";
           options.headers.addAll(headers);
           _printRequest(options);
           return handler.next(options);

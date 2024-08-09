@@ -33,7 +33,7 @@ class PastAppointmentListItem extends StatelessWidget {
                   Expanded(
                     child: _buildColumn(
                       context: context,
-                      title: Translate.of(context).translate('date'),
+                      title: Translate.of(context)!.translate('date'),
                       subtitle: DateFormat('EEEE, dd MMM yyyy').format(time),
                       // subtitle: ,
                     ),
@@ -42,7 +42,7 @@ class PastAppointmentListItem extends StatelessWidget {
                   Expanded(
                     child: _buildColumn(
                       context: context,
-                      title: Translate.of(context).translate('time'),
+                      title: Translate.of(context)!.translate('time'),
                       subtitle: DateFormat('hh:mm a').format(time),
                       // subtitle: '${patientAppoint.appointmentTime.toString()}',
                     ),
@@ -82,7 +82,7 @@ class PastAppointmentListItem extends StatelessWidget {
                         return _buildColumn(
                           context: context,
                           title:
-                              Translate.of(context).translate('Start Meeting'),
+                              Translate.of(context)!.translate('Start Meeting'),
                           subtitle: time,
                         );
                       }),
@@ -97,7 +97,8 @@ class PastAppointmentListItem extends StatelessWidget {
 
                         return _buildColumn(
                           context: context,
-                          title: Translate.of(context).translate('End Meeting'),
+                          title:
+                              Translate.of(context)!.translate('End Meeting'),
                           subtitle: time,
                         );
                       }),
@@ -105,7 +106,7 @@ class PastAppointmentListItem extends StatelessWidget {
                     Expanded(
                       child: _buildColumn(
                         context: context,
-                        title: Translate.of(context).translate('Duration'),
+                        title: Translate.of(context)!.translate('Duration'),
                         subtitle: '${patientAppoint.vcDuration ?? ""} Minutes',
                       ),
                     ),
@@ -127,7 +128,7 @@ class PastAppointmentListItem extends StatelessWidget {
                   Expanded(
                     child: _buildColumn(
                       context: context,
-                      title: Translate.of(context).translate('doctor'),
+                      title: Translate.of(context)!.translate('doctor'),
                       subtitle:
                           '${patientAppoint.doctorFirstName} ${patientAppoint.doctorLastName}',
                     ),
@@ -135,7 +136,7 @@ class PastAppointmentListItem extends StatelessWidget {
                   Expanded(
                     child: _buildColumn(
                       context: context,
-                      title: Translate.of(context).translate('speciality'),
+                      title: Translate.of(context)!.translate('speciality'),
                       subtitle: patientAppoint.doctorSpeciality ?? "",
                     ),
                   ),

@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class ProfileTab extends SliverPersistentHeaderDelegate {
-  final double height;
-  final bool showFilter;
-  final List<Widget> tabs;
-  final TabController tabController;
-  final Function(int) onTap;
-  final TextEditingController textSearchController;
-  final Function(String) onSearch;
-  final VoidCallback onFilter;
-  final VoidCallback onSort;
+  final double? height;
+  final bool? showFilter;
+  final List<Widget>? tabs;
+  final TabController? tabController;
+  final Function(int)? onTap;
+  final TextEditingController? textSearchController;
+  final Function(String)? onSearch;
+  final VoidCallback? onFilter;
+  final VoidCallback? onSort;
 
   ProfileTab({
-     this.height,
-     this.showFilter,
+    this.height,
+    this.showFilter,
     this.tabController,
-     this.tabs,
-     this.onTap,
-     this.textSearchController,
-     this.onSearch,
-     this.onFilter,
-     this.onSort,
+    this.tabs,
+    this.onTap,
+    this.textSearchController,
+    this.onSearch,
+    this.onFilter,
+    this.onSort,
   });
 
   ///Build Action Filter and Sort
   Widget _buildAction(BuildContext context) {
-    if (showFilter) {
+    if (showFilter!) {
       return Row(
         children: [
           InkWell(
@@ -50,8 +50,8 @@ class ProfileTab extends SliverPersistentHeaderDelegate {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    Translate.of(context).translate('filter'),
-                    style: Theme.of(context).textTheme.caption,
+                    Translate.of(context)!.translate('filter'),
+                    style: Theme.of(context).textTheme.bodySmall,
                   )
                 ],
               ),
@@ -78,8 +78,8 @@ class ProfileTab extends SliverPersistentHeaderDelegate {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    Translate.of(context).translate('sort'),
-                    style: Theme.of(context).textTheme.caption,
+                    Translate.of(context)!.translate('sort'),
+                    style: Theme.of(context).textTheme.bodySmall,
                   )
                 ],
               ),
@@ -111,8 +111,8 @@ class ProfileTab extends SliverPersistentHeaderDelegate {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  Translate.of(context).translate('sort'),
-                  style: Theme.of(context).textTheme.caption,
+                  Translate.of(context)!.translate('sort'),
+                  style: Theme.of(context).textTheme.bodySmall,
                 )
               ],
             ),
@@ -126,7 +126,7 @@ class ProfileTab extends SliverPersistentHeaderDelegate {
   Widget build(context, shrinkOffset, overlapsContent) {
     return Container(
       height: height,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.surface,
       child: SafeArea(
         top: false,
         bottom: false,
@@ -138,13 +138,13 @@ class ProfileTab extends SliverPersistentHeaderDelegate {
               TabBar(
                 indicatorWeight: 2.0,
                 controller: tabController,
-                tabs: tabs,
+                tabs: tabs!,
                 onTap: onTap,
-                labelColor: Theme.of(context).textTheme.button?.color,
+                labelColor: Theme.of(context).textTheme.labelLarge?.color,
               ),
               const SizedBox(height: 16),
               AppTextInput(
-                hintText: Translate.of(context).translate('search'),
+                hintText: Translate.of(context)?.translate('search'),
                 controller: textSearchController,
                 onChanged: onSearch,
                 onSubmitted: onSearch,
@@ -159,10 +159,10 @@ class ProfileTab extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => height;
+  double get maxExtent => height!;
 
   @override
-  double get minExtent => height;
+  double get minExtent => height!;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;

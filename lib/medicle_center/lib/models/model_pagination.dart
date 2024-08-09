@@ -1,8 +1,8 @@
 class PaginationModel {
-  final int page;
-  final int perPage;
-  final int maxPage;
-  final int total;
+  final int? page;
+  final int? perPage;
+  final int? maxPage;
+  final int? total;
 
   PaginationModel({
     this.page,

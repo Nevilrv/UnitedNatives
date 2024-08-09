@@ -1,12 +1,12 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_product.dart';
+import 'package:united_natives/medicle_center/lib/models/model_product.dart';
 
 abstract class ListState {}
 
 class ListLoading extends ListState {}
 
 class ListSuccess extends ListState {
-  final List<ProductModel> list;
-  final bool canLoadMore;
+  final List<ProductModel>? list;
+  final bool? canLoadMore;
   final bool loadingMore;
 
   ListSuccess({

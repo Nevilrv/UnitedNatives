@@ -1,17 +1,17 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class BookingDetail extends StatefulWidget {
-  final BookingItemModel item;
-  const BookingDetail({Key key, this.item}) : super(key: key);
+  final BookingItemModel? item;
+  const BookingDetail({super.key, this.item});
 
   @override
-  _BookingDetailState createState() {
+  State<BookingDetail> createState() {
     return _BookingDetailState();
   }
 }
@@ -22,7 +22,7 @@ class _BookingDetailState extends State<BookingDetail> {
   @override
   void initState() {
     super.initState();
-    _bookingDetail.onLoad(widget.item.id);
+    _bookingDetail.onLoad(widget.item!.id!);
   }
 
   @override
@@ -33,7 +33,7 @@ class _BookingDetailState extends State<BookingDetail> {
 
   ///Booking cancel
   void _cancelBooking() async {
-    await _bookingDetail.onCancel(widget.item.id);
+    await _bookingDetail.onCancel(widget.item!.id!);
   }
 
   ///Booking payment
@@ -46,20 +46,20 @@ class _BookingDetailState extends State<BookingDetail> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            item.name,
-            style: Theme.of(context).textTheme.subtitle1,
+            "${item.name}",
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                Translate.of(context).translate('res_length'),
-                style: Theme.of(context).textTheme.subtitle1,
+                Translate.of(context)!.translate('res_length'),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
                 'x ${item.quantity}',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ],
           ),
@@ -68,12 +68,12 @@ class _BookingDetailState extends State<BookingDetail> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                Translate.of(context).translate('price'),
-                style: Theme.of(context).textTheme.subtitle1,
+                Translate.of(context)!.translate('price'),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
                 '${item.total}${booking.currency}',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ],
           ),
@@ -84,21 +84,21 @@ class _BookingDetailState extends State<BookingDetail> {
 
   ///Build item info
   Widget _buildItemInfo({
-    String title,
-    String value,
-    Color color,
+    required String title,
+    required String value,
+    Color? color,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 4),
         Text(
-          value ?? '',
-          style: Theme.of(context).textTheme.subtitle1?.copyWith(
+          value,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: color,
               ),
         ),
@@ -115,7 +115,7 @@ class _BookingDetailState extends State<BookingDetail> {
           children: [
             Expanded(
               child: AppButton(
-                Translate.of(context).translate('cancel'),
+                Translate.of(context)?.translate('cancel'),
                 onPressed: _cancelBooking,
                 mainAxisSize: MainAxisSize.max,
               ),
@@ -123,7 +123,7 @@ class _BookingDetailState extends State<BookingDetail> {
             const SizedBox(width: 16),
             Expanded(
               child: AppButton(
-                Translate.of(context).translate('payment'),
+                Translate.of(context)?.translate('payment'),
                 onPressed: _paymentBooking,
                 mainAxisSize: MainAxisSize.max,
               ),
@@ -135,7 +135,7 @@ class _BookingDetailState extends State<BookingDetail> {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: AppButton(
-          Translate.of(context).translate('cancel'),
+          Translate.of(context)?.translate('cancel'),
           onPressed: _cancelBooking,
           mainAxisSize: MainAxisSize.max,
         ),
@@ -144,7 +144,7 @@ class _BookingDetailState extends State<BookingDetail> {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: AppButton(
-          Translate.of(context).translate('payment'),
+          Translate.of(context)?.translate('payment'),
           onPressed: _paymentBooking,
           mainAxisSize: MainAxisSize.max,
         ),
@@ -182,16 +182,16 @@ class _BookingDetailState extends State<BookingDetail> {
                         Row(
                           children: [
                             Text(
-                              Translate.of(context).translate('booking_id'),
+                              Translate.of(context)!.translate('booking_id'),
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle1
-                                  .copyWith(fontWeight: FontWeight.bold),
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(width: 8),
                             Text(
                               id,
-                              style: Theme.of(context).textTheme.subtitle1,
+                              style: Theme.of(context).textTheme.titleMedium,
                             )
                           ],
                         ),
@@ -200,21 +200,21 @@ class _BookingDetailState extends State<BookingDetail> {
                           children: [
                             Expanded(
                               child: _buildItemInfo(
-                                title: Translate.of(context).translate(
+                                title: Translate.of(context)!.translate(
                                   'payment',
                                 ),
-                                value: Translate.of(context).translate(
-                                  state.item.payment,
+                                value: Translate.of(context)!.translate(
+                                  state.item.payment!,
                                 ),
                               ),
                             ),
                             Expanded(
                               child: _buildItemInfo(
-                                title: Translate.of(context).translate(
+                                title: Translate.of(context)!.translate(
                                   'payment_method',
                                 ),
-                                value: Translate.of(context).translate(
-                                  state.item.paymentName,
+                                value: Translate.of(context)!.translate(
+                                  state.item.paymentName!,
                                 ),
                               ),
                             )
@@ -225,20 +225,20 @@ class _BookingDetailState extends State<BookingDetail> {
                           children: [
                             Expanded(
                               child: _buildItemInfo(
-                                title: Translate.of(context).translate(
+                                title: Translate.of(context)!.translate(
                                   'transaction_id',
                                 ),
-                                value: Translate.of(context).translate(
-                                  state.item.transactionID,
+                                value: Translate.of(context)!.translate(
+                                  state.item.transactionID!,
                                 ),
                               ),
                             ),
                             Expanded(
                               child: _buildItemInfo(
-                                title: Translate.of(context).translate(
+                                title: Translate.of(context)!.translate(
                                   'created_on',
                                 ),
-                                value: state.item.createdOn,
+                                value: state.item.createdOn!,
                               ),
                             )
                           ],
@@ -248,7 +248,7 @@ class _BookingDetailState extends State<BookingDetail> {
                           children: [
                             Expanded(
                               child: _buildItemInfo(
-                                title: Translate.of(context).translate(
+                                title: Translate.of(context)!.translate(
                                   'payment_total',
                                 ),
                                 value: '${state.item.totalDisplay}',
@@ -257,10 +257,10 @@ class _BookingDetailState extends State<BookingDetail> {
                             ),
                             Expanded(
                               child: _buildItemInfo(
-                                title: Translate.of(context).translate(
+                                title: Translate.of(context)!.translate(
                                   'paid_on',
                                 ),
-                                value: state.item.paidOn,
+                                value: state.item.paidOn!,
                               ),
                             )
                           ],
@@ -270,19 +270,19 @@ class _BookingDetailState extends State<BookingDetail> {
                           children: [
                             Expanded(
                               child: _buildItemInfo(
-                                title: Translate.of(context).translate(
+                                title: Translate.of(context)!.translate(
                                   'status',
                                 ),
-                                value: state.item.status,
+                                value: state.item.status!,
                                 color: state.item.statusColor,
                               ),
                             ),
                             Expanded(
                               child: _buildItemInfo(
-                                title: Translate.of(context).translate(
+                                title: Translate.of(context)!.translate(
                                   'created_via',
                                 ),
-                                value: state.item.createdVia,
+                                value: state.item.createdVia!,
                               ),
                             )
                           ],
@@ -292,7 +292,7 @@ class _BookingDetailState extends State<BookingDetail> {
                         const SizedBox(height: 8),
                         Container(
                           alignment: Alignment.center,
-                          child: QrImage(
+                          child: QrImageView(
                             data: link,
                             size: 150,
                             backgroundColor: Colors.white,
@@ -312,13 +312,13 @@ class _BookingDetailState extends State<BookingDetail> {
                         const Divider(),
                         const SizedBox(height: 12),
                         Text(
-                          Translate.of(context)
+                          Translate.of(context)!
                               .translate('billing')
                               .toUpperCase(),
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle1
-                              .copyWith(fontWeight: FontWeight.bold),
+                              .titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 12),
                         Row(
@@ -328,16 +328,17 @@ class _BookingDetailState extends State<BookingDetail> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Translate.of(context).translate(
+                                    Translate.of(context)!.translate(
                                       'first_name',
                                     ),
-                                    style: Theme.of(context).textTheme.caption,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     state.item.billFirstName ?? '',
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
                                 ],
                               ),
@@ -347,16 +348,17 @@ class _BookingDetailState extends State<BookingDetail> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Translate.of(context).translate(
+                                    Translate.of(context)!.translate(
                                       'last_name',
                                     ),
-                                    style: Theme.of(context).textTheme.caption,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     state.item.billLastName ?? '',
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
                                 ],
                               ),
@@ -371,14 +373,15 @@ class _BookingDetailState extends State<BookingDetail> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Translate.of(context).translate('phone'),
-                                    style: Theme.of(context).textTheme.caption,
+                                    Translate.of(context)!.translate('phone'),
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     state.item.billPhone ?? '',
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
                                 ],
                               ),
@@ -388,14 +391,15 @@ class _BookingDetailState extends State<BookingDetail> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Translate.of(context).translate('email'),
-                                    style: Theme.of(context).textTheme.caption,
+                                    Translate.of(context)!.translate('email'),
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     state.item.billEmail ?? '',
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
                                 ],
                               ),
@@ -407,13 +411,13 @@ class _BookingDetailState extends State<BookingDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              Translate.of(context).translate('address'),
-                              style: Theme.of(context).textTheme.caption,
+                              Translate.of(context)!.translate('address'),
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                             const SizedBox(height: 4),
                             Text(
                               state.item.billAddress ?? '',
-                              style: Theme.of(context).textTheme.subtitle1,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
                         ),
@@ -431,7 +435,7 @@ class _BookingDetailState extends State<BookingDetail> {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              Translate.of(context).translate('booking_detail'),
+              Translate.of(context)!.translate('booking_detail'),
             ),
           ),
           body: SafeArea(

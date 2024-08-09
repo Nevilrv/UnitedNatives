@@ -1,16 +1,14 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 
 class Intro extends StatefulWidget {
-  const Intro({Key key}) : super(key: key);
+  const Intro({super.key});
 
   @override
-  _IntroState createState() {
-    return _IntroState();
-  }
+  State<Intro> createState() => _IntroState();
 }
 
 class _IntroState extends State<Intro> {
@@ -41,16 +39,16 @@ class _IntroState extends State<Intro> {
         ),
         body: Text(
           "Favorite brands and hottest trends.",
-          style: Theme.of(context).textTheme.headline6.copyWith(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Colors.white,
               ),
         ),
         title: Text(
-          Translate.of(context).translate('shopping'),
+          Translate.of(context)!.translate('shopping'),
           style: Theme.of(context)
               .textTheme
-              .headline5
-              .copyWith(color: Colors.white),
+              .headlineSmall
+              ?.copyWith(color: Colors.white),
         ),
         mainImage: Image.asset(
           Images.intro1,
@@ -64,18 +62,18 @@ class _IntroState extends State<Intro> {
           color: Colors.white,
         ),
         body: Text(
-          Translate.of(context).translate('shopping_intro'),
+          Translate.of(context)!.translate('shopping_intro'),
           style: Theme.of(context)
               .textTheme
-              .headline6
-              .copyWith(color: Colors.white),
+              .titleLarge
+              ?.copyWith(color: Colors.white),
         ),
         title: Text(
-          Translate.of(context).translate('payment'),
+          Translate.of(context)!.translate('payment'),
           style: Theme.of(context)
               .textTheme
-              .headline5
-              .copyWith(color: Colors.white),
+              .headlineSmall
+              ?.copyWith(color: Colors.white),
         ),
         mainImage: Image.asset(
           Images.intro2,
@@ -89,18 +87,18 @@ class _IntroState extends State<Intro> {
           color: Colors.white,
         ),
         body: Text(
-          Translate.of(context).translate('payment_intro'),
+          Translate.of(context)!.translate('payment_intro'),
           style: Theme.of(context)
               .textTheme
-              .headline6
-              .copyWith(color: Colors.white),
+              .titleLarge
+              ?.copyWith(color: Colors.white),
         ),
         title: Text(
-          Translate.of(context).translate('location'),
+          Translate.of(context)!.translate('location'),
           style: Theme.of(context)
               .textTheme
-              .headline5
-              .copyWith(color: Colors.white),
+              .headlineSmall
+              ?.copyWith(color: Colors.white),
         ),
         mainImage: Image.asset(
           Images.intro3,
@@ -115,11 +113,11 @@ class _IntroState extends State<Intro> {
         pages,
         onTapSkipButton: _onCompleted,
         onTapDoneButton: _onCompleted,
-        doneText: Text(Translate.of(context).translate('done')),
-        nextText: Text(Translate.of(context).translate('next')),
-        skipText: Text(Translate.of(context).translate('skip')),
-        backText: Text(Translate.of(context).translate('back')),
-        pageButtonTextStyles: Theme.of(context).textTheme.button.copyWith(
+        doneText: Text(Translate.of(context)!.translate('done')),
+        nextText: Text(Translate.of(context)!.translate('next')),
+        skipText: Text(Translate.of(context)!.translate('skip')),
+        backText: Text(Translate.of(context)!.translate('back')),
+        pageButtonTextStyles: Theme.of(context).textTheme.labelLarge?.copyWith(
               color: Colors.white,
             ),
       ),

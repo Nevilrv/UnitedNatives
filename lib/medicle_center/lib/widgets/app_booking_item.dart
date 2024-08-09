@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/datetime.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_placeholder.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/datetime.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_placeholder.dart';
 
 class AppBookingItem extends StatelessWidget {
-  final BookingItemModel item;
-  final VoidCallback onPressed;
+  final BookingItemModel? item;
+  final VoidCallback? onPressed;
 
   const AppBookingItem({
-    Key key,
+    super.key,
     this.item,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +36,14 @@ class AppBookingItem extends StatelessWidget {
                   children: [
                     Text(
                       item?.title ?? '',
-                      style: Theme.of(context).textTheme.bodyText1.copyWith(
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       item?.createdBy ?? '',
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -52,14 +52,14 @@ class AppBookingItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(item?.date?.dateView ?? '',
-                      style: Theme.of(context).textTheme.caption),
+                      style: Theme.of(context).textTheme.bodySmall),
                   const SizedBox(height: 4),
                   Text(
                     item?.status ?? '',
                     style: Theme.of(context)
                         .textTheme
-                        .button
-                        .copyWith(color: item?.statusColor),
+                        .labelLarge
+                        ?.copyWith(color: item?.statusColor),
                   ),
                 ],
               )

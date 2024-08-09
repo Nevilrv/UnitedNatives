@@ -1,8 +1,8 @@
 class PaymentMethodModel {
-  final String id;
-  final String title;
-  final String description;
-  final String instruction;
+  final String? id;
+  final String? title;
+  final String? description;
+  final String? instruction;
 
   PaymentMethodModel({
     this.id,

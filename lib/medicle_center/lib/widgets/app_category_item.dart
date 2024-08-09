@@ -1,22 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 enum CategoryView { full, icon, cardLarge }
 
 class AppCategory extends StatelessWidget {
   const AppCategory({
-    Key key,
+    super.key,
     this.type = CategoryView.full,
     this.item,
     this.onPressed,
-  }) : super(key: key);
+  });
 
-  final CategoryView type;
-  final CategoryModel item;
-  final VoidCallback onPressed;
+  final CategoryView? type;
+  final CategoryModel? item;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class AppCategory extends StatelessWidget {
           child: SizedBox(
             height: 120,
             child: CachedNetworkImage(
-              imageUrl: item.image?.full ?? '',
+              imageUrl: item?.image?.full ?? '',
               imageBuilder: (context, imageProvider) {
                 return Container(
                   decoration: BoxDecoration(
@@ -67,10 +67,10 @@ class AppCategory extends StatelessWidget {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: item.color,
+                                color: item?.color,
                               ),
                               child: Icon(
-                                item.icon,
+                                item?.icon,
                                 color: Colors.white,
                                 size: 18,
                               ),
@@ -81,20 +81,20 @@ class AppCategory extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    item.title,
+                                    item?.title ?? '',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle1
-                                        .copyWith(
+                                        .titleMedium
+                                        ?.copyWith(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    '${item.count} ${Translate.of(context).translate('location')}',
+                                    '${item?.count} ${Translate.of(context)?.translate('location')}',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .caption
-                                        .copyWith(color: Colors.white),
+                                        .bodySmall
+                                        ?.copyWith(color: Colors.white),
                                   ),
                                 ],
                               ),
@@ -191,10 +191,10 @@ class AppCategory extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: item.color,
+                  color: item?.color,
                 ),
                 child: Icon(
-                  item.icon,
+                  item?.icon,
                   color: Colors.white,
                   size: 18,
                 ),
@@ -205,16 +205,16 @@ class AppCategory extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      item.title,
+                      item?.title ?? '',
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${item.count} ${Translate.of(context).translate('location')}',
-                      style: Theme.of(context).textTheme.caption,
+                      '${item?.count} ${Translate.of(context)?.translate('location')}',
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -251,7 +251,7 @@ class AppCategory extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: CachedNetworkImage(
-                imageUrl: item.image?.full ?? '',
+                imageUrl: item?.image?.full ?? '',
                 imageBuilder: (context, imageProvider) {
                   return Container(
                     decoration: BoxDecoration(
@@ -270,12 +270,14 @@ class AppCategory extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8),
                           child: Text(
-                            item.title,
-                            style:
-                                Theme.of(context).textTheme.subtitle2.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            item?.title ?? "",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         )
                       ],

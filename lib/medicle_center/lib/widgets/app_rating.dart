@@ -1,15 +1,15 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_placeholder.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_placeholder.dart';
 import 'package:flutter/material.dart';
 
 class AppRating extends StatelessWidget {
-  final RateModel rate;
+  final RateModel? rate;
 
   const AppRating({
-    Key key,
+    super.key,
     this.rate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +23,15 @@ class AppRating extends StatelessWidget {
                   "0.0",
                   style: Theme.of(context)
                       .textTheme
-                      .headline2
-                      .copyWith(color: Theme.of(context).primaryColor),
+                      .displayMedium
+                      ?.copyWith(color: Theme.of(context).primaryColor),
                 ),
                 Text(
-                  "${Translate.of(context).translate('out_of')} 0",
+                  "${Translate.of(context)?.translate('out_of')} 0",
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle1
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -182,7 +182,7 @@ class AppRating extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "Loading",
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ],
                   )
@@ -200,18 +200,18 @@ class AppRating extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "${rate.avg}",
+              "${rate?.avg}",
               style: Theme.of(context)
                   .textTheme
-                  .headline2
-                  .copyWith(color: Theme.of(context).primaryColor),
+                  .displayMedium
+                  ?.copyWith(color: Theme.of(context).primaryColor),
             ),
             Text(
-              "${Translate.of(context).translate('out_of')} 5",
+              "${Translate.of(context)?.translate('out_of')} 5",
               style: Theme.of(context)
                   .textTheme
-                  .subtitle1
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -245,9 +245,9 @@ class AppRating extends StatelessWidget {
                           Radius.circular(4),
                         ),
                       ),
-                      child: rate.five > 0
+                      child: rate!.five! > 0
                           ? FractionallySizedBox(
-                              widthFactor: rate.five,
+                              widthFactor: rate?.five,
                               child: Container(
                                 height: 4,
                                 decoration: BoxDecoration(
@@ -289,9 +289,9 @@ class AppRating extends StatelessWidget {
                           Radius.circular(4),
                         ),
                       ),
-                      child: rate.four > 0
+                      child: rate!.four! > 0
                           ? FractionallySizedBox(
-                              widthFactor: rate.four,
+                              widthFactor: rate?.four,
                               child: Container(
                                 height: 4,
                                 decoration: BoxDecoration(
@@ -333,9 +333,9 @@ class AppRating extends StatelessWidget {
                           Radius.circular(4),
                         ),
                       ),
-                      child: rate.three > 0
+                      child: rate!.three! > 0
                           ? FractionallySizedBox(
-                              widthFactor: rate.three,
+                              widthFactor: rate?.three,
                               child: Container(
                                 height: 4,
                                 decoration: BoxDecoration(
@@ -377,9 +377,9 @@ class AppRating extends StatelessWidget {
                           Radius.circular(4),
                         ),
                       ),
-                      child: rate.two > 0
+                      child: rate!.two! > 0
                           ? FractionallySizedBox(
-                              widthFactor: rate.two,
+                              widthFactor: rate?.two,
                               child: Container(
                                 height: 4,
                                 decoration: BoxDecoration(
@@ -421,9 +421,9 @@ class AppRating extends StatelessWidget {
                           Radius.circular(4),
                         ),
                       ),
-                      child: rate.one > 0
+                      child: rate!.one! > 0
                           ? FractionallySizedBox(
-                              widthFactor: rate.one,
+                              widthFactor: rate?.one,
                               child: Container(
                                 height: 4,
                                 decoration: BoxDecoration(
@@ -444,11 +444,11 @@ class AppRating extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    "${rate.total} ${Translate.of(context).translate('rating')}",
+                    "${rate?.total} ${Translate.of(context)?.translate('rating')}",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle2
-                        .copyWith(fontWeight: FontWeight.bold),
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],
               )

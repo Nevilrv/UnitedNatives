@@ -1,17 +1,17 @@
 class UserModel {
-  int id;
-  String name;
-  String nickname;
-  String image;
-  String url;
-  int level;
-  String description;
-  String tag;
-  double rate;
-  int comment;
-  int total;
-  String token;
-  String email;
+  int? id;
+  String? name;
+  String? nickname;
+  String? image;
+  String? url;
+  int? level;
+  String? description;
+  String? tag;
+  double? rate;
+  int? comment;
+  int? total;
+  String? token;
+  String? email;
 
   UserModel({
     this.id,
@@ -48,12 +48,12 @@ class UserModel {
   }
 
   UserModel updateUser({
-    String name,
-    String email,
-    String url,
-    String description,
-    String image,
-    int total,
+    String? name,
+    String? email,
+    String? url,
+    String? description,
+    String? image,
+    int? total,
   }) {
     this.name = name ?? this.name;
     this.email = email ?? this.email;

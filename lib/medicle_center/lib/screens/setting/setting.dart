@@ -1,29 +1,25 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
 
   @override
-  _SettingState createState() {
-    return _SettingState();
-  }
+  State<Setting> createState() => _SettingState();
 }
 
 class _SettingState extends State<Setting> {
   bool _receiveNotification = true;
-  DarkOption _darkOption = AppBloc.themeCubit.state.darkOption;
-  String _errorDomain;
+  DarkOption _darkOption = AppBloc.themeCubit.state.darkOption!;
+  String? _errorDomain;
 
   @override
   void initState() {
-    print("setting Page");
     super.initState();
   }
 
@@ -48,9 +44,9 @@ class _SettingState extends State<Setting> {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        _darkOption = AppBloc.themeCubit.state.darkOption;
+        _darkOption = AppBloc.themeCubit.state.darkOption!;
         return AlertDialog(
-          title: Text(Translate.of(context).translate('dark_mode')),
+          title: Text(Translate.of(context)!.translate('dark_mode')),
           content: StatefulBuilder(
             builder: (context, setState) {
               return SingleChildScrollView(
@@ -58,7 +54,7 @@ class _SettingState extends State<Setting> {
                   children: <Widget>[
                     RadioListTile<DarkOption>(
                       title: Text(
-                        Translate.of(context).translate(
+                        Translate.of(context)!.translate(
                           AppTheme.langDarkOption(DarkOption.dynamic),
                         ),
                       ),
@@ -73,7 +69,7 @@ class _SettingState extends State<Setting> {
                     ),
                     RadioListTile<DarkOption>(
                       title: Text(
-                        Translate.of(context).translate(
+                        Translate.of(context)!.translate(
                           AppTheme.langDarkOption(DarkOption.alwaysOn),
                         ),
                       ),
@@ -88,7 +84,7 @@ class _SettingState extends State<Setting> {
                     ),
                     RadioListTile<DarkOption>(
                       title: Text(
-                        Translate.of(context).translate(
+                        Translate.of(context)!.translate(
                           AppTheme.langDarkOption(DarkOption.alwaysOff),
                         ),
                       ),
@@ -108,14 +104,14 @@ class _SettingState extends State<Setting> {
           ),
           actions: <Widget>[
             AppButton(
-              Translate.of(context).translate('close'),
+              Translate.of(context)!.translate('close'),
               onPressed: () {
                 Navigator.pop(context, false);
               },
               type: ButtonType.text,
             ),
             AppButton(
-              Translate.of(context).translate('apply'),
+              Translate.of(context)!.translate('apply'),
               onPressed: () {
                 Navigator.pop(context, true);
               },
@@ -127,7 +123,7 @@ class _SettingState extends State<Setting> {
     if (result == true) {
       _onChangeDarkOption();
     } else {
-      _darkOption = AppBloc.themeCubit.state.darkOption;
+      _darkOption = AppBloc.themeCubit.state.darkOption!;
     }
   }
 
@@ -141,14 +137,15 @@ class _SettingState extends State<Setting> {
           text: Application.domain,
         );
         return AlertDialog(
-          title: Text(Translate.of(context).translate('change_domain')),
+          title: Text(Translate.of(context)!.translate('change_domain')),
           content: StatefulBuilder(
             builder: (context, setState) {
               return SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
                     AppTextInput(
-                      hintText: Translate.of(context).translate('input_domain'),
+                      hintText:
+                          Translate.of(context)!.translate('input_domain'),
                       errorText: _errorDomain,
                       textInputAction: TextInputAction.done,
                       onChanged: (text) {
@@ -167,14 +164,14 @@ class _SettingState extends State<Setting> {
           ),
           actions: <Widget>[
             AppButton(
-              Translate.of(context).translate('close'),
+              Translate.of(context)!.translate('close'),
               onPressed: () {
                 Navigator.pop(context);
               },
               type: ButtonType.text,
             ),
             AppButton(
-              Translate.of(context).translate('apply'),
+              Translate.of(context)!.translate('apply'),
               onPressed: () {
                 Navigator.pop(context, textNameController.text);
               },
@@ -200,7 +197,7 @@ class _SettingState extends State<Setting> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('setting'),
+          Translate.of(context)!.translate('setting'),
         ),
       ),
       body: SafeArea(
@@ -208,7 +205,7 @@ class _SettingState extends State<Setting> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           children: <Widget>[
             AppListTitle(
-              title: Translate.of(context).translate('language'),
+              title: Translate.of(context)!.translate('language'),
               onPressed: () {
                 _onNavigate(Routes.changeLanguage);
               },
@@ -218,7 +215,7 @@ class _SettingState extends State<Setting> {
                     AppLanguage.getGlobalLanguageName(
                       AppBloc.languageCubit.state.languageCode,
                     ),
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   RotatedBox(
                     quarterTurns: AppLanguage.isRTL() ? 2 : 0,
@@ -231,7 +228,7 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              title: Translate.of(context).translate('notification'),
+              title: Translate.of(context)!.translate('notification'),
               trailing: CupertinoSwitch(
                 activeColor: Theme.of(context).primaryColor,
                 value: _receiveNotification,
@@ -243,7 +240,7 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              title: Translate.of(context).translate('theme'),
+              title: Translate.of(context)!.translate('theme'),
               onPressed: () {
                 _onNavigate(Routes.themeSetting);
               },
@@ -255,17 +252,17 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              title: Translate.of(context).translate('dark_mode'),
+              title: Translate.of(context)!.translate('dark_mode'),
               onPressed: _onDarkModeSetting,
               trailing: Row(
                 children: <Widget>[
                   Text(
-                    Translate.of(context).translate(
+                    Translate.of(context)!.translate(
                       AppTheme.langDarkOption(
-                        AppBloc.themeCubit.state.darkOption,
+                        AppBloc.themeCubit.state.darkOption!,
                       ),
                     ),
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   RotatedBox(
                     quarterTurns: AppLanguage.isRTL() ? 2 : 0,
@@ -278,15 +275,15 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              title: Translate.of(context).translate('font'),
+              title: Translate.of(context)!.translate('font'),
               onPressed: () {
                 _onNavigate(Routes.fontSetting);
               },
               trailing: Row(
                 children: <Widget>[
                   Text(
-                    AppBloc.themeCubit.state.font,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    AppBloc.themeCubit.state.font!,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   RotatedBox(
                     quarterTurns: AppLanguage.isRTL() ? 2 : 0,
@@ -299,13 +296,13 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              title: Translate.of(context).translate('domain'),
+              title: Translate.of(context)!.translate('domain'),
               onPressed: _onChangeDomain,
               trailing: Row(
                 children: <Widget>[
                   Text(
                     Application.domain,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   RotatedBox(
                     quarterTurns: AppLanguage.isRTL() ? 2 : 0,
@@ -318,13 +315,13 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              title: Translate.of(context).translate('version'),
+              title: Translate.of(context)?.translate('version'),
               onPressed: () {},
               trailing: Row(
                 children: <Widget>[
                   Text(
                     Application.packageInfo?.version ?? '',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   RotatedBox(
                     quarterTurns: AppLanguage.isRTL() ? 2 : 0,

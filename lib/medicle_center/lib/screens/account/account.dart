@@ -1,36 +1,36 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/user/user_cubit.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/ads.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/language.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/routes.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_user.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_button.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_list_title.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_user_info.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
+import 'package:united_natives/medicle_center/lib/blocs/user/user_cubit.dart';
+import 'package:united_natives/medicle_center/lib/configs/ads.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/configs/language.dart';
+import 'package:united_natives/medicle_center/lib/configs/routes.dart';
+import 'package:united_natives/medicle_center/lib/models/model_user.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_button.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_list_title.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_user_info.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class Account extends StatefulWidget {
-  const Account({Key key}) : super(key: key);
+  const Account({super.key});
 
   @override
-  _AccountState createState() {
+  State<Account> createState() {
     return _AccountState();
   }
 }
 
 class _AccountState extends State<Account> {
-  BannerAd _bannerAd;
-  InterstitialAd _interstitialAd;
+  BannerAd? _bannerAd;
+  InterstitialAd? _interstitialAd;
 
   @override
   void initState() {
     super.initState();
-    if (Application.setting.useViewAdmob) {
+    if (Application.setting.useViewAdmob!) {
       _createBannerAd();
       _createInterstitialAd();
     }
@@ -111,25 +111,25 @@ class _AccountState extends State<Account> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(Translate.of(context).translate('deactivate')),
+          title: Text(Translate.of(context)!.translate('deactivate')),
           content: StatefulBuilder(
             builder: (context, setState) {
               return Text(
-                Translate.of(context).translate('would_you_like_deactivate'),
-                style: Theme.of(context).textTheme.bodyText2,
+                Translate.of(context)!.translate('would_you_like_deactivate'),
+                style: Theme.of(context).textTheme.bodyMedium,
               );
             },
           ),
           actions: <Widget>[
             AppButton(
-              Translate.of(context).translate('close'),
+              Translate.of(context)!.translate('close'),
               onPressed: () {
                 Navigator.pop(context, false);
               },
               type: ButtonType.text,
             ),
             AppButton(
-              Translate.of(context).translate('yes'),
+              Translate.of(context)!.translate('yes'),
               onPressed: () {
                 Navigator.pop(context, true);
               },
@@ -157,9 +157,9 @@ class _AccountState extends State<Account> {
   Widget buildBanner() {
     if (_bannerAd != null) {
       return SizedBox(
-        width: _bannerAd.size.width.toDouble(),
-        height: _bannerAd.size.height.toDouble(),
-        child: AdWidget(ad: _bannerAd),
+        width: _bannerAd?.size.width.toDouble(),
+        height: _bannerAd?.size.height.toDouble(),
+        child: AdWidget(ad: _bannerAd!),
       );
     }
     return Container();
@@ -167,17 +167,16 @@ class _AccountState extends State<Account> {
 
   @override
   Widget build(BuildContext context) {
-    print('build update');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('account'),
+          Translate.of(context)!.translate('account'),
           style: TextStyle(
-            color: Theme.of(context).appBarTheme.textTheme.headline6.color,
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
           ),
         ),
-        actions: [
+        actions: const [
           // AppButton(
           //   Translate.of(context).translate('sign_out'),
           //   mainAxisSize: MainAxisSize.max,
@@ -230,7 +229,7 @@ class _AccountState extends State<Account> {
                   Column(
                     children: <Widget>[
                       AppListTitle(
-                        title: Translate.of(context).translate(
+                        title: Translate.of(context)?.translate(
                           'edit_profile',
                         ),
                         trailing: RotatedBox(
@@ -245,7 +244,7 @@ class _AccountState extends State<Account> {
                         },
                       ),
                       AppListTitle(
-                        title: Translate.of(context).translate(
+                        title: Translate.of(context)?.translate(
                           'change_password',
                         ),
                         trailing: RotatedBox(
@@ -260,7 +259,7 @@ class _AccountState extends State<Account> {
                         },
                       ),
                       AppListTitle(
-                        title: Translate.of(context).translate(
+                        title: Translate.of(context)?.translate(
                           'booking_management',
                         ),
                         trailing: RotatedBox(
@@ -275,7 +274,7 @@ class _AccountState extends State<Account> {
                         },
                       ),
                       AppListTitle(
-                        title: Translate.of(context).translate('setting'),
+                        title: Translate.of(context)?.translate('setting'),
                         onPressed: () {
                           _onNavigate(Routes.setting);
                         },
@@ -288,7 +287,7 @@ class _AccountState extends State<Account> {
                         ),
                       ),
                       AppListTitle(
-                        title: Translate.of(context).translate('deactivate'),
+                        title: Translate.of(context)!.translate('deactivate'),
                         onPressed: _onDeactivate,
                         trailing: RotatedBox(
                           quarterTurns: AppLanguage.isRTL() ? 2 : 0,

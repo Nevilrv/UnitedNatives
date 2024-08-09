@@ -1,12 +1,11 @@
 import 'package:chewie/chewie.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 class ChewieDemo extends StatefulWidget {
-  final String videoUrl;
-  ChewieDemo({this.videoUrl});
+  final String? videoUrl;
+  const ChewieDemo({super.key, this.videoUrl});
 
   @override
   State<StatefulWidget> createState() {
@@ -15,23 +14,23 @@ class ChewieDemo extends StatefulWidget {
 }
 
 class _ChewieDemoState extends State<ChewieDemo> {
-  VideoPlayerController _videoPlayerController1;
-  VideoPlayerController _videoPlayerController2;
-  ChewieController _chewieController;
+  VideoPlayerController? _videoPlayerController1;
+  VideoPlayerController? _videoPlayerController2;
+  ChewieController? _chewieController;
 
   @override
   void initState() {
     super.initState();
 
-    _videoPlayerController1 = VideoPlayerController.network((widget
+    _videoPlayerController1 = VideoPlayerController.networkUrl(Uri.parse((widget
                 .videoUrl?.isNotEmpty ??
             false)
-        ? widget.videoUrl
-        : 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4');
-    _videoPlayerController2 = VideoPlayerController.network(
-        'https://www.sample-videos.com/video123/mp4/480/big_buck_bunny_480p_20mb.mp4');
+        ? widget.videoUrl.toString()
+        : 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'));
+    _videoPlayerController2 = VideoPlayerController.networkUrl(Uri.parse(
+        'https://www.sample-videos.com/video123/mp4/480/big_buck_bunny_480p_20mb.mp4'));
     _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController1,
+        videoPlayerController: _videoPlayerController1!,
         aspectRatio: 3 / 1,
         autoPlay: true,
         looping: true,
@@ -39,7 +38,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
             Animation<double> secondAnimation, provider) {
           return AnimatedBuilder(
             animation: animation,
-            builder: (BuildContext context, Widget child) {
+            builder: (BuildContext? context, Widget? child) {
               return VideoScaffold(
                 child: Scaffold(
                   resizeToAvoidBottomInset: true,
@@ -71,9 +70,9 @@ class _ChewieDemoState extends State<ChewieDemo> {
 
   @override
   void dispose() {
-    _videoPlayerController1.dispose();
-    _videoPlayerController2.dispose();
-    _chewieController.dispose();
+    _videoPlayerController1?.dispose();
+    _videoPlayerController2?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
@@ -81,16 +80,16 @@ class _ChewieDemoState extends State<ChewieDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Chewie(
-        controller: _chewieController,
+        controller: _chewieController!,
       ),
     );
   }
 }
 
 class VideoScaffold extends StatefulWidget {
-  const VideoScaffold({Key key, this.child}) : super(key: key);
+  const VideoScaffold({super.key, this.child});
 
-  final Widget child;
+  final Widget? child;
 
   @override
   State<StatefulWidget> createState() => _VideoScaffoldState();
@@ -117,6 +116,6 @@ class _VideoScaffoldState extends State<VideoScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.child!;
   }
 }

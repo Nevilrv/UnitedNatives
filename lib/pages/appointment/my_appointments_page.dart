@@ -1,9 +1,9 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/pages/appointment/book_appointment_tab.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/pages/appointment/book_appointment_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
@@ -12,8 +12,10 @@ import 'past_appointments_page.dart';
 import 'upcoming_appointments_page.dart';
 
 class MyAppointmentsPage extends StatefulWidget {
+  const MyAppointmentsPage({super.key});
+
   @override
-  _MyAppointmentsPageState createState() => _MyAppointmentsPageState();
+  State<MyAppointmentsPage> createState() => _MyAppointmentsPageState();
 }
 
 class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
@@ -30,11 +32,11 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal,
   );
-  var categoryOfStatesDropDowns;
-  var categoryOfMedicalCenterDropDowns;
+  String? categoryOfStatesDropDowns;
+  String? categoryOfMedicalCenterDropDowns;
   List categoryOfStatess = [];
-  var chooseStateId;
-  BookAppointmentController _bookAppointmentController =
+  String? chooseStateId;
+  final BookAppointmentController _bookAppointmentController =
       Get.put(BookAppointmentController());
   PatientHomeScreenController patientHomeScreenController =
       Get.put(PatientHomeScreenController());
@@ -69,10 +71,10 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
             context: context,
           ),
           appBar: AppBar(
-            title: Text(Translate.of(context).translate('my_appointments'),
+            title: Text(Translate.of(context)!.translate('my_appointments'),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                     fontSize: 24),
                 textAlign: TextAlign.center),
             elevation: 0,
@@ -90,13 +92,14 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
                   labelPadding: EdgeInsets.zero,
                   tabs: [
                     Tab(
-                      text: Translate.of(context).translate('upcoming'),
+                      text: Translate.of(context)?.translate('upcoming'),
                     ),
                     Tab(
-                      text: Translate.of(context).translate('past'),
+                      text: Translate.of(context)?.translate('past'),
                     ),
                     Tab(
-                      text: Translate.of(context).translate('book_appointment'),
+                      text:
+                          Translate.of(context)?.translate('book_appointment'),
                     ),
                   ],
                 ),
@@ -169,7 +172,7 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
 
                       /// (3) BOOK APPOINTMENT ----------------------------------------------------------
 
-                      BookAppointmentTab(),
+                      const BookAppointmentTab(),
 
                       // Padding(
                       //   padding: const EdgeInsets.symmetric(horizontal: 20),

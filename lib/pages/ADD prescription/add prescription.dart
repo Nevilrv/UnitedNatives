@@ -1,21 +1,19 @@
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/model/doctor_get_doctor_Appointments_model.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
-
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/model/doctor_get_doctor_Appointments_model.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/utils.dart';
 import '../../utils/constants.dart';
 
 class AddPrescription extends StatefulWidget {
-  final PatientAppoint patientAppoint;
+  final PatientAppoint? patientAppoint;
 
-  AddPrescription({this.patientAppoint});
+  const AddPrescription({super.key, this.patientAppoint});
 
   @override
-  _AddPrescriptionState createState() => _AddPrescriptionState();
+  State<AddPrescription> createState() => _AddPrescriptionState();
 }
 
 class _AddPrescriptionState extends State<AddPrescription> {
@@ -25,12 +23,13 @@ class _AddPrescriptionState extends State<AddPrescription> {
   bool isLoading = false;
   List<String> medicineTime = [];
 
-  TextEditingController _medicineNameController = TextEditingController();
-  TextEditingController _pillsPerDayController = TextEditingController();
-  TextEditingController _additionalNoteController = TextEditingController();
-  TextEditingController _daysOfTreatController = TextEditingController();
+  final TextEditingController _medicineNameController = TextEditingController();
+  final TextEditingController _pillsPerDayController = TextEditingController();
+  final TextEditingController _additionalNoteController =
+      TextEditingController();
+  final TextEditingController _daysOfTreatController = TextEditingController();
 
-  DoctorHomeScreenController _doctorHomeScreenController = Get.find();
+  final DoctorHomeScreenController _doctorHomeScreenController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +43,8 @@ class _AddPrescriptionState extends State<AddPrescription> {
             centerTitle: true,
             leading: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                Feather.chevron_left,
+              icon: const Icon(
+                CupertinoIcons.left_chevron,
                 size: 30,
               ),
             ),
@@ -53,7 +52,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
               'Add Prescription',
               style: TextStyle(
                 fontSize: 23,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
               ),
             ),
           ),
@@ -66,25 +65,25 @@ class _AddPrescriptionState extends State<AddPrescription> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
                       'Medicine name',
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Container(
                       height: 60,
                       width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: kColorDarkBlue,
                             blurRadius: 10,
@@ -95,9 +94,9 @@ class _AddPrescriptionState extends State<AddPrescription> {
                       child: TextField(
                         controller: _medicineNameController,
                         style: TextStyle(
-                          color: Theme.of(context).textTheme.subtitle1.color,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
                         ),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Enter medicine name',
                             hintStyle: TextStyle(
@@ -105,16 +104,16 @@ class _AddPrescriptionState extends State<AddPrescription> {
                             )),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Text(
                       'When to take?',
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Row(
                       children: [
                         GestureDetector(
@@ -129,7 +128,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                             });
                           },
                           child: TimeCard(
-                            icon: Feather.sunrise,
+                            icon: CupertinoIcons.sunrise,
                             time: 'Morning',
                             isSelected: morning,
                           ),
@@ -146,7 +145,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                             });
                           },
                           child: TimeCard(
-                            icon: Feather.sun,
+                            icon: CupertinoIcons.sun_max_fill,
                             time: 'Afternoon',
                             isSelected: afternoon,
                           ),
@@ -163,32 +162,32 @@ class _AddPrescriptionState extends State<AddPrescription> {
                             });
                           },
                           child: TimeCard(
-                            icon: Feather.moon,
+                            icon: CupertinoIcons.moon,
                             time: 'Night',
                             isSelected: night,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Text(
                       'Additional notes',
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Container(
                       height: 80,
                       width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: kColorDarkBlue,
                             blurRadius: 10,
@@ -201,10 +200,10 @@ class _AddPrescriptionState extends State<AddPrescription> {
                         keyboardType: TextInputType.text,
                         controller: _additionalNoteController,
                         style: TextStyle(
-                          color: Theme.of(context).textTheme.subtitle1.color,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
                         ),
                         maxLines: 2,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Additional notes...',
                           hintStyle: TextStyle(
@@ -213,25 +212,25 @@ class _AddPrescriptionState extends State<AddPrescription> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Text(
                       'Days of Treat',
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: kColorDarkBlue,
                             blurRadius: 10,
@@ -243,10 +242,10 @@ class _AddPrescriptionState extends State<AddPrescription> {
                         keyboardType: TextInputType.number,
                         controller: _daysOfTreatController,
                         style: TextStyle(
-                          color: Theme.of(context).textTheme.subtitle1.color,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
                         ),
                         maxLines: 2,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Days...',
                           hintStyle: TextStyle(
@@ -255,25 +254,25 @@ class _AddPrescriptionState extends State<AddPrescription> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Text(
                       'Pills Per Day',
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                         fontSize: 22,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: kColorDarkBlue,
                             blurRadius: 10,
@@ -285,10 +284,10 @@ class _AddPrescriptionState extends State<AddPrescription> {
                         keyboardType: TextInputType.number,
                         controller: _pillsPerDayController,
                         style: TextStyle(
-                          color: Theme.of(context).textTheme.subtitle1.color,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
                         ),
                         maxLines: 2,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Pills Count',
                           hintStyle: TextStyle(
@@ -297,7 +296,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Row(
@@ -330,9 +329,9 @@ class _AddPrescriptionState extends State<AddPrescription> {
                                   });
                                   await _doctorHomeScreenController
                                       .addPrescription(
-                                          widget.patientAppoint.doctorId,
-                                          widget.patientAppoint.patientId,
-                                          widget.patientAppoint.id,
+                                          widget.patientAppoint!.doctorId!,
+                                          widget.patientAppoint!.patientId,
+                                          widget.patientAppoint!.id,
                                           _medicineNameController.text,
                                           medicineTime.join(""),
                                           _additionalNoteController.text,
@@ -345,11 +344,11 @@ class _AddPrescriptionState extends State<AddPrescription> {
                                   Get.toNamed(Routes.addprescription,
                                       arguments: widget.patientAppoint);
                                 },
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 20),
                                 color: kColorBlue,
                                 splashColor: kColorDarkBlue,
-                                child: Row(
+                                child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
@@ -364,7 +363,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
@@ -392,9 +391,9 @@ class _AddPrescriptionState extends State<AddPrescription> {
                                   });
                                   await _doctorHomeScreenController
                                       .addPrescription(
-                                          widget.patientAppoint.doctorId,
-                                          widget.patientAppoint.patientId,
-                                          widget.patientAppoint.id,
+                                          widget.patientAppoint!.doctorId!,
+                                          widget.patientAppoint!.patientId,
+                                          widget.patientAppoint!.id,
                                           _medicineNameController.text,
                                           medicineTime.join(""),
                                           _additionalNoteController.text,
@@ -406,11 +405,11 @@ class _AddPrescriptionState extends State<AddPrescription> {
 
                                   Navigator.pop(context, true);
                                 },
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 20),
                                 color: kColorBlue,
                                 splashColor: kColorDarkBlue,
-                                child: Row(
+                                child: const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
@@ -442,7 +441,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                     child: Utils.loadingBar(),
                   ),
                 )
-              : SizedBox(),
+              : const SizedBox(),
         )
       ],
     );
@@ -451,25 +450,25 @@ class _AddPrescriptionState extends State<AddPrescription> {
 
 class TimeCard extends StatelessWidget {
   const TimeCard({
-    Key key,
+    super.key,
     this.icon,
     this.time,
     this.isSelected,
-  }) : super(key: key);
-  final IconData icon;
-  final String time;
-  final bool isSelected;
+  });
+  final IconData? icon;
+  final String? time;
+  final bool? isSelected;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 105,
       width: 105,
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: isSelected ? kColorDarkBlue : kColorBlue,
+        color: isSelected! ? kColorDarkBlue : kColorBlue,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: kColorDarkBlue,
             blurRadius: 10,
@@ -482,14 +481,14 @@ class TimeCard extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: isSelected ? Colors.white : Colors.white,
+            color: isSelected! ? Colors.white : Colors.white,
             size: 40,
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Text(
-            time,
+            time!,
             style: TextStyle(
-              color: isSelected ? Colors.white : Colors.white,
+              color: isSelected! ? Colors.white : Colors.white,
               fontSize: 18,
             ),
           )

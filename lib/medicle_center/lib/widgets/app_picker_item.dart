@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 class AppPickerItem extends StatelessWidget {
-  final String title;
-  final String value;
-  final Widget leading;
-  final bool loading;
-  final VoidCallback onPressed;
+  final String? title;
+  final String? value;
+  final Widget? leading;
+  final bool? loading;
+  final VoidCallback? onPressed;
 
   const AppPickerItem({
-    Key key,
+    super.key,
     this.title,
     this.value,
     this.leading,
     this.loading = false,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,33 +22,33 @@ class AppPickerItem extends StatelessWidget {
     Widget valueWidget = Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Text(
-        title,
+        '$title',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context)
             .textTheme
-            .subtitle1
-            .copyWith(color: Theme.of(context).hintColor),
+            .titleMedium
+            ?.copyWith(color: Theme.of(context).hintColor),
       ),
     );
 
-    if (value != null && value.isNotEmpty) {
+    if (value != null && value!.isNotEmpty) {
       labelWidget = Text(
-        title,
+        '$title',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.caption,
+        style: Theme.of(context).textTheme.bodySmall,
       );
       valueWidget = Text(
-        value,
+        '$value',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.subtitle1,
+        style: Theme.of(context).textTheme.titleMedium,
       );
     }
 
     Widget trailingWidget = const Icon(Icons.arrow_drop_down);
-    if (loading) {
+    if (loading!) {
       trailingWidget = const Padding(
         padding: EdgeInsets.all(4),
         child: SizedBox(
@@ -66,14 +66,14 @@ class AppPickerItem extends StatelessWidget {
       leadingWidget = Row(
         children: [
           const SizedBox(width: 8),
-          leading,
+          leading!,
           const SizedBox(width: 8),
         ],
       );
     }
 
     return InkWell(
-      onTap: loading ? null : onPressed,
+      onTap: loading! ? null : onPressed,
       borderRadius: BorderRadius.circular(12),
       child: Container(
         height: 51,

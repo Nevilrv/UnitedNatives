@@ -51,7 +51,7 @@ class DaySlotItem extends StatelessWidget {
                     ),
               ),
               Text(
-                '$slot ${Translate.of(context).translate('slots_available').toLowerCase()}',
+                '$slot ${Translate.of(context)?.translate('slots_available').toLowerCase()}',
                 style: TextStyle(
                   color: Colors.greenAccent[400],
                   fontSize: 16,

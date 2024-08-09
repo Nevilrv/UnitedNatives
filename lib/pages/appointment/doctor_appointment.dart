@@ -1,19 +1,18 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/pages/appointment/past_appointments_page_doctor.dart';
-import 'package:doctor_appointment_booking/pages/appointment/upcoming_appointments_page_doctor.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
-
-import '../../utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/pages/appointment/past_appointments_page_doctor.dart';
+import 'package:united_natives/pages/appointment/upcoming_appointments_page_doctor.dart';
+import 'package:united_natives/utils/constants.dart';
 
 class MyAppointmentsDoctor extends StatefulWidget {
+  const MyAppointmentsDoctor({super.key});
+
   @override
-  _MyAppointmentsDoctorState createState() => _MyAppointmentsDoctorState();
+  State<MyAppointmentsDoctor> createState() => _MyAppointmentsDoctorState();
 }
 
 class _MyAppointmentsDoctorState extends State<MyAppointmentsDoctor> {
@@ -35,7 +34,7 @@ class _MyAppointmentsDoctorState extends State<MyAppointmentsDoctor> {
       Get.find<DoctorHomeScreenController>()..getDoctorAppointmentsModel();
 
   AdsController adsController = Get.find();
-  DoctorHomeScreenController _doctorHomeScreenController =
+  final DoctorHomeScreenController _doctorHomeScreenController =
       Get.put(DoctorHomeScreenController());
 
   // @override
@@ -76,7 +75,6 @@ class _MyAppointmentsDoctorState extends State<MyAppointmentsDoctor> {
   Widget build(BuildContext context) {
     debugPrint(
         '_doctorHomeScreenController==========>>>>>$_doctorHomeScreenController');
-    print('hello...');
 
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
@@ -86,16 +84,16 @@ class _MyAppointmentsDoctorState extends State<MyAppointmentsDoctor> {
         ),
         appBar: AppBar(
           title: Text(
-            Translate.of(context).translate('my_appointments'),
+            Translate.of(context)!.translate('my_appointments'),
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).textTheme.subtitle1.color,
+              color: Theme.of(context).textTheme.titleMedium?.color,
               fontSize: 24,
             ),
             textAlign: TextAlign.center,
           ),
           elevation: 0,
-          actions: [
+          actions: const [
             // if (_doctorHomeScreenController
             //         .doctorAppointmentsModelData?.upcoming?.isNotEmpty ??
             //     false)
@@ -180,10 +178,10 @@ class _MyAppointmentsDoctorState extends State<MyAppointmentsDoctor> {
                 unselectedLabelColor: Colors.grey,
                 tabs: [
                   Tab(
-                    text: Translate.of(context).translate('upcoming'),
+                    text: Translate.of(context)?.translate('upcoming'),
                   ),
                   Tab(
-                    text: Translate.of(context).translate('past'),
+                    text: Translate.of(context)?.translate('past'),
                   ),
                 ],
               ),

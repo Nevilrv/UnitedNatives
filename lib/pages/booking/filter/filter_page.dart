@@ -1,6 +1,6 @@
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import '../../../components/custom_button.dart';
@@ -8,27 +8,32 @@ import '../../../data/pref_manager.dart';
 import '../../../utils/constants.dart';
 
 class FilterPage extends StatefulWidget {
-  final String id;
-  final String medicalCenterIid;
+  final String? id;
+  final String? medicalCenterIid;
 
-  FilterPage({
+  const FilterPage({
+    super.key,
     this.id,
     this.medicalCenterIid,
   });
 
   @override
-  _FilterPageState createState() => _FilterPageState();
+  _FilterPageState createState() {
+    return _FilterPageState();
+  }
 }
 
 BookAppointmentController _bookAppointmentController =
     Get.find<BookAppointmentController>();
 UserController _userController = Get.find();
+
 enum Availability { anyDay, today, next3Days, commingWeekend }
+
 enum ConsultationFee { free, range1, range2, range3, range4 }
 
 class _FilterPageState extends State<FilterPage> {
   final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
-  Color _color;
+  late Color _color;
   Availability _availability = Availability.anyDay;
   ConsultationFee _consultationFee = ConsultationFee.free;
   bool _male = true;
@@ -37,7 +42,7 @@ class _FilterPageState extends State<FilterPage> {
   @override
   void initState() {
     super.initState();
-    _color = _isDark ? Colors.white.withOpacity(0.12) : Colors.grey[200];
+    _color = (_isDark ? Colors.white.withOpacity(0.12) : Colors.grey[200])!;
   }
 
   @override
@@ -46,7 +51,7 @@ class _FilterPageState extends State<FilterPage> {
     // print('${_consultationFee.toString()}');
     // print('${_male.toString()}');
     // print('${_female.toString()}');
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kColorBlue,
@@ -55,14 +60,14 @@ class _FilterPageState extends State<FilterPage> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             color: Colors.white,
           ),
         ),
         title: Text(
-          Translate.of(context).translate('filter'),
-          style: TextStyle(
+          Translate.of(context)!.translate('filter'),
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w400,
@@ -74,7 +79,7 @@ class _FilterPageState extends State<FilterPage> {
           children: <Widget>[
             Expanded(
               child: Form(
-                key: _formKey,
+                key: formKey,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
@@ -90,11 +95,12 @@ class _FilterPageState extends State<FilterPage> {
                             width: double.infinity,
                             color: _color,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 15),
                               child: Text(
-                                Translate.of(context).translate('availability'),
-                                style: TextStyle(
+                                Translate.of(context)!
+                                    .translate('availability'),
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -105,12 +111,12 @@ class _FilterPageState extends State<FilterPage> {
                             value: Availability.anyDay,
                             onChanged: (value) {
                               setState(() {
-                                _availability = value;
+                                _availability = value!;
                               });
                             },
                             groupValue: _availability,
                             title: Text(
-                              Translate.of(context)
+                              Translate.of(context)!
                                   .translate('available_any_day'),
                             ),
                           ),
@@ -118,12 +124,12 @@ class _FilterPageState extends State<FilterPage> {
                             value: Availability.today,
                             onChanged: (value) {
                               setState(() {
-                                _availability = value;
+                                _availability = value!;
                               });
                             },
                             groupValue: _availability,
                             title: Text(
-                              Translate.of(context)
+                              Translate.of(context)!
                                   .translate('available_today'),
                             ),
                           ),
@@ -131,12 +137,12 @@ class _FilterPageState extends State<FilterPage> {
                             value: Availability.next3Days,
                             onChanged: (value) {
                               setState(() {
-                                _availability = value;
+                                _availability = value!;
                               });
                             },
                             groupValue: _availability,
                             title: Text(
-                              Translate.of(context)
+                              Translate.of(context)!
                                   .translate('available_in_next_3_days'),
                             ),
                           ),
@@ -144,12 +150,12 @@ class _FilterPageState extends State<FilterPage> {
                             value: Availability.commingWeekend,
                             onChanged: (value) {
                               setState(() {
-                                _availability = value;
+                                _availability = value!;
                               });
                             },
                             groupValue: _availability,
                             title: Text(
-                              Translate.of(context)
+                              Translate.of(context)!
                                   .translate('available_coming_weekend'),
                             ),
                           )
@@ -162,11 +168,11 @@ class _FilterPageState extends State<FilterPage> {
                             width: double.infinity,
                             color: _color,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 15),
                               child: Text(
-                                Translate.of(context).translate('gender'),
-                                style: TextStyle(
+                                Translate.of(context)!.translate('gender'),
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -177,22 +183,22 @@ class _FilterPageState extends State<FilterPage> {
                             value: _male,
                             onChanged: (value) {
                               setState(() {
-                                _male = value;
+                                _male = value!;
                               });
                             },
                             title: Text(
-                              Translate.of(context).translate('male_doctor'),
+                              Translate.of(context)!.translate('male_doctor'),
                             ),
                           ),
                           CheckboxListTile(
                             value: _female,
                             onChanged: (value) {
                               setState(() {
-                                _female = value;
+                                _female = value!;
                               });
                             },
                             title: Text(
-                              Translate.of(context).translate('female_doctor'),
+                              Translate.of(context)!.translate('female_doctor'),
                             ),
                           ),
                         ],
@@ -204,12 +210,12 @@ class _FilterPageState extends State<FilterPage> {
                             width: double.infinity,
                             color: _color,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 15),
                               child: Text(
-                                Translate.of(context)
+                                Translate.of(context)!
                                     .translate('consultaion_fee'),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -220,53 +226,53 @@ class _FilterPageState extends State<FilterPage> {
                             value: ConsultationFee.free,
                             onChanged: (value) {
                               setState(() {
-                                _consultationFee = value;
+                                _consultationFee = value!;
                               });
                             },
                             groupValue: _consultationFee,
                             title: Text(
-                              Translate.of(context).translate('free'),
+                              Translate.of(context)!.translate('free'),
                             ),
                           ),
                           RadioListTile(
                             value: ConsultationFee.range1,
                             onChanged: (value) {
                               setState(() {
-                                _consultationFee = value;
+                                _consultationFee = value!;
                               });
                             },
                             groupValue: _consultationFee,
-                            title: Text('1-50'),
+                            title: const Text('1-50'),
                           ),
                           RadioListTile(
                             value: ConsultationFee.range2,
                             onChanged: (value) {
                               setState(() {
-                                _consultationFee = value;
+                                _consultationFee = value!;
                               });
                             },
                             groupValue: _consultationFee,
-                            title: Text('51-100'),
+                            title: const Text('51-100'),
                           ),
                           RadioListTile(
                             value: ConsultationFee.range3,
                             onChanged: (value) {
                               setState(() {
-                                _consultationFee = value;
+                                _consultationFee = value!;
                               });
                             },
                             groupValue: _consultationFee,
-                            title: Text('101-150'),
+                            title: const Text('101-150'),
                           ),
                           RadioListTile(
                             value: ConsultationFee.range4,
                             onChanged: (value) {
                               setState(() {
-                                _consultationFee = value;
+                                _consultationFee = value!;
                               });
                             },
                             groupValue: _consultationFee,
-                            title: Text('151+'),
+                            title: const Text('151+'),
                           )
                         ],
                       ),
@@ -281,7 +287,7 @@ class _FilterPageState extends State<FilterPage> {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: CustomButton(
                 textSize: 24,
                 onPressed: () async {
@@ -312,7 +318,7 @@ class _FilterPageState extends State<FilterPage> {
                   // Navigator.of(context).pop();
                   // print("Nisarg1111=====>${_bookAppointmentController.doctorSpecialitiesFilterData.value.specialityId}");
                 },
-                text: Translate.of(context).translate('apply'),
+                text: Translate.of(context)!.translate('apply'),
               ),
             ),
           ],

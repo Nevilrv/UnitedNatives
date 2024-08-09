@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class UtilFile {
@@ -9,9 +9,9 @@ class UtilFile {
     return dir.path;
   }
 
-  static Future<File> loadFile(
+  static Future<File?> loadFile(
     FileModel file, {
-    String directory,
+    String? directory,
   }) async {
     directory ??= await getFilePath();
     final filePath = '$directory/${file.name}.${file.type}';

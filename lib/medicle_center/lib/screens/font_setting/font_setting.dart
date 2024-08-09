@@ -1,21 +1,21 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class FontSetting extends StatefulWidget {
   const FontSetting({super.key});
 
   @override
-  _FontSettingState createState() {
+  State<FontSetting> createState() {
     return _FontSettingState();
   }
 }
 
 class _FontSettingState extends State<FontSetting> {
-  String _currentFont = AppBloc.themeCubit.state.font;
-  double _currentScale = AppBloc.themeCubit.state.textScaleFactor * 100;
+  String? _currentFont = AppBloc.themeCubit.state.font;
+  double _currentScale = AppBloc.themeCubit.state.textScaleFactor! * 100;
 
   @override
   void initState() {
@@ -49,11 +49,11 @@ class _FontSettingState extends State<FontSetting> {
                 SliverAppBar(
                   centerTitle: true,
                   title: Text(
-                    Translate.of(context).translate('font'),
+                    Translate.of(context)!.translate('font'),
                   ),
                   actions: [
                     AppButton(
-                      Translate.of(context).translate('apply'),
+                      Translate.of(context)!.translate('apply'),
                       onPressed: _onChange,
                       type: ButtonType.text,
                     ),
@@ -67,7 +67,7 @@ class _FontSettingState extends State<FontSetting> {
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          Widget trailing;
+                          Widget? trailing;
                           final item = AppTheme.fontSupport[index];
                           if (item == _currentFont) {
                             trailing = Icon(

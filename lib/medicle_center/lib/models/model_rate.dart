@@ -1,20 +1,20 @@
 class RateModel {
-  final double one;
-  final double two;
-  final double three;
-  final double four;
-  final double five;
-  final double avg;
-  final int total;
+  final double? one;
+  final double? two;
+  final double? three;
+  final double? four;
+  final double? five;
+  final double? avg;
+  final int? total;
 
   RateModel({
-     this.one,
-     this.two,
-     this.three,
-     this.four,
-     this.five,
-     this.avg,
-     this.total,
+    this.one,
+    this.two,
+    this.three,
+    this.four,
+    this.five,
+    this.avg,
+    this.total,
   });
 
   factory RateModel.fromJson(Map<String, dynamic> json) {

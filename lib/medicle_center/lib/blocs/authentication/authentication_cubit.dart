@@ -15,33 +15,27 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
     ///Event load user
     UserModel user = await AppBloc.userCubit.onLoadUser();
-    print('==user==> $user');
-    if (user != null) {
-      ///Attach token push
-      Application.device?.token = await UtilsMedicalCenter.getDeviceToken();
 
-      ///Save user
-      await AppBloc.userCubit.onSaveUser(user);
+    ///Attach token push
+    Application.device?.token = await UtilsMedicalCenter.getDeviceToken();
 
-      ///Valid token server
-      final result = await UserRepository.validateToken();
-      print('validateToken==result====>$result');
-      if (result) {
-        ///Load wishList
-        AppBloc.wishListCubit.onLoad();
+    ///Save user
+    await AppBloc.userCubit.onSaveUser(user);
 
-        ///Fetch user
-        AppBloc.userCubit.onFetchUser();
+    ///Valid token server
+    final result = await UserRepository.validateToken();
+    if (result) {
+      ///Load wishList
+      AppBloc.wishListCubit.onLoad();
 
-        ///Notify
-        emit(AuthenticationState.success);
-      } else {
-        ///Logout
-        onClear();
-      }
-    } else {
+      ///Fetch user
+      AppBloc.userCubit.onFetchUser();
+
       ///Notify
-      emit(AuthenticationState.fail);
+      emit(AuthenticationState.success);
+    } else {
+      ///Logout
+      onClear();
     }
   }
 

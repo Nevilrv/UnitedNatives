@@ -1,14 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanQR extends StatefulWidget {
   const ScanQR({super.key});
 
   @override
-  _ScanQRState createState() {
+  State<ScanQR> createState() {
     return _ScanQRState();
   }
 }
@@ -16,7 +15,7 @@ class ScanQR extends StatefulWidget {
 class _ScanQRState extends State<ScanQR> {
   final _qrKey = GlobalKey(debugLabel: 'QR');
 
-  QRViewController _controller;
+  QRViewController? _controller;
   bool _done = false;
   bool _flash = false;
 
@@ -72,7 +71,7 @@ class _ScanQRState extends State<ScanQR> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('Scan Qrcode'),
+          Translate.of(context)!.translate('Scan Qrcode'),
         ),
       ),
       body: Stack(

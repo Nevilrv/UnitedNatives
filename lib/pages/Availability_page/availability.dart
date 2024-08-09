@@ -446,19 +446,20 @@
 //   }
 // }
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/pages/Availability_page/select_multiple_availability.dart';
-import 'package:doctor_appointment_booking/pages/Availability_page/update_availability.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/pages/Availability_page/select_multiple_availability.dart';
+import 'package:united_natives/pages/Availability_page/update_availability.dart';
+import '../../controller/ads_controller.dart';
 import '../../utils/constants.dart';
 
 class AvailabilityPage extends StatefulWidget {
+  const AvailabilityPage({super.key});
+
   @override
-  _AvailabilityPageState createState() => _AvailabilityPageState();
+  State<AvailabilityPage> createState() => _AvailabilityPageState();
 }
 
 class _AvailabilityPageState extends State<AvailabilityPage> {
@@ -487,10 +488,10 @@ class _AvailabilityPageState extends State<AvailabilityPage> {
         ),
         appBar: AppBar(
           title: Text(
-            Translate.of(context).translate('availability_time_settings'),
+            Translate.of(context)!.translate('availability_time_settings'),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24),
             textAlign: TextAlign.center,
           ),
@@ -510,15 +511,15 @@ class _AvailabilityPageState extends State<AvailabilityPage> {
                 tabs: [
                   Tab(
                       text: Translate.of(context)
-                          .translate('Update Availability')),
+                          ?.translate('Update Availability')),
                   Tab(
                       text: Translate.of(context)
-                          .translate('Update Multiple\nDay Availability')),
+                          ?.translate('Update Multiple\nDay Availability')),
                 ],
               ),
               Expanded(
                 child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     UpdateAvailability(),
                     SelectMultipleAvailability(),

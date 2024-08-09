@@ -1,28 +1,28 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Web extends StatefulWidget {
-  final WebViewModel web;
-  const Web({Key key,  this.web}) : super(key: key);
+  final WebViewModel? web;
+  const Web({super.key, this.web});
 
   @override
-  _WebState createState() {
+  State<Web> createState() {
     return _WebState();
   }
 }
 
 class _WebState extends State<Web> {
-  final _cookieManager = CookieManager();
+  // final _cookieManager = CookieManager();
 
   bool _loadCompleted = false;
   bool _receiveCallback = false;
-  String _callbackResult;
-  WebViewController _controller;
+  String? _callbackResult;
+  WebViewController? _controller;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _WebState extends State<Web> {
     if (Platform.isIOS) {
       await _controller?.clearCache();
     } else {
-      await _cookieManager.clearCookies();
+      // await _cookieManager.clearCookies();
     }
   }
 
@@ -74,36 +74,38 @@ class _WebState extends State<Web> {
         centerTitle: true,
         elevation: 0,
         title: Text(
-          widget.web.title,
+          widget.web!.title,
         ),
       ),
       body: IndexedStack(
         index: _loadCompleted ? 1 : 0,
         children: [
           Container(
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.surface,
           ),
-          WebView(
-            initialUrl: widget.web.url,
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (webViewController) {
-              _controller = webViewController;
-            },
-            onPageStarted: (String url) {
-              SVProgressHUD.show();
-            },
-            onPageFinished: onPageFinished,
-            navigationDelegate: (request) {
-              for (var item in widget.web.callbackUrl) {
-                if (request.url.contains(item)) {
-                  _callbackResult = item;
-                  break;
-                }
-              }
-              return NavigationDecision.navigate;
-            },
-            gestureNavigationEnabled: true,
-          ),
+
+          /// NEW CODE COMMENT
+          // WebView(
+          //   initialUrl: widget.web.url,
+          //   javascriptMode: JavascriptMode.unrestricted,
+          //   onWebViewCreated: (webViewController) {
+          //     _controller = webViewController;
+          //   },
+          //   onPageStarted: (String url) {
+          //     SVProgressHUD.show();
+          //   },
+          //   onPageFinished: onPageFinished,
+          //   navigationDelegate: (request) {
+          //     for (var item in widget.web!.callbackUrl) {
+          //       if (request.url.contains(item)) {
+          //         _callbackResult = item;
+          //         break;
+          //       }
+          //     }
+          //     return NavigationDecision.navigate;
+          //   },
+          //   gestureNavigationEnabled: true,
+          // ),
         ],
       ),
     );

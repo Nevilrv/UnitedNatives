@@ -55,7 +55,7 @@ class Api {
 
     ResultApiModel resultApiModel = ResultApiModel.fromJson(result);
 
-    if (!resultApiModel.success) {
+    if (!resultApiModel.success!) {
       log('para==========>>>>>${params['password']}');
       final Map<String, dynamic> registerParams = {
         "username": params['username'].toString().split('@')[0],
@@ -68,7 +68,7 @@ class Api {
 
       final response = await Api.requestRegister(registerParams);
 
-      if (response.success) {
+      if (response.success!) {
         final result = await httpManager.post(url: login, data: params);
         return ResultApiModel.fromJson(result);
       }
@@ -398,7 +398,7 @@ class Api {
     directory ??= await UtilFile.getFilePath();
     final filePath = '$directory/${file.name}.${file.type}';
     final result = await httpManager.download(
-      url: file.url,
+      url: '${file.url}',
       filePath: filePath,
       progress: progress,
     );

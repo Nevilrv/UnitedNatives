@@ -1,15 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/pages/Blogpage/blog_container_doctor.dart';
 import 'package:flutter/material.dart';
 import '../../components/create_blog.dart';
+import 'blog_container_doctor.dart';
 
 class BlogPage extends StatefulWidget {
+  const BlogPage({super.key});
+
   @override
-  _BlogPageState createState() => _BlogPageState();
+  State<BlogPage> createState() => _BlogPageState();
 }
 
 class _BlogPageState extends State<BlogPage> {
-  Stream blogsStream;
+  Stream? blogsStream;
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +21,26 @@ class _BlogPageState extends State<BlogPage> {
           'Research and Information',
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).textTheme.subtitle1.color,
+              color: Theme.of(context).textTheme.titleMedium?.color,
               fontSize: 24),
         ),
       ),
-      body: Container(
-          child: ContainerBlogPageDoctor(
+      body: const ContainerBlogPageDoctor(
         hintText: '',
-      )),
+      ),
       floatingActionButton: Container(
-        padding: EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             FloatingActionButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CreateBlog()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreateBlog()));
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             )
           ],
         ),
@@ -49,17 +52,18 @@ class _BlogPageState extends State<BlogPage> {
 class BlogsTile extends StatelessWidget {
   final String imgUrl, title, description, authorName, videoUrl;
 
-  BlogsTile(
-      {@required this.imgUrl,
-      @required this.videoUrl,
-      @required this.title,
-      @required this.description,
-      @required this.authorName});
+  const BlogsTile(
+      {super.key,
+      required this.imgUrl,
+      required this.videoUrl,
+      required this.title,
+      required this.description,
+      required this.authorName});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 16),
       height: 150,
       child: Stack(
         children: <Widget>[
@@ -77,7 +81,7 @@ class BlogsTile extends StatelessWidget {
                 color: Colors.black45.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(6)),
           ),
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -86,16 +90,18 @@ class BlogsTile extends StatelessWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 27, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 27, fontWeight: FontWeight.w500),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 4,
                 ),
                 Text(
                   description,
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400),
+                  style: const TextStyle(
+                      fontSize: 19, fontWeight: FontWeight.w400),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 4,
                 ),
                 Text(authorName)

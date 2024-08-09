@@ -5,23 +5,23 @@ enum TagType { status, chip, rate }
 class AppTag extends StatelessWidget {
   const AppTag(
     this.text, {
-    Key key,
+    super.key,
     this.type,
     this.icon,
     this.onPressed,
-  }) : super(key: key);
+  });
 
-  final String text;
-  final TagType type;
-  final Widget icon;
-  final VoidCallback onPressed;
+  final String? text;
+  final TagType? type;
+  final Widget? icon;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     Widget iconWidget = Container();
     if (icon != null) {
       iconWidget = Row(
-        children: [icon, const SizedBox(width: 8)],
+        children: [icon!, const SizedBox(width: 8)],
       );
     }
     switch (type) {
@@ -42,8 +42,8 @@ class AppTag extends StatelessWidget {
               ),
             ),
             child: Text(
-              text,
-              style: Theme.of(context).textTheme.caption.copyWith(
+              text!,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -64,11 +64,11 @@ class AppTag extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(4)),
             ),
             child: Text(
-              text,
+              text!,
               style: Theme.of(context)
                   .textTheme
-                  .caption
-                  .copyWith(color: Colors.white),
+                  .bodySmall
+                  ?.copyWith(color: Colors.white),
             ),
           ),
         );
@@ -91,8 +91,8 @@ class AppTag extends StatelessWidget {
               children: <Widget>[
                 iconWidget,
                 Text(
-                  text,
-                  style: Theme.of(context).textTheme.caption.copyWith(
+                  text!,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                 )

@@ -19,7 +19,7 @@ class BookingCubit extends Cubit<BookingState> {
   }
 
   ///Calc price
-  Future<String> calcPrice({
+  Future<String?> calcPrice({
     int? id,
     FormSuccess? form,
   }) async {

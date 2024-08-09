@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/repository.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/repository/repository.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,21 +11,21 @@ import 'package:image_picker/image_picker.dart';
 enum UploadImageType { circle, square }
 
 class AppUploadImage extends StatefulWidget {
-  final String title;
-  final ImageModel image;
-  final Function(ImageModel) onChange;
-  final UploadImageType type;
+  final String? title;
+  final ImageModel? image;
+  final Function(ImageModel)? onChange;
+  final UploadImageType? type;
 
   const AppUploadImage({
-    Key key,
+    super.key,
     this.title,
     this.image,
     this.onChange,
     this.type = UploadImageType.square,
-  }) : super(key: key);
+  });
 
   @override
-  _AppUploadImageState createState() {
+  State<AppUploadImage> createState() {
     return _AppUploadImageState();
   }
 }
@@ -33,8 +33,8 @@ class AppUploadImage extends StatefulWidget {
 class _AppUploadImageState extends State<AppUploadImage> {
   final _picker = ImagePicker();
 
-  File _file;
-  double _percent;
+  File? _file;
+  double? _percent;
   bool _completed = false;
 
   @override
@@ -58,26 +58,26 @@ class _AppUploadImageState extends State<AppUploadImage> {
         _completed = false;
         _file = File(pickedFile.path);
       });
-      final response = await ListRepository.uploadImage(_file, (percent) {
+      final response = await ListRepository.uploadImage(_file!, (percent) {
         setState(() {
           _percent = percent;
         });
       });
-      if (response.success) {
+      if (response.success!) {
         setState(() {
           _completed = true;
         });
         final item = ImageModel.fromJsonUpload(response.data);
-        widget.onChange(item);
+        widget.onChange!(item);
       } else {
-        AppBloc.messageCubit.onShow(response.message);
+        AppBloc.messageCubit.onShow(response.message!);
       }
     } catch (e) {
       AppBloc.messageCubit.onShow(e.toString());
     }
   }
 
-  Widget _buildContent() {
+  Widget? _buildContent() {
     if (widget.image != null && _file == null) return null;
 
     switch (widget.type) {
@@ -114,8 +114,8 @@ class _AppUploadImageState extends State<AppUploadImage> {
             title = Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                widget.title,
-                style: Theme.of(context).textTheme.caption,
+                widget.title!,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             );
           }
@@ -151,7 +151,7 @@ class _AppUploadImageState extends State<AppUploadImage> {
           );
         }
 
-        if (_percent != null && _percent < 100) {
+        if (_percent != null && _percent! < 100) {
           return Container(
             alignment: Alignment.bottomLeft,
             child: Container(
@@ -184,14 +184,14 @@ class _AppUploadImageState extends State<AppUploadImage> {
 
   @override
   Widget build(BuildContext context) {
-    DecorationImage decorationImage;
+    DecorationImage? decorationImage;
     BorderType borderType = BorderType.RRect;
     Widget circle = Container();
 
     if (widget.image != null) {
       decorationImage = DecorationImage(
         image: NetworkImage(
-          widget.image.thumb,
+          widget.image!.thumb!,
         ),
         fit: BoxFit.cover,
       );
@@ -199,7 +199,7 @@ class _AppUploadImageState extends State<AppUploadImage> {
     if (_file != null) {
       decorationImage = DecorationImage(
         image: FileImage(
-          _file,
+          _file!,
         ),
         fit: BoxFit.cover,
       );
@@ -216,7 +216,7 @@ class _AppUploadImageState extends State<AppUploadImage> {
         shape: BoxShape.circle,
         image: decorationImage,
       );
-      if (_percent != null && _percent < 100) {
+      if (_percent != null && _percent! < 100) {
         circle = CircularProgressIndicator(
           value: _percent,
           backgroundColor: Theme.of(context).cardColor,

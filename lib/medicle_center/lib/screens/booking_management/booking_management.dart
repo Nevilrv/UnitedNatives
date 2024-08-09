@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +12,7 @@ class BookingManagement extends StatefulWidget {
   const BookingManagement({super.key});
 
   @override
-  _BookingManagementState createState() {
+  State<BookingManagement> createState() {
     return _BookingManagementState();
   }
 }
@@ -24,12 +24,12 @@ class _BookingManagementState extends State<BookingManagement>
   final _scrollController = ScrollController();
   final _endReachedThreshold = 100;
 
-  Timer _timer;
-  SortModel _sortBooking;
-  SortModel _sortRequest;
-  SortModel _statusBooking;
-  SortModel _statusRequest;
-  TabController _tabController;
+  Timer? _timer;
+  SortModel? _sortBooking;
+  SortModel? _sortRequest;
+  SortModel? _statusBooking;
+  SortModel? _statusRequest;
+  TabController? _tabController;
   int _indexTab = 0;
 
   @override
@@ -78,7 +78,7 @@ class _BookingManagementState extends State<BookingManagement>
           request ? state.canLoadMoreRequest : state.canLoadMoreBooking;
       final loadingMore =
           request ? state.loadingMoreRequest : state.loadingMoreBooking;
-      if (canLoadMore && !loadingMore) {
+      if (canLoadMore! && !loadingMore!) {
         _bookingManagement.onLoadMore(
           sort: request ? _sortRequest : _sortBooking,
           status: request ? _statusRequest : _statusBooking,
@@ -206,15 +206,14 @@ class _BookingManagementState extends State<BookingManagement>
 
   @override
   Widget build(BuildContext context) {
-    print('Booking Management');
     final request = _indexTab == 1;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('booking_management'),
+          Translate.of(context)!.translate('booking_management'),
           style: TextStyle(
-            color: Theme.of(context).appBarTheme.textTheme.headline6.color,
+            color: Theme.of(context).appBarTheme.titleTextStyle?.color,
           ),
         ),
       ),
@@ -229,13 +228,13 @@ class _BookingManagementState extends State<BookingManagement>
             itemCount: 15,
           );
           if (state is BookingListSuccess) {
-            List<BookingItemModel> list = state.listBooking;
-            bool loadingMore = state.loadingMoreBooking;
+            List<BookingItemModel>? list = state.listBooking;
+            bool? loadingMore = state.loadingMoreBooking;
             if (request) {
               list = state.listRequest;
               loadingMore = state.loadingMoreRequest;
             }
-            if (list.isEmpty) {
+            if (list!.isEmpty) {
               content = Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -244,10 +243,10 @@ class _BookingManagementState extends State<BookingManagement>
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        Translate.of(context).translate(
+                        Translate.of(context)!.translate(
                           'data_not_found',
                         ),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ],
@@ -255,7 +254,7 @@ class _BookingManagementState extends State<BookingManagement>
               );
             } else {
               int count = list.length;
-              if (loadingMore) {
+              if (loadingMore!) {
                 count = count + 1;
               }
               content = RefreshIndicator(
@@ -268,14 +267,14 @@ class _BookingManagementState extends State<BookingManagement>
                   ),
                   itemBuilder: (context, index) {
                     ///Loading loadMore item
-                    if (index == list.length) {
+                    if (index == list?.length) {
                       return const AppBookingItem();
                     }
-                    final item = list[index];
+                    final item = list?[index];
                     return AppBookingItem(
                       item: item,
                       onPressed: () {
-                        _onDetail(item);
+                        _onDetail(item!);
                       },
                     );
                   },
@@ -296,20 +295,20 @@ class _BookingManagementState extends State<BookingManagement>
                     controller: _tabController,
                     tabs: [
                       Tab(
-                        text: Translate.of(context).translate('my_booking'),
+                        text: Translate.of(context)?.translate('my_booking'),
                       ),
                       Tab(
-                        text: Translate.of(context).translate(
+                        text: Translate.of(context)?.translate(
                           'request_booking',
                         ),
                       ),
                     ],
                     onTap: _onTap,
-                    labelColor: Theme.of(context).textTheme.button?.color,
+                    labelColor: Theme.of(context).textTheme.labelLarge?.color,
                   ),
                   const SizedBox(height: 16),
                   AppTextInput(
-                    hintText: Translate.of(context).translate('search'),
+                    hintText: Translate.of(context)?.translate('search'),
                     controller: _textSearchController,
                     onChanged: _onSearch,
                     onSubmitted: _onSearch,
@@ -340,8 +339,8 @@ class _BookingManagementState extends State<BookingManagement>
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                Translate.of(context).translate('filter'),
-                                style: Theme.of(context).textTheme.subtitle2,
+                                Translate.of(context)!.translate('filter'),
+                                style: Theme.of(context).textTheme.titleSmall,
                                 // style: Theme.of(context).textTheme.caption,
                               )
                             ],
@@ -372,8 +371,8 @@ class _BookingManagementState extends State<BookingManagement>
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                Translate.of(context).translate('sort'),
-                                style: Theme.of(context).textTheme.subtitle2,
+                                Translate.of(context)!.translate('sort'),
+                                style: Theme.of(context).textTheme.titleSmall,
                               )
                             ],
                           ),

@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -22,9 +22,9 @@ class _SignUpState extends State<SignUp> {
   final _focusEmail = FocusNode();
 
   bool _showPassword = false;
-  String _errorID;
-  String _errorPass;
-  String _errorEmail;
+  String? _errorID;
+  String? _errorPass;
+  String? _errorEmail;
 
   @override
   void initState() {
@@ -76,7 +76,7 @@ class _SignUpState extends State<SignUp> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('sign_up'),
+          Translate.of(context)!.translate('sign_up'),
         ),
       ),
       body: SafeArea(
@@ -88,15 +88,15 @@ class _SignUpState extends State<SignUp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  Translate.of(context).translate('account'),
+                  Translate.of(context)!.translate('account'),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 AppTextInput(
-                  hintText: Translate.of(context).translate('input_id'),
+                  hintText: Translate.of(context)?.translate('input_id'),
                   errorText: _errorID,
                   controller: _textIDController,
                   focusNode: _focusID,
@@ -113,15 +113,15 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  Translate.of(context).translate('password'),
+                  Translate.of(context)!.translate('password'),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 AppTextInput(
-                  hintText: Translate.of(context).translate(
+                  hintText: Translate.of(context)?.translate(
                     'input_your_password',
                   ),
                   errorText: _errorPass,
@@ -156,15 +156,15 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  Translate.of(context).translate('email'),
+                  Translate.of(context)!.translate('email'),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 AppTextInput(
-                  hintText: Translate.of(context).translate('input_email'),
+                  hintText: Translate.of(context)?.translate('input_email'),
                   errorText: _errorEmail,
                   focusNode: _focusEmail,
                   onSubmitted: (text) {
@@ -183,7 +183,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(height: 16),
                 AppButton(
-                  Translate.of(context).translate('sign_up'),
+                  Translate.of(context)?.translate('sign_up'),
                   mainAxisSize: MainAxisSize.max,
                   onPressed: _signUp,
                 ),

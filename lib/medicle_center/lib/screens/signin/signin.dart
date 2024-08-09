@@ -1,17 +1,17 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignIn extends StatefulWidget {
-  final String from;
-  const SignIn({Key key, this.from}) : super(key: key);
+  final String? from;
+  const SignIn({super.key, this.from});
 
   @override
-  _SignInState createState() {
+  State<SignIn> createState() {
     return _SignInState();
   }
 }
@@ -23,8 +23,8 @@ class _SignInState extends State<SignIn> {
   final _focusPass = FocusNode();
 
   bool _showPassword = false;
-  String _errorID;
-  String _errorPass;
+  String? _errorID;
+  String? _errorPass;
 
   @override
   void initState() {
@@ -73,7 +73,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('sign_in'),
+          Translate.of(context)!.translate('sign_in'),
         ),
       ),
       body: BlocListener<LoginCubit, LoginState>(
@@ -90,7 +90,7 @@ class _SignInState extends State<SignIn> {
               child: Column(
                 children: <Widget>[
                   AppTextInput(
-                    hintText: Translate.of(context).translate('account'),
+                    hintText: Translate.of(context)?.translate('account'),
                     errorText: _errorID,
                     controller: _textIDController,
                     focusNode: _focusID,
@@ -109,7 +109,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   const SizedBox(height: 8),
                   AppTextInput(
-                    hintText: Translate.of(context).translate('password'),
+                    hintText: Translate.of(context)?.translate('password'),
                     errorText: _errorPass,
                     textInputAction: TextInputAction.done,
                     onChanged: (text) {
@@ -141,7 +141,7 @@ class _SignInState extends State<SignIn> {
                   BlocBuilder<LoginCubit, LoginState>(
                     builder: (context, login) {
                       return AppButton(
-                        Translate.of(context).translate('sign_in'),
+                        Translate.of(context)?.translate('sign_in'),
                         mainAxisSize: MainAxisSize.max,
                         onPressed: _login,
                         loading: login == LoginState.loading,
@@ -153,12 +153,12 @@ class _SignInState extends State<SignIn> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       AppButton(
-                        Translate.of(context).translate('forgot_password'),
+                        Translate.of(context)?.translate('forgot_password'),
                         onPressed: _forgotPassword,
                         type: ButtonType.text,
                       ),
                       AppButton(
-                        Translate.of(context).translate('sign_up'),
+                        Translate.of(context)?.translate('sign_up'),
                         onPressed: _signUp,
                         type: ButtonType.text,
                       ),

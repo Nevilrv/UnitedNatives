@@ -42,9 +42,9 @@ class _App1State extends State<App1> {
       child: Scaffold(
         body: BlocListener<MessageCubit, String>(
           listener: (context, message) {
-            if (message != null) {
+            if (message.isNotEmpty) {
               final snackBar = SnackBar(
-                content: Text(Translate.of(context).translate(message)),
+                content: Text(Translate.of(context)!.translate(message)),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }

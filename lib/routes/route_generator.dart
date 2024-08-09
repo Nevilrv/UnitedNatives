@@ -622,7 +622,7 @@ class RouteGenerator {
           },
         );
 
-      case configs.Routes.filter_sub_route:
+      case configs.Routes.filterSubRoute:
         return MaterialPageRoute(
           builder: (context) {
             return Filter(filter: settings.arguments as FilterModel);

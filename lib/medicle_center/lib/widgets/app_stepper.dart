@@ -1,50 +1,50 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
 import 'package:flutter/material.dart';
 
 class AppStepper extends StatelessWidget {
-  final int active;
-  final List<StepModel> list;
+  final int? active;
+  final List<StepModel>? list;
 
   const AppStepper({
-    Key key,
+    super.key,
     this.active = 0,
     this.list,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
-          children: list.asMap().entries.map((entry) {
+          children: list!.asMap().entries.map((entry) {
             final index = entry.key;
             final item = entry.value;
             Color circleColor = Theme.of(context).dividerColor;
-            Color iconColor;
-            Color lineLeftColor;
-            Color lineRightColor;
+            Color? iconColor;
+            Color? lineLeftColor;
+            Color? lineRightColor;
             if (index != 0) {
               lineLeftColor = Theme.of(context).dividerColor;
             }
-            if (index != list.length - 1) {
+            if (index != list!.length - 1) {
               lineRightColor = Theme.of(context).dividerColor;
             }
-            if (index <= active) {
+            if (index <= active!) {
               circleColor = Theme.of(context).primaryColor;
               iconColor = Colors.white;
             }
-            if (index < active) {
+            if (index < active!) {
               lineRightColor = Theme.of(context).primaryColor;
             }
-            if (index <= active && index > 0) {
+            if (index <= active! && index > 0) {
               lineLeftColor = Theme.of(context).primaryColor;
             }
             return Expanded(
               child: Column(
                 children: [
                   Text(
-                    item.title,
-                    style: Theme.of(context).textTheme.caption?.copyWith(
+                    "${item.title}",
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),

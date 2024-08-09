@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class IconModel {
-  final String title;
-  final Widget icon;
-  final String value;
+  final String? title;
+  final Widget? icon;
+  final String? value;
 
   IconModel({
-     this.title,
+    this.title,
     this.icon,
-     this.value,
+    this.value,
   });
 
   @override

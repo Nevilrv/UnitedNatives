@@ -40,7 +40,7 @@ class UpcomingAppointmentListItem extends StatelessWidget {
                       Expanded(
                         child: _buildColumn(
                           context: context,
-                          title: Translate.of(context).translate('date'),
+                          title: Translate.of(context)!.translate('date'),
                           subtitle:
                               '${DateFormat('EEEE, dd MMM yyyy').format(time)} ',
                         ),
@@ -51,7 +51,7 @@ class UpcomingAppointmentListItem extends StatelessWidget {
                       Expanded(
                         child: _buildColumn(
                           context: context,
-                          title: Translate.of(context).translate('time'),
+                          title: Translate.of(context)!.translate('time'),
                           subtitle: DateFormat('hh:mm a').format(time),
                         ),
                       ),
@@ -146,7 +146,7 @@ class UpcomingAppointmentListItem extends StatelessWidget {
                                     ),
                                   )
                                 : CustomOutlineButton(
-                                    text: Translate.of(context)
+                                    text: Translate.of(context)!
                                         .translate('cancel'),
                                     textSize: 14,
                                     onPressed: () =>

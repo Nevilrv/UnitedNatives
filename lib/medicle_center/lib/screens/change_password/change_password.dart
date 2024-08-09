@@ -1,13 +1,13 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
 
   @override
-  _ChangePasswordState createState() {
+  State<ChangePassword> createState() {
     return _ChangePasswordState();
   }
 }
@@ -18,8 +18,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _focusPass = FocusNode();
   final _focusRePass = FocusNode();
 
-  String _errorPass;
-  String _errorRePass;
+  String? _errorPass;
+  String? _errorRePass;
 
   @override
   void initState() {
@@ -64,7 +64,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('change_password'),
+          Translate.of(context)!.translate('change_password'),
         ),
       ),
       body: SafeArea(
@@ -76,15 +76,15 @@ class _ChangePasswordState extends State<ChangePassword> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  Translate.of(context).translate('password'),
+                  Translate.of(context)!.translate('password'),
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 AppTextInput(
-                  hintText: Translate.of(context).translate(
+                  hintText: Translate.of(context)?.translate(
                     'input_your_password',
                   ),
                   errorText: _errorPass,
@@ -109,16 +109,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  Translate.of(context).translate('confirm_password'),
+                  Translate.of(context)!.translate('confirm_password'),
                   maxLines: 1,
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 AppTextInput(
-                  hintText: Translate.of(context).translate(
+                  hintText: Translate.of(context)?.translate(
                     'confirm_your_password',
                   ),
                   errorText: _errorRePass,
@@ -139,7 +139,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
                 const SizedBox(height: 16),
                 AppButton(
-                  Translate.of(context).translate('confirm'),
+                  Translate.of(context)?.translate('confirm'),
                   mainAxisSize: MainAxisSize.max,
                   onPressed: _changePassword,
                 ),

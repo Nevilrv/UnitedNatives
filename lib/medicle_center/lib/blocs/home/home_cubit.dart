@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/api/api.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/home/home_state.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_category.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_product.dart';
+import 'package:united_natives/medicle_center/lib/api/api.dart';
+import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
+import 'package:united_natives/medicle_center/lib/blocs/home/home_state.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/models/model_category.dart';
+import 'package:united_natives/medicle_center/lib/models/model_product.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeLoading());
@@ -12,7 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> onLoad() async {
     ///Fetch API Home
     final response = await Api.requestHome();
-    if (response.success) {
+    if (response.success!) {
       // log('response.data[categories]----->${response.data['categories']}');
       final banner = List<String>.from(response.data['sliders'] ?? []);
 
@@ -58,7 +58,7 @@ class HomeCubit extends Cubit<HomeState> {
       ));
     } else {
       ///Notify
-      AppBloc.messageCubit.onShow(response.message);
+      AppBloc.messageCubit.onShow(response.message!);
     }
   }
 }

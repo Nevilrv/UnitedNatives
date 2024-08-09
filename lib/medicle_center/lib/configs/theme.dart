@@ -1,4 +1,4 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
 import 'package:flutter/material.dart';
 
 enum DarkOption { dynamic, alwaysOn, alwaysOff }
@@ -47,28 +47,28 @@ class AppTheme {
 
   ///Get theme data
   static ThemeData getTheme({
-    ThemeModel theme,
-    Brightness brightness,
-    String font,
+    ThemeModel? theme,
+    Brightness? brightness,
+    String? font,
   }) {
-    ColorScheme colorScheme;
+    ColorScheme? colorScheme;
     switch (brightness) {
       case Brightness.light:
         colorScheme = ColorScheme.light(
-          primary: theme.primary,
-          secondary: theme.secondary,
+          primary: theme!.primary!,
+          secondary: theme.secondary!,
         );
         break;
       case Brightness.dark:
         colorScheme = ColorScheme.dark(
-          primary: theme.primary,
-          secondary: theme.secondary,
+          primary: theme!.primary!,
+          secondary: theme.secondary!,
         );
         break;
       default:
     }
 
-    final isDark = colorScheme.brightness == Brightness.dark;
+    final isDark = colorScheme!.brightness == Brightness.dark;
     final indicatorColor = isDark ? colorScheme.onSurface : colorScheme.primary;
 
     return ThemeData(
@@ -79,17 +79,13 @@ class AppTheme {
         foregroundColor: isDark ? Colors.white : Colors.black,
         shadowColor: isDark ? null : colorScheme.onSurface.withOpacity(0.2),
       ),
-      canvasColor: colorScheme.background,
-      scaffoldBackgroundColor: colorScheme.background,
-      bottomAppBarColor: colorScheme.surface,
+      canvasColor: colorScheme.surface,
+      scaffoldBackgroundColor: colorScheme.surface,
       cardColor: colorScheme.surface,
       dividerColor: colorScheme.onSurface.withOpacity(0.12),
-      backgroundColor: colorScheme.background,
-      dialogBackgroundColor: colorScheme.background,
-      errorColor: colorScheme.error,
+      dialogBackgroundColor: colorScheme.surface,
       indicatorColor: indicatorColor,
       applyElevationOverlayColor: isDark,
-      colorScheme: colorScheme,
 
       ///Custom
       fontFamily: font,

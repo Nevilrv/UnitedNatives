@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/language.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/preferences.dart';
+import 'package:united_natives/medicle_center/lib/configs/language.dart';
+import 'package:united_natives/medicle_center/lib/configs/preferences.dart';
 import 'package:flutter/material.dart';
 
 class LanguageCubit extends Cubit<Locale> {

@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/app_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/preferences.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/theme.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_theme.dart';
+import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/preferences.dart';
+import 'package:united_natives/medicle_center/lib/configs/theme.dart';
+import 'package:united_natives/medicle_center/lib/models/model_theme.dart';
 import 'package:flutter/material.dart';
 
 class ThemeState {
-  final ThemeModel theme;
-  final ThemeData lightTheme;
-  final ThemeData darkTheme;
-  final String font;
-  final DarkOption darkOption;
-  final double textScaleFactor;
+  final ThemeModel? theme;
+  final ThemeData? lightTheme;
+  final ThemeData? darkTheme;
+  final String? font;
+  final DarkOption? darkOption;
+  final double? textScaleFactor;
 
   ThemeState({
     this.theme,
@@ -43,10 +43,10 @@ class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit() : super(ThemeState.fromDefault());
 
   void onChangeTheme({
-    ThemeModel theme,
-    String font,
-    DarkOption darkOption,
-    double textScaleFactor,
+    ThemeModel? theme,
+    String? font,
+    DarkOption? darkOption,
+    double? textScaleFactor,
   }) async {
     ///Setup Theme with setting darkOption
     final currentState = AppBloc.themeCubit.state;
@@ -54,7 +54,7 @@ class ThemeCubit extends Cubit<ThemeState> {
     font ??= currentState.font;
     darkOption ??= currentState.darkOption;
     textScaleFactor ??= currentState.textScaleFactor ?? 1.0;
-    ThemeState themeState;
+    ThemeState? themeState;
 
     ///Dark mode option
     switch (darkOption) {
@@ -65,7 +65,7 @@ class ThemeCubit extends Cubit<ThemeState> {
           lightTheme: AppTheme.getTheme(
             theme: theme,
             brightness: Brightness.light,
-            font: font,
+            font: font!,
           ),
           darkTheme: AppTheme.getTheme(
             theme: theme,
@@ -84,7 +84,7 @@ class ThemeCubit extends Cubit<ThemeState> {
           lightTheme: AppTheme.getTheme(
             theme: theme,
             brightness: Brightness.dark,
-            font: font,
+            font: font!,
           ),
           darkTheme: AppTheme.getTheme(
             theme: theme,
@@ -103,7 +103,7 @@ class ThemeCubit extends Cubit<ThemeState> {
           lightTheme: AppTheme.getTheme(
             theme: theme,
             brightness: Brightness.light,
-            font: font,
+            font: font!,
           ),
           darkTheme: AppTheme.getTheme(
             theme: theme,
@@ -115,16 +115,17 @@ class ThemeCubit extends Cubit<ThemeState> {
           textScaleFactor: textScaleFactor,
         );
         break;
+      case null:
     }
 
     ///Theme
     Preferences.setString(
       Preferences.theme,
-      jsonEncode(themeState.theme.toJson()),
+      jsonEncode(themeState?.theme?.toJson()),
     );
 
     ///Font
-    Preferences.setString(Preferences.font, themeState.font);
+    Preferences.setString(Preferences.font, themeState!.font!);
 
     ///Text Scale
     if (themeState.textScaleFactor != null) {

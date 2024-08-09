@@ -1,55 +1,54 @@
 import 'dart:developer';
-
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_item.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_category.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_deeplink.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_filter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_image.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_open_time.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_picker.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_product.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_user.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_webview.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/booking/booking.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/booking_detail/booking_detail.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/booking_management/booking_management.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/category/category.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/category_picker/category_picker.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/change_password/change_password.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/deeplink/deeplink.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/edit_profile/edit_profile.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/feedback/feedback.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/filter/filter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/font_setting/font_setting.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/forgot_password/forgot_password.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/gallery/gallery.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/gallery_upload/gallery_upload.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/gps_picker/gps_picker.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/language_setting/language_setting.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/list_product/list_product.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/open_time/open_time.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/picker/picker.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/product_detail/product_detail.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/profile/profile.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/review/review.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/scan/scan.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/search_history/search_history.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/setting/setting.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/signin/signin.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/signup/signup.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/social_network/social_network.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/submit/submit.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/submit_success/submit_success.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/tags_picker/tags_picker.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/theme_setting/theme_setting.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/web/web.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_item.dart';
+import 'package:united_natives/medicle_center/lib/models/model_category.dart';
+import 'package:united_natives/medicle_center/lib/models/model_deeplink.dart';
+import 'package:united_natives/medicle_center/lib/models/model_filter.dart';
+import 'package:united_natives/medicle_center/lib/models/model_image.dart';
+import 'package:united_natives/medicle_center/lib/models/model_open_time.dart';
+import 'package:united_natives/medicle_center/lib/models/model_picker.dart';
+import 'package:united_natives/medicle_center/lib/models/model_product.dart';
+import 'package:united_natives/medicle_center/lib/models/model_user.dart';
+import 'package:united_natives/medicle_center/lib/models/model_webview.dart';
+import 'package:united_natives/medicle_center/lib/screens/booking/booking.dart';
+import 'package:united_natives/medicle_center/lib/screens/booking_detail/booking_detail.dart';
+import 'package:united_natives/medicle_center/lib/screens/booking_management/booking_management.dart';
+import 'package:united_natives/medicle_center/lib/screens/category/category.dart';
+import 'package:united_natives/medicle_center/lib/screens/category_picker/category_picker.dart';
+import 'package:united_natives/medicle_center/lib/screens/change_password/change_password.dart';
+import 'package:united_natives/medicle_center/lib/screens/deeplink/deeplink.dart';
+import 'package:united_natives/medicle_center/lib/screens/edit_profile/edit_profile.dart';
+import 'package:united_natives/medicle_center/lib/screens/feedback/feedback.dart';
+import 'package:united_natives/medicle_center/lib/screens/filter/filter.dart';
+import 'package:united_natives/medicle_center/lib/screens/font_setting/font_setting.dart';
+import 'package:united_natives/medicle_center/lib/screens/forgot_password/forgot_password.dart';
+import 'package:united_natives/medicle_center/lib/screens/gallery/gallery.dart';
+import 'package:united_natives/medicle_center/lib/screens/gallery_upload/gallery_upload.dart';
+import 'package:united_natives/medicle_center/lib/screens/gps_picker/gps_picker.dart';
+import 'package:united_natives/medicle_center/lib/screens/language_setting/language_setting.dart';
+import 'package:united_natives/medicle_center/lib/screens/list_product/list_product.dart';
+import 'package:united_natives/medicle_center/lib/screens/open_time/open_time.dart';
+import 'package:united_natives/medicle_center/lib/screens/picker/picker.dart';
+import 'package:united_natives/medicle_center/lib/screens/product_detail/product_detail.dart';
+import 'package:united_natives/medicle_center/lib/screens/profile/profile.dart';
+import 'package:united_natives/medicle_center/lib/screens/review/review.dart';
+import 'package:united_natives/medicle_center/lib/screens/scan/scan.dart';
+import 'package:united_natives/medicle_center/lib/screens/search_history/search_history.dart';
+import 'package:united_natives/medicle_center/lib/screens/setting/setting.dart';
+import 'package:united_natives/medicle_center/lib/screens/signin/signin.dart';
+import 'package:united_natives/medicle_center/lib/screens/signup/signup.dart';
+import 'package:united_natives/medicle_center/lib/screens/social_network/social_network.dart';
+import 'package:united_natives/medicle_center/lib/screens/submit/submit.dart';
+import 'package:united_natives/medicle_center/lib/screens/submit_success/submit_success.dart';
+import 'package:united_natives/medicle_center/lib/screens/tags_picker/tags_picker.dart';
+import 'package:united_natives/medicle_center/lib/screens/theme_setting/theme_setting.dart';
+import 'package:united_natives/medicle_center/lib/screens/web/web.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 class RouteArguments<T> {
-  final T item;
-  final VoidCallback callback;
+  final T? item;
+  final VoidCallback? callback;
   RouteArguments({this.item, this.callback});
 }
 
@@ -75,7 +74,7 @@ class Routes {
   static const String themeSetting = "/themeSetting";
   static const String listProduct = "/listProduct";
   static const String listProduct2 = "/listProduct2";
-  static const String filter_sub_route = "/filter_sub_route";
+  static const String filterSubRoute = "/filter_sub_route";
   static const String review = "/review";
   static const String writeReview = "/writeReview";
   static const String setting = "/setting";
@@ -184,7 +183,7 @@ class Routes {
           },
         );
 
-      case filter_sub_route:
+      case filterSubRoute:
         return MaterialPageRoute(
           builder: (context) {
             return Filter(filter: settings.arguments as FilterModel);
@@ -279,12 +278,12 @@ class Routes {
       case openTime:
         return MaterialPageRoute(
           builder: (context) {
-            List<OpenTimeModel> arguments;
+            List<OpenTimeModel>? arguments;
             if (settings.arguments != null) {
               arguments = settings.arguments as List<OpenTimeModel>;
             }
             return OpenTime(
-              selected: arguments,
+              selected: arguments!,
             );
           },
           fullscreenDialog: true,
@@ -370,9 +369,9 @@ class Routes {
         );
 
       default:
-        if (settings.name != null && settings.name.contains('?type=')) {
-          final deeplink = DeepLinkModel.fromString(settings.name);
-          if (deeplink.target.isNotEmpty) {
+        if (settings.name != null && settings.name!.contains('?type=')) {
+          final deeplink = DeepLinkModel.fromString(settings.name!);
+          if (deeplink.target!.isNotEmpty) {
             return MaterialPageRoute(
               builder: (context) {
                 return DeepLink(deeplink: deeplink);

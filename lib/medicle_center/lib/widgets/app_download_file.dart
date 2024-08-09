@@ -1,35 +1,35 @@
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/medicle_center/lib/api/api.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/api/api.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 
 class AppDownloadFile extends StatefulWidget {
-  final FileModel file;
-  final Widget child;
-  final Widget success;
-  final Widget fail;
-  final Widget downloading;
+  final FileModel? file;
+  final Widget? child;
+  final Widget? success;
+  final Widget? fail;
+  final Widget? downloading;
 
   const AppDownloadFile({
-    Key key,
+    super.key,
     this.file,
     this.child,
     this.success,
     this.downloading,
     this.fail,
-  }) : super(key: key);
+  });
 
   @override
-  _AppDownloadFileState createState() => _AppDownloadFileState();
+  State<AppDownloadFile> createState() => _AppDownloadFileState();
 }
 
 class _AppDownloadFileState extends State<AppDownloadFile> {
   double _percent = 0.0;
   bool _error = false;
-  File _file;
+  File? _file;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _AppDownloadFileState extends State<AppDownloadFile> {
 
   ///Load file exist
   void _loadFile() async {
-    final file = await UtilFile.loadFile(widget.file);
+    final file = await UtilFile.loadFile(widget.file!);
     setState(() {
       _file = file;
     });
@@ -53,14 +53,14 @@ class _AppDownloadFileState extends State<AppDownloadFile> {
   ///Download file
   void _downloadFile() async {
     final result = await Api.requestDownloadFile(
-        file: widget.file,
+        file: widget.file!,
         progress: (percent) {
           setState(() {
             _percent = percent;
           });
         });
 
-    if (!result.success) {
+    if (!result.success!) {
       setState(() {
         _error = true;
       });

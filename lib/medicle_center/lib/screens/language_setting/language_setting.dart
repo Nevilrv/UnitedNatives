@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class LanguageSetting extends StatefulWidget {
   const LanguageSetting({super.key});
 
   @override
-  _LanguageSettingState createState() {
-    return _LanguageSettingState();
-  }
+  State<LanguageSetting> createState() => _LanguageSettingState();
 }
 
 class _LanguageSettingState extends State<LanguageSetting> {
@@ -59,7 +57,7 @@ class _LanguageSettingState extends State<LanguageSetting> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('change_language'),
+          Translate.of(context)!.translate('change_language'),
         ),
       ),
       body: SafeArea(
@@ -68,7 +66,7 @@ class _LanguageSettingState extends State<LanguageSetting> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: AppTextInput(
-                hintText: Translate.of(context).translate('search'),
+                hintText: Translate.of(context)!.translate('search'),
                 controller: _textLanguageController,
                 onChanged: _onFilter,
                 onSubmitted: _onFilter,
@@ -77,7 +75,7 @@ class _LanguageSettingState extends State<LanguageSetting> {
             Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  Widget trailing;
+                  Widget? trailing;
                   final item = _listLanguage[index];
                   if (item == _languageSelected) {
                     trailing = Icon(
@@ -89,7 +87,7 @@ class _LanguageSettingState extends State<LanguageSetting> {
                     title: AppLanguage.getGlobalLanguageName(
                       item.languageCode,
                     ),
-                    trailing: trailing,
+                    trailing: trailing!,
                     onPressed: () {
                       setState(() {
                         _languageSelected = item;
@@ -104,7 +102,7 @@ class _LanguageSettingState extends State<LanguageSetting> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: AppButton(
-                Translate.of(context).translate('confirm'),
+                Translate.of(context)!.translate('confirm'),
                 mainAxisSize: MainAxisSize.max,
                 onPressed: _changeLanguage,
               ),

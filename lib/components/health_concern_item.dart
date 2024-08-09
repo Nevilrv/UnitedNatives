@@ -31,7 +31,7 @@ class HealthConcernItem extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '${Translate.of(context).translate(specialityName!)}\n',
+                  '${Translate.of(context)?.translate(specialityName!)}\n',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),

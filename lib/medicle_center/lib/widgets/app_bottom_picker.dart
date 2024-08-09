@@ -1,15 +1,15 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class AppBottomPicker extends StatelessWidget {
-  final PickerModel picker;
+  final PickerModel? picker;
 
   const AppBottomPicker({
-    Key key,
-     this.picker,
-  }) : super(key: key);
+    super.key,
+    this.picker,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +35,24 @@ class AppBottomPicker extends StatelessWidget {
                   ),
                 ),
                 Column(
-                  children: picker.data.map((item) {
-                    Widget trailing;
+                  children: picker!.data!.map((item) {
+                    Widget? trailing;
                     String title = '';
                     if (item is String) {
                       title = item;
                     } else {
                       title = item.title;
                     }
-                    if (picker.selected.contains(item)) {
+                    if (picker!.selected!.contains(item)) {
                       trailing = Icon(
                         Icons.check,
                         color: Theme.of(context).primaryColor,
                       );
                     }
-                    if (item == picker.data.last) {
+                    if (item == picker!.data!.last) {
                       return AppListTitle(
-                        title: Translate.of(context).translate(title),
-                        trailing: trailing,
+                        title: Translate.of(context)?.translate(title),
+                        trailing: trailing!,
                         border: false,
                         onPressed: () {
                           Navigator.pop(context, item);
@@ -60,8 +60,8 @@ class AppBottomPicker extends StatelessWidget {
                       );
                     }
                     return AppListTitle(
-                      title: Translate.of(context).translate(title),
-                      trailing: trailing,
+                      title: Translate.of(context)?.translate(title),
+                      trailing: trailing!,
                       onPressed: () {
                         Navigator.pop(context, item);
                       },

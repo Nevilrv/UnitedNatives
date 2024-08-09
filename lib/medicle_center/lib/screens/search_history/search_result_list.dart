@@ -2,21 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class ResultList extends StatefulWidget {
-  const ResultList({
-    Key key,
-  }) : super(key: key);
+  const ResultList({super.key});
 
   @override
-  _ResultListState createState() {
-    return _ResultListState();
-  }
+  State<ResultList> createState() => _ResultListState();
 }
 
 class _ResultListState extends State<ResultList> {
@@ -31,7 +27,7 @@ class _ResultListState extends State<ResultList> {
           scrollController.offset) {
         if (!AppBloc.searchCubit.isMax) {
           AppBloc.searchCubit.page++;
-          AppBloc.searchCubit.onSearch(AppBloc.searchCubit.searchValue);
+          AppBloc.searchCubit.onSearch(AppBloc.searchCubit.searchValue!);
         } else {
           print('====MAX===MAX==');
         }
@@ -51,9 +47,7 @@ class _ResultListState extends State<ResultList> {
   }
 
   void _onSave(item) async {
-    List<String> historyString = Preferences.getStringList(
-      Preferences.search,
-    );
+    List<String>? historyString = Preferences.getStringList(Preferences.search);
     if (historyString != null) {
       if (!historyString.contains(jsonEncode(item.toJson()))) {
         historyString.add(jsonEncode(item.toJson()));
@@ -77,7 +71,7 @@ class _ResultListState extends State<ResultList> {
       child: BlocBuilder<SearchCubit, SearchState>(
         builder: (context, state) {
           if (state is SearchSuccess) {
-            if (state.list.isEmpty) {
+            if (state.list!.isEmpty) {
               return Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -86,10 +80,10 @@ class _ResultListState extends State<ResultList> {
                     Padding(
                       padding: const EdgeInsets.all(4),
                       child: Text(
-                        Translate.of(context).translate(
+                        Translate.of(context)!.translate(
                           'can_not_found_data',
                         ),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ],
@@ -101,21 +95,21 @@ class _ResultListState extends State<ResultList> {
               child: Column(
                 children: [
                   ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(
                       left: 16,
                       right: 16,
                       top: 16,
                     ),
-                    itemCount: state.list.length,
+                    itemCount: state.list!.length,
                     itemBuilder: (context, index) {
-                      final item = state.list[index];
+                      final item = state.list?[index];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: AppProductItem(
                           onPressed: () {
-                            _onProductDetail(item);
+                            _onProductDetail(item!);
                           },
                           item: item,
                           type: ProductViewType.small,
@@ -123,10 +117,10 @@ class _ResultListState extends State<ResultList> {
                       );
                     },
                   ),
-                  if (state.list.isNotEmpty && state.isLoad)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: const Center(
+                  if (state.list!.isNotEmpty && state.isLoad!)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Center(
                         child: SizedBox(
                           width: 24,
                           height: 24,

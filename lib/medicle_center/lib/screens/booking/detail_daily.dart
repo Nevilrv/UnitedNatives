@@ -1,20 +1,20 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class DetailDaily extends StatefulWidget {
-  final DailyBookingModel bookingStyle;
-  final VoidCallback onCalcPrice;
+  final DailyBookingModel? bookingStyle;
+  final VoidCallback? onCalcPrice;
 
   const DetailDaily({
-    Key key,
+    super.key,
     this.bookingStyle,
     this.onCalcPrice,
-  }) : super(key: key);
+  });
 
   @override
-  _DetailDailyState createState() {
+  State<DetailDaily> createState() {
     return _DetailDailyState();
   }
 }
@@ -36,27 +36,27 @@ class _DetailDailyState extends State<DetailDaily> {
   void _onDatePicker(DateTime init, Function(DateTime) callback) async {
     final now = DateTime.now();
     final picked = await showDatePicker(
-      initialDate: init ?? now,
+      initialDate: init,
       firstDate: DateTime(now.year, now.month),
       context: context,
       lastDate: DateTime(now.year + 1),
     );
     if (picked != null) {
       callback(picked);
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
   ///Show picker time
   void _onTimePicker(TimeOfDay init, Function(TimeOfDay) callback) async {
     final picked = await showTimePicker(
-      initialTime: init ?? TimeOfDay.now(),
+      initialTime: init,
       context: context,
     );
 
     if (picked != null) {
       callback(picked);
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
@@ -73,7 +73,7 @@ class _DetailDailyState extends State<DetailDaily> {
     );
     if (result != null) {
       callback(result);
-      widget.onCalcPrice();
+      widget.onCalcPrice!();
     }
   }
 
@@ -94,12 +94,12 @@ class _DetailDailyState extends State<DetailDaily> {
                         Icons.person_outline,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.adult?.toString(),
-                      title: Translate.of(context).translate('adult'),
+                      value: widget.bookingStyle?.adult?.toString(),
+                      title: Translate.of(context)?.translate('adult'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.adult, (value) {
+                        _onPicker(widget.bookingStyle!.adult!, (value) {
                           setState(() {
-                            widget.bookingStyle.adult = value;
+                            widget.bookingStyle?.adult = value;
                           });
                         });
                       },
@@ -112,12 +112,12 @@ class _DetailDailyState extends State<DetailDaily> {
                         Icons.child_friendly_outlined,
                         color: Theme.of(context).hintColor,
                       ),
-                      value: widget.bookingStyle.children?.toString(),
-                      title: Translate.of(context).translate('children'),
+                      value: widget.bookingStyle?.children?.toString(),
+                      title: Translate.of(context)?.translate('children'),
                       onPressed: () {
-                        _onPicker(widget.bookingStyle.children, (value) {
+                        _onPicker(widget.bookingStyle!.children!, (value) {
                           setState(() {
-                            widget.bookingStyle.children = value;
+                            widget.bookingStyle?.children = value;
                           });
                         });
                       },
@@ -131,12 +131,12 @@ class _DetailDailyState extends State<DetailDaily> {
                   Icons.calendar_today_outlined,
                   color: Theme.of(context).hintColor,
                 ),
-                value: widget.bookingStyle.startDate?.dateView,
-                title: Translate.of(context).translate('start_date'),
+                value: widget.bookingStyle?.startDate?.dateView,
+                title: Translate.of(context)?.translate('start_date'),
                 onPressed: () {
-                  _onDatePicker(widget.bookingStyle.startDate, (value) {
+                  _onDatePicker(widget.bookingStyle!.startDate!, (value) {
                     setState(() {
-                      widget.bookingStyle.startDate = value;
+                      widget.bookingStyle!.startDate = value;
                     });
                   });
                 },
@@ -147,12 +147,12 @@ class _DetailDailyState extends State<DetailDaily> {
                   Icons.more_time,
                   color: Theme.of(context).hintColor,
                 ),
-                value: widget.bookingStyle.startTime?.viewTime,
-                title: Translate.of(context).translate('start_hour'),
+                value: widget.bookingStyle!.startTime?.viewTime,
+                title: Translate.of(context)!.translate('start_hour'),
                 onPressed: () {
-                  _onTimePicker(widget.bookingStyle.startTime, (value) {
+                  _onTimePicker(widget.bookingStyle!.startTime!, (value) {
                     setState(() {
-                      widget.bookingStyle.startTime = value;
+                      widget.bookingStyle!.startTime = value;
                     });
                   });
                 },
@@ -166,17 +166,17 @@ class _DetailDailyState extends State<DetailDaily> {
             Checkbox(
               activeColor: Theme.of(context).primaryColor,
               value: _allowEndTime,
-              onChanged: (bool value) {
+              onChanged: (bool? value) {
                 setState(() {
-                  _allowEndTime = value;
+                  _allowEndTime = value!;
                 });
               },
             ),
             Text(
-              Translate.of(context).translate('end_time'),
+              Translate.of(context)!.translate('end_time'),
               style: Theme.of(context)
                   .textTheme
-                  .button
+                  .labelLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             )
           ],
@@ -193,12 +193,12 @@ class _DetailDailyState extends State<DetailDaily> {
                     Icons.calendar_today_outlined,
                     color: Theme.of(context).hintColor,
                   ),
-                  value: widget.bookingStyle.endDate?.dateView,
-                  title: Translate.of(context).translate('end_date'),
+                  value: widget.bookingStyle?.endDate?.dateView,
+                  title: Translate.of(context)?.translate('end_date'),
                   onPressed: () {
-                    _onDatePicker(widget.bookingStyle.endDate, (value) {
+                    _onDatePicker(widget.bookingStyle!.endDate!, (value) {
                       setState(() {
-                        widget.bookingStyle.endDate = value;
+                        widget.bookingStyle?.endDate = value;
                       });
                     });
                   },
@@ -209,12 +209,12 @@ class _DetailDailyState extends State<DetailDaily> {
                     Icons.more_time,
                     color: Theme.of(context).hintColor,
                   ),
-                  value: widget.bookingStyle.endTime?.viewTime,
-                  title: Translate.of(context).translate('end_hour'),
+                  value: widget.bookingStyle?.endTime?.viewTime,
+                  title: Translate.of(context)?.translate('end_hour'),
                   onPressed: () {
-                    _onTimePicker(widget.bookingStyle.endTime, (value) {
+                    _onTimePicker(widget.bookingStyle!.endTime!, (value) {
                       setState(() {
-                        widget.bookingStyle.endTime = value;
+                        widget.bookingStyle?.endTime = value;
                       });
                     });
                   },
@@ -236,14 +236,14 @@ class _DetailDailyState extends State<DetailDaily> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    Translate.of(context).translate('total'),
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    Translate.of(context)!.translate('total'),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    widget.bookingStyle.price,
-                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                    "${widget.bookingStyle?.price}",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   )

@@ -13,7 +13,7 @@ class DiscoveryCubit extends Cubit<DiscoveryState> {
   Future<void> onLoad() async {
     final result = await CategoryRepository.loadDiscovery();
 
-    List<DiscoveryModel> navajoData = result
+    List<DiscoveryModel> navajoData = result!
         .where((DiscoveryModel e) => e.category!.title!.contains('Navajo'))
         .toList();
     result.removeWhere((DiscoveryModel element) =>
@@ -31,7 +31,7 @@ class DiscoveryCubit extends Cubit<DiscoveryState> {
 
     result.add(navajoModel);
 
-    if (result != null) {
+    if (result.isNotEmpty) {
       emit(DiscoverySuccess(result));
     }
   }

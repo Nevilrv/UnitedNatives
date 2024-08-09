@@ -97,7 +97,7 @@ class _MyDoctorListItemState extends State<MyDoctorListItem> {
             width: 10,
           ),
           CustomButton(
-            text: Translate.of(context).translate('details'),
+            text: Translate.of(context)!.translate('details'),
             textSize: 16,
             onPressed: () {
               Get.toNamed(Routes.doctorProfile2, arguments: widget.doctor);

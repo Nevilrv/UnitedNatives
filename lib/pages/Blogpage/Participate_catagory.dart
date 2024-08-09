@@ -1,10 +1,9 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PCategoryView extends StatelessWidget {
@@ -14,20 +13,20 @@ class PCategoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
     final h = MediaQuery.of(context).size.width;
-    bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+    bool isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(Translate.of(context).translate('Survey List'),
+        title: Text(Translate.of(context)!.translate('Survey List'),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24)),
       ),
       body: ListView(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(left: 30),
+            margin: const EdgeInsets.only(left: 30),
             child: Stack(
               children: <Widget>[
                 Container(
@@ -36,7 +35,7 @@ class PCategoryView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(width: 30, height: 1, color: Colors.brown),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
@@ -55,7 +54,7 @@ class PCategoryView extends StatelessWidget {
                     "01",
                     style: TextStyle(
                         fontSize: 59,
-                        color: _isDark
+                        color: isDark
                             ? Colors.white.withOpacity(0.2)
                             : Colors.grey[200],
                         fontFamily: "Bubble"),
@@ -63,12 +62,12 @@ class PCategoryView extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 70),
+                  margin: const EdgeInsets.only(top: 70),
                   child: Text(
                     "Current \t Survey",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: _isDark ? Colors.white : Colors.black,
+                      color: isDark ? Colors.white : Colors.black,
                       fontSize: 36,
                     ),
                     textScaleFactor: 2,
@@ -79,8 +78,8 @@ class PCategoryView extends StatelessWidget {
           ),
           Hero(
             transitionOnUserGestures: true,
-            child: _buildMyCourses(w),
             tag: "Research information",
+            child: _buildMyCourses(w),
           ),
         ],
       ),
@@ -95,16 +94,16 @@ class PCategoryView extends StatelessWidget {
     ];
     // final values = [7, 3, 1];
     final gradientColors = [
-      [Color(0xFF606BFF), Color(0xFF58D1FF)],
-      [Color(0xFF606BFF), Color(0xFF58D1FF)],
-      [Color(0xFF606BFF), Color(0xFF58D1FF)]
+      [const Color(0xFF606BFF), const Color(0xFF58D1FF)],
+      [const Color(0xFF606BFF), const Color(0xFF58D1FF)],
+      [const Color(0xFF606BFF), const Color(0xFF58D1FF)]
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 24, 16, 24),
           child: Text('Survey List',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
         ),
@@ -113,7 +112,7 @@ class PCategoryView extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.vertical,
-            separatorBuilder: (context, index) => SizedBox(height: 10),
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
             itemCount: titles.length,
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
@@ -121,7 +120,7 @@ class PCategoryView extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => WebViewLoad(
+                      builder: (context) => const WebViewLoad(
                         url:
                             'https://qfreeaccountssjc1.az1.qualtrics.com/jfe/preview/SV_9BHguySouHLUT7n?Q_CHL',
                       ),
@@ -148,15 +147,15 @@ class PCategoryView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(titles[index],
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700)),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                       ],
                     ),
                   ),
@@ -165,7 +164,7 @@ class PCategoryView extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
       ],
     );
   }
@@ -173,9 +172,10 @@ class PCategoryView extends StatelessWidget {
 
 class WebViewLoad extends StatefulWidget {
   // final String title;
-  final String url;
+  final String? url;
 
-  const WebViewLoad({Key key /*, this.title*/, this.url}) : super(key: key);
+  const WebViewLoad({super.key /*, this.title*/, this.url});
+  @override
   WebViewLoadUI createState() => WebViewLoadUI();
 }
 
@@ -184,7 +184,6 @@ class WebViewLoadUI extends State<WebViewLoad> {
 
   @override
   Widget build(BuildContext context) {
-    print('webURL ${widget.url}');
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
         bottomNavigationBar: AdsBottomBar(
@@ -196,7 +195,7 @@ class WebViewLoadUI extends State<WebViewLoad> {
             'Survey',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).textTheme.subtitle1.color,
+              color: Theme.of(context).textTheme.titleMedium?.color,
               fontSize: 24,
             ),
           ),
@@ -207,9 +206,14 @@ class WebViewLoadUI extends State<WebViewLoad> {
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: WebView(
-              initialUrl: widget.url,
-              javascriptMode: JavascriptMode.unrestricted,
+            child: WebViewWidget(
+              controller: WebViewController()
+                ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                ..loadRequest(
+                  Uri.parse(
+                    widget.url.toString(),
+                  ),
+                ),
             ),
           ),
         ),

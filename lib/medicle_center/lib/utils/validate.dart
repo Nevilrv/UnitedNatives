@@ -11,13 +11,13 @@ class UtilValidator {
   static const String valueNotMatch = "value_not_match";
   static const String valueNotIsTag = "value_not_is_tag";
 
-  static String validate(
+  static String? validate(
     String data, {
     ValidateType type = ValidateType.normal,
-    int min,
-    int max,
+    int? min,
+    int? max,
     bool allowEmpty = false,
-    String match,
+    String? match,
   }) {
     ///Empty
     if (!allowEmpty && data.isEmpty) {
@@ -32,7 +32,6 @@ class UtilValidator {
     if (data.isEmpty) return null;
 
     switch (type) {
-
       ///Email pattern
       case ValidateType.email:
         final emailRegex = RegExp(

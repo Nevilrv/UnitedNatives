@@ -4,48 +4,46 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/repository.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/profile/profile_header.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/screens/profile/profile_tab.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/repository/repository.dart';
+import 'package:united_natives/medicle_center/lib/screens/profile/profile_header.dart';
+import 'package:united_natives/medicle_center/lib/screens/profile/profile_tab.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:share/share.dart';
 
 class Profile extends StatefulWidget {
-  final UserModel user;
+  final UserModel? user;
 
-  Profile({Key key, this.user}) : super(key: key);
+  const Profile({super.key, this.user});
 
   @override
-  _ProfileState createState() {
-    return _ProfileState();
-  }
+  State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
-  StreamSubscription _submitSubscription;
-  StreamSubscription _reviewSubscription;
+  StreamSubscription? _submitSubscription;
+  StreamSubscription? _reviewSubscription;
   final _profileCubit = ProfileCubit();
   final _scrollController = ScrollController();
   final _textSearchController = TextEditingController();
   final _endReachedThreshold = 100;
 
   bool _isOwner = false;
-  FilterModel _filter;
-  TabController _tabController;
+  FilterModel? _filter;
+  TabController? _tabController;
   String _currentTab = 'listing';
-  UserModel user;
+  UserModel? user;
 
   @override
   void initState() {
     super.initState();
     user = widget.user;
     _filter = FilterModel.fromDefault();
-    _isOwner = widget.user.id == AppBloc.userCubit.state?.id;
+    _isOwner = widget.user?.id == AppBloc.userCubit.state.id;
     _tabController = TabController(length: _isOwner ? 3 : 2, vsync: this);
     _scrollController.addListener(_onScroll);
 
@@ -69,8 +67,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    _submitSubscription.cancel();
-    _reviewSubscription.cancel();
+    _submitSubscription?.cancel();
+    _reviewSubscription?.cancel();
     _profileCubit.close();
     _scrollController.dispose();
     _textSearchController.dispose();
@@ -82,7 +80,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     _profileCubit.onLoad(
       filter: _filter,
       keyword: _textSearchController.text,
-      userID: widget.user.id,
+      userID: widget.user?.id,
       currentTab: _currentTab,
     );
   }
@@ -91,11 +89,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   void _onScroll() {
     if (_scrollController.position.extentAfter > _endReachedThreshold) return;
     final state = _profileCubit.state;
-    if (state is ProfileSuccess && state.canLoadMore && !state.loadingMore) {
+    if (state is ProfileSuccess && state.canLoadMore! && !state.loadingMore!) {
       _profileCubit.onLoadMore(
         filter: _filter,
         keyword: _textSearchController.text,
-        userID: widget.user.id,
+        userID: widget.user?.id,
         currentTab: _currentTab,
       );
     }
@@ -107,7 +105,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     if (_isOwner) {
       routes = {0: 'listing', 1: 'pending', 2: 'review'};
     }
-    _currentTab = routes[index];
+    _currentTab = routes[index]!;
     _onRefresh();
   }
 
@@ -116,7 +114,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     _profileCubit.onSearch(
       filter: _filter,
       keyword: _textSearchController.text,
-      userID: widget.user.id,
+      userID: widget.user?.id,
       currentTab: _currentTab,
     );
   }
@@ -133,7 +131,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext context) {
-          final id = '${user.id}';
+          final id = '${user?.id}';
           final link = 'listar://qrcode?type=profile&action=view&id=$id';
           return SafeArea(
             child: Container(
@@ -165,7 +163,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           Row(
                             children: [
                               CachedNetworkImage(
-                                imageUrl: user.image,
+                                imageUrl: user?.image ?? "",
                                 placeholder: (context, url) {
                                   return AppPlaceholder(
                                     child: Container(
@@ -210,17 +208,18 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    user.name,
+                                    user?.name ?? "",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle2
+                                        .titleSmall
                                         ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    Translate.of(context).translate(
+                                    Translate.of(context)!.translate(
                                       'share_qr_profile',
                                     ),
-                                    style: Theme.of(context).textTheme.caption,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   )
                                 ],
                               )
@@ -233,7 +232,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 child: Column(
                                   children: [
                                     AppButton(
-                                      Translate.of(context).translate('share'),
+                                      Translate.of(context)!.translate('share'),
                                       mainAxisSize: MainAxisSize.max,
                                       size: ButtonSize.small,
                                       type: ButtonType.outline,
@@ -242,7 +241,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                       },
                                     ),
                                     AppButton(
-                                      Translate.of(context).translate('copy'),
+                                      Translate.of(context)!.translate('copy'),
                                       mainAxisSize: MainAxisSize.max,
                                       size: ButtonSize.small,
                                       onPressed: () {
@@ -257,7 +256,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                 alignment: Alignment.center,
                                 width: 150,
                                 height: 150,
-                                child: QrImage(
+                                child: QrImageView(
                                   data: link,
                                   size: 150,
                                   backgroundColor: Colors.white,
@@ -268,9 +267,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                     );
                                   },
                                   padding: EdgeInsets.zero,
-                                  embeddedImage: NetworkImage(user.image),
-                                  embeddedImageStyle: QrEmbeddedImageStyle(
-                                    size: const Size(24, 24),
+                                  embeddedImage: NetworkImage(user!.image!),
+                                  embeddedImageStyle:
+                                      const QrEmbeddedImageStyle(
+                                    size: Size(24, 24),
                                   ),
                                 ),
                               )
@@ -287,7 +287,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         },
       );
       if (result == 'share') {
-        _onShare(user.url);
+        _onShare(user!.url!);
       } else if (result == 'copy') {
         _onCopy();
       }
@@ -298,8 +298,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   void _onFilter() async {
     final result = await Navigator.pushNamed(
       context,
-      Routes.filter_sub_route,
-      arguments: _filter.clone(),
+      Routes.filterSubRoute,
+      arguments: _filter?.clone(),
     );
     if (result != null && result is FilterModel) {
       setState(() {
@@ -317,14 +317,14 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       builder: (BuildContext context) {
         return AppBottomPicker(
           picker: PickerModel(
-            selected: [_filter.sort],
+            selected: [_filter?.sort],
             data: Application.setting.sort,
           ),
         );
       },
     );
     if (result != null) {
-      _filter.sort = result;
+      _filter?.sort = result;
       _onRefresh();
     }
   }
@@ -338,9 +338,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         Widget bookingItem = Container();
         Widget editItem = Container();
         Widget removeItem = Container();
-        if (item.bookingUse) {
+        if (item.bookingUse!) {
           bookingItem = AppListTitle(
-            title: Translate.of(context).translate("booking"),
+            title: Translate.of(context)?.translate("booking"),
             leading: const Icon(Icons.pending_actions_outlined),
             onPressed: () {
               Navigator.pop(context, "booking");
@@ -349,14 +349,14 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         }
         if (_isOwner) {
           editItem = AppListTitle(
-            title: Translate.of(context).translate("edit"),
+            title: Translate.of(context)?.translate("edit"),
             leading: const Icon(Icons.edit_outlined),
             onPressed: () {
               Navigator.pop(context, "edit");
             },
           );
           removeItem = AppListTitle(
-            title: Translate.of(context).translate("remove"),
+            title: Translate.of(context)?.translate("remove"),
             leading: const Icon(Icons.delete_outline),
             onPressed: () {
               Navigator.pop(context, "remove");
@@ -390,7 +390,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         editItem,
                         removeItem,
                         AppListTitle(
-                          title: Translate.of(context).translate("share"),
+                          title: Translate.of(context)?.translate("share"),
                           leading: const Icon(Icons.share_outlined),
                           onPressed: () {
                             Navigator.pop(context, "share");
@@ -422,7 +422,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         _onRemove(item);
         break;
       case "share":
-        _onShare(item.link);
+        _onShare(item.link!);
         break;
       case "edit":
         _onEdit(item);
@@ -448,7 +448,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   void _onCopy() {
     Clipboard.setData(
-      ClipboardData(text: user.url),
+      ClipboardData(text: user!.url!),
     );
     AppBloc.messageCubit.onShow('user_link_copied');
   }
@@ -474,11 +474,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   ///Build Content
   Widget _buildContent({
-    List<ProductModel> listProduct,
-    List<ProductModel> listProductPending,
-    List<CommentModel> listComment,
-    bool loadingMore,
-    ProfileState profileState,
+    List<ProductModel>? listProduct,
+    List<ProductModel>? listProductPending,
+    List<CommentModel>? listComment,
+    bool? loadingMore,
+    ProfileState? profileState,
   }) {
     ///Loading List Product
     Widget content = SliverList(
@@ -524,8 +524,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Text(
-                    Translate.of(context).translate('list_is_empty'),
-                    style: Theme.of(context).textTheme.bodyText1,
+                    Translate.of(context)!.translate('list_is_empty'),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
               ],
@@ -534,7 +534,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         ),
       );
 
-      if (loadingMore) {
+      if (loadingMore!) {
         list.add(null);
       }
       if (list.isNotEmpty) {
@@ -583,8 +583,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Text(
-                    Translate.of(context).translate('list_is_empty'),
-                    style: Theme.of(context).textTheme.bodyText1,
+                    Translate.of(context)!.translate('list_is_empty'),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
               ],
@@ -593,7 +593,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         ),
       );
 
-      if (loadingMore) {
+      if (loadingMore!) {
         list.add(null);
       }
       if (list.isNotEmpty) {
@@ -642,8 +642,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: Text(
-                    Translate.of(context).translate('list_is_empty'),
-                    style: Theme.of(context).textTheme.bodyText1,
+                    Translate.of(context)!.translate('list_is_empty'),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
               ],
@@ -652,7 +652,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         ),
       );
 
-      if (loadingMore) {
+      if (loadingMore!) {
         list.add(null);
       }
       if (list.isNotEmpty) {
@@ -688,14 +688,14 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       create: (context) => _profileCubit..user = user,
       child: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, profile) {
-          List<ProductModel> listProduct;
-          List<ProductModel> listProductPending;
-          List<CommentModel> listComment;
+          List<ProductModel>? listProduct;
+          List<ProductModel>? listProductPending;
+          List<CommentModel>? listComment;
           bool showFilter = (_currentTab == 'listing' ||
               (_currentTab == 'review' && _isOwner));
           List<Widget> tabs = [
-            Tab(text: Translate.of(context).translate('listing')),
-            Tab(text: Translate.of(context).translate('review')),
+            Tab(text: Translate.of(context)?.translate('listing')),
+            Tab(text: Translate.of(context)?.translate('review')),
           ];
           bool loadingMore = false;
 
@@ -704,20 +704,20 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             listProduct = profile.listProduct ?? [];
             listProductPending = profile.listProductPending ?? [];
             listComment = profile.listComment ?? [];
-            loadingMore = profile.loadingMore;
+            loadingMore = profile.loadingMore!;
           }
           if (_isOwner) {
             action = [
               AppButton(
-                Translate.of(context).translate('add'),
+                Translate.of(context)?.translate('add'),
                 onPressed: _onSubmit,
                 type: ButtonType.text,
               ),
             ];
             tabs = [
-              Tab(text: Translate.of(context).translate('listing')),
-              Tab(text: Translate.of(context).translate('pending')),
-              Tab(text: Translate.of(context).translate('review')),
+              Tab(text: Translate.of(context)?.translate('listing')),
+              Tab(text: Translate.of(context)?.translate('pending')),
+              Tab(text: Translate.of(context)?.translate('review')),
             ];
           }
           return Scaffold(
@@ -730,7 +730,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 SliverAppBar(
                   centerTitle: true,
                   title: Text(
-                    Translate.of(context).translate('profile'),
+                    Translate.of(context)!.translate('profile'),
                   ),
                   actions: action,
                   pinned: true,
@@ -750,7 +750,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     height: 165,
                     showFilter: showFilter,
                     tabs: tabs,
-                    tabController: _tabController,
+                    tabController: _tabController!,
                     onTap: _onTap,
                     textSearchController: _textSearchController,
                     onSearch: _onSearch,

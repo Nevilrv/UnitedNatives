@@ -1,13 +1,12 @@
 import 'dart:io';
-
-import 'package:doctor_appointment_booking/components/text_form_field.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_class_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/add_class_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/scheduled_class_viewmodel.dart';
+import 'package:united_natives/components/text_form_field.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_class_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/add_class_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/scheduled_class_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +31,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   TextEditingController featureImageController = TextEditingController();
   final UserController userController = Get.find();
 
-  File featureImageFile;
+  File ?featureImageFile;
 
   bool isStreaming = false;
 
@@ -42,22 +41,22 @@ class _AddClassScreenState extends State<AddClassScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('add_class'),
+          Translate.of(context)!.translate('add_class'),
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).textTheme.subtitle1.color,
+              color: Theme.of(context).textTheme.titleMedium?.color,
               fontSize: 24),
           textAlign: TextAlign.center,
         ),
         actions: <Widget>[
           IconButton(
             onPressed: () async {
-              if (_formKey.currentState.validate()) {
+              if (_formKey.currentState!.validate()) {
                 AddClassReqModel model = AddClassReqModel();
                 model.doctorId = userController.user.value.id;
                 model.title = titleController.text;
                 model.description = descriptionController.text;
-                model.featuredImage = featureImageFile.path;
+                model.featuredImage = featureImageFile?.path;
                 model.date = dateController.text;
                 model.startTime = startTimeController.text;
                 model.endTime = endTimeController.text;
@@ -68,9 +67,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
                   AddClassResponseModel responseModel =
                       scheduledClassController.addclassApiResponse.data;
                   if (responseModel.status == "Success") {
-                    Future.delayed(Duration(seconds: 1), () {
+                    Future.delayed(const Duration(seconds: 1), () {
                       scheduledClassController.getClassDoctor(
-                          id: userController.user.value.id, date: "");
+                          id: userController.user.value.id!, date: "");
                       Navigator.pop(context);
 
                       Utils.showSnackBar(
@@ -88,7 +87,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                 }
               }
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.done,
             ),
           )
@@ -99,7 +98,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
           return Stack(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 15,
                 ),
@@ -138,7 +137,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                         child: Utils.loadingBar(),
                       ),
                     )
-                  : SizedBox()
+                  : const SizedBox()
             ],
           );
         },
@@ -152,25 +151,25 @@ class _AddClassScreenState extends State<AddClassScreen> {
       children: [
         Text(
           "Title",
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         CustomTextFormField(
           textInputAction: TextInputAction.next,
           validator: (text) {
-            if (text.isEmpty) {
+            if (text!.isEmpty) {
               return '*enter title';
             }
             return null;
           },
           controller: titleController,
           hintText: 'Enter title here',
-          hintTextStyle: TextStyle(
+          hintTextStyle: const TextStyle(
             fontSize: 18,
             color: Color(0xffbcbcbc),
             fontFamily: 'NunitoSans',
           ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -181,25 +180,25 @@ class _AddClassScreenState extends State<AddClassScreen> {
       children: [
         Text(
           "Description",
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         CustomTextFormField(
           textInputAction: TextInputAction.next,
           validator: (text) {
-            if (text.isEmpty) {
+            if (text!.isEmpty) {
               return '*enter class description';
             }
             return null;
           },
           controller: descriptionController,
           hintText: 'Enter class description',
-          hintTextStyle: TextStyle(
+          hintTextStyle: const TextStyle(
             fontSize: 18,
             color: Color(0xffbcbcbc),
             fontFamily: 'NunitoSans',
           ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -213,7 +212,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
             Expanded(
               child: Text(
                 "Streaming",
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             CupertinoSwitch(
@@ -225,7 +224,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
             ),
           ],
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -236,13 +235,13 @@ class _AddClassScreenState extends State<AddClassScreen> {
       children: [
         Text(
           "Date",
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         CustomTextFormField(
           textInputAction: TextInputAction.next,
           readOnly: true,
           validator: (text) {
-            if (text.isEmpty) {
+            if (text!.isEmpty) {
               return '*select the date';
             }
             return null;
@@ -259,13 +258,13 @@ class _AddClassScreenState extends State<AddClassScreen> {
           },
           controller: dateController,
           hintText: 'Select the date',
-          hintTextStyle: TextStyle(
+          hintTextStyle: const TextStyle(
             fontSize: 18,
             color: Color(0xffbcbcbc),
             fontFamily: 'NunitoSans',
           ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -283,13 +282,13 @@ class _AddClassScreenState extends State<AddClassScreen> {
                 children: [
                   Text(
                     "Start Time",
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   CustomTextFormField(
                     textInputAction: TextInputAction.next,
                     readOnly: true,
                     validator: (text) {
-                      if (text.isEmpty) {
+                      if (text!.isEmpty) {
                         return '*select the start time';
                       }
                       return null;
@@ -306,7 +305,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                     },
                     controller: startTimeController,
                     hintText: 'Select the start time',
-                    hintTextStyle: TextStyle(
+                    hintTextStyle: const TextStyle(
                       fontSize: 18,
                       color: Color(0xffbcbcbc),
                       fontFamily: 'NunitoSans',
@@ -315,7 +314,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                 ],
               ),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
 
             ///END TIME
             Expanded(
@@ -324,13 +323,13 @@ class _AddClassScreenState extends State<AddClassScreen> {
                 children: [
                   Text(
                     "End Time",
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   CustomTextFormField(
                     textInputAction: TextInputAction.next,
                     readOnly: true,
                     validator: (text) {
-                      if (text.isEmpty) {
+                      if (text!.isEmpty) {
                         return '*select the end time';
                       }
                       return null;
@@ -356,7 +355,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             endTimeController.text = endTime.format(context);
                           } else {
                             Get.showSnackbar(
-                              GetSnackBar(
+                              const GetSnackBar(
                                 title: 'WARNING',
                                 message: 'please select valid time',
                                 duration: Duration(seconds: 2),
@@ -366,7 +365,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                         }
                       } else {
                         Get.showSnackbar(
-                          GetSnackBar(
+                          const GetSnackBar(
                             title: 'WARNING',
                             message: 'please first select the start time',
                             duration: Duration(seconds: 2),
@@ -382,7 +381,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
             ),
           ],
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -393,13 +392,13 @@ class _AddClassScreenState extends State<AddClassScreen> {
       children: [
         Text(
           "Class Feature Image",
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         CustomTextFormField(
           textInputAction: TextInputAction.next,
           readOnly: true,
           validator: (text) {
-            if (text.isEmpty) {
+            if (text!.isEmpty) {
               return '*select the date';
             }
             return null;
@@ -412,20 +411,20 @@ class _AddClassScreenState extends State<AddClassScreen> {
                     featureImageController.text = '';
                     setState(() {});
                   },
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                 ),
           onTap: () async {
             ImagePicker imagePicker = ImagePicker();
             final pick =
                 await imagePicker.pickImage(source: ImageSource.gallery);
 
-            featureImageFile = File(pick.path);
+            featureImageFile = File(pick!.path);
             featureImageController.text = pick.path;
             setState(() {});
           },
           controller: featureImageController,
           hintText: 'Select feature image',
-          hintTextStyle: TextStyle(
+          hintTextStyle: const TextStyle(
             fontSize: 18,
             color: Color(0xffbcbcbc),
             fontFamily: 'NunitoSans',

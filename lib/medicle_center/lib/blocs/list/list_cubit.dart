@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/application.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_filter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_pagination.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_product.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/list_repository.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/logger.dart';
+import 'package:united_natives/medicle_center/lib/configs/application.dart';
+import 'package:united_natives/medicle_center/lib/models/model_filter.dart';
+import 'package:united_natives/medicle_center/lib/models/model_pagination.dart';
+import 'package:united_natives/medicle_center/lib/models/model_product.dart';
+import 'package:united_natives/medicle_center/lib/repository/list_repository.dart';
+import 'package:united_natives/medicle_center/lib/utils/logger.dart';
 
 import 'cubit.dart';
 
@@ -13,7 +13,7 @@ class ListCubit extends Cubit<ListState> {
 
   int page = 1;
   List<ProductModel> list = [];
-  PaginationModel pagination;
+  PaginationModel? pagination;
 
   Future<void> onLoad(FilterModel filter) async {
     page = 1;
@@ -21,19 +21,17 @@ class ListCubit extends Cubit<ListState> {
     ///Fetch API
     final result = await ListRepository.loadList(
       page: page,
-      perPage: Application.setting.perPage,
+      perPage: Application.setting.perPage!,
       filter: filter,
     );
-    if (result != null) {
+    if (result!.isNotEmpty) {
       list = result[0];
       pagination = result[1];
-
-      print('result---------->>>>>>>>${list[1]}');
 
       ///Notify
       emit(ListSuccess(
         list: list,
-        canLoadMore: pagination.page < pagination.maxPage,
+        canLoadMore: pagination!.page! < pagination!.maxPage!,
       ));
     } else {
       emit(ListSuccess(
@@ -49,27 +47,27 @@ class ListCubit extends Cubit<ListState> {
     emit(ListSuccess(
       loadingMore: true,
       list: list,
-      canLoadMore: pagination.page < pagination.maxPage,
+      canLoadMore: pagination!.page! < pagination!.maxPage!,
     ));
 
     ///Fetch API
     final result = await ListRepository.loadList(
       page: page,
-      perPage: Application.setting.perPage,
+      perPage: Application.setting.perPage!,
       filter: filter,
     );
-    if (result != null) {
+    if (result!.isNotEmpty) {
       list.addAll(result[0]);
       pagination = result[1];
 
       ///Notify
       emit(ListSuccess(
         list: list,
-        canLoadMore: pagination.page < pagination.maxPage,
+        canLoadMore: pagination!.page! < pagination!.maxPage!,
       ));
     } else {
       list.sort(
-          (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+          (a, b) => a.title!.toLowerCase().compareTo(b.title!.toLowerCase()));
 
       emit(ListSuccess(
         list: list,
@@ -92,7 +90,7 @@ class ListCubit extends Cubit<ListState> {
         ///Notify
         emit(ListSuccess(
           list: list,
-          canLoadMore: pagination.page < pagination.maxPage,
+          canLoadMore: pagination!.page! < pagination!.maxPage!,
         ));
       } else {
         emit(ListSuccess(

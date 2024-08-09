@@ -1,23 +1,25 @@
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BookAppointmentTab extends StatefulWidget {
+  const BookAppointmentTab({super.key});
+
   @override
   State<BookAppointmentTab> createState() => _BookAppointmentTabState();
 }
 
 class _BookAppointmentTabState extends State<BookAppointmentTab> {
-  BookAppointmentController _bookAppointmentController =
+  final BookAppointmentController _bookAppointmentController =
       Get.put(BookAppointmentController());
 
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   final searchController = TextEditingController();
   List categoryOfStatess = [];
-  var chooseStateId;
+  String? chooseStateId;
 
   String stateName = '';
 
@@ -36,11 +38,11 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  Translate.of(context).translate('choose_health_center'),
+                  Translate.of(context)!.translate('choose_health_center'),
                   style: Theme.of(context)
                       .textTheme
-                      .headline6
-                      .copyWith(fontWeight: FontWeight.w700, fontSize: 22),
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
                 ),
               ),
             ),
@@ -331,17 +333,15 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
             //   height: 20,
             // ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 if (controller.categoryOfMedicalCenter.isNotEmpty) {
-                  return showDialog(
+                  showDialog(
                     context: context,
                     builder: (context) {
-                      return WillPopScope(
-                        onWillPop: () async {
-                          return false;
-                        },
+                      return PopScope(
+                        canPop: false,
                         child: StatefulBuilder(
                           builder: (context, setState234) {
                             return Dialog(
@@ -390,23 +390,28 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                                                     onChanged: (value) {
                                                       setState234(() {});
                                                     },
-                                                    decoration: InputDecoration(
-                                                        contentPadding:
-                                                            EdgeInsets.only(
-                                                                top: 10,
-                                                                left: 16),
-                                                        suffixIcon:
-                                                            Icon(Icons.search),
-                                                        enabledBorder:
-                                                            InputBorder.none,
-                                                        focusedBorder:
-                                                            InputBorder.none,
-                                                        hintText: 'Search...'),
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            contentPadding:
+                                                                EdgeInsets.only(
+                                                                    top: 10,
+                                                                    left: 16),
+                                                            suffixIcon:
+                                                                Icon(Icons
+                                                                    .search),
+                                                            enabledBorder:
+                                                                InputBorder
+                                                                    .none,
+                                                            focusedBorder:
+                                                                InputBorder
+                                                                    .none,
+                                                            hintText:
+                                                                'Search...'),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 15,
                                             ),
                                             GestureDetector(
@@ -415,7 +420,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                                                     controller.medicalName);
                                                 searchController.clear();
                                               },
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.clear,
                                                 color: Colors.black,
                                                 size: 28,
@@ -441,7 +446,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                                                                   .toString()
                                                                   .toLowerCase()));
                                               if (index < 0) {
-                                                return Center(
+                                                return const Center(
                                                   child: Text(
                                                     'No Medical Center !',
                                                     style: TextStyle(
@@ -517,7 +522,11 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                                                                             '');
                                                               },
                                                               title: Text(
-                                                                "${controller.categoryOfMedicalCenter[index]['post_title'].toString()}",
+                                                                controller
+                                                                    .categoryOfMedicalCenter[
+                                                                        index][
+                                                                        'post_title']
+                                                                    .toString(),
                                                                 style: TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
@@ -525,16 +534,17 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                                                                     color: Theme.of(
                                                                             context)
                                                                         .textTheme
-                                                                        .subtitle1
-                                                                        .color,
+                                                                        .titleMedium
+                                                                        ?.color,
                                                                     fontSize:
                                                                         17),
                                                               ),
                                                             ),
-                                                            Divider(height: 0),
+                                                            const Divider(
+                                                                height: 0),
                                                           ],
                                                         )
-                                                      : SizedBox();
+                                                      : const SizedBox();
                                                 },
                                               );
                                             },
@@ -554,7 +564,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                 } else if (_bookAppointmentController.medicalLoader.value ==
                     true) {
                   Get.showSnackbar(
-                    GetSnackBar(
+                    const GetSnackBar(
                       backgroundColor: Colors.blue,
                       duration: Duration(seconds: 2),
                       messageText: Text(
@@ -565,7 +575,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                   );
                 } else {
                   Get.showSnackbar(
-                    GetSnackBar(
+                    const GetSnackBar(
                       backgroundColor: Colors.red,
                       duration: Duration(seconds: 2),
                       messageText: Text(
@@ -578,14 +588,14 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
               },
               child: commonContainer(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20, right: 12),
+                  padding: const EdgeInsets.only(left: 20, right: 12),
                   child: Row(
                     children: [
                       Expanded(
                         child: Text(
                           controller.medicalName == ""
                               ? 'Select Medical Center'
-                              : '${controller.medicalName}',
+                              : controller.medicalName,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 18,
@@ -607,7 +617,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             // RadioListTile(
             //   title: Text('Indigenous Health'),
             //   groupValue: controller.ihOrNatives,
@@ -627,7 +637,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
             //   },
             // ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
             // Obx(
             //   () => Container(
@@ -774,25 +784,25 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                 },
                 borderRadius: BorderRadius.circular(4),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   child: Row(
                     children: <Widget>[
                       CircleAvatar(
                         backgroundColor: Colors.grey[300],
                         backgroundImage:
-                            AssetImage('assets/images/medicine.png'),
+                            const AssetImage('assets/images/medicine.png'),
                         radius: 25,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                         child: Text(
-                          Translate.of(context).translate('Provider') +
-                              '(${_bookAppointmentController.doctorCount.toString()})',
+                          '${Translate.of(context)?.translate('Provider')}(${_bookAppointmentController.doctorCount.toString()})',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                           ),
                         ),
@@ -802,7 +812,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(w > 550 ? w * 0.55 : w * 0.7, 55),
@@ -821,7 +831,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
 
                 // Navigator.pop(context);
               },
-              child: Text(
+              child: const Text(
                 'Apply',
                 style: TextStyle(
                   fontSize: 20,
@@ -834,7 +844,7 @@ class _BookAppointmentTabState extends State<BookAppointmentTab> {
     );
   }
 
-  static Container commonContainer({Widget child}) {
+  static Container commonContainer({Widget? child}) {
     return Container(
       height: 60,
       decoration: BoxDecoration(

@@ -1,20 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/repository.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/repository/repository.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class TagsPicker extends StatefulWidget {
-  final List<String> selected;
+  final List<String>? selected;
 
-  const TagsPicker({Key key,  this.selected}) : super(key: key);
+  const TagsPicker({super.key, this.selected});
 
   @override
-  _TagsPickerState createState() {
-    return _TagsPickerState();
-  }
+  State<TagsPicker> createState() => _TagsPickerState();
 }
 
 class _TagsPickerState extends State<TagsPicker> {
@@ -22,13 +20,13 @@ class _TagsPickerState extends State<TagsPicker> {
 
   List<String> _tags = [];
   List<String> _suggest = [];
-  Timer _debounce;
+  Timer? _debounce;
   bool _searching = false;
 
   @override
   void initState() {
     super.initState();
-    _tags = widget.selected;
+    _tags = widget.selected!;
     _textEditController.text = _tags.join(",");
   }
 
@@ -96,7 +94,7 @@ class _TagsPickerState extends State<TagsPicker> {
 
   @override
   Widget build(BuildContext context) {
-    Widget trailing;
+    Widget? trailing;
     if (_searching) {
       trailing = const SizedBox(
         width: 16,
@@ -110,11 +108,11 @@ class _TagsPickerState extends State<TagsPicker> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('choose_tags'),
+          Translate.of(context)!.translate('choose_tags'),
         ),
         actions: [
           AppButton(
-            Translate.of(context).translate('apply'),
+            Translate.of(context)?.translate('apply'),
             onPressed: _onApply,
             type: ButtonType.text,
           )
@@ -127,7 +125,7 @@ class _TagsPickerState extends State<TagsPicker> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               AppTextInput(
-                hintText: Translate.of(context).translate('input_tags'),
+                hintText: Translate.of(context)?.translate('input_tags'),
                 controller: _textEditController,
                 onChanged: _onChange,
                 onSubmitted: _onChange,
@@ -136,8 +134,8 @@ class _TagsPickerState extends State<TagsPicker> {
               ),
               const SizedBox(height: 2),
               Text(
-                Translate.of(context).translate('separate_tag'),
-                style: Theme.of(context).textTheme.caption,
+                Translate.of(context)!.translate('separate_tag'),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               AnimatedContainer(
                 height: _suggest.isNotEmpty ? 88 : 0,

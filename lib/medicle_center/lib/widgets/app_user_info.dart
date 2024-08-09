@@ -1,22 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/config.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_placeholder.dart';
+import 'package:united_natives/medicle_center/lib/configs/config.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_placeholder.dart';
 
 enum UserViewType { basic, information, qrcode }
 
 class AppUserInfo extends StatelessWidget {
-  final UserModel user;
-  final VoidCallback onPressed;
-  final UserViewType type;
+  final UserModel? user;
+  final VoidCallback? onPressed;
+  final UserViewType? type;
 
   const AppUserInfo({
-    Key key,
+    super.key,
     this.user,
     this.onPressed,
     this.type = UserViewType.basic,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +64,15 @@ class AppUserInfo extends StatelessWidget {
           );
         }
         Widget description = Container();
-        if (user.description.isNotEmpty) {
+        if (user!.description!.isNotEmpty) {
           description = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 4),
               Text(
-                user.description,
+                '${user!.description}',
                 maxLines: 1,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           );
@@ -82,7 +82,7 @@ class AppUserInfo extends StatelessWidget {
           child: Row(
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl: user.image,
+                imageUrl: "${user?.image}",
                 imageBuilder: (context, imageProvider) {
                   return Container(
                     width: 60,
@@ -131,16 +131,16 @@ class AppUserInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      user.name,
+                      "${user?.name}",
                       maxLines: 1,
-                      style: Theme.of(context).textTheme.subtitle2,
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                     description,
                     const SizedBox(height: 4),
                     Text(
-                      user.nickname,
+                      '${user?.nickname}',
                       maxLines: 1,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -198,7 +198,7 @@ class AppUserInfo extends StatelessWidget {
           child: Row(
             children: <Widget>[
               CachedNetworkImage(
-                imageUrl: user.image,
+                imageUrl: '${user?.image}',
                 placeholder: (context, url) {
                   return AppPlaceholder(
                     child: Container(
@@ -244,15 +244,15 @@ class AppUserInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      user.name,
+                      '${user?.name}',
                       style: Theme.of(context)
                           .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.bold),
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      user.email,
-                      style: Theme.of(context).textTheme.caption,
+                      '${user?.email}',
+                      style: Theme.of(context).textTheme.bodySmall,
                     )
                   ],
                 ),

@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'model_booking_style.dart';
 
 class StandardBookingModel extends BookingStyleModel {
-  DateTime startDate;
-  TimeOfDay startTime;
+  DateTime? startDate;
+  TimeOfDay? startTime;
 
   StandardBookingModel({
     price,
@@ -27,7 +27,7 @@ class StandardBookingModel extends BookingStyleModel {
   }
 
   factory StandardBookingModel.fromJson(Map<String, dynamic> json) {
-    TimeOfDay startTime;
+    TimeOfDay? startTime;
     if (json['start_time'] != null) {
       startTime = TimeOfDay.fromDateTime(
         DateFormat('hh:mm').parse(json['start_time']),

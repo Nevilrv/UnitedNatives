@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/repository/review_repository.dart';
+import 'package:united_natives/medicle_center/lib/repository/review_repository.dart';
 import 'cubit.dart';
 
 class ReviewCubit extends Cubit<ReviewState> {
@@ -11,7 +11,7 @@ class ReviewCubit extends Cubit<ReviewState> {
 
     ///Fetch API
     final result = await ReviewRepository.loadReview(id);
-    if (result != null) {
+    if (result!.isNotEmpty) {
       ///Notify
       emit(
         ReviewSuccess(
@@ -23,19 +23,19 @@ class ReviewCubit extends Cubit<ReviewState> {
   }
 
   Future<bool> onSave({
-    int id,
-    String content,
-    double rate,
+    int? id,
+    String? content,
+    double? rate,
   }) async {
     ///Fetch API
     final result = await ReviewRepository.saveReview(
-      id: id,
-      content: content,
-      rate: rate,
+      id: id!,
+      content: content!,
+      rate: rate!,
     );
     if (result) {
       final result = await ReviewRepository.loadReview(id);
-      if (result != null) {
+      if (result!.isNotEmpty) {
         ///Notify
         emit(
           ReviewSuccess(

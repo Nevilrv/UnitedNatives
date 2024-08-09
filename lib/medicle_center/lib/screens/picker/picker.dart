@@ -1,20 +1,18 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class Picker extends StatefulWidget {
-  final PickerModel picker;
+  final PickerModel? picker;
 
   const Picker({
-    Key key,
+    super.key,
     this.picker,
-  }) : super(key: key);
+  });
 
   @override
-  _PickerState createState() {
-    return _PickerState();
-  }
+  State<Picker> createState() => _PickerState();
 }
 
 class _PickerState extends State<Picker> {
@@ -42,7 +40,7 @@ class _PickerState extends State<Picker> {
 
   ///Build List
   Widget _buildList() {
-    if (widget.picker.data.isEmpty) {
+    if (widget.picker!.data!.isEmpty) {
       return Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -51,10 +49,10 @@ class _PickerState extends State<Picker> {
             Padding(
               padding: const EdgeInsets.all(4),
               child: Text(
-                Translate.of(context).translate(
+                Translate.of(context)!.translate(
                   'can_not_found_data',
                 ),
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           ],
@@ -62,11 +60,11 @@ class _PickerState extends State<Picker> {
       );
     }
 
-    List data = widget.picker.data;
+    List? data = widget.picker?.data;
 
     ///Filter
     if (_keyword.isNotEmpty) {
-      data = data.where(((item) {
+      data = data?.where(((item) {
         return item.title.toUpperCase().contains(_keyword.toUpperCase());
       })).toList();
     }
@@ -77,7 +75,7 @@ class _PickerState extends State<Picker> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: AppTextInput(
-            hintText: Translate.of(context).translate('search'),
+            hintText: Translate.of(context)?.translate('search'),
             onChanged: _onFilter,
             onSubmitted: _onFilter,
             controller: _textPickerController,
@@ -86,13 +84,13 @@ class _PickerState extends State<Picker> {
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) {
-              final item = data[index];
-              Widget leading;
-              Widget trailing;
+              final item = data?[index];
+              Widget? leading;
+              Widget? trailing;
               if (item.icon != null && item.icon is Widget) {
                 leading = item.icon;
               }
-              if (widget.picker.selected.contains(item)) {
+              if (widget.picker!.selected!.contains(item)) {
                 trailing = Icon(
                   Icons.check,
                   color: Theme.of(context).primaryColor,
@@ -103,13 +101,13 @@ class _PickerState extends State<Picker> {
                 title: item.title,
                 leading: leading,
                 trailing: trailing,
-                border: index != data.length - 1,
+                border: index != data!.length - 1,
                 onPressed: () {
                   Navigator.pop(context, item);
                 },
               );
             },
-            itemCount: data.length,
+            itemCount: data?.length,
           ),
         ),
       ],
@@ -122,7 +120,7 @@ class _PickerState extends State<Picker> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          widget.picker.title ?? 'title',
+          widget.picker?.title ?? 'title',
         ),
       ),
       body: SafeArea(

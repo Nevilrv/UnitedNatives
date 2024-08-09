@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_placeholder.dart';
+import 'package:united_natives/medicle_center/lib/models/model.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_placeholder.dart';
 
 class ProfileHeader extends SliverPersistentHeaderDelegate {
-  final double height;
-  final UserModel user;
-  final VoidCallback onQRCode;
-  final bool showQR;
+  final double? height;
+  final UserModel? user;
+  final VoidCallback? onQRCode;
+  final bool? showQR;
 
   ProfileHeader({
     this.height,
@@ -70,32 +70,32 @@ class ProfileHeader extends SliverPersistentHeaderDelegate {
     if (user != null) {
       String post = '';
       String review = '';
-      if (user.total > 0) {
-        post = '${user.total} ${Translate.of(context).translate('post')},';
+      if (user!.total! > 0) {
+        post = '${user?.total} ${Translate.of(context)?.translate('post')},';
       }
-      if (user.rate > 0) {
-        review = '${user.comment} ${Translate.of(context).translate(
+      if (user!.rate! > 0) {
+        review = '${user?.comment} ${Translate.of(context)?.translate(
           'review',
         )}';
       }
-      if (user.description.isNotEmpty) {
+      if (user!.description!.isNotEmpty) {
         description = Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
             Text(
-              user.description,
+              user?.description ?? "",
               maxLines: 1,
               style: Theme.of(context)
                   .textTheme
-                  .caption
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .bodySmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
           ],
         );
       }
-      if (showQR) {
+      if (showQR!) {
         action = IconButton(
           onPressed: onQRCode,
           icon: const Icon(
@@ -110,7 +110,7 @@ class ProfileHeader extends SliverPersistentHeaderDelegate {
             alignment: Alignment.bottomRight,
             children: [
               CachedNetworkImage(
-                imageUrl: user.image,
+                imageUrl: user!.image!,
                 placeholder: (context, url) {
                   return AppPlaceholder(
                     child: Container(
@@ -159,7 +159,7 @@ class ProfileHeader extends SliverPersistentHeaderDelegate {
                   color: Theme.of(context).primaryColor,
                 ),
                 child: Text(
-                  '${user.rate}',
+                  '${user?.rate}',
                   style: const TextStyle(fontSize: 12, color: Colors.white),
                 ),
               )
@@ -172,12 +172,12 @@ class ProfileHeader extends SliverPersistentHeaderDelegate {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name,
+                  user!.name!,
                   maxLines: 1,
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle1
-                      .copyWith(fontWeight: FontWeight.bold),
+                      .titleMedium
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 description,
                 Row(
@@ -188,7 +188,7 @@ class ProfileHeader extends SliverPersistentHeaderDelegate {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RatingBar.builder(
-                          initialRating: user.rate,
+                          initialRating: user!.rate!,
                           minRating: 1,
                           allowHalfRating: true,
                           unratedColor: Colors.amber.withAlpha(100),
@@ -205,7 +205,10 @@ class ProfileHeader extends SliverPersistentHeaderDelegate {
                         Text(
                           '$post$review',
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.caption.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                         ),
@@ -222,7 +225,7 @@ class ProfileHeader extends SliverPersistentHeaderDelegate {
     }
     return Container(
       height: height,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.surface,
       child: SafeArea(
         top: false,
         bottom: false,
@@ -235,10 +238,10 @@ class ProfileHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => height;
+  double get maxExtent => height!;
 
   @override
-  double get minExtent => height;
+  double get minExtent => height!;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;

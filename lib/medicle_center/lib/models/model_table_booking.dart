@@ -1,11 +1,11 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model_booking_style.dart';
+import 'package:united_natives/medicle_center/lib/models/model_booking_style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TableBookingModel extends BookingStyleModel {
-  DateTime startDate;
-  TimeOfDay startTime;
-  List tableList;
+  DateTime? startDate;
+  TimeOfDay? startTime;
+  List? tableList;
   List selected = [];
 
   TableBookingModel({
@@ -32,7 +32,7 @@ class TableBookingModel extends BookingStyleModel {
   }
 
   factory TableBookingModel.fromJson(Map<String, dynamic> json) {
-    TimeOfDay startTime;
+    TimeOfDay? startTime;
     if (json['start_time'] != null) {
       startTime = TimeOfDay.fromDateTime(
         DateFormat('hh:mm').parse(json['start_time']),

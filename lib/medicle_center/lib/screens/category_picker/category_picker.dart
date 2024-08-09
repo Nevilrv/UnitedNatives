@@ -1,18 +1,18 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/models/model.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_button.dart';
+import 'package:united_natives/medicle_center/lib/models/model_picker.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 
 class CategoryPicker extends StatefulWidget {
-  final PickerModel picker;
+  final PickerModel? picker;
 
   const CategoryPicker({
-    Key key,
+    super.key,
     this.picker,
-  }) : super(key: key);
+  });
 
   @override
-  _CategoryPickerState createState() {
+  State<CategoryPicker> createState() {
     return _CategoryPickerState();
   }
 }
@@ -29,7 +29,7 @@ class _CategoryPickerState extends State<CategoryPicker> {
   }
 
   void onApply() {
-    Navigator.pop(context, widget.picker.selected);
+    Navigator.pop(context, widget.picker?.selected);
   }
 
   @override
@@ -37,10 +37,10 @@ class _CategoryPickerState extends State<CategoryPicker> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(widget.picker.title),
+        title: Text("${widget.picker?.title}"),
         actions: <Widget>[
           AppButton(
-            Translate.of(context).translate('apply'),
+            Translate.of(context)?.translate('apply'),
             onPressed: onApply,
             type: ButtonType.text,
           )
@@ -52,18 +52,18 @@ class _CategoryPickerState extends State<CategoryPicker> {
           child: Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: widget.picker.data.map((item) {
-              final selected = widget.picker.selected.contains(item);
+            children: widget.picker!.data!.map((item) {
+              final selected = widget.picker?.selected?.contains(item);
               return SizedBox(
                 height: 32,
                 child: FilterChip(
-                  selected: selected,
+                  selected: selected!,
                   label: Text(item.title),
                   onSelected: (value) {
                     if (value) {
-                      widget.picker.selected.add(item);
+                      widget.picker?.selected?.add(item);
                     } else {
-                      widget.picker.selected.remove(item);
+                      widget.picker?.selected?.remove(item);
                     }
                     setState(() {});
                   },

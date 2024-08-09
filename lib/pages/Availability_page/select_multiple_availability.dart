@@ -1,16 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/pages/Availability_page/checkbox_group.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/pages/Availability_page/checkbox_group.dart';
 
 class SelectMultipleAvailability extends StatefulWidget {
-  SelectMultipleAvailability({key});
+  const SelectMultipleAvailability({super.key});
 
   @override
   State<SelectMultipleAvailability> createState() =>
@@ -19,16 +17,16 @@ class SelectMultipleAvailability extends StatefulWidget {
 
 class _SelectMultipleAvailabilityState
     extends State<SelectMultipleAvailability> {
-  DoctorHomeScreenController _doctorHomeScreenController =
+  final DoctorHomeScreenController _doctorHomeScreenController =
       Get.find<DoctorHomeScreenController>();
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
   bool isLoading = false;
-  RxBool _isSelectedNotifier = true.obs;
-  DateTime currentDate;
+  final RxBool _isSelectedNotifier = true.obs;
+  DateTime? currentDate;
   List<String> selectedItemIndex = [];
   List<String> selectedItem = [];
-  DateTime startDate;
-  DateTime endDate;
+  DateTime? startDate;
+  DateTime? endDate;
   bool selectAll = false;
   // Future<void> filterData(DateTime pickedDate) async {
   //   await _doctorHomeScreenController.getDoctorAvailabilityDisplay(
@@ -131,7 +129,6 @@ class _SelectMultipleAvailabilityState
   @override
   void initState() {
     selectedItem.clear();
-    print("initialing  ==> ");
     super.initState();
   }
 
@@ -143,25 +140,25 @@ class _SelectMultipleAvailabilityState
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.all(18),
+                margin: const EdgeInsets.all(18),
                 color: Colors.black.withOpacity(0.1),
                 child: SfDateRangePicker(
                   minDate: DateTime.now(),
                   view: DateRangePickerView.month,
                   monthViewSettings:
-                      DateRangePickerMonthViewSettings(firstDayOfWeek: 7),
+                      const DateRangePickerMonthViewSettings(firstDayOfWeek: 7),
                   selectionMode: DateRangePickerSelectionMode.range,
                   showActionButtons: true,
                   onSubmit: (val) {
                     if (val != null) {
                       setState(() {});
-                      PickerDateRange data = val;
+                      PickerDateRange data = val as PickerDateRange;
                       startDate = data.startDate;
                       endDate = data.endDate;
                       setState(() {});
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text(
                               'Select at least on date for update your availability!'),
                         ),
@@ -180,7 +177,7 @@ class _SelectMultipleAvailabilityState
                 ),
               ),
               startDate == null && endDate == null
-                  ? Text(
+                  ? const Text(
                       'Select Dates to Update Your Availability',
                     )
                   : Obx(
@@ -205,8 +202,8 @@ class _SelectMultipleAvailabilityState
                                     setState(() {});
                                   },
                                 ),
-                                SizedBox(width: 10),
-                                Text(
+                                const SizedBox(width: 10),
+                                const Text(
                                   "Select all",
                                   style: TextStyle(fontSize: 18),
                                 ),
@@ -217,18 +214,16 @@ class _SelectMultipleAvailabilityState
                               checked: _isSelectedNotifier.value
                                   ? selectedItem
                                   : null,
-                              labelStyle: TextStyle(fontSize: 18),
+                              labelStyle: const TextStyle(fontSize: 18),
                               labels: timeSlot,
                               onChange:
-                                  (bool _isChecked, String label, int index) {
+                                  (bool isChecked, String label, int index) {
                                 selectedItemIndex.add("$index");
                                 _isSelectedNotifier.value = false;
-                                log("isChecked: $_isChecked   label: $label  index: $index");
+                                log("isChecked: $isChecked   label: $label  index: $index");
                               },
                               onSelected: (checked) {
                                 selectedItem = checked;
-                                print("index: ${checked.toString()}");
-                                print("selectedItem: $selectedItem");
                               }),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.15,
@@ -246,7 +241,7 @@ class _SelectMultipleAvailabilityState
               : Container(
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(32.0),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0),
@@ -254,11 +249,11 @@ class _SelectMultipleAvailabilityState
                     color: Colors.blue,
                   ),
                   child: isLoading
-                      ? Center(
+                      ? const Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 1,
                             valueColor:
-                                new AlwaysStoppedAnimation<Color>(Colors.white),
+                                AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
                       // Center(
@@ -266,17 +261,17 @@ class _SelectMultipleAvailabilityState
                       //   )
                       : ElevatedButton(
                           style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
+                            shape:
+                                WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
-                            elevation: MaterialStateProperty.all(0),
-                            backgroundColor: MaterialStateProperty.all<Color>(
+                            elevation: WidgetStateProperty.all(0),
+                            backgroundColor: WidgetStateProperty.all<Color>(
                               Colors.white,
                             ),
-                            foregroundColor: MaterialStateProperty.all<Color>(
+                            foregroundColor: WidgetStateProperty.all<Color>(
                               Colors.blue,
                             ),
                           ),
@@ -354,7 +349,7 @@ class _SelectMultipleAvailabilityState
                               }
                             });*/
 
-                            timeSlot.forEach((element) {
+                            for (var element in timeSlot) {
                               String startTimeString =
                                   "${element.split(" -").first} ${element.split(" -").first == "11:00" ? "AM" : element.split("- ").last.split(" ").last.replaceAll(" ", "")}";
                               var statTemp = startTimeString.split(":");
@@ -367,15 +362,14 @@ class _SelectMultipleAvailabilityState
                               int startMinute =
                                   int.parse(statTemp.last.split(" ").first);
                               DateTime startDateTime = DateTime(
-                                  startDate.toLocal().year,
-                                  startDate.toLocal().month,
-                                  startDate.toLocal().day,
+                                  startDate!.toLocal().year,
+                                  startDate!.toLocal().month,
+                                  startDate!.toLocal().day,
                                   startHour,
                                   startMinute);
 
                               DateTime startUtcDateTime = startDateTime.toUtc();
-                              String endTimeString =
-                                  "${element.split("- ").last}";
+                              String endTimeString = element.split("- ").last;
 
                               var endTemp = endTimeString.split(":");
 
@@ -388,9 +382,9 @@ class _SelectMultipleAvailabilityState
                                   int.parse(endTemp.last.split(" ").first);
 
                               DateTime endDateTime = DateTime(
-                                  startDate.toLocal().year,
-                                  startDate.toLocal().month,
-                                  startDate.toLocal().day,
+                                  startDate!.toLocal().year,
+                                  startDate!.toLocal().month,
+                                  startDate!.toLocal().day,
                                   endHour,
                                   endMinute);
 
@@ -398,7 +392,7 @@ class _SelectMultipleAvailabilityState
                                   (endHour == startHour &&
                                       endMinute <= startMinute)) {
                                 endDateTime =
-                                    endDateTime.add(Duration(days: 1));
+                                    endDateTime.add(const Duration(days: 1));
                               }
 
                               DateTime endUtcDateTime = endDateTime.toUtc();
@@ -414,7 +408,8 @@ class _SelectMultipleAvailabilityState
                               });
 
                               if (endDateTime.day != startDateTime.day) {
-                                startDate = startDate.add(Duration(days: 1));
+                                startDate =
+                                    startDate?.add(const Duration(days: 1));
                               }
 
                               ///
@@ -428,14 +423,14 @@ class _SelectMultipleAvailabilityState
                               //   "end_time": endUtcDateTime.toString(),
                               //   "avail": avail,
                               // });
-                            });
+                            }
 
                             log("===DATA===>>>>${jsonEncode(availData)}");
 
                             if (endDate != null) {
                               await _doctorHomeScreenController
                                   .multipleDoctorAvailability(
-                                _userController.user.value.id,
+                                _userController.user.value.id!,
                                 startDate,
                                 endDate,
                                 availData,
@@ -443,7 +438,7 @@ class _SelectMultipleAvailabilityState
                             } else {
                               await _doctorHomeScreenController
                                   .getDoctorAvailability(
-                                      _userController.user.value.id,
+                                      _userController.user.value.id!,
                                       startDate,
                                       availData);
                             }
@@ -452,7 +447,7 @@ class _SelectMultipleAvailabilityState
                               isLoading = false;
                             });
                           },
-                          child: Text(
+                          child: const Text(
                             "UPDATE",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18.0),

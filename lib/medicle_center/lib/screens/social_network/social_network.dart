@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 
 class SocialNetwork extends StatefulWidget {
-  final Map<String, dynamic> socials;
+  final Map<String, dynamic>? socials;
 
-  const SocialNetwork({Key key, this.socials}) : super(key: key);
+  const SocialNetwork({super.key, this.socials});
 
   @override
-  _SocialNetworkState createState() {
-    return _SocialNetworkState();
-  }
+  State<SocialNetwork> createState() => _SocialNetworkState();
 }
 
 class _SocialNetworkState extends State<SocialNetwork> {
@@ -66,15 +64,15 @@ class _SocialNetworkState extends State<SocialNetwork> {
   ///On Init
   void _initForm() {
     if (widget.socials != null) {
-      _textFacebookController.text = widget.socials['facebook'] ?? '';
-      _textTwitterController.text = widget.socials['twitter'] ?? '';
-      _textInstagramController.text = widget.socials['instagram'] ?? '';
-      _textGoogleController.text = widget.socials['google_plus'] ?? '';
-      _textLinkedinController.text = widget.socials['linkedin'] ?? '';
-      _textYoutubeController.text = widget.socials['youtube'] ?? '';
-      _textTumblrController.text = widget.socials['tumblr'] ?? '';
-      _textFlickrController.text = widget.socials['flick'] ?? '';
-      _textPinterestController.text = widget.socials['pinterest'] ?? '';
+      _textFacebookController.text = widget.socials?['facebook'] ?? '';
+      _textTwitterController.text = widget.socials?['twitter'] ?? '';
+      _textInstagramController.text = widget.socials?['instagram'] ?? '';
+      _textGoogleController.text = widget.socials?['google_plus'] ?? '';
+      _textLinkedinController.text = widget.socials?['linkedin'] ?? '';
+      _textYoutubeController.text = widget.socials?['youtube'] ?? '';
+      _textTumblrController.text = widget.socials?['tumblr'] ?? '';
+      _textFlickrController.text = widget.socials?['flick'] ?? '';
+      _textPinterestController.text = widget.socials?['pinterest'] ?? '';
     }
   }
 
@@ -117,11 +115,11 @@ class _SocialNetworkState extends State<SocialNetwork> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Translate.of(context).translate('social_network'),
+          Translate.of(context)!.translate('social_network'),
         ),
         actions: [
           AppButton(
-            Translate.of(context).translate('apply'),
+            Translate.of(context)!.translate('apply'),
             onPressed: _onSave,
             type: ButtonType.text,
           )
@@ -135,15 +133,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Facebook',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " facebook",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} facebook",
               onSubmitted: (text) {
                 UtilsMedicalCenter.fieldFocusChange(
                   context,
@@ -159,15 +156,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Twitter',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " twitter",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} twitter",
               onSubmitted: (text) {
                 UtilsMedicalCenter.fieldFocusChange(
                   context,
@@ -183,15 +179,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Instagram',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " instagram",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} instagram",
               onSubmitted: (text) {
                 UtilsMedicalCenter.fieldFocusChange(
                   context,
@@ -207,15 +202,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Google',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " google",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} google",
               onSubmitted: (text) {
                 UtilsMedicalCenter.fieldFocusChange(
                   context,
@@ -231,15 +225,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Linkedin',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " linkedin",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} linkedin",
               onSubmitted: (text) {
                 UtilsMedicalCenter.fieldFocusChange(
                   context,
@@ -255,15 +248,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Youtube',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " youtube",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} youtube",
               onSubmitted: (text) {
                 UtilsMedicalCenter.fieldFocusChange(
                   context,
@@ -279,15 +271,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Tumblr',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " tumblr",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} tumblr",
               onSubmitted: (text) {
                 UtilsMedicalCenter.fieldFocusChange(
                   context,
@@ -303,15 +294,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Flickr',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " flickr",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} flickr",
               onSubmitted: (text) {
                 UtilsMedicalCenter.fieldFocusChange(
                   context,
@@ -327,15 +317,14 @@ class _SocialNetworkState extends State<SocialNetwork> {
               'Pinterest',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.bold),
+                  .titleSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             AppTextInput(
-              hintText: Translate.of(context).translate(
-                    'input',
-                  ) +
-                  " pinterest",
+              hintText: "${Translate.of(context)?.translate(
+                'input',
+              )} pinterest",
               controller: _textPinterestController,
               focusNode: _focusPinterest,
             ),

@@ -1,7 +1,7 @@
 class SortModel {
-  final String title;
-  final String value;
-  final String field;
+  final String? title;
+  final String? value;
+  final String? field;
 
   SortModel({
     this.title,

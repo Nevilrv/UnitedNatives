@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/logger.dart';
+import 'package:united_natives/medicle_center/lib/utils/logger.dart';
 
 class UtilIcon {
   static const Map<String, IconData> faIconNameMapping = {
@@ -2028,14 +2028,14 @@ class UtilIcon {
     'solid yin-yang': FontAwesomeIcons.yinYang,
     'brands yoast': FontAwesomeIcons.yoast,
     'brands youtube': FontAwesomeIcons.youtube,
-    'brands youtube-square': FontAwesomeIcons.youtubeSquare,
+    'brands youtube-square': FontAwesomeIcons.squareYoutube,
     'solid z': FontAwesomeIcons.z,
     'brands zhihu': FontAwesomeIcons.zhihu,
   };
 
   static IconData getIconFromCss(String cssClasses) {
-    IconData result;
-    if (cssClasses != null) {
+    IconData? result;
+    if (cssClasses.isNotEmpty) {
       const cssStyles = {
         'far': 'regular',
         'fas': 'solid',
@@ -2046,7 +2046,7 @@ class UtilIcon {
       };
       try {
         var separatedCssClasses = cssClasses.split(' ');
-        var style = separatedCssClasses.firstWhere(
+        String? style = separatedCssClasses.firstWhere(
           (c) => cssStyles.containsKey(c),
         );
         style = cssStyles[style];
@@ -2061,7 +2061,7 @@ class UtilIcon {
   }
 
   static String getWebName(String name) {
-    String result;
+    String? result;
     const cssStyles = {
       'regular': 'fa-regular',
       'solid': 'fa-solid',
@@ -2073,7 +2073,7 @@ class UtilIcon {
 
     try {
       var separatedCssClasses = name.split(' ');
-      var style = separatedCssClasses.firstWhere(
+      String? style = separatedCssClasses.firstWhere(
         (c) => cssStyles.containsKey(c),
       );
       style = cssStyles[style];

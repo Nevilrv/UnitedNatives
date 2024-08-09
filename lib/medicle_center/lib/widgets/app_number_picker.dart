@@ -1,12 +1,12 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 
 class AppNumberPicker extends StatefulWidget {
-  final int value;
-  const AppNumberPicker({Key key, this.value}) : super(key: key);
+  final int? value;
+  const AppNumberPicker({super.key, this.value});
 
   @override
-  _AppNumberPickerState createState() {
+  State<AppNumberPicker> createState() {
     return _AppNumberPickerState();
   }
 }
@@ -79,10 +79,12 @@ class _AppNumberPickerState extends State<AppNumberPicker> {
                         const SizedBox(width: 16),
                         Text(
                           '$_value',
-                          style:
-                              Theme.of(context).textTheme.headline5?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                         const SizedBox(width: 16),
                         InkWell(
@@ -117,7 +119,7 @@ class _AppNumberPickerState extends State<AppNumberPicker> {
                     Navigator.pop(context, _value);
                   },
                   child: Text(
-                    Translate.of(context).translate('apply'),
+                    Translate.of(context)!.translate('apply'),
                   ),
                 ),
               )
