@@ -1,23 +1,23 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/day_slot_item.dart';
-import 'package:doctor_appointment_booking/components/progress_indicator.dart';
-import 'package:doctor_appointment_booking/components/time_slot_item.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/doctor_by_specialities.dart';
-import 'package:doctor_appointment_booking/model/patient_appointment_model.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/day_slot_item.dart';
+import 'package:united_natives/components/progress_indicator.dart';
+import 'package:united_natives/components/time_slot_item.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/model/patient_appointment_model.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 class TimeSlotPage extends StatefulWidget {
-  final DoctorSpecialities doctorDetails;
+  final DoctorSpecialities? doctorDetails;
 
-  TimeSlotPage({this.doctorDetails});
+  const TimeSlotPage({super.key, this.doctorDetails});
 
   @override
   State<TimeSlotPage> createState() => _TimeSlotPageState();
@@ -51,7 +51,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
         return _bookAppointmentController.items.isEmpty ||
                 _bookAppointmentController.weekAvailabilityList
                         .where((p0) =>
-                            DateFormat("yyyy-MM-dd").format(p0.date) ==
+                            DateFormat("yyyy-MM-dd").format(p0.date!) ==
                             DateFormat("yyyy-MM-dd").format(DateTime.parse(
                                 _bookAppointmentController
                                     .mySelectedDate.value)))
@@ -67,8 +67,8 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                     'No Time Slots Available!',
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
-                        .copyWith(fontSize: 20),
+                        .titleLarge
+                        ?.copyWith(fontSize: 20),
                   ),
                 ),
               )
@@ -79,29 +79,31 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                   Wrap(
                     children: List.generate(
                         _bookAppointmentController.items.length, (index) {
-                      int _temp = int.parse(_bookAppointmentController
+                      int temp = int.parse(_bookAppointmentController
                           .items[index]["start_time"]
                           .toString()
                           .split(":")
                           .first);
-                      int _tempMinute = int.parse(_bookAppointmentController
+                      int tempMinute = int.parse(_bookAppointmentController
                           .items[index]["start_time"]
                           .toString()
                           .split(":")
                           .last);
 
                       return TimeSlotItem(
-                        isClosed: _temp <=
-                                int.parse(
-                                    "${DateTime.now().toString().substring(11, 13)}") &&
-                            _tempMinute <
-                                int.parse(
-                                    "${DateTime.now().toString().substring(14, 16)}") &&
+                        isClosed: temp <=
+                                int.parse(DateTime.now()
+                                    .toString()
+                                    .substring(11, 13)) &&
+                            tempMinute <
+                                int.parse(DateTime.now()
+                                    .toString()
+                                    .substring(14, 16)) &&
                             _bookAppointmentController.mySelectedDate.value ==
                                 DateTime.now().toString().split(" ")[0],
                         time:
-                            "${_temp == 0 ? "12" : _temp > 12 ? _temp - 12 : _temp} : ${_tempMinute == 0 ? "00" : _tempMinute}",
-                        time1: "${_temp >= 12 ? 'PM' : 'AM'}",
+                            "${temp == 0 ? "12" : temp > 12 ? temp - 12 : temp} : ${tempMinute == 0 ? "00" : tempMinute}",
+                        time1: temp >= 12 ? 'PM' : 'AM',
                         onTap: () {
                           // DateTime now = DateTime.now();
                           // String todayDate = now.toString().split(" ")[0];
@@ -123,12 +125,12 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                           // } else {
                           NavigationModel navigationModel = NavigationModel(
                             utcDateTime:
-                                "${DateFormat("yyyy-MM-dd").format(DateTime.parse(_bookAppointmentController.mySelectedDate.value))} ${_temp.toString().length == 1 ? "0$_temp" : _temp}:${_tempMinute == 0 ? "00" : _tempMinute}",
+                                "${DateFormat("yyyy-MM-dd").format(DateTime.parse(_bookAppointmentController.mySelectedDate.value))} ${temp.toString().length == 1 ? "0$temp" : temp}:${tempMinute == 0 ? "00" : tempMinute}",
                             doctorSpecialities: widget.doctorDetails,
                             mySelectedDate:
                                 _bookAppointmentController.mySelectedDate.value,
-                            minute: _tempMinute,
-                            time: _temp,
+                            minute: tempMinute,
+                            time: temp,
                           );
                           Get.toNamed(Routes.bookingStep4,
                               arguments: navigationModel);
@@ -207,7 +209,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
         "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _bookAppointmentController.getPatientAppointment(
-          widget.doctorDetails.userId, context);
+          widget.doctorDetails!.userId!, context);
     });
 
     super.initState();
@@ -244,10 +246,10 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
             appBar: AppBar(
               centerTitle: true,
               title: Text(
-                Translate.of(context).translate('time_slot'),
+                Translate.of(context)!.translate('time_slot'),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                     fontSize: 24),
                 textAlign: TextAlign.center,
               ),
@@ -258,14 +260,14 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Row(
                       children: <Widget>[
                         Utils().patientProfile(
                             widget.doctorDetails?.profilePic ?? "",
                             widget.doctorDetails?.socialProfilePic ?? "",
                             25),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                         Expanded(
@@ -276,12 +278,12 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                                 widget.doctorDetails?.firstName ?? "",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2
-                                    .copyWith(
+                                    .titleSmall
+                                    ?.copyWith(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 20),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 3,
                               ),
                               Text(
@@ -300,7 +302,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                   Container(
                     width: double.infinity,
                     height: 85,
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 10,
                     ),
                     color: Prefs.getBool(Prefs.DARKTHEME, def: false)
@@ -309,8 +311,8 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                     child: Obx(
                       () => ListView.separated(
                         separatorBuilder: (context, index) =>
-                            SizedBox(width: 10),
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                            const SizedBox(width: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         itemCount: _bookAppointmentController
@@ -318,26 +320,25 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                                 7
                             ? 7
                             : _bookAppointmentController
-                                    .weekAvailabilityList.length ??
-                                0,
+                                .weekAvailabilityList.length,
                         itemBuilder: (context, index) {
-                          WeekAvailability _weekAvailability =
+                          WeekAvailability weekAvailability =
                               _bookAppointmentController
                                   .weekAvailabilityList[index + 1];
 
                           return DateFormat('dd-MM-yyyy').format(DateTime.now()
-                                      .subtract(Duration(days: 1))) !=
+                                      .subtract(const Duration(days: 1))) !=
                                   DateFormat('dd-MM-yyyy').format(
-                                      DateTime.parse(_weekAvailability.date
+                                      DateTime.parse(weekAvailability.date!
                                           .toLocal()
                                           .toString()))
                               ? DaySlotItem(
-                                  date: '${_weekAvailability?.date}' ?? '',
-                                  slot: _weekAvailability.actualSlotCount,
+                                  date: '${weekAvailability.date}',
+                                  slot: weekAvailability.actualSlotCount!,
                                   onTap: () {
                                     _bookAppointmentController
                                             .mySelectedDate.value =
-                                        _weekAvailability.date
+                                        weekAvailability.date!
                                             .toLocal()
                                             .toString();
 
@@ -347,7 +348,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                                   },
                                   index: index,
                                 )
-                              : SizedBox(width: 0);
+                              : const SizedBox(width: 0);
                         },
                       ),
                     ),
@@ -357,7 +358,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: _bookAppointmentController
                               .mySelectedDate.value.isEmpty
-                          ? Text(
+                          ? const Text(
                               'Select DateTime to Show Available Slot',
                               style: TextStyle(
                                 fontSize: 20,
@@ -366,8 +367,10 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                             )
                           : Obx(
                               () => Text(
-                                '${DateFormat('EEEE, dd MMM yyyy').format(DateTime.parse(_bookAppointmentController.mySelectedDate.value))}',
-                                style: TextStyle(
+                                DateFormat('EEEE, dd MMM yyyy').format(
+                                    DateTime.parse(_bookAppointmentController
+                                        .mySelectedDate.value)),
+                                style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -377,15 +380,15 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                   ),
                   Obx(
                     () => _bookAppointmentController.selectedIndex.value == -1
-                        ? LinearProgressIndicator()
-                        : Divider(
+                        ? const LinearProgressIndicator()
+                        : const Divider(
                             color: Colors.grey,
                             height: 1,
                             // indent: 15,
                             // endIndent: 15,
                           ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Obx(
@@ -401,7 +404,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
         Obx(
           () => Container(
             child: _bookAppointmentController.isLoading.value
-                ? ProgressIndicatorScreen()
+                ? const ProgressIndicatorScreen()
                 : Container(),
           ),
         ),

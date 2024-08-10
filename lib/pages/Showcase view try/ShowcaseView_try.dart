@@ -179,207 +179,192 @@ class _ShowcaseTryState extends State<ShowcaseTry> {
                         ],
                       ),
                     ),
-                    _noAppoints
-                        ? NoAppointmentsWidget()
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    const SectionHeaderWidget(
-                                      title: 'next_appointment',
-                                    ),
-                                    const NextAppointmentWidget(),
-                                    SectionHeaderWidget(
-                                      title: Translate.of(context).translate(
-                                          'Providers you have visited'),
-                                      onPressed: () => Navigator.of(context)
-                                          .pushNamed(Routes.myDoctors),
-                                    ),
-                                  ],
+                    if (_noAppoints)
+                      NoAppointmentsWidget()
+                    else
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              children: <Widget>[
+                                const SectionHeaderWidget(
+                                  title: 'next_appointment',
                                 ),
-                              ),
-                              SizedBox(
-                                height: 200,
-                                child: ListView.separated(
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                    width: 15,
-                                  ),
-                                  itemCount: 4,
-                                  scrollDirection: Axis.horizontal,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  itemBuilder: (context, index) {
-                                    return VisitedDoctorListItem(
-                                      doctor: null,
-                                      // doctor: doctors[index],
-                                    );
-                                  },
+                                const NextAppointmentWidget(),
+                                SectionHeaderWidget(
+                                  title: Translate.of(context)!
+                                      .translate('Providers you have visited'),
+                                  onPressed: () => Navigator.of(context)
+                                      .pushNamed(Routes.myDoctors),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    const SizedBox(
-                                      height: 50,
-                                    ),
-                                    Row(children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(15),
-                                        color: Colors.white,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            badges.Badge(
-                                              badgeAnimation:
-                                                  const BadgeAnimation.fade(
-                                                      animationDuration:
-                                                          Duration(
-                                                              milliseconds:
-                                                                  4000)),
-                                              badgeStyle: BadgeStyle(
-                                                shape: BadgeShape.square,
-                                                borderRadius:
-                                                    BorderRadius.circular(2),
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                              ),
-                                              position: BadgePosition.topEnd(
-                                                  top: -25, end: 0),
-                                              badgeContent: const Text(
-                                                'Home',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              child: const SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Icon(
-                                                    Icons.home,
-                                                    size: 40,
-                                                    color: Colors.blue,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 80),
-                                            badges.Badge(
-                                              badgeStyle: BadgeStyle(
-                                                shape: BadgeShape.square,
-                                                borderRadius:
-                                                    BorderRadius.circular(2),
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                              ),
-                                              badgeAnimation:
-                                                  const BadgeAnimation.fade(
-                                                animationDuration: Duration(
-                                                    milliseconds: 5000),
-                                              ),
-                                              position: BadgePosition.topEnd(
-                                                  top: -25, end: 0),
-                                              badgeContent: const Text(
-                                                'Profile',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              child: const SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child: Icon(
-                                                    Icons.person_rounded,
-                                                    size: 40,
-                                                    color: Colors.grey),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 130),
-                                            badges.Badge(
-                                              badgeAnimation:
-                                                  const BadgeAnimation.fade(
-                                                animationDuration: Duration(
-                                                    milliseconds: 6000),
-                                              ),
-                                              badgeStyle: BadgeStyle(
-                                                shape: BadgeShape.square,
-                                                borderRadius:
-                                                    BorderRadius.circular(2),
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                              ),
-                                              position: BadgePosition.topEnd(
-                                                  top: -30, end: -55),
-                                              badgeContent: const Text(
-                                                'Message 1',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              child: const SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child: Icon(Icons.message,
-                                                    size: 40,
-                                                    color: Colors.grey),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 70),
-                                            badges.Badge(
-                                              badgeAnimation:
-                                                  const BadgeAnimation.fade(
-                                                animationDuration: Duration(
-                                                    milliseconds: 7000),
-                                              ),
-                                              badgeStyle: BadgeStyle(
-                                                shape: BadgeShape.square,
-                                                borderRadius:
-                                                    BorderRadius.circular(2),
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                              ),
-                                              position: BadgePosition.topEnd(
-                                                  top: -30, end: -50),
-                                              badgeContent: const Text(
-                                                'Settings ',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              child: const SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child: Icon(Icons.settings,
-                                                    size: 40,
-                                                    color: Colors.grey),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ]),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
+                          SizedBox(
+                            height: 200,
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                width: 15,
+                              ),
+                              itemCount: 4,
+                              scrollDirection: Axis.horizontal,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              itemBuilder: (context, index) {
+                                return VisitedDoctorListItem(
+                                  doctor: null,
+                                  // doctor: doctors[index],
+                                );
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                Row(children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(15),
+                                    color: Colors.white,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        badges.Badge(
+                                          badgeAnimation:
+                                              const BadgeAnimation.fade(
+                                                  animationDuration: Duration(
+                                                      milliseconds: 4000)),
+                                          badgeStyle: BadgeStyle(
+                                            shape: BadgeShape.square,
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                            padding: const EdgeInsets.all(4),
+                                          ),
+                                          position: BadgePosition.topEnd(
+                                              top: -25, end: 0),
+                                          badgeContent: const Text(
+                                            'Home',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          child: const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Icon(
+                                                Icons.home,
+                                                size: 40,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 80),
+                                        badges.Badge(
+                                          badgeStyle: BadgeStyle(
+                                            shape: BadgeShape.square,
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                            padding: const EdgeInsets.all(4),
+                                          ),
+                                          badgeAnimation:
+                                              const BadgeAnimation.fade(
+                                            animationDuration:
+                                                Duration(milliseconds: 5000),
+                                          ),
+                                          position: BadgePosition.topEnd(
+                                              top: -25, end: 0),
+                                          badgeContent: const Text(
+                                            'Profile',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          child: const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: Icon(Icons.person_rounded,
+                                                size: 40, color: Colors.grey),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 130),
+                                        badges.Badge(
+                                          badgeAnimation:
+                                              const BadgeAnimation.fade(
+                                            animationDuration:
+                                                Duration(milliseconds: 6000),
+                                          ),
+                                          badgeStyle: BadgeStyle(
+                                            shape: BadgeShape.square,
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                            padding: const EdgeInsets.all(4),
+                                          ),
+                                          position: BadgePosition.topEnd(
+                                              top: -30, end: -55),
+                                          badgeContent: const Text(
+                                            'Message 1',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          child: const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: Icon(Icons.message,
+                                                size: 40, color: Colors.grey),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 70),
+                                        badges.Badge(
+                                          badgeAnimation:
+                                              const BadgeAnimation.fade(
+                                            animationDuration:
+                                                Duration(milliseconds: 7000),
+                                          ),
+                                          badgeStyle: BadgeStyle(
+                                            shape: BadgeShape.square,
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                            padding: const EdgeInsets.all(4),
+                                          ),
+                                          position: BadgePosition.topEnd(
+                                              top: -30, end: -50),
+                                          badgeContent: const Text(
+                                            'Settings ',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          child: const SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: Icon(Icons.settings,
+                                                size: 40, color: Colors.grey),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ]),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),

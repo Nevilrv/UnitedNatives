@@ -151,7 +151,7 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
 
   @override
   void dispose() {
-    patientHomeScreenController.timer.cancel();
+    patientHomeScreenController.timer?.cancel();
     super.dispose();
   }
 
@@ -351,10 +351,10 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
                       ),
                       // physics: NeverScrollableScrollPhysics(),
 
-                      itemCount: responseModel.patientChatList.length,
+                      itemCount: responseModel.patientChatList!.length,
                       itemBuilder: (context, index) {
                         List<PatientChat> patientData =
-                            responseModel.patientChatList.reversed.toList();
+                            responseModel.patientChatList!.reversed.toList();
                         PatientChat patientChat = patientData[index];
 
                         return Padding(
@@ -366,8 +366,9 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
                             message: patientChat.message.toString().obs,
                             time: DateFormat('hh:mm a').format(
                                 DateTime.parse(patientChat.created.toString())),
-                            networkImage: _userController.user.value.profilePic,
-                            attachment: patientChat.attachment,
+                            networkImage:
+                                _userController.user.value.profilePic!,
+                            attachment: patientChat.attachment!,
                           ),
                         );
                       },
@@ -479,9 +480,9 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
                                       toType: "doctor",
                                       attachment: imageW ?? pdf!);
 
-                          chatKey = createNewMessage.chatKey;
+                          chatKey = createNewMessage.chatKey!;
                           patientHomeScreenController.chatKey.value =
-                              createNewMessage.chatKey;
+                              createNewMessage.chatKey!;
                           msg = "";
                           // await patientHomeScreenController
                           //     .getAllPatientChatMessagesList(chatKey);

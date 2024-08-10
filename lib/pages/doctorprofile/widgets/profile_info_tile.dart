@@ -1,21 +1,20 @@
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
+import 'package:united_natives/data/pref_manager.dart';
 import 'package:flutter/material.dart';
 
 class ProfileInfoTile extends StatelessWidget {
-  final String title, hint, trailing;
+  final String? title, hint, trailing;
 
   const ProfileInfoTile(
-      {Key key, @required this.title, this.hint, this.trailing})
-      : super(key: key);
+      {super.key, @required this.title, this.hint, this.trailing});
   @override
   Widget build(BuildContext context) {
-    var _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+    var isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
     return Column(
       children: <Widget>[
         ListTile(
           title: Text(
-            title,
-            style: TextStyle(
+            title!,
+            style: const TextStyle(
               color: Colors.grey,
               fontSize: 18,
               fontWeight: FontWeight.w400,
@@ -24,11 +23,11 @@ class ProfileInfoTile extends StatelessWidget {
           trailing: SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Text(
-              trailing ?? hint,
+              trailing ?? hint!,
               textAlign: TextAlign.end,
               style: TextStyle(
                 color: trailing != null
-                    ? _isDark
+                    ? isDark
                         ? Colors.white.withOpacity(0.87)
                         : Colors.black
                     : Colors.grey,

@@ -1,10 +1,12 @@
-import 'package:doctor_appointment_booking/pages/request/maintenace%20req.dart';
+import 'package:united_natives/pages/request/maintenace%20req.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DoctorScreen extends StatefulWidget {
+  const DoctorScreen({super.key});
+
   @override
-  _DoctorScreenState createState() => _DoctorScreenState();
+  State<DoctorScreen> createState() => _DoctorScreenState();
 }
 
 class _DoctorScreenState extends State<DoctorScreen> {
@@ -27,7 +29,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
             'Meet with doctor',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24),
             textAlign: TextAlign.center,
           ),
@@ -44,7 +46,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(0, 0),
@@ -109,7 +111,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                       borderRadius: BorderRadius.circular(15)),
                   child: InkWell(
                     onTap: () {
-                      Get.to(MaintenanceRequestScreen());
+                      Get.to(const MaintenanceRequestScreen());
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -136,7 +138,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
           decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover, image: NetworkImage(doctor[index])),
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
           ),
         ));

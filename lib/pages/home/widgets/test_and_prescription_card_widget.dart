@@ -6,8 +6,10 @@ class TestAndPrescriptionCardWidget extends StatelessWidget {
   final String subTitle;
 
   const TestAndPrescriptionCardWidget(
-      {Key key, this.image, @required this.title, @required this.subTitle})
-      : super(key: key);
+      {super.key,
+      required this.image,
+      required this.title,
+      required this.subTitle});
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -32,7 +34,7 @@ class TestAndPrescriptionCardWidget extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             SizedBox(
@@ -44,18 +46,18 @@ class TestAndPrescriptionCardWidget extends StatelessWidget {
                   Text(
                     title,
                     maxLines: 2,
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 22,
                         color: Colors.red.shade700,
                         fontWeight: FontWeight.w700),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(
                     subTitle,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontFamily: 'NunitoSans',
                       fontWeight: FontWeight.w600,

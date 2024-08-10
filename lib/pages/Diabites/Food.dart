@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,19 +27,22 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class Food extends StatefulWidget {
+  const Food({super.key});
+
   @override
-  _FoodState createState() => _FoodState();
+  State<Food> createState() => _FoodState();
 }
 
 class _FoodState extends State<Food> {
-  UserController _userController = Get.find<UserController>();
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
+  final UserController _userController = Get.find<UserController>();
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
   int totalCount = 0;
   List list = [];
   RxBool isLoading = false.obs;
   List<Datum> listDatum = [];
   List editList = [];
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   List cols = [
     {
       "title": 'Food/Drink',
@@ -119,10 +122,10 @@ class _FoodState extends State<Food> {
       if (response != null) {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
-        listDatum = model.data;
-        model.data.forEach((element) {
-          idList.add(element.id);
-          List list = (jsonDecode(element.tableData) as List);
+        listDatum = model.data!;
+        model.data?.forEach((element) {
+          idList.add(element.id!);
+          List list = (jsonDecode(element.tableData!) as List);
           rows.add({
             'food': list[0],
             'calories': list[1],
@@ -152,7 +155,7 @@ class _FoodState extends State<Food> {
         setState(() {});
       } else {
         _controller.isLoading.value = false;
-        return null;
+        return;
       }
     } catch (e) {
       _controller.isLoading.value = false;
@@ -226,7 +229,7 @@ class _FoodState extends State<Food> {
     }
   }
 
-  Future updateFoodData({dynamic reportTableData, String id}) async {
+  Future updateFoodData({dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -310,7 +313,7 @@ class _FoodState extends State<Food> {
               "Food/Caloric Intake",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
           ),
@@ -320,7 +323,7 @@ class _FoodState extends State<Food> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Food/Caloric Intake Data',
@@ -330,7 +333,7 @@ class _FoodState extends State<Food> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -342,179 +345,177 @@ class _FoodState extends State<Food> {
                             : SingleChildScrollView(
                                 child: Column(
                                   children: [
-                                    Container(
-                                      child: Editable(
-                                        key: _editableKey,
-                                        columns: cols,
-                                        rows: rows,
-                                        popUpTitle: 'Food/Caloric Intake Data',
-                                        borderColor: Colors.blueGrey,
-                                        showCreateButton: true,
-                                        showSaveIcon: true,
-                                        saveIconColor: _isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        onAddButtonPressed: () async {
-                                          String text =
-                                              '${foodController.text},${calController.text},${fatController.text},${carController.text},${proController.text},${waterController.text},${sugarController.text}';
-                                          List<String> result = text.split(',');
-                                          bool addData = true;
-                                          for (int i = 0;
-                                              i < result.length;
-                                              i++) {
-                                            if (result[i] == "") {
-                                              Utils.showSnackBar(
-                                                'Enter details',
-                                                'Please enter all required details!!',
-                                              );
-                                              addData = false;
-                                              break;
-                                            }
-                                          }
-                                          if (addData) {
-                                            rows.add({
-                                              'food': result[0],
-                                              'calories': result[1],
-                                              'fat': result[2],
-                                              'carbs': result[3],
-                                              'protein': result[4],
-                                              'water': result[5],
-                                              'sugar': result[6]
-                                            });
-                                            data.add(
-                                              _FoodCaloricIntakeData(
-                                                name: result[0].toString(),
-                                                calories: double.parse(
-                                                    result[1].toString()),
-                                                fat: double.parse(
-                                                    result[2].toString()),
-                                                carbs: double.parse(
-                                                    result[3].toString()),
-                                                protein: double.parse(
-                                                    result[4].toString()),
-                                                water: double.parse(
-                                                    result[5].toString()),
-                                                sugar: double.parse(
-                                                    result[6].toString()),
-                                              ),
+                                    Editable(
+                                      key: _editableKey,
+                                      columns: cols,
+                                      rows: rows,
+                                      popUpTitle: 'Food/Caloric Intake Data',
+                                      borderColor: Colors.blueGrey,
+                                      showCreateButton: true,
+                                      showSaveIcon: true,
+                                      saveIconColor:
+                                          _isDark ? Colors.white : Colors.black,
+                                      onAddButtonPressed: () async {
+                                        String text =
+                                            '${foodController.text},${calController.text},${fatController.text},${carController.text},${proController.text},${waterController.text},${sugarController.text}';
+                                        List<String> result = text.split(',');
+                                        bool addData = true;
+                                        for (int i = 0;
+                                            i < result.length;
+                                            i++) {
+                                          if (result[i] == "") {
+                                            Utils.showSnackBar(
+                                              'Enter details',
+                                              'Please enter all required details!!',
                                             );
-                                            Navigator.pop(context);
-                                            await addFoodData(result);
-                                          } else {
-                                            // Navigator.pop(context);
+                                            addData = false;
+                                            break;
                                           }
-                                        },
-                                        onDeleteButtonPressed: (index) async {
-                                          await deleteFoodData(idList[index]);
-                                        },
-                                        onEditButtonPressed: (index) {
-                                          _editDialog(
-                                              context, index, listDatum);
-                                        },
-                                        onTap: () {
-                                          foodController.clear();
-                                          calController.clear();
-                                          fatController.clear();
-                                          carController.clear();
-                                          proController.clear();
-                                          waterController.clear();
-                                          sugarController.clear();
-                                        },
-                                        popUpChild: Container(
-                                          width: Get.width * 0.75,
-                                          child: Column(
-                                            children: [
-                                              TextField(
-                                                controller: foodController,
-                                                decoration: InputDecoration(
-                                                    hintText: 'Food/Drink'),
-                                              ),
-                                              TextField(
-                                                controller: calController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Calories'),
-                                              ),
-                                              TextField(
-                                                controller: fatController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Fat'),
-                                              ),
-                                              TextField(
-                                                controller: carController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Carbs'),
-                                              ),
-                                              TextField(
-                                                controller: proController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Protein'),
-                                              ),
-                                              TextField(
-                                                controller: waterController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Water'),
-                                              ),
-                                              TextField(
-                                                controller: sugarController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Sugar'),
-                                              ),
-                                            ],
-                                          ),
+                                        }
+                                        if (addData) {
+                                          rows.add({
+                                            'food': result[0],
+                                            'calories': result[1],
+                                            'fat': result[2],
+                                            'carbs': result[3],
+                                            'protein': result[4],
+                                            'water': result[5],
+                                            'sugar': result[6]
+                                          });
+                                          data.add(
+                                            _FoodCaloricIntakeData(
+                                              name: result[0].toString(),
+                                              calories: double.parse(
+                                                  result[1].toString()),
+                                              fat: double.parse(
+                                                  result[2].toString()),
+                                              carbs: double.parse(
+                                                  result[3].toString()),
+                                              protein: double.parse(
+                                                  result[4].toString()),
+                                              water: double.parse(
+                                                  result[5].toString()),
+                                              sugar: double.parse(
+                                                  result[6].toString()),
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                          await addFoodData(result);
+                                        } else {
+                                          // Navigator.pop(context);
+                                        }
+                                      },
+                                      onDeleteButtonPressed: (index) async {
+                                        await deleteFoodData(idList[index]);
+                                      },
+                                      onEditButtonPressed: (index) {
+                                        _editDialog(context, index, listDatum);
+                                      },
+                                      onTap: () {
+                                        foodController.clear();
+                                        calController.clear();
+                                        fatController.clear();
+                                        carController.clear();
+                                        proController.clear();
+                                        waterController.clear();
+                                        sugarController.clear();
+                                      },
+                                      popUpChild: SizedBox(
+                                        width: Get.width * 0.75,
+                                        child: Column(
+                                          children: [
+                                            TextField(
+                                              controller: foodController,
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Food/Drink'),
+                                            ),
+                                            TextField(
+                                              controller: calController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Calories'),
+                                            ),
+                                            TextField(
+                                              controller: fatController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Fat'),
+                                            ),
+                                            TextField(
+                                              controller: carController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Carbs'),
+                                            ),
+                                            TextField(
+                                              controller: proController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Protein'),
+                                            ),
+                                            TextField(
+                                              controller: waterController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Water'),
+                                            ),
+                                            TextField(
+                                              controller: sugarController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Sugar'),
+                                            ),
+                                          ],
                                         ),
-                                        onSubmitted: (value) {},
-                                        createButtonLabel: Text(
-                                          'New',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
+                                      ),
+                                      onSubmitted: (value) {},
+                                      createButtonLabel: const Text(
+                                        'New',
+                                        style: TextStyle(
+                                          color: Colors.black,
                                         ),
                                       ),
                                     ),
-                                    if (data.isNotEmpty && data != null)
+                                    if (data.isNotEmpty)
                                       SfCartesianChart(
                                         // primaryXAxis: CategoryAxis(),
                                         enableAxisAnimation: true,
-                                        primaryXAxis: CategoryAxis(
-                                          zoomPosition: 0.1,
-                                        ),
-                                        primaryYAxis: NumericAxis(
+
+                                        /// NEW CODE COMMENT
+                                        // primaryXAxis: const CategoryAxis(
+                                        //   zoomPosition: 0.1,
+                                        // ),
+                                        primaryYAxis: const NumericAxis(
                                             edgeLabelPlacement:
                                                 EdgeLabelPlacement.shift),
                                         // axes: [Charts()],
@@ -533,7 +534,7 @@ class _FoodState extends State<Food> {
                                                         _) =>
                                                     food.calories,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                               isVisible: true,
                                             ),
                                           ),
@@ -551,7 +552,7 @@ class _FoodState extends State<Food> {
                                                         _) =>
                                                     food.fat,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                               isVisible: true,
                                             ),
                                           ),
@@ -569,7 +570,7 @@ class _FoodState extends State<Food> {
                                                         _) =>
                                                     food.carbs,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                               isVisible: true,
                                             ),
                                           ),
@@ -587,7 +588,7 @@ class _FoodState extends State<Food> {
                                                         _) =>
                                                     food.protein,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                               isVisible: true,
                                             ),
                                           ),
@@ -605,7 +606,7 @@ class _FoodState extends State<Food> {
                                                         _) =>
                                                     food.water,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                               isVisible: true,
                                             ),
                                           ),
@@ -623,11 +624,11 @@ class _FoodState extends State<Food> {
                                                         _) =>
                                                     food.sugar,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                               isVisible: true,
                                             ),
                                           )
-                                        ],
+                                        ] as List<CartesianSeries>,
                                       ),
                                     if (data.isEmpty)
                                       Padding(
@@ -638,8 +639,8 @@ class _FoodState extends State<Food> {
                                             'No food/caloric intake data',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline6
-                                                .copyWith(fontSize: 20),
+                                                .titleLarge
+                                                ?.copyWith(fontSize: 20),
                                           ),
                                         ),
                                       )
@@ -652,7 +653,7 @@ class _FoodState extends State<Food> {
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -675,13 +676,13 @@ class _FoodState extends State<Food> {
         title: 'Food/Caloric Intake Data',
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Container(
+          child: SizedBox(
             width: Get.width * 0.75,
             child: Column(
               children: [
                 TextField(
                   controller: editFoodController,
-                  decoration: InputDecoration(hintText: 'Food/Drink'),
+                  decoration: const InputDecoration(hintText: 'Food/Drink'),
                 ),
                 TextField(
                   controller: editCalController,
@@ -689,7 +690,7 @@ class _FoodState extends State<Food> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Calories'),
+                  decoration: const InputDecoration(hintText: 'Calories'),
                 ),
                 TextField(
                   controller: editFatController,
@@ -697,7 +698,7 @@ class _FoodState extends State<Food> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Fat'),
+                  decoration: const InputDecoration(hintText: 'Fat'),
                 ),
                 TextField(
                   controller: editCarController,
@@ -705,7 +706,7 @@ class _FoodState extends State<Food> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Carbs'),
+                  decoration: const InputDecoration(hintText: 'Carbs'),
                 ),
                 TextField(
                   controller: editProController,
@@ -713,7 +714,7 @@ class _FoodState extends State<Food> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Protein'),
+                  decoration: const InputDecoration(hintText: 'Protein'),
                 ),
                 TextField(
                   controller: editWaterController,
@@ -721,7 +722,7 @@ class _FoodState extends State<Food> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Water'),
+                  decoration: const InputDecoration(hintText: 'Water'),
                 ),
                 TextField(
                   controller: editSugarController,
@@ -729,7 +730,7 @@ class _FoodState extends State<Food> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Sugar'),
+                  decoration: const InputDecoration(hintText: 'Sugar'),
                 ),
               ],
             ),
@@ -745,7 +746,7 @@ class _FoodState extends State<Food> {
               Navigator.pop(context);
               await updateFoodData(id: idList[index], reportTableData: result);
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),
@@ -756,13 +757,13 @@ class _FoodState extends State<Food> {
 
 class _FoodCaloricIntakeData {
   _FoodCaloricIntakeData(
-      {this.name,
-      this.calories,
-      this.fat,
-      this.carbs,
-      this.protein,
-      this.water,
-      this.sugar});
+      {required this.name,
+      required this.calories,
+      required this.fat,
+      required this.carbs,
+      required this.protein,
+      required this.water,
+      required this.sugar});
 
   final String name;
   final double calories;

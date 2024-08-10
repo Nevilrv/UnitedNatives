@@ -1,18 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/patient_request_list_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/request/maintenace%20req.dart';
-import 'package:doctor_appointment_booking/pages/request/requset_list_screen.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/patient_request_viewModel.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/patient_request_list_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/request/maintenace%20req.dart';
+import 'package:united_natives/pages/request/requset_list_screen.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/patient_request_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Request extends StatefulWidget {
+  const Request({super.key});
+
   @override
-  _RequestState createState() => _RequestState();
+  State<Request> createState() => _RequestState();
 }
 
 class _RequestState extends State<Request> {
@@ -50,7 +52,7 @@ class _RequestState extends State<Request> {
             'Request',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24),
           ),
           actions: [
@@ -66,9 +68,9 @@ class _RequestState extends State<Request> {
                   size: Get.height * 0.03,
                 ),
                 itemBuilder: (context) => [
-                      PopupMenuItem(
-                        child: Text("All Request"),
+                      const PopupMenuItem(
                         value: 1,
+                        child: Text("All Request"),
                       ),
                     ])
           ],
@@ -84,15 +86,15 @@ class _RequestState extends State<Request> {
                 );
               }
               if (controller.getRequestListApiResponse.status == Status.ERROR) {
-                return Center(child: Text('Server error'));
+                return const Center(child: Text('Server error'));
               }
               RequestListResponseModel responseModel =
                   controller.getRequestListApiResponse.data;
-              if (responseModel.data.isEmpty) {
-                return Center(child: Text('No request found'));
+              if (responseModel.data!.isEmpty) {
+                return const Center(child: Text('No request found'));
               }
               return ListView.builder(
-                itemCount: responseModel.data.length,
+                itemCount: responseModel.data?.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
@@ -113,7 +115,7 @@ class _RequestState extends State<Request> {
                                     ? Get.to(DoctorScreen())
                                     :*/
                               Get.to(MaintenanceRequestScreen(
-                                categoryId: responseModel.data[index].id,
+                                categoryId: responseModel.data?[index].id,
                               ));
                             },
                             child: requestContainer(
@@ -137,10 +139,10 @@ class _RequestState extends State<Request> {
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
           child: CachedNetworkImage(
-            imageUrl: model.data[index].featuredImage == null ||
-                    model.data[index].featuredImage == ''
+            imageUrl: model.data?[index].featuredImage == null ||
+                    model.data?[index].featuredImage == ''
                 ? 'https://www.thepowerscompany.com/wp-content/uploads/2020/10/117160191_m.jpg'
-                : model.data[index].featuredImage,
+                : model.data![index].featuredImage!,
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -152,7 +154,7 @@ class _RequestState extends State<Request> {
                 Center(
               child: Utils.circular(),
             ),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
         Container(
@@ -161,16 +163,16 @@ class _RequestState extends State<Request> {
               color: Colors.black45.withOpacity(0.4),
               borderRadius: BorderRadius.circular(6)),
         ),
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                model.data[index].title,
+                model.data?[index].title ?? "",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.button.copyWith(
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     fontSize: Get.height * 0.03,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),

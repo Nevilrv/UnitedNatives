@@ -1,40 +1,40 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_update_contoller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_btn/loading_btn.dart';
 import 'package:octo_image/octo_image.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/utils/utils.dart';
 
 import '../../../components/text_form_field.dart';
 import '../../../utils/constants.dart';
 
 class DocEditWidget extends StatefulWidget {
+  const DocEditWidget({super.key});
+
   @override
-  _DocEditWidgetState createState() => _DocEditWidgetState();
+  State<DocEditWidget> createState() => _DocEditWidgetState();
 }
 
 class _DocEditWidgetState extends State<DocEditWidget> {
   final UserUpdateController _userUpdateController = Get.find();
   final UserController _userController = Get.find();
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  // final RoundedLoadingButtonController _btnController =
+  //     new RoundedLoadingButtonController();
   final _formKey = GlobalKey<FormState>();
   final sController = TextEditingController();
-  File _image;
+  File? _image;
   ImagePicker imagePicker = ImagePicker();
 
   Future<void> _getImage(ImageSource imageSource) async {
@@ -42,55 +42,52 @@ class _DocEditWidgetState extends State<DocEditWidget> {
       final pickedFile = await imagePicker.pickImage(source: imageSource);
 
       if (pickedFile != null) {
-        final croppedImage = await ImageCropper.cropImage(
+        final croppedImage = await ImageCropper().cropImage(
           sourcePath: pickedFile.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
+          aspectRatio: const CropAspectRatio(ratioX: 1.1, ratioY: 1.1),
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: "",
+              showCropGrid: true,
+              toolbarColor: _isDark ? Colors.grey.shade600 : Colors.white,
+              hideBottomControls: true,
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: true,
+              backgroundColor: Colors.black,
+            ),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+              title: "",
+              aspectRatioLockEnabled: true,
+            )
           ],
-          cropStyle: CropStyle.rectangle,
-          aspectRatio: CropAspectRatio(ratioX: 1.1, ratioY: 1.1),
-          androidUiSettings: AndroidUiSettings(
-            toolbarTitle: "",
-            showCropGrid: true,
-            toolbarColor: _isDark ? Colors.grey.shade600 : Colors.white,
-            hideBottomControls: true,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true,
-            backgroundColor: Colors.black,
-          ),
-          iosUiSettings: IOSUiSettings(
-            minimumAspectRatio: 1.0,
-            title: "",
-            aspectRatioLockEnabled: true,
-          ),
         );
         if (croppedImage != null) {
           setState(() {
             final croppedFile = File(croppedImage.path);
             _image = croppedFile;
-            print("Image Path===>${_image.path}");
           });
         }
       }
     } catch (e) {
-      print("Error picking/cropping image: $e");
+      log('e==========>>>>>$e');
     }
   }
 
-  String dropdownValuesState;
+  String? dropdownValuesState;
   List categoryItemListState = [];
-  String dropdownValuesCity;
+  String? dropdownValuesCity;
   List categoryItemListCity = [];
-  String categoryOfMedicalCenterDropDown;
+  String? categoryOfMedicalCenterDropDown;
   List categoryOfMedicalCenter = [];
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   bool stateLoader = false;
   Future getStates() async {
     setState(() {
       stateLoader = true;
     });
     http.Response response = await http.get(
-      Uri.parse('${Constants.baseUrl + Constants.getAllStates}'),
+      Uri.parse(Constants.baseUrl + Constants.getAllStates),
     );
 
     if (response.statusCode == 200) {
@@ -99,13 +96,13 @@ class _DocEditWidgetState extends State<DocEditWidget> {
       setState(() {
         categoryItemListState = result;
 
-        categoryItemListState.forEach((element) {
+        for (var element in categoryItemListState) {
           if (element['id'].toString() == _userUpdateController.getStateId) {
             dropdownValuesState = element['name'];
             getMedicalCenter(location: element['name']);
             getCities(stateId: element['id']);
           }
-        });
+        }
         stateLoader = false;
       });
 
@@ -118,7 +115,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
   }
 
   bool cityLoader = false;
-  Future getCities({String stateId}) async {
+  Future getCities({String? stateId}) async {
     setState(() {
       cityLoader = true;
     });
@@ -130,11 +127,11 @@ class _DocEditWidgetState extends State<DocEditWidget> {
     if (response.statusCode == 200) {
       var result = json.decode(response.body);
       categoryItemListCity = result;
-      categoryItemListCity.forEach((element) {
+      for (var element in categoryItemListCity) {
         if (element['id'].toString() == _userUpdateController.getCityId) {
           dropdownValuesCity = element['name'];
         }
-      });
+      }
       cityLoader = false;
       setState(() {});
 
@@ -146,10 +143,10 @@ class _DocEditWidgetState extends State<DocEditWidget> {
     }
   }
 
-  String validateMobile(String value) {
+  String? validateMobile(String? value) {
     String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-    RegExp regExp = new RegExp(pattern);
-    if (value.length == 0) {
+    RegExp regExp = RegExp(pattern);
+    if (value!.isEmpty) {
       return 'Please Enter Mobile number';
     } else if (value.length != 10) {
       return 'Mobile Number Should be 10 Digit';
@@ -179,7 +176,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -196,12 +193,12 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(50),
-                              child: Image.file(_image,
+                              child: Image.file(_image!,
                                   width: 100,
                                   height: 100,
                                   fit: BoxFit.fitHeight),
                             ),
-                            Positioned.fill(
+                            const Positioned.fill(
                               child:
                                   Icon(Icons.camera_alt, color: Colors.white),
                             )
@@ -212,12 +209,9 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                             radius: 50,
                             backgroundColor: Colors.grey,
                             backgroundImage: NetworkImage(
-                                _userController.user?.value?.socialProfilePic ??
-                                    _userController.user?.value?.profilePic ??
+                                _userController.user.value.socialProfilePic ??
+                                    _userController.user.value.profilePic ??
                                     ""),
-                            onBackgroundImageError: (context, error) {
-                              return Container();
-                            },
                             child: Stack(
                               children: [
                                 ClipOval(
@@ -225,9 +219,9 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                   child: OctoImage(
                                       image: CachedNetworkImageProvider(
                                           _userController
-                                                  .user?.value?.profilePic ??
-                                              _userController.user?.value
-                                                  ?.socialProfilePic ??
+                                                  .user.value.profilePic ??
+                                              _userController.user.value
+                                                  .socialProfilePic ??
                                               ""),
                                       // placeholderBuilder:
                                       //     OctoPlaceholder.blurHash(
@@ -252,7 +246,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                         backgroundColor: Colors.white,
                                         text: Image.network(
                                           'https://cdn-icons-png.flaticon.com/128/666/666201.png',
-                                          color: Color(0xFF7E7D7D),
+                                          color: const Color(0xFF7E7D7D),
                                           // 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png',
                                         ),
                                       ),
@@ -260,7 +254,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                       height: Get.height,
                                       width: Get.height),
                                 ),
-                                Center(
+                                const Center(
                                   child: Icon(Icons.camera_alt,
                                       color: Colors.white),
                                 ),
@@ -270,24 +264,24 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                         ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Center(
                 child: Text(
-                  Translate.of(context).translate('Profile Picture'),
-                  style: TextStyle(
+                  Translate.of(context)!.translate('Profile Picture'),
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               Text(
-                "${Translate.of(context).translate('first_name_dot')} *",
+                "${Translate.of(context)?.translate('first_name_dot')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -295,14 +289,15 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 hintText: '${_userController.user.value.firstName}',
                 controller: _userUpdateController.firstNameController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please Enter First Name';
                   }
+                  return null;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('last_name_dot')} *",
+                "${Translate.of(context)?.translate('last_name_dot')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -310,14 +305,15 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 hintText: '${_userController.user.value.lastName}',
                 controller: _userUpdateController.lastNameController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please Enter Last Name';
                   }
+                  return null;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('contact_number_dot')} *",
+                "${Translate.of(context)?.translate('contact_number_dot')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -331,33 +327,33 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 validator: validateMobile,
                 hintText: '+1 520 44 54 661',
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('email_dot')} *",
+                "${Translate.of(context)?.translate('email_dot')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 hintText: '${_userController.user.value.email}',
                 enabled: false,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('date_of_birth_dot')} *",
+                "${Translate.of(context)?.translate('date_of_birth_dot')} *",
                 style: kInputTextStyle,
               ),
               Obx(
                 () => ListTile(
-                  contentPadding: EdgeInsets.all(0),
+                  contentPadding: const EdgeInsets.all(0),
                   // title: Text(_userController.dateOfBirth.value),
-                  title: _userUpdateController.dateOfBirth.value.isEmpty ?? true
+                  title: _userUpdateController.dateOfBirth.value.isEmpty
                       ? Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.grey),
                             ),
                           ),
-                          padding: EdgeInsets.only(bottom: 10),
-                          child: Row(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -375,19 +371,18 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                           ),
                         )
                       : Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: Colors.grey),
                             ),
                           ),
-                          padding: EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.only(bottom: 10),
                           child: Text(
                             DateFormat('EEEE, dd MMMM, yyyy').format(
-                              DateTime.parse(_userUpdateController
-                                      .dateOfBirth.value) ??
-                                  DateTime.now(),
+                              DateTime.parse(
+                                  _userUpdateController.dateOfBirth.value),
                             ),
-                            style: TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ),
                   onTap: () {
@@ -396,7 +391,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                       initialDate: DateTime.now(),
                       firstDate: DateTime(1900),
                       lastDate: DateTime.now(),
-                    ).then((DateTime value) {
+                    ).then((DateTime? value) {
                       if (value != null) {
                         _userUpdateController.onDateOfBirth(value.toString());
                       }
@@ -404,29 +399,26 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                   },
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('gender_dot')} *",
+                "${Translate.of(context)?.translate('gender_dot')} *",
                 style: kInputTextStyle,
               ),
               Obx(() {
-                print('GenderDropDown:${_userUpdateController.genderItems}');
-                print('Gender:${_userController.user.value.gender}');
-
                 return DropdownButtonFormField(
                   validator: (value) =>
                       value == null ? 'Please Select Gender' : null,
                   style: TextStyle(
                     fontSize: 22,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                   ),
                   isExpanded: true,
                   value: _userUpdateController.selectedGender.value.isEmpty
                       ? null
                       : _userUpdateController.selectedGender.value,
                   hint: Text(
-                    Translate.of(context).translate('add_gender'),
-                    style: TextStyle(
+                    Translate.of(context)!.translate('add_gender'),
+                    style: const TextStyle(
                       fontSize: 22,
                       color: Color(0xffbcbcbc),
                       fontFamily: 'NunitoSans',
@@ -436,27 +428,28 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                   items: _userUpdateController.dropDownGender,
                 );
               }),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('Certificate No.')} *",
+                "${Translate.of(context)?.translate('Certificate No.')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 textInputAction: TextInputAction.next,
                 controller: _userUpdateController.certificateNoController,
                 // keyboardType: TextInputType.number,
-                hintText: Translate.of(context).translate(
+                hintText: Translate.of(context)!.translate(
                     _userController.user.value.certificateNo ??
                         "Enter certificate number"),
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please Enter Certificate Number';
                   }
+                  return null;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('Per Appointment Charge')} *",
+                "${Translate.of(context)?.translate('Per Appointment Charge')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -464,19 +457,20 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 keyboardType: TextInputType.number,
                 controller:
                     _userUpdateController.perAppointmentChargeController,
-                hintText:
-                    '${_userController.user.value.perAppointmentCharge ?? "Enter appointment charge"}',
+                hintText: _userController.user.value.perAppointmentCharge ??
+                    "Enter appointment charge",
                 validator: (text) {
-                  if (text.isEmpty) {
+                  if (text!.isEmpty) {
                     return 'Enter Appointment Charges';
                   }
+                  return null;
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(
-                "${Translate.of(context).translate('Speciality')} *",
+                "${Translate.of(context)?.translate('Speciality')} *",
                 style: kInputTextStyle,
               ),
               Obx(() {
@@ -486,41 +480,40 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                   isExpanded: true,
                   style: TextStyle(
                     fontSize: 22,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                   ),
-                  value:
-                      _userUpdateController?.speciality?.value?.isEmpty ?? true
-                          ? null
-                          : _userUpdateController.speciality.value,
+                  value: _userUpdateController.speciality.value.isEmpty
+                      ? null
+                      : _userUpdateController.speciality.value,
                   hint: Text(
-                    Translate.of(context).translate('Add Speciality'),
-                    style: TextStyle(
+                    Translate.of(context)!.translate('Add Speciality'),
+                    style: const TextStyle(
                       fontSize: 22,
                       color: Color(0xffbcbcbc),
                       fontFamily: 'NunitoSans',
                     ),
                   ),
                   onChanged: _userUpdateController.onChangeSpeciality,
-                  items: _userUpdateController?.dropDownSpeciality ?? [],
+                  items: _userUpdateController.dropDownSpeciality ?? [],
                 );
               }),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('Education')} *",
+                "${Translate.of(context)?.translate('Education')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 textInputAction: TextInputAction.next,
                 // keyboardType: TextInputType.number,
                 validator: (value) =>
-                    value.isEmpty ? 'Please insert a valid Education' : null,
+                    value!.isEmpty ? 'Please insert a valid Education' : null,
                 controller: _userUpdateController.educationController,
-                hintText: Translate.of(context).translate(
+                hintText: Translate.of(context)!.translate(
                     _userController.user.value.education ?? "Enter education"),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('Provider Type')} *",
+                "${Translate.of(context)?.translate('Provider Type')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -528,26 +521,25 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 textInputAction: TextInputAction.next,
                 controller: _userUpdateController.providerTypeController,
                 hintText:
-                    Translate.of(context).translate('Enter Provider Type'),
+                    Translate.of(context)!.translate('Enter Provider Type'),
                 validator: (text) {
-                  if (text.isEmpty) {
+                  if (text!.isEmpty) {
                     return 'Please insert a Provider Type';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('State')} *",
+                "${Translate.of(context)?.translate('State')} *",
                 style: kInputTextStyle,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               dropDownView(
                 category: "s",
-                colorCon: categoryItemListState == null ||
-                    categoryItemListState.isEmpty,
+                colorCon: categoryItemListState.isEmpty,
                 textStyleCon: dropdownValuesState == null,
                 text: dropdownValuesState != null
                     ? '$dropdownValuesState'
@@ -559,18 +551,16 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 },
               ),
               Text(
-                "${Translate.of(context).translate('city')} *",
+                "${Translate.of(context)?.translate('city')} *",
                 style: kInputTextStyle,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               dropDownView(
                 category: "c",
-                colorCon: categoryItemListCity == null ||
-                    categoryItemListCity.isEmpty,
-                textStyleCon: categoryItemListCity == null ||
-                    categoryItemListCity.isEmpty,
+                colorCon: categoryItemListCity.isEmpty,
+                textStyleCon: categoryItemListCity.isEmpty,
                 text: dropdownValuesCity != null
                     ? '$dropdownValuesCity'
                     : 'Select City',
@@ -581,16 +571,15 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 },
               ),
               Text(
-                "${Translate.of(context).translate('Medical Center')} *",
+                "${Translate.of(context)?.translate('Medical Center')} *",
                 style: kInputTextStyle,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               dropDownView(
                 category: 'm',
-                colorCon: categoryOfMedicalCenter == null ||
-                    categoryOfMedicalCenter.isEmpty,
+                colorCon: categoryOfMedicalCenter.isEmpty,
                 textStyleCon: categoryOfMedicalCenterDropDown == null,
                 text: categoryOfMedicalCenterDropDown != null
                     ? '$categoryOfMedicalCenterDropDown'
@@ -601,26 +590,24 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                   }
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: RoundedLoadingButton(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: LoadingBtn(
+                  height: 50,
+                  width: 150,
+                  disabledColor: Colors.white,
                   color: kColorBlue,
-                  valueColor: Colors.white,
-                  successColor: Colors.white,
-                  child: Text('Update Profile',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  controller: _btnController,
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
+                  onTap: (startLoading, stopLoading, btnState) async {
+                    if (_formKey.currentState!.validate()) {
                       if ((_userUpdateController.dateOfBirth.value.isEmpty) &&
                           categoryOfMedicalCenterDropDown == null &&
                           dropdownValuesCity == null &&
                           dropdownValuesState == null) {
-                        _btnController.reset();
+                        stopLoading();
                         Utils.showSnackBar(
                             'Warning', "Please fill doctor all details");
                       } else if ((_userUpdateController
@@ -635,18 +622,26 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                         Utils.showSnackBar(
                             'Warning', "Please select medical center");
                       } else {
-                        _btnController.start();
+                        startLoading();
                         await _userUpdateController.userProfileUpdate(
                             userProfilePic: _image, userType: "2");
 
                         _userUpdateController.editProfile();
-                        _btnController.reset();
+                        stopLoading();
                       }
                     } else {
                       _userUpdateController.dScrollController.jumpTo(0);
                     }
-                    _btnController.reset();
+                    stopLoading();
                   },
+
+                  // valueColor: Colors.white,
+                  // successColor: Colors.white,
+                  // controller: _btnController,
+
+                  child: const Text('Update Profile',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               )
             ],
@@ -656,21 +651,19 @@ class _DocEditWidgetState extends State<DocEditWidget> {
     );
   }
 
-  selectStateCity({double h, double w, bool state, String category}) {
+  selectStateCity({double? h, double? w, bool? state, String? category}) {
     showDialog(
       context: context,
       builder: (context) {
-        return WillPopScope(
-          onWillPop: () async {
-            return false;
-          },
+        return PopScope(
+          canPop: false,
           child: StatefulBuilder(
             builder: (context, setState234) {
               return Dialog(
                 backgroundColor: Colors.transparent,
                 child: ConstrainedBox(
                   constraints:
-                      BoxConstraints(maxHeight: h * 0.6, maxWidth: 550),
+                      BoxConstraints(maxHeight: h! * 0.6, maxWidth: 550),
                   child: Container(
                     decoration: BoxDecoration(
                       color: _isDark ? Colors.grey.shade800 : Colors.white,
@@ -706,7 +699,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                       onChanged: (value) {
                                         setState234(() {});
                                       },
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                           contentPadding: EdgeInsets.only(
                                               top: 10, left: 16),
                                           suffixIcon: Icon(Icons.search),
@@ -717,7 +710,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               IconButton(
@@ -725,7 +718,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                   if (category == "m") {
                                     Navigator.pop(context,
                                         categoryOfMedicalCenterDropDown);
-                                  } else if (state) {
+                                  } else if (state!) {
                                     Navigator.pop(context, dropdownValuesState);
                                   } else {
                                     Navigator.pop(context, dropdownValuesCity);
@@ -733,7 +726,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
 
                                   sController.clear();
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.clear,
                                   color: Colors.black,
                                   size: 25,
@@ -755,7 +748,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                             .contains(sController.text
                                                 .toString()
                                                 .toLowerCase()))
-                                    : state
+                                    : state!
                                         ? categoryItemListState.indexWhere(
                                             (element) => element['name']
                                                 .toString()
@@ -773,15 +766,15 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                     child: Text(
                                       category == "m"
                                           ? 'No Medical Centers !'
-                                          : state
+                                          : state!
                                               ? 'No States !'
                                               : 'No City !',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Theme.of(context)
                                             .textTheme
-                                            .subtitle1
-                                            .color,
+                                            .titleMedium
+                                            ?.color,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -793,7 +786,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                   shrinkWrap: true,
                                   itemCount: category == "m"
                                       ? categoryOfMedicalCenter.length
-                                      : state
+                                      : state!
                                           ? categoryItemListState.length
                                           : categoryItemListCity.length,
                                   itemBuilder: (context, index) {
@@ -805,7 +798,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                             .contains(sController.text
                                                 .toString()
                                                 .toLowerCase())
-                                        : state
+                                        : state!
                                             ? categoryItemListState[index]
                                                     ['name']
                                                 .toString()
@@ -828,16 +821,22 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                             contentPadding: EdgeInsets.zero,
                                             title: Text(
                                               category == "m"
-                                                  ? "${categoryOfMedicalCenter[index]['post_title'].toString()}"
-                                                  : state
-                                                      ? "${categoryItemListState[index]['name'].toString()}"
-                                                      : "${categoryItemListCity[index]['name'].toString()}",
+                                                  ? categoryOfMedicalCenter[
+                                                          index]['post_title']
+                                                      .toString()
+                                                  : state!
+                                                      ? categoryItemListState[
+                                                              index]['name']
+                                                          .toString()
+                                                      : categoryItemListCity[
+                                                              index]['name']
+                                                          .toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 color: Theme.of(context)
                                                     .textTheme
-                                                    .subtitle1
-                                                    .color,
+                                                    .titleMedium
+                                                    ?.color,
                                               ),
                                             ),
                                             onTap: () async {
@@ -859,7 +858,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                                         index]['post_title'];
 
                                                 setState(() {});
-                                              } else if (state) {
+                                              } else if (state!) {
                                                 Navigator.pop(
                                                     context,
                                                     categoryItemListState[index]
@@ -871,9 +870,6 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                                     categoryItemListState[index]
                                                             ['id']
                                                         .toString();
-                                                print('drop');
-                                                print(
-                                                    '====iddddddddd${_userUpdateController.getStateId}');
                                                 _userUpdateController
                                                     .getCityId = null;
                                                 dropdownValuesCity = null;
@@ -902,13 +898,13 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                                               }
                                             },
                                           ),
-                                          Divider(
+                                          const Divider(
                                             height: 0,
                                           )
                                         ],
                                       );
                                     } else {
-                                      return SizedBox();
+                                      return const SizedBox();
                                     }
                                   },
                                 );
@@ -929,7 +925,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
       if (category == "m") {
         categoryOfMedicalCenterDropDown = value;
         setState(() {});
-      } else if (state) {
+      } else if (state!) {
         dropdownValuesState = value;
         setState(() {});
       } else {
@@ -940,7 +936,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
   }
 
   bool medicalCenterLoader = false;
-  Future getMedicalCenter({String location}) async {
+  Future getMedicalCenter({required String location}) async {
     setState(() {
       medicalCenterLoader = true;
     });
@@ -956,13 +952,13 @@ class _DocEditWidgetState extends State<DocEditWidget> {
       setState(() {
         categoryOfMedicalCenter = result['data']['locations'];
         log('_userUpdateController.getMedicalCenterId==========>>>>>${_userUpdateController.getMedicalCenterId}');
-        categoryOfMedicalCenter.forEach((element) {
+        for (var element in categoryOfMedicalCenter) {
           log('elem==========>>>>>${element['ID']}');
           if (element['ID'].toString() ==
               _userUpdateController.getMedicalCenterId) {
             categoryOfMedicalCenterDropDown = element['post_title'];
           }
-        });
+        }
         medicalCenterLoader = false;
       });
       return result;
@@ -974,11 +970,11 @@ class _DocEditWidgetState extends State<DocEditWidget> {
   }
 
   Widget dropDownView({
-    void Function() onTap,
-    String text,
-    String category,
-    bool textStyleCon,
-    bool colorCon,
+    void Function()? onTap,
+    String? text,
+    String? category,
+    bool? textStyleCon,
+    bool? colorCon,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -989,24 +985,25 @@ class _DocEditWidgetState extends State<DocEditWidget> {
               children: [
                 Expanded(
                   child: Text(
-                    text,
+                    text!,
                     overflow: TextOverflow.ellipsis,
-                    style: textStyleCon
-                        ? TextStyle(
+                    style: textStyleCon!
+                        ? const TextStyle(
                             fontSize: 22,
                             color: Color(0xffbcbcbc),
                             fontFamily: 'NunitoSans',
                           )
                         : TextStyle(
                             fontSize: 22,
-                            color: Theme.of(context).textTheme.subtitle1.color,
+                            color:
+                                Theme.of(context).textTheme.titleMedium?.color,
                           ),
                   ),
                 ),
                 (category == 'm' && medicalCenterLoader == true) ||
                         (category == 'c' && cityLoader == true) ||
                         (category == 's' && stateLoader == true)
-                    ? Container(
+                    ? SizedBox(
                         height: 20,
                         width: 20,
                         // child: CircularProgressIndicator(
@@ -1018,16 +1015,16 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                     : Icon(
                         Icons.arrow_drop_down,
                         color: _isDark
-                            ? colorCon
+                            ? colorCon!
                                 ? Colors.grey.shade800
                                 : Colors.grey.shade100
-                            : colorCon
+                            : colorCon!
                                 ? Colors.grey
                                 : Colors.grey.shade800,
                       )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -1041,7 +1038,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
     );
   }
 
-  static Widget commonContainer({Widget child}) {
+  static Widget commonContainer({required Widget child}) {
     return Container(
       height: 60,
       decoration: BoxDecoration(
@@ -1056,7 +1053,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
   _openBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),
@@ -1067,13 +1064,13 @@ class _DocEditWidgetState extends State<DocEditWidget> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.camera,
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('take_a_photo'),
-                  style: TextStyle(
+                  Translate.of(context)!.translate('take_a_photo'),
+                  style: const TextStyle(
                     color: Color(0xff4a4a4a),
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -1086,13 +1083,13 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.photo_library,
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('choose_a_photo'),
-                  style: TextStyle(
+                  Translate.of(context)!.translate('choose_a_photo'),
+                  style: const TextStyle(
                     color: Color(0xff4a4a4a),
                     fontSize: 20,
                     fontWeight: FontWeight.w500,

@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,22 +26,25 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class SoberDay extends StatefulWidget {
+  const SoberDay({super.key});
+
   @override
-  _SoberDayState createState() => _SoberDayState();
+  State<SoberDay> createState() => _SoberDayState();
 }
 
 class _SoberDayState extends State<SoberDay> {
-  UserController _userController = Get.find<UserController>();
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
+  final UserController _userController = Get.find<UserController>();
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
   int totalCount = 0;
   List list = [];
   RxBool isLoading = false.obs;
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   List<Datum> listDatum = [];
   List editList = [];
-  String days;
-  String editDays;
-  String count;
+  String? days;
+  String? editDays;
+  String? count;
   List cols = [
     {
       "title": 'StartDate',
@@ -70,10 +73,10 @@ class _SoberDayState extends State<SoberDay> {
   List<String> idList = [];
 
   final _editableKey = GlobalKey<EditableState>();
-  DateTime startTime = DateTime.now();
-  DateTime endTime = DateTime.now();
+  DateTime? startTime;
+  DateTime? endTime;
 
-  Future<HealthResponseModel> getSoberDayData() async {
+  Future<HealthResponseModel?> getSoberDayData() async {
     rows.clear();
     idList.clear();
     final String url = Constants.getRoutineHealthReport;
@@ -92,10 +95,10 @@ class _SoberDayState extends State<SoberDay> {
       if (response != null) {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
-        listDatum = model.data;
-        model.data.forEach((element) {
-          idList.add(element.id);
-          List list = (jsonDecode(element.tableData) as List);
+        listDatum = model.data!;
+        model.data?.forEach((element) {
+          idList.add(element.id!);
+          List list = (jsonDecode(element.tableData!) as List);
           rows.add({
             'startDate': list[0],
             'endDate': list[1],
@@ -177,7 +180,8 @@ class _SoberDayState extends State<SoberDay> {
     }
   }
 
-  Future updateSoberDayData({dynamic reportTableData, String id}) async {
+  Future updateSoberDayData(
+      {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -233,8 +237,6 @@ class _SoberDayState extends State<SoberDay> {
   AdsController adsController = Get.find();
   @override
   Widget build(BuildContext context) {
-    print('getDataLength---------->>>>>>>>$getDataLength');
-
     return DefaultTabController(
       length: 4,
       child: GetBuilder<AdsController>(builder: (ads) {
@@ -248,7 +250,7 @@ class _SoberDayState extends State<SoberDay> {
               "Sobriety Tracker",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
           ),
@@ -258,7 +260,7 @@ class _SoberDayState extends State<SoberDay> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Sobriety Tracker',
@@ -268,7 +270,7 @@ class _SoberDayState extends State<SoberDay> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -280,225 +282,191 @@ class _SoberDayState extends State<SoberDay> {
                             Center(
                                 child: Utils.circular(),
                               )
-                            : Container(
-                                child: Editable(
-                                  key: _editableKey,
-                                  columns: cols,
-                                  rows: rows,
-                                  popUpTitle: 'Sobriety Tracker',
-                                  showSaveIcon: true,
-                                  saveIconColor:
-                                      _isDark ? Colors.white : Colors.black,
-                                  onAddButtonPressed: () async {
-                                    print('DAYS::::::$days');
-                                    String text =
-                                        '${startTimeController.text},${endTimeController.text},$days';
-                                    List<String> result = text.split(',');
-                                    bool addData = true;
-                                    for (int i = 0; i < result.length; i++) {
-                                      if (result[i] == "") {
-                                        Utils.showSnackBar(
-                                          'Enter details',
-                                          'Please enter all required details!!',
-                                        );
-                                        addData = false;
-                                        break;
-                                      }
+                            : Editable(
+                                key: _editableKey,
+                                columns: cols,
+                                rows: rows,
+                                popUpTitle: 'Sobriety Tracker',
+                                showSaveIcon: true,
+                                saveIconColor:
+                                    _isDark ? Colors.white : Colors.black,
+                                onAddButtonPressed: () async {
+                                  String text =
+                                      '${startTimeController.text},${endTimeController.text},$days';
+                                  List<String> result = text.split(',');
+                                  bool addData = true;
+                                  for (int i = 0; i < result.length; i++) {
+                                    if (result[i] == "") {
+                                      Utils.showSnackBar(
+                                        'Enter details',
+                                        'Please enter all required details!!',
+                                      );
+                                      addData = false;
+                                      break;
                                     }
-                                    if (addData) {
-                                      rows.add({
-                                        'startDate': result[0],
-                                        'endDate': result[1],
-                                        'soberTime': result[2],
-                                      });
-                                      Navigator.pop(context);
+                                  }
+                                  if (addData) {
+                                    rows.add({
+                                      'startDate': result[0],
+                                      'endDate': result[1],
+                                      'soberTime': result[2],
+                                    });
+                                    Navigator.pop(context);
 
-                                      await addSoberDayData(result);
-                                      setState(() {
-                                        days = null;
-                                        startTime = null;
-                                        endTime = null;
-                                      });
-                                    } else {
-                                      // Navigator.pop(context);
-                                    }
-                                  },
-                                  onDeleteButtonPressed: (index) async {
-                                    print('Index $index');
-                                    await deleteSoberDayData(idList[index]);
-                                  },
-                                  onEditButtonPressed: (index) {
-                                    _editDialog(context, index, listDatum);
-                                  },
-                                  onTap: () {
-                                    startTimeController.clear();
-                                    endTimeController.clear();
-                                    days = null;
-                                    editDays = null;
-                                    startTime = null;
-                                    endTime = null;
-                                  },
-                                  popUpChild: Container(
-                                    width: Get.width * 0.75,
-                                    child: StatefulBuilder(
-                                      builder: (BuildContext context,
-                                          StateSetter setStates) {
-                                        return Column(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () async {
-                                                final DateTime picked =
-                                                    await showDatePicker(
-                                                        context: context,
-                                                        initialDate:
-                                                            startTime ??
-                                                                DateTime.now(),
-                                                        firstDate:
-                                                            DateTime(2000, 8),
-                                                        lastDate:
-                                                            DateTime(2100));
-                                                if (picked != null &&
-                                                    picked != startTime)
-                                                  setStates(() {
-                                                    startTime = picked;
-                                                    startTimeController.text =
-                                                        DateFormat('dd-MM-yyyy')
-                                                            .format(startTime);
-                                                    print(
-                                                        '===startTimeController.text...${startTimeController.text}');
+                                    await addSoberDayData(result);
+                                    setState(() {
+                                      days = null;
+                                      startTime = null;
+                                      endTime = null;
+                                    });
+                                  } else {
+                                    // Navigator.pop(context);
+                                  }
+                                },
+                                onDeleteButtonPressed: (index) async {
+                                  await deleteSoberDayData(idList[index]);
+                                },
+                                onEditButtonPressed: (index) {
+                                  _editDialog(context, index, listDatum);
+                                },
+                                onTap: () {
+                                  startTimeController.clear();
+                                  endTimeController.clear();
+                                  days = null;
+                                  editDays = null;
+                                  startTime = null;
+                                  endTime = null;
+                                },
+                                popUpChild: SizedBox(
+                                  width: Get.width * 0.75,
+                                  child: StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter setStates) {
+                                      return Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final DateTime? picked =
+                                                  await showDatePicker(
+                                                      context: context,
+                                                      initialDate: startTime ??
+                                                          DateTime.now(),
+                                                      firstDate:
+                                                          DateTime(2000, 8),
+                                                      lastDate: DateTime(2100));
+                                              if (picked != null &&
+                                                  picked != startTime) {
+                                                setStates(() {
+                                                  startTime = picked;
+                                                  startTimeController.text =
+                                                      DateFormat('dd-MM-yyyy')
+                                                          .format(startTime!);
 
-                                                    if (editStartTimeController
-                                                        .text.isNotEmpty) {
-                                                      DateTime date1 =
-                                                          startTime;
-                                                      DateTime date2 = endTime;
-                                                      List<int> diffYMD =
-                                                          differenceInYearsMonthsDays(
-                                                              date1, date2);
-                                                      List<int> diffMD =
-                                                          differenceInMonths(
-                                                              date1, date2);
-                                                      int diffD =
-                                                          differenceInDays(
-                                                              date1, date2);
-                                                      print(
-                                                          "The difference in years, months and days: ${diffYMD[0]} years, ${diffYMD[1]} months, and ${diffYMD[2]} days.");
-                                                      print(
-                                                          "The difference in months and days: ${diffMD[0]} months, and ${diffMD[1]} days.");
-                                                      print(
-                                                          "The difference in days: $diffD days.");
-                                                      if (diffYMD[0] == 0 &&
-                                                          diffYMD[1] == 0) {
-                                                        print(
-                                                            " days: ${diffYMD[2]} days.");
-                                                        days =
-                                                            '${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
-                                                      } else if (diffYMD[0] ==
-                                                          0) {
-                                                        print(
-                                                            " years, months and days: ${diffYMD[1]} months, and ${diffYMD[2]} days.");
-                                                        days =
-                                                            '${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
-                                                      } else {
-                                                        print(
-                                                            "The difference in years, months and days: ${diffYMD[0]} years, ${diffYMD[1]} months, and ${diffYMD[2]} days.");
-                                                        days =
-                                                            '${diffYMD[0]} ${diffYMD[0] == 1 ? 'Year' : 'Years'} ${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
-                                                      }
-                                                    } else {
-                                                      return null;
-                                                    }
-                                                  });
-                                              },
-                                              child: TextField(
-                                                controller: startTimeController,
-                                                readOnly: true,
-                                                enabled: false,
-                                                decoration: InputDecoration(
-                                                    hintText:
-                                                        'Start Date for Sober'),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () async {
-                                                final DateTime picked =
-                                                    await showDatePicker(
-                                                        context: context,
-                                                        initialDate:
-                                                            startTime ??
-                                                                DateTime.now(),
-                                                        firstDate: startTime,
-                                                        lastDate:
-                                                            DateTime(2100));
-                                                if (picked != null &&
-                                                    picked != endTime)
-                                                  setStates(() {
-                                                    endTime = picked;
-                                                    endTimeController.text =
-                                                        DateFormat('dd-MM-yyyy')
-                                                            .format(endTime);
-                                                    DateTime date1 = startTime;
-                                                    DateTime date2 = endTime;
+                                                  if (editStartTimeController
+                                                      .text.isNotEmpty) {
+                                                    DateTime? date1 = startTime;
+                                                    DateTime? date2 = endTime;
                                                     List<int> diffYMD =
                                                         differenceInYearsMonthsDays(
-                                                            date1, date2);
+                                                            date1!, date2!);
                                                     List<int> diffMD =
                                                         differenceInMonths(
                                                             date1, date2);
                                                     int diffD =
                                                         differenceInDays(
                                                             date1, date2);
-                                                    print(
-                                                        "The difference in years, months and days: ${diffYMD[0]} years, ${diffYMD[1]} months, and ${diffYMD[2]} days.");
-                                                    print(
-                                                        "The difference in months and days: ${diffMD[0]} months, and ${diffMD[1]} days.");
-                                                    print(
-                                                        "The difference in days: $diffD days.");
                                                     if (diffYMD[0] == 0 &&
                                                         diffYMD[1] == 0) {
-                                                      print(
-                                                          " days: ${diffYMD[2]} days.");
                                                       days =
                                                           '${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                                                     } else if (diffYMD[0] ==
                                                         0) {
-                                                      print(
-                                                          " years, months and days: ${diffYMD[1]} months, and ${diffYMD[2]} days.");
                                                       days =
                                                           '${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                                                     } else {
-                                                      print(
-                                                          "The difference in years, months and days: ${diffYMD[0]} years, ${diffYMD[1]} months, and ${diffYMD[2]} days.");
                                                       days =
                                                           '${diffYMD[0]} ${diffYMD[0] == 1 ? 'Year' : 'Years'} ${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                                                     }
-                                                  });
-                                              },
-                                              child: TextField(
-                                                controller: endTimeController,
-                                                readOnly: true,
-                                                enabled: false,
-                                                decoration: InputDecoration(
-                                                    hintText:
-                                                        'End Date for Sober'),
-                                              ),
+                                                  } else {
+                                                    return;
+                                                  }
+                                                });
+                                              }
+                                            },
+                                            child: TextField(
+                                              controller: startTimeController,
+                                              readOnly: true,
+                                              enabled: false,
+                                              decoration: const InputDecoration(
+                                                  hintText:
+                                                      'Start Date for Sober'),
                                             ),
-                                            days == '' || days == null
-                                                ? SizedBox()
-                                                : Text('$days')
-                                          ],
-                                        );
-                                      },
-                                    ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final DateTime? picked =
+                                                  await showDatePicker(
+                                                      context: context,
+                                                      initialDate: startTime ??
+                                                          DateTime.now(),
+                                                      firstDate: startTime ??
+                                                          DateTime.now(),
+                                                      lastDate: DateTime(2100));
+                                              if (picked != null &&
+                                                  picked != endTime) {
+                                                setStates(() {
+                                                  endTime = picked;
+                                                  endTimeController.text =
+                                                      DateFormat('dd-MM-yyyy')
+                                                          .format(endTime!);
+                                                  DateTime? date1 = startTime;
+                                                  DateTime? date2 = endTime;
+                                                  List<int> diffYMD =
+                                                      differenceInYearsMonthsDays(
+                                                          date1!, date2!);
+                                                  List<int> diffMD =
+                                                      differenceInMonths(
+                                                          date1, date2);
+                                                  int diffD = differenceInDays(
+                                                      date1, date2);
+                                                  if (diffYMD[0] == 0 &&
+                                                      diffYMD[1] == 0) {
+                                                    days =
+                                                        '${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
+                                                  } else if (diffYMD[0] == 0) {
+                                                    days =
+                                                        '${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
+                                                  } else {
+                                                    days =
+                                                        '${diffYMD[0]} ${diffYMD[0] == 1 ? 'Year' : 'Years'} ${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
+                                                  }
+                                                });
+                                              }
+                                            },
+                                            child: TextField(
+                                              controller: endTimeController,
+                                              readOnly: true,
+                                              enabled: false,
+                                              decoration: const InputDecoration(
+                                                  hintText:
+                                                      'End Date for Sober'),
+                                            ),
+                                          ),
+                                          days == '' || days == null
+                                              ? const SizedBox()
+                                              : Text('$days')
+                                        ],
+                                      );
+                                    },
                                   ),
-                                  borderColor: Colors.blueGrey,
-                                  showCreateButton: true,
-                                  onSubmitted: (value) {},
-                                  createButtonLabel: Text(
-                                    'New',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
+                                ),
+                                borderColor: Colors.blueGrey,
+                                showCreateButton: true,
+                                onSubmitted: (value) {},
+                                createButtonLabel: const Text(
+                                  'New',
+                                  style: TextStyle(
+                                    color: Colors.black,
                                   ),
                                 ),
                               );
@@ -513,15 +481,15 @@ class _SoberDayState extends State<SoberDay> {
                           'No any sobriety tracker data',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
+                              .titleLarge
+                              ?.copyWith(fontSize: 20),
                         ),
                       )
                   ],
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -534,9 +502,6 @@ class _SoberDayState extends State<SoberDay> {
     editList = (jsonDecode(listDatum[index].tableData) as List);
     editStartTimeController.text = editList[0];
     editEndTimeController.text = editList[1];
-
-    print('===>editStartTimeController:${editStartTimeController.text}');
-    print('===>editEndTimeController:${editEndTimeController.text}');
 
     int editStartDateYear =
         int.parse(editStartTimeController.text.split('-')[2]);
@@ -555,15 +520,12 @@ class _SoberDayState extends State<SoberDay> {
 
     editDays = editList[2];
 
-    print('===>startTime:$startTime');
-    print('===>endTime:$endTime');
-
     Alert(
         context: context,
         title: 'Sobriety Tracker',
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Container(
+          child: SizedBox(
             width: Get.width * 0.75,
             child: StatefulBuilder(
               builder: (BuildContext context, StateSetter setStates) {
@@ -571,106 +533,88 @@ class _SoberDayState extends State<SoberDay> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        final DateTime picked = await showDatePicker(
+                        final DateTime? picked = await showDatePicker(
                             context: context,
                             initialDate: startTime ?? DateTime.now(),
                             firstDate: DateTime(2000, 8),
                             lastDate: DateTime(2100));
-                        if (picked != null && picked != startTime)
+                        if (picked != null && picked != startTime) {
                           setStates(() {
                             startTime = picked;
                             editStartTimeController.text =
-                                DateFormat('dd-MM-yyyy').format(startTime);
+                                DateFormat('dd-MM-yyyy').format(startTime!);
                             if (editStartTimeController.text.isNotEmpty) {
-                              DateTime date1 = startTime;
-                              DateTime date2 = endTime;
+                              DateTime? date1 = startTime;
+                              DateTime? date2 = endTime;
                               List<int> diffYMD =
-                                  differenceInYearsMonthsDays(date1, date2);
+                                  differenceInYearsMonthsDays(date1!, date2!);
                               List<int> diffMD =
                                   differenceInMonths(date1, date2);
                               int diffD = differenceInDays(date1, date2);
-                              print(
-                                  "The difference in years, months and days: ${diffYMD[0]} years, ${diffYMD[1]} months, and ${diffYMD[2]} days.");
-                              print(
-                                  "The difference in months and days: ${diffMD[0]} months, and ${diffMD[1]} days.");
-                              print("The difference in days: $diffD days.");
                               if (diffYMD[0] == 0 && diffYMD[1] == 0) {
-                                print(" days: ${diffYMD[2]} days.");
                                 days =
                                     '${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                               } else if (diffYMD[0] == 0) {
-                                print(
-                                    " years, months and days: ${diffYMD[1]} months, and ${diffYMD[2]} days.");
                                 days =
                                     '${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                               } else {
-                                print(
-                                    "The difference in years, months and days: ${diffYMD[0]} years, ${diffYMD[1]} months, and ${diffYMD[2]} days.");
                                 days =
                                     '${diffYMD[0]} ${diffYMD[0] == 1 ? 'Year' : 'Years'} ${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                               }
 
                               editDays = days;
                             } else {
-                              return null;
+                              return;
                             }
                           });
+                        }
                       },
                       child: TextField(
                         controller: editStartTimeController,
                         readOnly: true,
                         enabled: false,
-                        decoration:
-                            InputDecoration(hintText: 'Start Date for Sober'),
+                        decoration: const InputDecoration(
+                            hintText: 'Start Date for Sober'),
                       ),
                     ),
                     GestureDetector(
                       onTap: () async {
-                        final DateTime picked = await showDatePicker(
+                        final DateTime? picked = await showDatePicker(
                             context: context,
                             initialDate: endTime ?? DateTime.now(),
-                            firstDate: startTime,
+                            firstDate: startTime!,
                             lastDate: DateTime(2100));
-                        if (picked != null && picked != endTime)
+                        if (picked != null && picked != endTime) {
                           setStates(() {
                             endTime = picked;
                             editEndTimeController.text =
-                                DateFormat('dd-MM-yyyy').format(endTime);
-                            DateTime date1 = startTime;
-                            DateTime date2 = endTime;
+                                DateFormat('dd-MM-yyyy').format(endTime!);
+                            DateTime? date1 = startTime;
+                            DateTime? date2 = endTime;
                             List<int> diffYMD =
-                                differenceInYearsMonthsDays(date1, date2);
+                                differenceInYearsMonthsDays(date1!, date2!);
                             List<int> diffMD = differenceInMonths(date1, date2);
                             int diffD = differenceInDays(date1, date2);
-                            print(
-                                "The difference in years, months and days: ${diffYMD[0]} years, ${diffYMD[1]} months, and ${diffYMD[2]} days.");
-                            print(
-                                "The difference in months and days: ${diffMD[0]} months, and ${diffMD[1]} days.");
-                            print("The difference in days: $diffD days.");
                             if (diffYMD[0] == 0 && diffYMD[1] == 0) {
-                              print(" days: ${diffYMD[2]} days.");
                               days =
                                   '${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                             } else if (diffYMD[0] == 0) {
-                              print(
-                                  " years, months and days: ${diffYMD[1]} months, and ${diffYMD[2]} days.");
                               days =
                                   '${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                             } else {
-                              print(
-                                  "The difference in years, months and days: ${diffYMD[0]} years, ${diffYMD[1]} months, and ${diffYMD[2]} days.");
                               days =
                                   '${diffYMD[0]} ${diffYMD[0] == 1 ? 'Year' : 'Years'} ${diffYMD[1]} ${diffYMD[1] == 1 ? 'Month' : 'Months'} ${diffYMD[2]} ${diffYMD[2] == 1 ? 'Day' : 'Days'}';
                             }
                             editDays = days;
                           });
+                        }
                       },
                       child: TextField(
                         controller: editEndTimeController,
                         readOnly: true,
                         enabled: false,
-                        decoration:
-                            InputDecoration(hintText: 'End Date for Sober'),
+                        decoration: const InputDecoration(
+                            hintText: 'End Date for Sober'),
                       ),
                     ),
                     editDays == '' || editDays == null
@@ -685,11 +629,9 @@ class _SoberDayState extends State<SoberDay> {
         buttons: [
           DialogButton(
             onPressed: () async {
-              print('call');
               String text =
                   '${editStartTimeController.text},${editEndTimeController.text},${days ?? editDays}';
               List<String> result = text.split(',');
-              print("result=??$result");
               Navigator.pop(context);
               await updateSoberDayData(
                   id: idList[index], reportTableData: result);
@@ -697,7 +639,7 @@ class _SoberDayState extends State<SoberDay> {
               startTime = null;
               endTime = null;
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),

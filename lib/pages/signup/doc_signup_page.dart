@@ -80,7 +80,7 @@ class _DocSignupPageState extends State<DocSignupPage> {
   }
 
   getSpecialityData() {
-    if (userController.dropDownSpeciality.isEmpty) {
+    if (userController.dropDownSpeciality!.isEmpty) {
       userController.getSpecialities();
       setState(() {});
     }
@@ -141,7 +141,7 @@ class _DocSignupPageState extends State<DocSignupPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 38),
                         child: Text(
-                          Translate.of(context).translate('sign_up'),
+                          Translate.of(context)!.translate('sign_up'),
                           style: const TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w700,
@@ -160,7 +160,7 @@ class _DocSignupPageState extends State<DocSignupPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '${Translate.of(context).translate('Already a Provider')} ?',
+                                '${Translate.of(context)!.translate('Already a Provider')} ?',
                                 style: const TextStyle(
                                     color: Color(0xffbcbcbc),
                                     fontSize: 20,
@@ -175,7 +175,7 @@ class _DocSignupPageState extends State<DocSignupPage> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(5),
                                   child: Text(
-                                    Translate.of(context).translate('login'),
+                                    Translate.of(context)!.translate('login'),
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelLarge
@@ -277,10 +277,10 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
     }
   }
 
-  String? validateMobile(String value) {
+  String? validateMobile(String? value) {
     String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     RegExp regExp = RegExp(pattern);
-    if (value.isEmpty) {
+    if (value!.isEmpty) {
       return 'Please Enter Mobile Number';
     } else if (value.length != 10) {
       return 'Mobile Number Should be 10 Digit';
@@ -506,7 +506,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "${Translate.of(context).translate('first_name_dot')} *",
+                  "${Translate.of(context)!.translate('first_name_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -515,7 +515,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   controller: _firstNameController,
                   hintText: 'John',
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Enter First Name';
                     }
                     return null;
@@ -525,7 +525,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('last_name_dot')} *",
+                  "${Translate.of(context)!.translate('last_name_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -534,7 +534,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   controller: _lastNameController,
                   hintText: 'Doe',
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Enter Last Name';
                     }
                     return null;
@@ -544,7 +544,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('gender_dot')} *",
+                  "${Translate.of(context)!.translate('gender_dot')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -561,7 +561,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                         ? null
                         : _userController.selectedGender.value,
                     hint: Text(
-                      Translate.of(context).translate('add_gender'),
+                      Translate.of(context)!.translate('add_gender'),
                       style: hintStyle,
                     ),
                     onChanged: _userController.onChangeGender,
@@ -580,7 +580,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "${Translate.of(context).translate('email_dot')} *",
+                  "${Translate.of(context)!.translate('email_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -588,7 +588,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   textInputAction: TextInputAction.next,
                   controller: _emailController,
                   hintText: 'contact@sataware.com',
-                  validator: (value) => EmailValidator.validate(value)
+                  validator: (value) => EmailValidator.validate(value!)
                       ? null
                       : "Please Enter a Valid Email.",
                 ),
@@ -596,7 +596,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Contact number')} *",
+                  "${Translate.of(context)!.translate('Contact number')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -615,7 +615,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('date_of_birth_dot')} *",
+                  "${Translate.of(context)!.translate('date_of_birth_dot')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -681,7 +681,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  "${Translate.of(context).translate('Certificate No.')} *",
+                  "${Translate.of(context)!.translate('Certificate No.')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -690,7 +690,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   controller: _certificateController,
                   hintText: 'DFGBV784959F0',
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Please Enter Certificate Number';
                     }
                     return null;
@@ -698,7 +698,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  "${Translate.of(context).translate('Per Appointment Charge')} *",
+                  "${Translate.of(context)!.translate('Per Appointment Charge')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -708,7 +708,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   controller: _perAppointmentChargeController,
                   hintText: '\$100',
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Please Enter Per Appointment Charge';
                     }
                     return null;
@@ -718,7 +718,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Speciality')} *",
+                  "${Translate.of(context)!.translate('Speciality')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -734,7 +734,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                         ? null
                         : _userController.selectedSpeciality.value,
                     hint: Text(
-                      Translate.of(context).translate('Add Speciality'),
+                      Translate.of(context)!.translate('Add Speciality'),
                       style: hintStyle,
                     ),
                     onChanged: _userController.onChangeSpeciality,
@@ -745,7 +745,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Education')} *",
+                  "${Translate.of(context)!.translate('Education')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -754,7 +754,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   controller: _educationController,
                   hintText: 'MBBS , MD',
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Please Enter Your Education';
                     }
                     return null;
@@ -764,7 +764,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Provider Type')} *",
+                  "${Translate.of(context)!.translate('Provider Type')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -773,7 +773,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   controller: _providerTypeController,
                   hintText: 'Enter Provider Type',
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Enter Provider Type';
                     }
                     return null;
@@ -783,7 +783,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('password_dot')} *",
+                  "${Translate.of(context)!.translate('password_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -793,7 +793,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   hintText: '* * * * * *',
                   obscureText: true,
                   validator: (text) {
-                    if (text.toString().length < 8 || text.isEmpty) {
+                    if (text.toString().length < 8 || text!.isEmpty) {
                       return 'Password Should be Greater Than 8 Digit';
                     }
                     return null;
@@ -803,7 +803,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('confirm_password_dot')} *",
+                  "${Translate.of(context)!.translate('confirm_password_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -813,7 +813,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   hintText: '* * * * * *',
                   obscureText: true,
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Enter Confirm Password';
                     } else if (_passwordController.text !=
                         _confirmPasswordController.text) {
@@ -826,7 +826,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   height: 35,
                 ),
                 Text(
-                  "${Translate.of(context).translate('State')} *",
+                  "${Translate.of(context)!.translate('State')} *",
                   style: kInputTextStyle,
                 ),
                 const SizedBox(
@@ -846,7 +846,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   },
                 ),
                 Text(
-                  "${Translate.of(context).translate('city')} *",
+                  "${Translate.of(context)!.translate('city')} *",
                   style: kInputTextStyle,
                 ),
                 const SizedBox(
@@ -866,7 +866,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   },
                 ),
                 Text(
-                  "${Translate.of(context).translate('Medical Center')} *",
+                  "${Translate.of(context)!.translate('Medical Center')} *",
                   style: kInputTextStyle,
                 ),
                 const SizedBox(
@@ -1124,7 +1124,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                       // Get.toNamed(Routes.phoneAuthScreen);
                     }
                   },
-                  text: Translate.of(context).translate('sign_up'),
+                  text: Translate.of(context)!.translate('sign_up'),
                 ),
               ],
             ),
@@ -1153,7 +1153,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('take_a_photo'),
+                  Translate.of(context)!.translate('take_a_photo'),
                   style: const TextStyle(
                     color: Color(0xff4a4a4a),
                     fontSize: 20,
@@ -1172,7 +1172,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('choose_a_photo'),
+                  Translate.of(context)!.translate('choose_a_photo'),
                   style: const TextStyle(
                     color: Color(0xff4a4a4a),
                     fontSize: 20,

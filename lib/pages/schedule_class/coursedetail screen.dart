@@ -1,46 +1,46 @@
 import 'dart:async';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/book_withdraw_req_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/class_detail_patient_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/message_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/utils/common_snackbar.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/patient_scheduled_class_viewmodel.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/book_withdraw_req_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/class_detail_patient_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/patient_scheduled_class_viewmodel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CourseDetailScreen extends StatefulWidget {
-  final String classId;
-  final String mySelectedDate;
-  final bool isBooked;
+  final String? classId;
+  final String? mySelectedDate;
+  final bool? isBooked;
 
   const CourseDetailScreen({
-    Key key,
+    super.key,
     this.classId,
     this.isBooked,
     this.mySelectedDate,
-  }) : super(key: key);
+  });
   @override
-  _CourseDetailScreenState createState() => _CourseDetailScreenState();
+  State<CourseDetailScreen> createState() => _CourseDetailScreenState();
 }
 
 class _CourseDetailScreenState extends State<CourseDetailScreen>
     with SingleTickerProviderStateMixin {
-  TabController controller;
+  TabController? controller;
   PatientScheduledClassController patientScheduledClassController = Get.find();
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   final UserController userController = Get.find();
   var data = Get.arguments;
   @override
   void initState() {
     patientScheduledClassController.classDetailDoctor(
-        id: userController.user.value.id, classId: widget.classId);
+        id: userController.user.value.id!, classId: widget.classId!);
     super.initState();
     controller = TabController(length: 1, vsync: this);
   }
@@ -68,8 +68,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                 }
                 if (controller.classDetailPatientApiResponse.status ==
                     Status.ERROR) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 40),
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 40),
                     child: Center(
                       child: Text("Server error"),
                     ),
@@ -82,17 +82,17 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                     ListView(
                       children: [
                         headerView(
-                          image: responseModel.data.classFeaturedImage,
-                          startTime: responseModel.data.classStartTime,
-                          endTime: responseModel.data.classEndTime,
+                          image: responseModel.data?.classFeaturedImage ?? "",
+                          startTime: responseModel.data?.classStartTime ?? "",
+                          endTime: responseModel.data?.classEndTime ?? "",
                           date: DateFormat('yyyy-MM-dd')
                               .format(
                                 DateTime.parse(
-                                    responseModel.data.classDate.toString()),
+                                    responseModel.data!.classDate.toString()),
                               )
                               .toString(),
-                          title: responseModel.data.title,
-                          drName: responseModel.data.doctorFullName,
+                          title: responseModel.data?.title ?? "",
+                          drName: responseModel.data?.doctorFullName ?? "",
                         ),
                         // Get.width * 0.05
                         Padding(
@@ -112,7 +112,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                           padding: EdgeInsets.symmetric(
                               horizontal: Get.height * 0.02),
                           child: tab1(
-                            desc: responseModel.data.description,
+                            desc: responseModel.data!.description!,
                           ),
                         ),
                       ],
@@ -140,7 +140,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                               onTap: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.clear,
                                                 color: Colors.black,
                                                 size: 28,
@@ -150,29 +150,30 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                           Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              SizedBox(height: 20),
+                                              const SizedBox(height: 20),
                                               Padding(
-                                                padding: EdgeInsets.all(20),
+                                                padding:
+                                                    const EdgeInsets.all(20),
                                                 child: Align(
                                                   alignment:
                                                       Alignment.topCenter,
                                                   child: Text(
                                                     responseModel.data
-                                                                .isBooked ==
+                                                                ?.isBooked ==
                                                             false
                                                         ? "Book Now"
                                                         : "Withdraw",
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline6
-                                                        .copyWith(
+                                                        .titleLarge
+                                                        ?.copyWith(
                                                           fontWeight:
                                                               FontWeight.w700,
                                                         ),
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(height: 20),
+                                              const SizedBox(height: 20),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -192,7 +193,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                         fixedSize:
                                                             Size(Get.width, 40),
                                                       ),
-                                                      child: Text(
+                                                      child: const Text(
                                                         "Cancel",
                                                         style: TextStyle(
                                                           fontSize: 20,
@@ -202,7 +203,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     width: 15,
                                                   ),
                                                   Expanded(
@@ -214,7 +215,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                         model
                                                             .action = responseModel
                                                                     .data
-                                                                    .isBooked ==
+                                                                    ?.isBooked ==
                                                                 false
                                                             ? '1'
                                                             : '2';
@@ -222,9 +223,9 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                             .bookWithdrawClass(
                                                           model: model,
                                                           classId:
-                                                              widget.classId,
+                                                              widget.classId!,
                                                           id: userController
-                                                              .user.value.id,
+                                                              .user.value.id!,
                                                         )
                                                             .then((value) {
                                                           if (patientScheduledClassController
@@ -241,24 +242,24 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                                 'Success') {
                                                               CommonSnackBar.snackBar(
                                                                   message: response
-                                                                      .message);
+                                                                      .message!);
                                                               Future.delayed(
-                                                                  Duration(
+                                                                  const Duration(
                                                                       seconds:
                                                                           2),
                                                                   () async {
                                                                 Navigator.pop(
                                                                     context);
                                                                 await patientScheduledClassController.classDetailDoctor(
-                                                                    id: Prefs.getString(
-                                                                        Prefs
-                                                                            .SOCIALID),
+                                                                    id: Prefs.getString(Prefs
+                                                                            .SOCIALID) ??
+                                                                        "",
                                                                     classId: widget
-                                                                        .classId);
+                                                                        .classId!);
                                                                 await patientScheduledClassController.getClassListPatient(
-                                                                    id: Prefs.getString(
-                                                                        Prefs
-                                                                            .SOCIALID),
+                                                                    id: Prefs.getString(Prefs
+                                                                            .SOCIALID) ??
+                                                                        "",
                                                                     date: widget
                                                                             .mySelectedDate ??
                                                                         '');
@@ -266,9 +267,10 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                             } else {
                                                               CommonSnackBar.snackBar(
                                                                   message: response
-                                                                      .message);
+                                                                          .message ??
+                                                                      "");
                                                               Future.delayed(
-                                                                  Duration(
+                                                                  const Duration(
                                                                       seconds:
                                                                           2),
                                                                   () async {
@@ -288,7 +290,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                         fixedSize:
                                                             Size(Get.width, 40),
                                                       ),
-                                                      child: Text(
+                                                      child: const Text(
                                                         "Confirm",
                                                         style: TextStyle(
                                                           fontSize: 18,
@@ -303,7 +305,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 20,
                                               ),
                                             ],
@@ -325,7 +327,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                                                   ),
                                                 );
                                               }
-                                              return SizedBox();
+                                              return const SizedBox();
                                             },
                                           )
                                         ],
@@ -513,7 +515,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                               ),
                             );*/
                         },
-                        child: responseModel.data.isBooked == false
+                        child: responseModel.data!.isBooked == false
                             ? buildContainerButton(
                                 title: "Book Now",
                                 colorText: Colors.white,
@@ -536,12 +538,12 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
     });
   }
 
-  Column tab1({String desc}) {
+  Column tab1({required String desc}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          desc ?? "",
+          desc,
           style: TextStyle(
             fontSize: 20,
             color: _isDark ? Colors.white.withOpacity(0.8) : Colors.grey,
@@ -552,12 +554,12 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
   }
 
   Widget headerView(
-      {String image,
-      String drName,
-      String title,
-      String date,
-      String startTime,
-      String endTime}) {
+      {String? image,
+      String? drName,
+      String? title,
+      String? date,
+      String? startTime,
+      String? endTime}) {
     return Stack(
       children: [
         Column(
@@ -570,7 +572,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                   Container(
                     // width: Get.width,
                     height: Get.height * 0.30,
-                    margin: EdgeInsets.only(bottom: 30),
+                    margin: const EdgeInsets.only(bottom: 30),
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(image == null || image == ''
@@ -587,7 +589,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                     right: 15,
                     child: Container(
                       width: Get.width,
-                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -596,7 +598,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                             colorName: Colors.white,
                             colorText: Colors.black,
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           // Spacer(),
                           buildContainer(
                             title: "Live",
@@ -627,7 +629,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                   Expanded(
                     flex: 1,
                     child: Text(
-                      '${title.toUpperCase() ?? ""}',
+                      title?.toUpperCase() ?? "",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -637,7 +639,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                 ],
@@ -646,7 +648,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
             Container(
               width: Get.width * 2,
               height: 2,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               color: Colors.black12,
             ),
             Padding(
@@ -671,7 +673,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
                           ),
                         ),
                         Text(
-                          '${date ?? ""}',
+                          date ?? "",
                           style: TextStyle(
                             color: _isDark ? Colors.white : Colors.black,
                             fontSize: 22,
@@ -725,7 +727,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
             Container(
               width: Get.width * 2,
               height: 2,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               color: Colors.black12,
             ),
             // index.isEven
@@ -744,7 +746,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
             child: CircleAvatar(
               backgroundColor: Colors.black.withOpacity(0.5),
               radius: Get.height * 0.023,
-              child: Center(
+              child: const Center(
                 child: Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.white,
@@ -758,28 +760,20 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
   }
 
   Container buildContainer({
-    String title,
-    Color colorName,
-    Color colorText,
+    String? title,
+    Color? colorName,
+    Color? colorText,
   }) {
     return Container(
       height: 40,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 12),
-      child: Text(
-        "$title",
-        maxLines: 1,
-        style: TextStyle(
-          color: colorText == null ? Colors.black : colorText,
-          fontSize: Get.height * 0.025,
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
 
       decoration: BoxDecoration(
         color: colorName,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 4,
@@ -789,30 +783,31 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
         ],
         borderRadius: BorderRadius.circular(8),
       ),
+      child: Text(
+        "$title",
+        maxLines: 1,
+        style: TextStyle(
+          color: colorText ?? Colors.black,
+          fontSize: Get.height * 0.025,
+        ),
+      ),
     );
   }
 
   Container buildContainerButton({
-    String title,
-    Color colorName,
-    Color colorText,
+    String? title,
+    Color? colorName,
+    Color? colorText,
   }) {
     return Container(
       height: 50,
       width: Get.width,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.only(bottom: 25, right: 25, left: 25, top: 10),
-      child: Text(
-        "$title",
-        style: TextStyle(
-          color: colorText,
-          fontSize: 20,
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.only(bottom: 25, right: 25, left: 25, top: 10),
       decoration: BoxDecoration(
         color: colorName,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 4,
@@ -821,6 +816,13 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
           ),
         ],
         borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        "$title",
+        style: TextStyle(
+          color: colorText,
+          fontSize: 20,
+        ),
       ),
     );
   }

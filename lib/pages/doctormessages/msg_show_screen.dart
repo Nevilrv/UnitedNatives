@@ -3,13 +3,13 @@ import 'package:photo_view/photo_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class MessageShowScreen extends StatefulWidget {
-  final String file;
-  final String type;
+  final String? file;
+  final String? type;
 
-  const MessageShowScreen({Key key, this.file, this.type}) : super(key: key);
+  const MessageShowScreen({super.key, this.file, this.type});
 
   @override
-  _MessageShowScreenState createState() => _MessageShowScreenState();
+  State<MessageShowScreen> createState() => _MessageShowScreenState();
 }
 
 class _MessageShowScreenState extends State<MessageShowScreen> {
@@ -36,7 +36,7 @@ class _MessageShowScreenState extends State<MessageShowScreen> {
                         padding: const EdgeInsets.all(10.0),
                         child: PhotoView(
                           imageProvider: NetworkImage(
-                            widget.file,
+                            widget.file!,
                           ),
                           minScale: PhotoViewComputedScale.contained,
                           initialScale: PhotoViewComputedScale.contained,
@@ -50,7 +50,7 @@ class _MessageShowScreenState extends State<MessageShowScreen> {
                     child: Container(
                       color: Colors.red,
                       child: SfPdfViewer.network(
-                        widget.file,
+                        widget.file!,
                         key: _pdfViewerKey,
                       ),
                     ),

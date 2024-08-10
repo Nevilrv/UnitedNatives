@@ -1,50 +1,51 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/custom_button.dart';
-import 'package:doctor_appointment_booking/components/progress_indicator.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/doctor_by_specialities.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_city_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_states_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/intake_form_list_res_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/booking/step4/intake_from.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart' as snack;
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/intake_form_view_model.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/custom_button.dart';
+import 'package:united_natives/components/progress_indicator.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_city_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_states_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/intake_form_list_res_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/booking/step4/intake_from.dart';
+import 'package:united_natives/utils/utils.dart' as snack;
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/intake_form_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class IntakeFormList extends StatefulWidget {
-  final String id;
-  final bool patient;
-  final NavigationModel navigationModel;
-  final GetStatesResponseModel selectedState;
-  final GetCityResponseModel selectedCity;
+  final String? id;
+  final bool? patient;
+  final NavigationModel? navigationModel;
+  final GetStatesResponseModel? selectedState;
+  final GetCityResponseModel? selectedCity;
 
   const IntakeFormList({
-    Key key,
+    super.key,
     this.id,
     this.navigationModel,
     this.patient,
     this.selectedState,
     this.selectedCity,
-  }) : super(key: key);
-  _IntakeFormListState createState() => _IntakeFormListState();
+  });
+  @override
+  State<IntakeFormList> createState() => _IntakeFormListState();
 }
 
 class _IntakeFormListState extends State<IntakeFormList> {
   IntakeFormViewModel unitedNativesFormViewModel =
       Get.put(IntakeFormViewModel());
   final BookAppointmentController bookAppointmentController = Get.find();
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
 
   @override
   void initState() {
-    FocusManager.instance.primaryFocus.unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     unitedNativesFormViewModel.id = widget.id;
     unitedNativesFormViewModel.patient = widget.patient;
@@ -52,7 +53,7 @@ class _IntakeFormListState extends State<IntakeFormList> {
     unitedNativesFormViewModel.selectedState = widget.selectedState;
     unitedNativesFormViewModel.selectedCity = widget.selectedCity;
     unitedNativesFormViewModel.getIntakeForm(
-        medicalCenterID: unitedNativesFormViewModel.id,
+        medicalCenterID: unitedNativesFormViewModel.id!,
         userId: _userController.user.value.id ?? "");
     super.initState();
   }
@@ -77,7 +78,7 @@ class _IntakeFormListState extends State<IntakeFormList> {
                       'Intake Forms',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                         fontSize: 24,
                       ),
                     ),
@@ -97,7 +98,7 @@ class _IntakeFormListState extends State<IntakeFormList> {
                         );
                       } else if (controller.getIntakeFormApiResponse.status ==
                           Status.ERROR) {
-                        return Center(
+                        return const Center(
                           child: Text('Something went wrong please try again!'),
                         );
                       } else if (controller.getIntakeFormApiResponse.status ==
@@ -105,8 +106,8 @@ class _IntakeFormListState extends State<IntakeFormList> {
                         IntakeFormListResponseModel resData =
                             controller.getIntakeFormApiResponse.data;
 
-                        return resData.data.forms.isEmpty
-                            ? Center(
+                        return resData.data!.forms!.isEmpty
+                            ? const Center(
                                 child: Text(
                                   'No forms available',
                                   style: TextStyle(fontSize: 21),
@@ -125,17 +126,17 @@ class _IntakeFormListState extends State<IntakeFormList> {
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context)
                                               .textTheme
-                                              .subtitle1
-                                              .color,
+                                              .titleMedium
+                                              ?.color,
                                           fontSize: 25),
                                     ),
                                   ),
                                   Expanded(
                                     child: ListView.separated(
-                                      itemCount: resData.data.forms.length,
-                                      padding: EdgeInsets.all(15),
+                                      itemCount: resData.data!.forms!.length,
+                                      padding: const EdgeInsets.all(15),
                                       separatorBuilder: (context, index) {
-                                        return SizedBox(height: 15);
+                                        return const SizedBox(height: 15);
                                       },
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
@@ -146,10 +147,10 @@ class _IntakeFormListState extends State<IntakeFormList> {
                                                 builder: (context) =>
                                                     IntakeFrom(
                                                   formId: resData
-                                                      .data.forms[index].id
+                                                      .data!.forms![index].id
                                                       .toString(),
                                                   medicalCenterId:
-                                                      controller.id,
+                                                      controller.id!,
                                                 ),
                                               ),
                                             );
@@ -158,23 +159,25 @@ class _IntakeFormListState extends State<IntakeFormList> {
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color: Colors.grey)),
-                                            padding: EdgeInsets.all(20),
+                                            padding: const EdgeInsets.all(20),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                    "${resData.data.forms[index].postTitle}"),
+                                                    "${resData.data!.forms?[index].postTitle}"),
                                                 controller.savedForm.any(
                                                         (element) =>
                                                             element["formId"]
                                                                 .toString() ==
-                                                            resData.data
-                                                                .forms[index].id
+                                                            resData
+                                                                .data!
+                                                                .forms?[index]
+                                                                .id
                                                                 .toString())
-                                                    ? Icon(Icons.task_alt)
-                                                    : Icon(Icons
+                                                    ? const Icon(Icons.task_alt)
+                                                    : const Icon(Icons
                                                         .arrow_forward_ios_rounded),
                                               ],
                                             ),
@@ -184,11 +187,11 @@ class _IntakeFormListState extends State<IntakeFormList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(15),
+                                    padding: const EdgeInsets.all(15),
                                     child: CustomButton(
                                       textSize: 24,
                                       onPressed: () async {
-                                        if (resData.data.forms.length ==
+                                        if (resData.data?.forms?.length ==
                                             controller.savedForm.length) {
                                           await controller
                                               .confirmBooking(context);
@@ -197,19 +200,21 @@ class _IntakeFormListState extends State<IntakeFormList> {
                                               "Please fill all remaining intake form for confirm your appointment");
                                         }
                                       },
-                                      text: Translate.of(context)
+                                      text: Translate.of(context)!
                                           .translate('confirm'),
                                     ),
                                   )
                                 ],
                               );
                       } else {
-                        return SizedBox();
+                        return const SizedBox();
                       }
                     },
                   ),
                 ),
-                bController.isLoader ? ProgressIndicatorScreen() : SizedBox()
+                bController.isLoader
+                    ? const ProgressIndicatorScreen()
+                    : const SizedBox()
               ],
             );
           },

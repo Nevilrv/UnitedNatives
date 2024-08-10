@@ -21,7 +21,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           color: widget.color,
           padding: const EdgeInsets.all(15),
           child: Text(
-            Translate.of(context).translate('settings'),
+            Translate.of(context)!.translate('settings'),
             style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -39,12 +39,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                Translate.of(context).translate('health_tips_for_you'),
+                Translate.of(context)!.translate('health_tips_for_you'),
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                Translate.of(context).translate('get_information_tips'),
+                Translate.of(context)!.translate('get_information_tips'),
                 style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,

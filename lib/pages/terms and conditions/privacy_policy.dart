@@ -24,12 +24,12 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       final PatientHomeScreenController patientHomeScreenController =
           Get.find();
       privacyData = patientHomeScreenController
-          .aboutUsPrivacyPolicyModel.value?.data?.privacyPolicy;
+          .aboutUsPrivacyPolicyModel.value.data?.privacyPolicy;
     } else {
       privacyData = "";
       final DoctorHomeScreenController doctorHomeScreenController = Get.find();
       privacyData = doctorHomeScreenController
-          .aboutUsPrivacyPolicyDoctorModel.value.data.privacyPolicy;
+          .aboutUsPrivacyPolicyDoctorModel.value.data?.privacyPolicy;
     }
 
     return GetBuilder<AdsController>(

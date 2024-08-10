@@ -1,52 +1,51 @@
 import 'dart:async';
-
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/appointment.dart';
-import 'package:doctor_appointment_booking/model/doctor_by_specialities.dart';
-import 'package:doctor_appointment_booking/model/getSorted_patient_chatList_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/set_rating_for_the_doctor_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_all_notes_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/FirstMessagePage.dart';
-import 'package:doctor_appointment_booking/pages/booking/step3/time_slot_drawer.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_notes_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/set_rating_for_the_doctor_view_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:intl/intl.dart';
 import 'package:rating_dialog/rating_dialog.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/model/getSorted_patient_chatList_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/set_rating_for_the_doctor_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_all_notes_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/FirstMessagePage.dart';
+import 'package:united_natives/pages/booking/step3/time_slot_drawer.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_notes_view_model.dart';
+import 'package:united_natives/viewModel/set_rating_for_the_doctor_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../components/round_icon_button.dart';
 import '../../routes/routes.dart';
 import '../../utils/constants.dart';
 
 class DoctorProfilePage2 extends StatefulWidget {
-  final Appointment doctor;
+  final Appointment? doctor;
 
-  DoctorProfilePage2({Key key, this.doctor}) : super(key: key);
+  const DoctorProfilePage2({super.key, this.doctor});
 
   @override
   State<DoctorProfilePage2> createState() => _DoctorProfilePage2State();
 }
 
 class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   final BookAppointmentController _bookAppointmentController =
       Get.find<BookAppointmentController>();
   TextEditingController text = TextEditingController();
   var info;
-  GetAllNotesModel getData;
+  GetAllNotesModel? getData;
   final UserController userController = Get.find();
   PatientHomeScreenController patientHomeScreenController = Get.find();
   var chatListItem;
@@ -58,7 +57,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
 
   Appointment appointment = Appointment();
 
-  String docId;
+  String? docId;
 
   @override
   void initState() {
@@ -70,8 +69,8 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
   }
 
   assignData() {
-    appointment = widget.doctor;
-    docId = widget.doctor.doctorId ?? "";
+    appointment = widget.doctor!;
+    docId = widget.doctor?.doctorId ?? "";
     setState(() {});
   }
 
@@ -83,23 +82,23 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
         List<Appointment> data = [];
 
         Set doctorId = {};
-        patientHomeScreenController.visitedDoctorUpcomingPastData?.value?.past
+        patientHomeScreenController.visitedDoctorUpcomingPastData.value.past
             ?.forEach((element) {
           doctorId.add(element.doctorId);
         });
         doctorId.toList().forEach((element1) {
           final tempData = patientHomeScreenController
-              .visitedDoctorUpcomingPastData?.value?.past
+              .visitedDoctorUpcomingPastData.value.past
               ?.where((element) => element.doctorId == element1)
-              ?.toList();
-          data.add(tempData.first);
+              .toList();
+          data.add(tempData!.first);
         });
 
-        data.forEach((element) {
+        for (var element in data) {
           if (element.doctorId == docId) {
             appointment = element;
           }
-        });
+        }
         setState(() {});
       }
     });
@@ -108,12 +107,12 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
   Future<void> data() async {
     await patientHomeScreenController.getSortedPatientChatList();
     patientHomeScreenController.newDataList =
-        patientHomeScreenController.getSortedPatientChatListModel.value.data;
+        patientHomeScreenController.getSortedPatientChatListModel.value.data!;
     for (var i = 0; i < patientHomeScreenController.newDataList.length; i++) {
       if (patientHomeScreenController.newDataList[i].doctorId ==
           appointment.doctorId) {
         if (patientHomeScreenController.newDataList[i].chatKey != null &&
-            patientHomeScreenController.newDataList[i].chatKey.isNotEmpty &&
+            patientHomeScreenController.newDataList[i].chatKey!.isNotEmpty &&
             patientHomeScreenController.newDataList[i].chatKey != "") {
           chatListItem = patientHomeScreenController.newDataList[i];
           setState(() {
@@ -121,9 +120,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
           });
           break;
         }
-      } else {
-        print('no......');
-      }
+      } else {}
     }
     await addNotesController.addNotesControllers(
         dId: appointment.doctorId, pId: '${userController.user.value.id}');
@@ -135,7 +132,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
   AdsController adsController = Get.find();
   @override
   Widget build(BuildContext context) {
-    void _launchCaller(String number) async {
+    void launchCaller(String number) async {
       var url = "tel:${number.toString()}";
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url));
@@ -160,8 +157,8 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                   flexibleSpace: FlexibleSpaceBar(
                     background: Center(
                       child: Utils().patientProfile(
-                          appointment?.doctorProfilePic ?? '',
-                          appointment?.doctorSocialProfilePic ?? '',
+                          appointment.doctorProfilePic ?? '',
+                          appointment.doctorSocialProfilePic ?? '',
                           130,
                           fit: BoxFit.contain),
                     ),
@@ -171,7 +168,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
             },
             body: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -182,20 +179,19 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                '${appointment?.doctorFirstName}'
-                                        ' '
-                                        '${appointment?.doctorLastName}' ??
-                                    'Name not Found',
+                                '${appointment.doctorFirstName}'
+                                ' '
+                                '${appointment.doctorLastName}',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle1
-                                    .copyWith(
+                                    .titleMedium
+                                    ?.copyWith(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 20),
                               ),
                               Text(
-                                "${appointment?.doctorSpeciality}",
-                                style: TextStyle(
+                                "${appointment.doctorSpeciality}",
+                                style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -204,46 +200,41 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         GestureDetector(
-                          onTap: () {
-                            return showRatingDialog(context);
-                          },
+                          onTap: () => showRatingDialog(context),
                           child: RatingBar.builder(
                             itemSize: 20,
                             initialRating:
-                                appointment?.doctorRating?.toDouble() ?? 0,
+                                appointment.doctorRating?.toDouble() ?? 0,
                             allowHalfRating: true,
                             itemCount: 5,
                             ignoreGestures: true,
-                            itemBuilder: (context, _) => Icon(
+                            itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
                             ),
-                            onRatingUpdate: (rating) {
-                              print(rating);
-                            },
+                            onRatingUpdate: (rating) {},
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Divider(
                       height: 1,
                       color: Colors.grey[350],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
                       children: <Widget>[
                         RoundIconButton(
                           onPressed: () async {
-                            print('isAvailable  $isAvailable');
                             if (isAvailable == true) {
                               Get.to(FirstMessagePage(
                                 patientId: _userController.user.value.id,
@@ -266,17 +257,17 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                           icon: Icons.message,
                           elevation: 1,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         RoundIconButton(
                           onPressed: () {
-                            _launchCaller(appointment.doctorMobileNumber);
+                            launchCaller(appointment.doctorMobileNumber!);
                           },
                           icon: Icons.phone,
                           elevation: 1,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(
@@ -287,26 +278,25 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                                     arguments: _bookAppointmentController
                                         .specialitiesModelData
                                         .value
-                                        .specialities[0]
+                                        .specialities?[0]
                                         .id);
                               } else {
                                 _bookAppointmentController
                                   ..selectedIndex.value = (-1)
                                   ..items = <Map<String, dynamic>>[].obs
                                   ..getPatientAppointment(
-                                      appointment.doctorId, context);
+                                      appointment.doctorId!, context);
 
                                 await _bookAppointmentController
                                     .getDoctorSpecialities(
-                                        appointment.doctorSpecialityID,
+                                        appointment.doctorSpecialityID!,
                                         context);
-                                DoctorSpecialities doctorSpecialities;
+                                DoctorSpecialities? doctorSpecialities;
                                 _bookAppointmentController
                                     .doctorBySpecialitiesModelData
                                     .value
                                     .doctorSpecialities
-                                    .forEach((element) {
-                                  print('element.userId===>${element.userId}');
+                                    ?.forEach((element) {
                                   if (element.userId == appointment.doctorId) {
                                     doctorSpecialities = element;
                                   }
@@ -322,14 +312,14 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                               borderRadius: BorderRadius.circular(50),
                             ),
                             fillColor: kColorBlue,
-                            child: Container(
+                            child: SizedBox(
                               height: 48,
                               child: Center(
                                 child: Text(
-                                  Translate.of(context)
+                                  Translate.of(context)!
                                       .translate('book_an_appointment')
                                       .toUpperCase(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                   ),
@@ -340,10 +330,10 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Container(
+                    SizedBox(
                       width: Get.width * 0.38,
                       child: RawMaterialButton(
                         onPressed: () {
@@ -360,7 +350,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         fillColor: kColorBlue,
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
@@ -370,7 +360,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                             SizedBox(
                               width: 5,
                             ),
-                            Container(
+                            SizedBox(
                               height: 48,
                               child: Center(
                                 child: Text(
@@ -386,7 +376,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     GetBuilder<AddNotesController>(
                       builder: (controller) {
                         if (controller.apiResponse.status == Status.LOADING) {
@@ -402,13 +392,13 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
 
                           return SizedBox(
                             child: ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               padding: EdgeInsets.zero,
-                              itemCount: data.data.length,
+                              itemCount: data.data?.length,
                               itemBuilder: (BuildContext context, int index) {
-                                data.data.sort(
-                                    (a, b) => (b.created).compareTo(a.created));
+                                data.data?.sort((a, b) =>
+                                    (b.created)!.compareTo(a.created!));
                                 return /*Card(
                                   child: Column(
                                     crossAxisAlignment:
@@ -566,7 +556,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
-                                              Text(
+                                              const Text(
                                                 'Date :  ',
                                                 style: TextStyle(
                                                   color: Colors.grey,
@@ -577,25 +567,27 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               Text(
-                                                '${DateFormat('yyyy-MM-dd').format(DateTime.parse('${data.data[index].created}'))}',
+                                                DateFormat('yyyy-MM-dd').format(
+                                                    DateTime.parse(
+                                                        '${data.data?[index].created}')),
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .subtitle1
-                                                    .copyWith(
+                                                    .titleMedium
+                                                    ?.copyWith(
                                                         fontSize: 22,
                                                         fontWeight:
                                                             FontWeight.w500),
                                               ),
                                             ],
                                           ),
-                                          Divider(
+                                          const Divider(
                                             thickness: 1,
                                           ).paddingSymmetric(vertical: 5),
                                           Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
+                                              const Text(
                                                 'Note :  ',
                                                 style: TextStyle(
                                                   color: Colors.grey,
@@ -607,11 +599,11 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                                               ),
                                               Expanded(
                                                 child: Text(
-                                                  "${data.data[index].notes}",
+                                                  "${data.data?[index].notes}",
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .subtitle1
-                                                      .copyWith(
+                                                      .titleMedium
+                                                      ?.copyWith(
                                                           fontSize: 22,
                                                           fontWeight:
                                                               FontWeight.w500),
@@ -628,7 +620,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                             ),
                           );
                         } else {
-                          return SizedBox();
+                          return const SizedBox();
                         }
                       },
                     ),
@@ -647,7 +639,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
       context: context,
       barrierDismissible: true,
       builder: (context) {
-        if (appointment?.ratingByPatient != 0) {
+        if (appointment.ratingByPatient != 0) {
           return Center(
             child: IntrinsicHeight(
               child: Container(
@@ -669,22 +661,23 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            icon: Icon(Icons.close),
+                            icon: const Icon(Icons.close),
                           ),
                         ),
                         Container(
                           width: Get.width * 0.22,
                           height: Get.width * 0.22,
-                          decoration: BoxDecoration(shape: BoxShape.circle),
+                          decoration:
+                              const BoxDecoration(shape: BoxShape.circle),
                           child: Utils().patientProfile(
-                              appointment?.doctorProfilePic ?? '',
-                              appointment?.doctorSocialProfilePic ?? '',
+                              appointment.doctorProfilePic ?? '',
+                              appointment.doctorSocialProfilePic ?? '',
                               100,
                               fit: BoxFit.contain),
                         ),
                         SizedBox(height: Get.height * 0.01),
                         Text(
-                          '${appointment?.doctorFirstName?.capitalizeFirst} ${appointment?.doctorLastName?.capitalizeFirst}',
+                          '${appointment.doctorFirstName?.capitalizeFirst} ${appointment.doctorLastName?.capitalizeFirst}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 24,
@@ -707,19 +700,22 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                           ),
                         ),
                         SizedBox(height: Get.height * 0.015),
-                        SmoothStarRating(
-                          allowHalfRating: false,
-                          starCount: 5,
-                          rating: appointment?.ratingByPatient ?? 0.0,
-                          size: Get.height * 0.05,
-                          isReadOnly: true,
-                          color: Colors.blue,
-                          borderColor: Colors.blue,
-                          filledIconData: Icons.star,
-                          halfFilledIconData: Icons.star_half,
-                          defaultIconData: Icons.star_border,
-                          spacing: .5,
-                        ),
+
+                        /// NEW CODE COMMENT
+
+                        // SmoothStarRating(
+                        //   allowHalfRating: false,
+                        //   starCount: 5,
+                        //   rating: appointment.ratingByPatient ?? 0.0,
+                        //   size: Get.height * 0.05,
+                        //   isReadOnly: true,
+                        //   color: Colors.blue,
+                        //   borderColor: Colors.blue,
+                        //   filledIconData: Icons.star,
+                        //   halfFilledIconData: Icons.star_half,
+                        //   defaultIconData: Icons.star_border,
+                        //   spacing: .5,
+                        // ),
                         SizedBox(height: Get.height * 0.045),
                       ],
                     ),
@@ -734,15 +730,15 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
           image: Container(
             width: Get.width * 0.5,
             height: Get.width * 0.25,
-            decoration: BoxDecoration(shape: BoxShape.circle),
+            decoration: const BoxDecoration(shape: BoxShape.circle),
             child: Center(
-              child: Container(
+              child: SizedBox(
                 width: Get.width * 0.25,
                 height: Get.width * 0.25,
                 child: Center(
                   child: Utils().patientProfile(
-                      appointment?.doctorProfilePic ?? '',
-                      appointment?.doctorSocialProfilePic ?? '',
+                      appointment.doctorProfilePic ?? '',
+                      appointment.doctorSocialProfilePic ?? '',
                       100,
                       fit: BoxFit.cover),
                 ),
@@ -750,21 +746,21 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
             ),
           ),
           title: Text(
-            '${appointment?.doctorFirstName?.capitalizeFirst} ${appointment?.doctorLastName?.capitalizeFirst}',
+            '${appointment.doctorFirstName?.capitalizeFirst} ${appointment.doctorLastName?.capitalizeFirst}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          message: Text(
+          message: const Text(
             'Tap a star to set your rating',
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 17),
+            style: TextStyle(fontSize: 17),
           ),
           enableComment: false,
           submitButtonText: 'Submit',
-          onCancelled: () => print('cancelled'),
+          onCancelled: () => log('cancelled'),
           starColor: Colors.blue,
           onSubmitted: (response) async {
             String rate = response.rating.toString();
@@ -797,25 +793,25 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
 }
 
 /*import 'dart:async';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/appointment.dart';
-import 'package:doctor_appointment_booking/model/doctor_by_specialities.dart';
-import 'package:doctor_appointment_booking/model/getSorted_patient_chatList_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/set_rating_for_the_doctor_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_all_notes_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/FirstMessagePage.dart';
-import 'package:doctor_appointment_booking/pages/booking/step3/time_slot_drawer.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_notes_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/set_rating_for_the_doctor_view_model.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/model/getSorted_patient_chatList_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/set_rating_for_the_doctor_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_all_notes_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/FirstMessagePage.dart';
+import 'package:united_natives/pages/booking/step3/time_slot_drawer.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_notes_view_model.dart';
+import 'package:united_natives/viewModel/set_rating_for_the_doctor_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

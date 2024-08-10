@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,21 +25,24 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class Sleep extends StatefulWidget {
+  const Sleep({super.key});
+
   @override
-  _SleepState createState() => _SleepState();
+  State<Sleep> createState() => _SleepState();
 }
 
 class _SleepState extends State<Sleep> {
-  UserController _userController = Get.find<UserController>();
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
+  final UserController _userController = Get.find<UserController>();
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
   int totalCount = 0;
-  String startTime;
-  String endTime;
+  String? startTime;
+  String? endTime;
   List list = [];
   RxBool isLoading = false.obs;
   List<Datum> listDatum = [];
   List editList = [];
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   List cols = [
     {
       "title": 'Date',
@@ -90,7 +93,7 @@ class _SleepState extends State<Sleep> {
 
   final _editableKey = GlobalKey<EditableState>();
   Future<void> _startTime(BuildContext context, bool isEdit) async {
-    TimeOfDay pickedTime = await showTimePicker(
+    TimeOfDay? pickedTime = await showTimePicker(
       initialTime: TimeOfDay.now(),
       context: context,
     );
@@ -118,7 +121,7 @@ class _SleepState extends State<Sleep> {
   }
 
   Future<void> _endTime(BuildContext context, bool isEdit) async {
-    TimeOfDay pickedTime = await showTimePicker(
+    TimeOfDay? pickedTime = await showTimePicker(
       initialTime: TimeOfDay.now(),
       context: context,
     );
@@ -144,7 +147,7 @@ class _SleepState extends State<Sleep> {
     }
   }
 
-  Future<HealthResponseModel> getSleepData() async {
+  Future<HealthResponseModel?> getSleepData() async {
     rows.clear();
     idList.clear();
     final String url = Constants.getRoutineHealthReport;
@@ -161,12 +164,10 @@ class _SleepState extends State<Sleep> {
       if (response != null) {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
-        model.data.forEach((element) {
-          listDatum = model.data;
-          idList.add(element.id);
-          List list = (jsonDecode(element.tableData) as List);
-          print("ROWS------");
-          print(list[0]);
+        model.data?.forEach((element) {
+          listDatum = model.data!;
+          idList.add(element.id!);
+          List list = (jsonDecode(element.tableData!) as List);
           rows.add({
             'Date': list[0],
             'StartTime': list[1],
@@ -176,7 +177,6 @@ class _SleepState extends State<Sleep> {
             'Total': list[5],
           });
         });
-        print('Rows $rows');
         getDataLength = rows.length;
         setState(() {});
         return null;
@@ -186,7 +186,6 @@ class _SleepState extends State<Sleep> {
       }
     } catch (e) {
       _controller.isLoading.value = false;
-      print('Error $e');
       return null;
     }
   }
@@ -211,8 +210,6 @@ class _SleepState extends State<Sleep> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
     isLoading.value = false;
-
-    print('RESPONSE => ${response.body}');
 
     if (response != null) {
       await getSleepData();
@@ -240,8 +237,6 @@ class _SleepState extends State<Sleep> {
         body: jsonEncode(body), headers: Config.getHeaders());
     isLoading.value = false;
 
-    print('RESPONSE => ${response.body}');
-
     if (response != null) {
       await getSleepData();
 
@@ -255,7 +250,7 @@ class _SleepState extends State<Sleep> {
     }
   }
 
-  Future updateSleepData({dynamic reportTableData, String id}) async {
+  Future updateSleepData({dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -275,8 +270,6 @@ class _SleepState extends State<Sleep> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
     isLoading.value = false;
-
-    print('RESPONSE => ${response.body}');
 
     if (response != null) {
       await getSleepData();
@@ -335,7 +328,7 @@ class _SleepState extends State<Sleep> {
               "Sleep",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
           ),
@@ -346,7 +339,7 @@ class _SleepState extends State<Sleep> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Sleep Tracker',
@@ -356,7 +349,7 @@ class _SleepState extends State<Sleep> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -369,123 +362,117 @@ class _SleepState extends State<Sleep> {
                             child: Utils.circular(),
                           );
                         } else {
-                          return Container(
-                            child: Editable(
-                              key: _editableKey,
-                              columns: cols,
-                              rows: rows,
-                              popUpTitle: 'Sleep Tracker',
-                              showSaveIcon: true,
-                              saveIconColor:
-                                  _isDark ? Colors.white : Colors.black,
-                              onAddButtonPressed: () async {
-                                print("dateController");
-                                print(dateController.text);
-                                String text =
-                                    '${dateController.text},${startTimeController.text},${endTimeController.text},${napsController.text},${nightController.text},${totalController.text}';
-                                List<String> result = text.split(',');
-                                print("result=??$result");
+                          return Editable(
+                            key: _editableKey,
+                            columns: cols,
+                            rows: rows,
+                            popUpTitle: 'Sleep Tracker',
+                            showSaveIcon: true,
+                            saveIconColor:
+                                _isDark ? Colors.white : Colors.black,
+                            onAddButtonPressed: () async {
+                              String text =
+                                  '${dateController.text},${startTimeController.text},${endTimeController.text},${napsController.text},${nightController.text},${totalController.text}';
+                              List<String> result = text.split(',');
 
-                                bool addData = true;
-                                for (int i = 0; i < result.length; i++) {
-                                  if (result[i] == "") {
-                                    Utils.showSnackBar(
-                                      'Enter details',
-                                      'Please enter all required details!!',
-                                    );
-                                    addData = false;
-                                    break;
-                                  }
+                              bool addData = true;
+                              for (int i = 0; i < result.length; i++) {
+                                if (result[i] == "") {
+                                  Utils.showSnackBar(
+                                    'Enter details',
+                                    'Please enter all required details!!',
+                                  );
+                                  addData = false;
+                                  break;
                                 }
-                                if (addData) {
-                                  rows.add({
-                                    'Date': result[0],
-                                    'StartTime': result[1],
-                                    'EndTime': result[2],
-                                    'Naps': result[3],
-                                    'Night': result[4],
-                                    'Total': result[5],
-                                  });
-                                  Navigator.pop(context);
-                                  await addSleepData(result);
-                                } else {
-                                  // Navigator.pop(context);
-                                }
-                              },
-                              onDeleteButtonPressed: (index) async {
-                                print('Index $index');
-                                await deleteSleepData(idList[index]);
-                              },
-                              onEditButtonPressed: (index) {
-                                _editDialog(context, index, listDatum);
-                              },
-                              onTap: () {
-                                dateController.clear();
-                                startTimeController.clear();
-                                endTimeController.clear();
-                                napsController.clear();
-                                nightController.clear();
-                                totalController.clear();
-                              },
-                              popUpChild: Container(
-                                width: Get.width * 0.75,
-                                child: Column(
-                                  children: [
-                                    TextField(
-                                      controller: dateController,
-                                      onTap: () async {
-                                        dateController.text =
-                                            await Utils.selectedDateFormat(
-                                                context);
-                                      },
-                                      readOnly: true,
-                                      decoration:
-                                          InputDecoration(hintText: 'Date'),
-                                    ),
-                                    TextField(
-                                      onTap: () async {
-                                        _startTime(context, false);
-                                      },
-                                      readOnly: true,
-                                      controller: startTimeController,
-                                      decoration: InputDecoration(
-                                          hintText: 'Start Time'),
-                                    ),
-                                    TextField(
-                                      onTap: () {
-                                        _endTime(context, false);
-                                      },
-                                      readOnly: true,
-                                      controller: endTimeController,
-                                      decoration:
-                                          InputDecoration(hintText: 'End Time'),
-                                    ),
-                                    TextField(
-                                      controller: napsController,
-                                      decoration:
-                                          InputDecoration(hintText: 'Naps'),
-                                    ),
-                                    TextField(
-                                      controller: nightController,
-                                      decoration:
-                                          InputDecoration(hintText: 'Night'),
-                                    ),
-                                    TextField(
-                                      controller: totalController,
-                                      decoration:
-                                          InputDecoration(hintText: 'Total'),
-                                    ),
-                                  ],
-                                ),
+                              }
+                              if (addData) {
+                                rows.add({
+                                  'Date': result[0],
+                                  'StartTime': result[1],
+                                  'EndTime': result[2],
+                                  'Naps': result[3],
+                                  'Night': result[4],
+                                  'Total': result[5],
+                                });
+                                Navigator.pop(context);
+                                await addSleepData(result);
+                              } else {
+                                // Navigator.pop(context);
+                              }
+                            },
+                            onDeleteButtonPressed: (index) async {
+                              await deleteSleepData(idList[index]);
+                            },
+                            onEditButtonPressed: (index) {
+                              _editDialog(context, index, listDatum);
+                            },
+                            onTap: () {
+                              dateController.clear();
+                              startTimeController.clear();
+                              endTimeController.clear();
+                              napsController.clear();
+                              nightController.clear();
+                              totalController.clear();
+                            },
+                            popUpChild: SizedBox(
+                              width: Get.width * 0.75,
+                              child: Column(
+                                children: [
+                                  TextField(
+                                    controller: dateController,
+                                    onTap: () async {
+                                      dateController.text =
+                                          await Utils.selectedDateFormat(
+                                              context);
+                                    },
+                                    readOnly: true,
+                                    decoration:
+                                        const InputDecoration(hintText: 'Date'),
+                                  ),
+                                  TextField(
+                                    onTap: () async {
+                                      _startTime(context, false);
+                                    },
+                                    readOnly: true,
+                                    controller: startTimeController,
+                                    decoration: const InputDecoration(
+                                        hintText: 'Start Time'),
+                                  ),
+                                  TextField(
+                                    onTap: () {
+                                      _endTime(context, false);
+                                    },
+                                    readOnly: true,
+                                    controller: endTimeController,
+                                    decoration: const InputDecoration(
+                                        hintText: 'End Time'),
+                                  ),
+                                  TextField(
+                                    controller: napsController,
+                                    decoration:
+                                        const InputDecoration(hintText: 'Naps'),
+                                  ),
+                                  TextField(
+                                    controller: nightController,
+                                    decoration: const InputDecoration(
+                                        hintText: 'Night'),
+                                  ),
+                                  TextField(
+                                    controller: totalController,
+                                    decoration: const InputDecoration(
+                                        hintText: 'Total'),
+                                  ),
+                                ],
                               ),
-                              borderColor: Colors.blueGrey,
-                              showCreateButton: true,
-                              onSubmitted: (value) {},
-                              createButtonLabel: Text(
-                                'New',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
+                            ),
+                            borderColor: Colors.blueGrey,
+                            showCreateButton: true,
+                            onSubmitted: (value) {},
+                            createButtonLabel: const Text(
+                              'New',
+                              style: TextStyle(
+                                color: Colors.black,
                               ),
                             ),
                           );
@@ -501,15 +488,15 @@ class _SleepState extends State<Sleep> {
                           'No sleep tracker data',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
+                              .titleLarge
+                              ?.copyWith(fontSize: 20),
                         ),
                       )
                   ],
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -535,7 +522,7 @@ class _SleepState extends State<Sleep> {
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: StatefulBuilder(
               builder: (BuildContext context, StateSetter setStates) {
-                return Container(
+                return SizedBox(
                   width: Get.width * 0.75,
                   child: Column(
                     children: [
@@ -544,14 +531,13 @@ class _SleepState extends State<Sleep> {
                           String date = await Utils.selectedDateFormat(context);
                           setStates(() {
                             editDateController.text = date;
-                            print('CONTROLLER  ${editDateController.text}');
                           });
                         },
                         child: TextField(
                           enabled: false,
                           readOnly: true,
                           controller: editDateController,
-                          decoration: InputDecoration(hintText: 'Date'),
+                          decoration: const InputDecoration(hintText: 'Date'),
                         ),
                       ),
                       GestureDetector(
@@ -564,7 +550,8 @@ class _SleepState extends State<Sleep> {
                           enabled: false,
                           readOnly: true,
                           controller: editStartTimeController,
-                          decoration: InputDecoration(hintText: 'Start Time'),
+                          decoration:
+                              const InputDecoration(hintText: 'Start Time'),
                         ),
                       ),
                       GestureDetector(
@@ -575,20 +562,21 @@ class _SleepState extends State<Sleep> {
                           enabled: false,
                           readOnly: true,
                           controller: editEndTimeController,
-                          decoration: InputDecoration(hintText: 'End Time'),
+                          decoration:
+                              const InputDecoration(hintText: 'End Time'),
                         ),
                       ),
                       TextField(
                         controller: editNapsController,
-                        decoration: InputDecoration(hintText: 'Naps'),
+                        decoration: const InputDecoration(hintText: 'Naps'),
                       ),
                       TextField(
                         controller: editNightController,
-                        decoration: InputDecoration(hintText: 'Night'),
+                        decoration: const InputDecoration(hintText: 'Night'),
                       ),
                       TextField(
                         controller: editTotalController,
-                        decoration: InputDecoration(hintText: 'Total'),
+                        decoration: const InputDecoration(hintText: 'Total'),
                       ),
                     ],
                   ),
@@ -598,15 +586,13 @@ class _SleepState extends State<Sleep> {
         buttons: [
           DialogButton(
             onPressed: () async {
-              print('call');
               String text =
                   '${editDateController.text},${editStartTimeController.text},${editEndTimeController.text},${editNapsController.text},${editNightController.text},${editTotalController.text}';
               List<String> result = text.split(',');
-              print("result=??$result");
               Navigator.pop(context);
               await updateSleepData(id: idList[index], reportTableData: result);
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),

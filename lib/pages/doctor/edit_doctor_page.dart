@@ -1,23 +1,22 @@
 import 'dart:developer';
 
-import 'package:doctor_appointment_booking/components/text_form_field.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/update_my_doctor_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/utils/common_snackbar.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_my_doctors_and_notes_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/components/text_form_field.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/update_my_doctor_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_my_doctors_and_notes_view_model.dart';
 
 class EditMyDoctorScreen extends StatefulWidget {
-  final DoctorData doctor;
+  final DoctorData? doctor;
 
-  const EditMyDoctorScreen({Key key, this.doctor}) : super(key: key);
+  const EditMyDoctorScreen({super.key, this.doctor});
 
   @override
   State<EditMyDoctorScreen> createState() => _EditMyDoctorScreenState();
@@ -30,40 +29,40 @@ class _EditMyDoctorScreenState extends State<EditMyDoctorScreen> {
 
   MyDoctorNotesViewModel addMyDoctorNotesViewModel =
       Get.put(MyDoctorNotesViewModel());
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
   @override
   void initState() {
-    nameController.text = widget.doctor.doctorName ?? "";
-    mobileNumberController.text = widget.doctor.doctorMobile ?? "";
+    nameController.text = widget.doctor?.doctorName ?? "";
+    mobileNumberController.text = widget.doctor?.doctorMobile ?? "";
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    log('doctor------NAME---->>>>>>>>${widget.doctor.doctorName}');
-    log('doctor-----MOBILE----->>>>>>>>${widget.doctor.doctorMobile}');
+    log('doctor------NAME---->>>>>>>>${widget.doctor?.doctorName}');
+    log('doctor-----MOBILE----->>>>>>>>${widget.doctor?.doctorMobile}');
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            Translate.of(context).translate('Edit Provider'),
+            Translate.of(context)!.translate('Edit Provider'),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24),
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
             IconButton(
               onPressed: () async {
-                if (_formKey.currentState.validate()) {
+                if (_formKey.currentState!.validate()) {
                   UpdateDoctorRequestModel requestModel =
                       UpdateDoctorRequestModel(
-                    id: int.parse(widget.doctor.id),
+                    id: int.parse(widget.doctor!.id!),
                     doctorName: nameController.text,
                     contactNumber: mobileNumberController.text,
-                    patientId: int.parse(_userController.user.value.id),
+                    patientId: int.parse(_userController.user.value.id!),
                   );
 
                   await addMyDoctorNotesViewModel.updateDoctor(
@@ -82,11 +81,11 @@ class _EditMyDoctorScreenState extends State<EditMyDoctorScreen> {
                   } else {
                     CommonSnackBar.snackBar(
                         message: addMyDoctorNotesViewModel
-                            .addNewDoctorsApiResponse.message);
+                            .addNewDoctorsApiResponse.message!);
                   }
                 }
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.done,
               ),
             )
@@ -102,7 +101,7 @@ class _EditMyDoctorScreenState extends State<EditMyDoctorScreen> {
             }
 
             return Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 20,
                 vertical: 15,
               ),
@@ -129,25 +128,25 @@ class _EditMyDoctorScreenState extends State<EditMyDoctorScreen> {
       children: [
         Text(
           "Name",
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         CustomTextFormField(
           textInputAction: TextInputAction.next,
           validator: (text) {
-            if (text.isEmpty) {
+            if (text!.isEmpty) {
               return '*enter provider name';
             }
             return null;
           },
           controller: nameController,
           hintText: 'Enter provider name',
-          hintTextStyle: TextStyle(
+          hintTextStyle: const TextStyle(
             fontSize: 18,
             color: Color(0xffbcbcbc),
             fontFamily: 'NunitoSans',
           ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
       ],
     );
   }
@@ -158,13 +157,13 @@ class _EditMyDoctorScreenState extends State<EditMyDoctorScreen> {
       children: [
         Text(
           "Contact Number",
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         CustomTextFormField(
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.done,
           validator: (text) {
-            if (text.isEmpty) {
+            if (text!.isEmpty) {
               return "*enter doctor's contact number";
             }
             return null;
@@ -175,13 +174,13 @@ class _EditMyDoctorScreenState extends State<EditMyDoctorScreen> {
           ],
           controller: mobileNumberController,
           hintText: 'Enter contact number here',
-          hintTextStyle: TextStyle(
+          hintTextStyle: const TextStyle(
             fontSize: 18,
             color: Color(0xffbcbcbc),
             fontFamily: 'NunitoSans',
           ),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
       ],
     );
   }

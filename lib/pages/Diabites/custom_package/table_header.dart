@@ -3,24 +3,23 @@ import 'package:flutter/material.dart';
 class THeader extends StatelessWidget {
   ///Builds elements for the table headers
   const THeader(
-      {Key key,
-      @required this.thPaddingLeft,
-      @required this.thPaddingTop,
-      @required this.thPaddingBottom,
-      @required this.thPaddingRight,
-      @required List headers,
-      @required this.thAlignment,
-      @required this.thStyle,
-      @required FontWeight thWeight,
-      @required double thSize,
-      @required double widthRatio,
-      @required int index})
+      {super.key,
+      required this.thPaddingLeft,
+      required this.thPaddingTop,
+      required this.thPaddingBottom,
+      required this.thPaddingRight,
+      required List headers,
+      required this.thAlignment,
+      required this.thStyle,
+      required FontWeight thWeight,
+      required double thSize,
+      required double widthRatio,
+      required int index})
       : _headers = headers,
         _thWeight = thWeight,
         _thSize = thSize,
         _index = index,
-        _widthRatio = widthRatio,
-        super(key: key);
+        _widthRatio = widthRatio;
 
   final double thPaddingLeft;
   final double thPaddingTop;
@@ -42,7 +41,7 @@ class THeader extends StatelessWidget {
         Flexible(
           fit: FlexFit.loose,
           child: Container(
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.surface,
             width: width * _widthRatio,
             height: 50,
             child: Padding(
@@ -52,11 +51,8 @@ class THeader extends StatelessWidget {
                   bottom: thPaddingBottom,
                   right: thPaddingRight),
               child: Text(
-                _headers != null || _headers.isNotEmpty
-                    ? _headers[_index]['title']
-                    : '',
-                style: thStyle ??
-                    TextStyle(fontWeight: _thWeight, fontSize: _thSize),
+                _headers.isNotEmpty ? _headers[_index]['title'] : '',
+                style: thStyle,
                 textAlign: TextAlign.center,
               ),
             ),

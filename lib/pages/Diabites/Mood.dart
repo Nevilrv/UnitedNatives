@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_update_contoller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,25 +26,28 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class Mood extends StatefulWidget {
+  const Mood({super.key});
+
   @override
-  _MoodState createState() => _MoodState();
+  State<Mood> createState() => _MoodState();
 }
 
 // final Set _saved = Set();
 
 class _MoodState extends State<Mood> {
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
   ChangeState changeState = Get.put(ChangeState());
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
   int totalCount = 0;
   List list = [];
   RxBool isLoading = false.obs;
   List<Datum> listDatum = [];
   List<dynamic> editList = [];
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
   AdsController adsController = Get.find();
-  String moodData;
+  String? moodData;
   List cols = [
     {
       "title": 'Panic',
@@ -137,7 +140,7 @@ class _MoodState extends State<Mood> {
 
   final _editableKey = GlobalKey<EditableState>();
 
-  Future<HealthResponseModel> getMoodData() async {
+  Future<HealthResponseModel?> getMoodData() async {
     rows.clear();
     idList.clear();
     final String url = Constants.getRoutineHealthReport;
@@ -156,10 +159,10 @@ class _MoodState extends State<Mood> {
       if (response != null) {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
-        listDatum = model.data;
-        model.data.forEach((element) {
-          idList.add(element.id);
-          List list = (jsonDecode(element.tableData) as List);
+        listDatum = model.data!;
+        model.data?.forEach((element) {
+          idList.add(element.id!);
+          List list = (jsonDecode(element.tableData!) as List);
           rows.add({
             'panic': list[0].toString().trim() == "true" ? '✔' : '-',
             'triggered': list[1].toString().trim() == "true" ? '✔' : '-',
@@ -262,7 +265,7 @@ class _MoodState extends State<Mood> {
     }
   }
 
-  Future updateMoodData({dynamic reportTableData, String id}) async {
+  Future updateMoodData({dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -331,9 +334,9 @@ class _MoodState extends State<Mood> {
     setState(() {});
   }
 
-  List<bool> isChecked;
+  List<bool>? isChecked;
 
-  List<String> _texts = [
+  final List<String> _texts = [
     "Panic",
     "Triggered",
     "Anger",
@@ -363,7 +366,7 @@ class _MoodState extends State<Mood> {
               "Mood",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
           ),
@@ -373,7 +376,7 @@ class _MoodState extends State<Mood> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Mood Tracker',
@@ -383,7 +386,7 @@ class _MoodState extends State<Mood> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -396,109 +399,106 @@ class _MoodState extends State<Mood> {
                                 child: Utils.circular(),
                               )
                             : SingleChildScrollView(
-                                child: Container(
-                                  child: Editable(
-                                    key: _editableKey,
-                                    columns: cols,
-                                    rows: rows,
-                                    popUpTitle: 'Mood Tracker',
-                                    saveIconColor:
-                                        _isDark ? Colors.white : Colors.black,
-                                    showSaveIcon: true,
-                                    onAddButtonPressed: () async {
-                                      String text = moodData;
-                                      List<String> result = text.split(',');
-                                      bool addData = true;
-                                      for (int i = 0; i < result.length; i++) {
-                                        if (result[i] == "") {
-                                          Utils.showSnackBar(
-                                            'Enter details',
-                                            'Please enter all required details!!',
-                                          );
-                                          addData = false;
-                                          break;
-                                        }
-                                      }
-                                      if (addData) {
-                                        rows.add({
-                                          'panic': result[0],
-                                          'triggered': result[1],
-                                          'anger': result[2],
-                                          'tired': result[3],
-                                          'strong': result[4],
-                                          'helped': result[5],
-                                          'sad': result[6],
-                                          'happy': result[7],
-                                          'hurt': result[8],
-                                          'confident': result[9],
-                                          'motivated': result[10],
-                                          'depressed': result[11],
-                                        });
-                                        Navigator.pop(context);
-
-                                        await addMoodData(result);
-                                        isChecked = List<bool>.filled(
-                                            _texts.length, false);
-                                      } else {
-                                        // Navigator.pop(context);
-                                      }
-                                    },
-                                    onDeleteButtonPressed: (index) async {
-                                      await deleteMoodData(idList[index]);
-                                    },
-                                    onEditButtonPressed: (index) {
-                                      _editDialog(context, index, listDatum);
-                                    },
-                                    onTap: () {},
-                                    popUpChild: StatefulBuilder(
-                                      builder: (BuildContext context,
-                                          StateSetter setStates) {
-                                        return Container(
-                                          height: Get.height * 0.55,
-                                          width: Get.width * 0.75,
-                                          child: ListView.builder(
-                                              padding: EdgeInsets.zero,
-                                              itemCount: _texts.length,
-                                              itemBuilder: (context, index) {
-                                                return CheckboxListTile(
-                                                  checkColor: Colors.indigo,
-                                                  // value: _saved.contains(context), // changed
-                                                  value: isChecked[index],
-                                                  title: Text(_texts[index]),
-                                                  onChanged: (val) {
-                                                    setStates(() {
-                                                      isChecked[index] = val;
-                                                    });
-
-                                                    final input =
-                                                        isChecked.toString();
-                                                    final removedBrackets =
-                                                        input.substring(1,
-                                                            input.length - 1);
-                                                    final parts =
-                                                        removedBrackets
-                                                            .split(', ');
-                                                    var joined = parts
-                                                        .map((part) => "$part")
-                                                        .join(',');
-                                                    moodData = joined;
-
-                                                    debugPrint(
-                                                        'SPLITSES  $joined');
-                                                  },
-                                                );
-                                              }),
+                                child: Editable(
+                                  key: _editableKey,
+                                  columns: cols,
+                                  rows: rows,
+                                  popUpTitle: 'Mood Tracker',
+                                  saveIconColor:
+                                      _isDark ? Colors.white : Colors.black,
+                                  showSaveIcon: true,
+                                  onAddButtonPressed: () async {
+                                    String? text = moodData;
+                                    List<String>? result = text?.split(',');
+                                    bool addData = true;
+                                    for (int i = 0; i < result!.length; i++) {
+                                      if (result[i] == "") {
+                                        Utils.showSnackBar(
+                                          'Enter details',
+                                          'Please enter all required details!!',
                                         );
-                                      },
-                                    ),
-                                    borderColor: Colors.blueGrey,
-                                    showCreateButton: true,
-                                    onSubmitted: (value) {},
-                                    createButtonLabel: Text(
-                                      'New',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
+                                        addData = false;
+                                        break;
+                                      }
+                                    }
+                                    if (addData) {
+                                      rows.add({
+                                        'panic': result[0],
+                                        'triggered': result[1],
+                                        'anger': result[2],
+                                        'tired': result[3],
+                                        'strong': result[4],
+                                        'helped': result[5],
+                                        'sad': result[6],
+                                        'happy': result[7],
+                                        'hurt': result[8],
+                                        'confident': result[9],
+                                        'motivated': result[10],
+                                        'depressed': result[11],
+                                      });
+                                      Navigator.pop(context);
+
+                                      await addMoodData(result);
+                                      isChecked = List<bool>.filled(
+                                          _texts.length, false);
+                                    } else {
+                                      // Navigator.pop(context);
+                                    }
+                                  },
+                                  onDeleteButtonPressed: (index) async {
+                                    await deleteMoodData(idList[index]);
+                                  },
+                                  onEditButtonPressed: (index) {
+                                    _editDialog(context, index, listDatum);
+                                  },
+                                  onTap: () {},
+                                  popUpChild: StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter setStates) {
+                                      return SizedBox(
+                                        height: Get.height * 0.55,
+                                        width: Get.width * 0.75,
+                                        child: ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            itemCount: _texts.length,
+                                            itemBuilder: (context, index) {
+                                              return CheckboxListTile(
+                                                checkColor: Colors.indigo,
+                                                // value: _saved.contains(context), // changed
+                                                value: isChecked?[index],
+                                                title: Text(_texts[index]),
+                                                onChanged: (val) {
+                                                  setStates(() {
+                                                    isChecked?[index] = val!;
+                                                  });
+
+                                                  final input =
+                                                      isChecked.toString();
+                                                  final removedBrackets =
+                                                      input.substring(
+                                                          1, input.length - 1);
+                                                  final parts = removedBrackets
+                                                      .split(', ');
+                                                  var joined = parts
+                                                      .map((part) => part)
+                                                      .join(',');
+                                                  moodData = joined;
+
+                                                  debugPrint(
+                                                      'SPLITSES  $joined');
+                                                },
+                                              );
+                                            }),
+                                      );
+                                    },
+                                  ),
+                                  borderColor: Colors.blueGrey,
+                                  showCreateButton: true,
+                                  onSubmitted: (value) {},
+                                  createButtonLabel: const Text(
+                                    'New',
+                                    style: TextStyle(
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
@@ -514,15 +514,15 @@ class _MoodState extends State<Mood> {
                           'No mood tracker data',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
+                              .titleLarge
+                              ?.copyWith(fontSize: 20),
                         ),
                       )
                   ],
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -561,7 +561,7 @@ class _MoodState extends State<Mood> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: StatefulBuilder(
             builder: (BuildContext context, StateSetter setStates) {
-              return Container(
+              return SizedBox(
                 height: Get.height * 0.55,
                 width: Get.width * 0.75,
                 child: ListView.builder(
@@ -571,18 +571,18 @@ class _MoodState extends State<Mood> {
                       return CheckboxListTile(
                         checkColor: Colors.indigo,
                         // value: _saved.contains(context), // changed
-                        value: isChecked[index],
+                        value: isChecked?[index],
                         title: Text(_texts[index]),
                         onChanged: (val) {
                           setStates(() {
-                            isChecked[index] = val;
+                            isChecked?[index] = val!;
                           });
                           debugPrint('VAl$isChecked');
                           final input = isChecked.toString();
                           final removedBrackets =
                               input.substring(1, input.length - 1);
                           final parts = removedBrackets.split(', ');
-                          var joined = parts.map((part) => "$part").join(',');
+                          var joined = parts.map((part) => part).join(',');
                           moodData = joined;
 
                           debugPrint('SPLITSES  $joined');
@@ -596,14 +596,14 @@ class _MoodState extends State<Mood> {
         buttons: [
           DialogButton(
             onPressed: () async {
-              String text = moodData;
-              List<String> result = text.split(',');
+              String? text = moodData;
+              List<String>? result = text?.split(',');
               debugPrint("result=??$result");
               Navigator.pop(context);
               await updateMoodData(id: idList[index], reportTableData: result);
               isChecked = List<bool>.filled(_texts.length, false);
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),

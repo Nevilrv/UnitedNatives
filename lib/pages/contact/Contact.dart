@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/custom_button.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/custom_button.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
@@ -17,8 +17,10 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 class Contact extends StatefulWidget {
+  const Contact({super.key});
+
   @override
-  _ContactState createState() => new _ContactState();
+  State<Contact> createState() => _ContactState();
 }
 
 class _ContactState extends State<Contact> {
@@ -36,7 +38,6 @@ class _ContactState extends State<Contact> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> send() async {
-    print('send...');
     String url =
         '${Constants.baseUrl + Constants.patientContactForm}/${userController.user.value.id}';
     String url1 =
@@ -56,21 +57,20 @@ class _ContactState extends State<Contact> {
         Uri.parse(Prefs.getString(Prefs.USERTYPE) == '1' ? url : url1),
         body: jsonEncode(body1),
         headers: header1);
-    print('RESPONSE MEET ENDED${response1.body}');
     var data = jsonDecode(response1.body);
 
     if (data["status"] == 'Fail') {
-    } else {
-      print('rating ${data["message"]}');
-    }
+    } else {}
 
     if (Platform.isIOS) {
       final bool canSend = await FlutterMailer.canSendMail();
       if (!canSend) {
-        const SnackBar snackBar = const SnackBar(
+        const SnackBar snackBar = SnackBar(
           content: Text('no Email App Available'),
         );
-        _scafoldKey.currentState.showSnackBar(snackBar);
+
+        ScaffoldMessenger.of(_scafoldKey.currentState!.context)
+            .showSnackBar(snackBar);
         return;
       }
     }
@@ -93,12 +93,11 @@ class _ContactState extends State<Contact> {
       platformResponse = 'success';
     } on PlatformException catch (error) {
       platformResponse = error.toString();
-      print('$error======');
       if (!mounted) {
         return;
       }
       await showDialog<void>(
-          context: _scafoldKey.currentContext,
+          context: _scafoldKey.currentContext!,
           builder: (BuildContext context) => AlertDialog(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4)),
@@ -109,9 +108,9 @@ class _ContactState extends State<Contact> {
                   children: <Widget>[
                     Text(
                       'Message c',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    Text(error.message),
+                    Text(error.message!),
                   ],
                 ),
                 contentPadding: const EdgeInsets.all(26),
@@ -128,18 +127,19 @@ class _ContactState extends State<Contact> {
       return;
     }
 
-    _scafoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(_scafoldKey.currentState!.context)
+        .showSnackBar(SnackBar(
       content: Text(platformResponse),
     ));
   }
 
   AdsController adsController = Get.find();
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
   @override
   Widget build(BuildContext context) {
-    final Widget imagePath = Column(
-        children: attachment.map((String file) => Text('$file')).toList());
+    final Widget imagePath =
+        Column(children: attachment.map((String file) => Text(file)).toList());
 
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
@@ -155,12 +155,12 @@ class _ContactState extends State<Contact> {
               Navigator.pop(context);
             },
             child: Icon(Icons.arrow_back_ios,
-                color: Theme.of(context).textTheme.headline1.color),
+                color: Theme.of(context).textTheme.displayLarge?.color),
           ),
-          title: Text(Translate.of(context).translate('Contact Us'),
+          title: Text(Translate.of(context)!.translate('Contact Us'),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
               textAlign: TextAlign.center),
         ),
@@ -183,7 +183,7 @@ class _ContactState extends State<Contact> {
         body: Stack(
           children: <Widget>[
             SingleChildScrollView(
-              child: new Center(
+              child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Form(
@@ -255,7 +255,7 @@ class _ContactState extends State<Contact> {
                             controller: _phoneController,
                             textInputType: TextInputType.phone,
                             validator: (value) {
-                              if (value.trim().isEmpty) {
+                              if (value!.trim().isEmpty) {
                                 return 'This field is required';
                               } else {
                                 return null;
@@ -271,7 +271,7 @@ class _ContactState extends State<Contact> {
                               controller: _subjectController,
                               textInputType: TextInputType.text,
                               validator: (value) {
-                                if (value.trim().isEmpty) {
+                                if (value!.trim().isEmpty) {
                                   return 'This field is required';
                                 } else {
                                   return null;
@@ -288,7 +288,7 @@ class _ContactState extends State<Contact> {
                             controller: _bodyController,
                             textInputType: TextInputType.text,
                             validator: (value) {
-                              if (value.trim().isEmpty) {
+                              if (value!.trim().isEmpty) {
                                 return 'This field is required';
                               } else {
                                 return null;
@@ -297,12 +297,12 @@ class _ContactState extends State<Contact> {
                           ),
                         ),
                         Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: 40, horizontal: 8),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 40, horizontal: 8),
                           child: CustomButton(
                               textSize: 22,
                               onPressed: () {
-                                if (_formKey.currentState.validate()) {
+                                if (_formKey.currentState!.validate()) {
                                   send();
                                 }
                               },
@@ -322,16 +322,16 @@ class _ContactState extends State<Contact> {
   }
 
   TextFormField buildTextFormField(
-      {Function validator,
-      TextInputType textInputType,
-      TextEditingController controller,
-      int min,
-      int max,
-      String hintText,
-      List<TextInputFormatter> digitCount}) {
+      {String? Function(String?)? validator,
+      TextInputType? textInputType,
+      TextEditingController? controller,
+      int? min,
+      int? max,
+      String? hintText,
+      List<TextInputFormatter>? digitCount}) {
     return TextFormField(
-      style: TextStyle(fontSize: 20),
-      validator: validator,
+      style: const TextStyle(fontSize: 20),
+      validator: validator!,
       textInputAction: TextInputAction.done,
       inputFormatters: digitCount,
       keyboardType: textInputType,
@@ -345,36 +345,36 @@ class _ContactState extends State<Contact> {
 
         border: InputBorder.none,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(8.0),
           ),
           borderSide: BorderSide(color: Colors.grey.shade400),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(8.0),
           ),
           borderSide:
               BorderSide(color: _isDark ? Colors.white : Colors.grey.shade800),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(8.0),
           ),
           borderSide: BorderSide(color: _isDark ? Colors.red : Colors.red),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(8.0),
           ),
           borderSide:
               BorderSide(color: _isDark ? Colors.white : Colors.grey.shade800),
         ),
         filled: true,
-        contentPadding:
-            EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0, bottom: 15),
+        contentPadding: const EdgeInsets.only(
+            top: 15.0, left: 15.0, right: 15.0, bottom: 15),
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
+        hintStyle: const TextStyle(color: Colors.grey, fontSize: 20),
 
         // labelText: 'Text',
         // labelStyle:
@@ -463,11 +463,11 @@ class _ContactState extends State<Contact> {
     final File file = await _localFile(fileName);
 
     // Write the file
-    return file.writeAsString('$text');
+    return file.writeAsString(text);
   }
 }
 
 class TempFile {
   TempFile({this.name, this.content});
-  final String name, content;
+  final String? name, content;
 }

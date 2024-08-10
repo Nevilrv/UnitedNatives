@@ -5,9 +5,9 @@
 
 library editable;
 
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/helpers.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/row_builder.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/helpers.dart';
+import 'package:united_natives/pages/Diabites/custom_package/row_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -45,8 +45,8 @@ class Editable extends StatefulWidget {
   ///   );
   /// }
   /// ```
-  Editable(
-      {Key key,
+  const Editable(
+      {super.key,
       this.columns,
       this.rows,
       this.columnRatio = 0.20,
@@ -92,8 +92,7 @@ class Editable extends StatefulWidget {
       this.onDeleteButtonPressed,
       this.onEditButtonPressed,
       this.focusedBorder,
-      this.onTap})
-      : super(key: key);
+      this.onTap});
 
   /// A data set to create headers
   ///
@@ -120,8 +119,8 @@ class Editable extends StatefulWidget {
   ///
   /// [key] an identifier preferably a short string
   /// [editable] a boolean, if the column should be editable or not, [true] by default.
-  final List columns;
-  final Function onTap;
+  final List? columns;
+  final Function? onTap;
 
   /// A data set to create rows
   ///
@@ -138,7 +137,7 @@ class Editable extends StatefulWidget {
   /// ```
   /// each objects DO NOT have to be positioned in same order as its column
 
-  final List rows;
+  final List? rows;
 
   /// Interger value of number of rows to be generated:
   ///
@@ -178,7 +177,7 @@ class Editable extends StatefulWidget {
   final TextAlign tdAlignment;
 
   /// Style the table data
-  final TextStyle tdStyle;
+  final TextStyle? tdStyle;
 
   /// Max lines allowed in editable text, default: 1 (longer data will not wrap and be hidden), setting to 100 will allow wrapping and not increase row size
   final int tdEditableMaxLines;
@@ -199,7 +198,7 @@ class Editable extends StatefulWidget {
   final TextAlign thAlignment;
 
   /// Style the table header - use for more control of header style, using this OVERRIDES the thWeight and thSize parameters and those will be ignored.
-  final TextStyle thStyle;
+  final TextStyle? thStyle;
 
   /// Table headers fontweight (use thStyle for more control of header style)
   final FontWeight thWeight;
@@ -240,10 +239,10 @@ class Editable extends StatefulWidget {
   final CrossAxisAlignment createButtonAlign;
 
   /// Icon displayed in the create new row button
-  final Icon createButtonIcon;
+  final Icon? createButtonIcon;
 
   /// Color for the create new row button
-  final Color createButtonColor;
+  final Color? createButtonColor;
 
   /// border shape of the create new row button
   ///
@@ -252,10 +251,10 @@ class Editable extends StatefulWidget {
   ///   borderRadius: BorderRadius.circular(8)
   /// )
   /// ```
-  final BoxShape createButtonShape;
+  final BoxShape? createButtonShape;
 
   /// Label for the create new row button
-  final Widget createButtonLabel;
+  final Widget? createButtonLabel;
 
   /// The first row alternate color, if stripe is set to true
   final Color stripeColor1;
@@ -267,38 +266,38 @@ class Editable extends StatefulWidget {
   /// if enabled, you can style the colors [stripeColor1] and [stripeColor2]
   final bool zebraStripe;
 
-  final InputBorder focusedBorder;
+  final InputBorder? focusedBorder;
 
   final popUpChild;
 
-  final String popUpTitle;
+  final String? popUpTitle;
 
-  final Function onAddButtonPressed;
+  final Function? onAddButtonPressed;
 
-  final Function onDeleteButtonPressed;
+  final Function? onDeleteButtonPressed;
 
-  final Function onEditButtonPressed;
+  final Function? onEditButtonPressed;
 
   ///[onSubmitted] callback is triggered when the enter button is pressed on a table data cell
   /// it returns a value of the cell data
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onSubmitted;
 
   /// [onRowSaved] callback is triggered when a [saveButton] is pressed.
   /// returns only values if row is edited, otherwise returns a string ['no edit']
-  final ValueChanged<dynamic> onRowSaved;
+  final ValueChanged<dynamic>? onRowSaved;
 
   @override
   EditableState createState() => EditableState(
-      rows: this.rows,
-      columns: this.columns,
-      rowCount: this.rowCount,
-      columnCount: this.columnCount);
+      rows: rows,
+      columns: columns,
+      rowCount: rowCount,
+      columnCount: columnCount);
 }
 
 class EditableState extends State<Editable> {
-  List rows, columns;
-  int columnCount;
-  int rowCount;
+  List? rows, columns;
+  int? columnCount;
+  int? rowCount;
 
   ///Get all edited rows
   List get editedRows => _editedRows;
@@ -309,21 +308,19 @@ class EditableState extends State<Editable> {
   EditableState({this.rows, this.columns, this.columnCount, this.rowCount});
 
   /// Temporarily holds all edited rows
-  List _editedRows = [];
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final List _editedRows = [];
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   @override
   Widget build(BuildContext context) {
     /// initial Setup of columns and row, sets count of column and row
-    rowCount = rows == null || rows.isEmpty ? widget.rowCount : rows.length;
+    rowCount = rows == null || rows!.isEmpty ? widget.rowCount : rows?.length;
     columnCount =
-        columns == null || columns.isEmpty ? columnCount : columns.length;
+        columns == null || columns!.isEmpty ? columnCount : columns?.length;
     columns = columns ?? columnBlueprint(columnCount, columns);
-    rows = rows ?? rowBlueprint(rowCount, columns, rows);
-    print('COLUMN COUNT====>$columnCount===>$columns');
-    print('ROW COUNT====>$rowCount===>$rows');
+    rows = rows ?? rowBlueprint(rowCount!, columns, rows);
 
     /// Builds saveIcon widget
-    Widget _saveIcon(index) {
+    Widget saveIcon(index) {
       return Flexible(
         fit: FlexFit.loose,
         child: Visibility(
@@ -339,7 +336,7 @@ class EditableState extends State<Editable> {
                   size: widget.saveIconSize,
                 ),
                 onPressed: () {
-                  widget.onEditButtonPressed(index);
+                  widget.onEditButtonPressed!(index);
                 },
               ),
               IconButton(
@@ -351,7 +348,7 @@ class EditableState extends State<Editable> {
                   size: widget.saveIconSize,
                 ),
                 onPressed: () {
-                  widget.onDeleteButtonPressed(index);
+                  widget.onDeleteButtonPressed!(index);
                 },
               ),
             ],
@@ -384,24 +381,24 @@ class EditableState extends State<Editable> {
     // }
 
     /// Generates table rows
-    List<Widget> _tableRows() {
-      return List<Widget>.generate(columnCount, (index) {
+    List<Widget> tableRows() {
+      return List<Widget>.generate(columnCount!, (index) {
         return Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: List.generate(rowCount, (rowIndex) {
+          children: List.generate(rowCount!, (rowIndex) {
             var ckeys = [];
             var cTitle = [];
             var cwidths = [];
             var ceditable = <bool>[];
-            columns.forEach((e) {
+            columns?.forEach((e) {
               ckeys.add(e['key']);
               cTitle.add(e['title']);
               cwidths.add(e['widthFactor'] ?? widget.columnRatio);
               ceditable.add(e['editable'] ?? true);
             });
 
-            var list = rows[rowIndex];
+            var list = rows?[rowIndex];
 
             // print(
             //     'EDITABLE SCREEN=======$rowIndex====${cTitle[index]}=====${cwidths[index]}====>${rowIndex == 0 ? cwidths[index] : 0.40}');
@@ -412,7 +409,7 @@ class EditableState extends State<Editable> {
               children: [
                 if (rowIndex == 0)
                   RowBuilder(
-                    index: rowCount,
+                    index: rowCount!,
                     col: cTitle[index],
                     trHeight: widget.trHeight,
                     borderColor: widget.borderColor,
@@ -426,11 +423,11 @@ class EditableState extends State<Editable> {
                     tdStyle: TextStyle(
                         fontWeight: widget.thWeight, fontSize: widget.thSize),
                     tdEditableMaxLines: widget.tdEditableMaxLines,
-                    onSubmitted: widget.onSubmitted,
+                    onSubmitted: widget.onSubmitted!,
                     widthRatio: rowIndex == 0 ? cwidths[index] : 0.40,
                     isEditable: ceditable[rowIndex],
                     zebraStripe: widget.zebraStripe,
-                    focusedBorder: widget.focusedBorder,
+                    focusedBorder: widget.focusedBorder!,
                     stripeColor1: widget.stripeColor1,
                     stripeColor2: widget.stripeColor2,
                     onChanged: (value) {
@@ -494,7 +491,7 @@ class EditableState extends State<Editable> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RowBuilder(
-                      index: rowCount,
+                      index: rowCount!,
                       col: ckeys[index],
                       trHeight: widget.trHeight,
                       borderColor: widget.borderColor,
@@ -505,14 +502,14 @@ class EditableState extends State<Editable> {
                       tdPaddingBottom: widget.tdPaddingBottom,
                       tdPaddingRight: widget.tdPaddingRight,
                       tdAlignment: widget.tdAlignment,
-                      tdStyle: widget.tdStyle,
+                      tdStyle: widget.tdStyle!,
                       tdEditableMaxLines: widget.tdEditableMaxLines,
-                      onSubmitted: widget.onSubmitted,
+                      onSubmitted: widget.onSubmitted!,
                       widthRatio: 0.30,
                       // widthRatio: cwidths[rowIndex].toDouble(),
                       isEditable: false,
                       zebraStripe: widget.zebraStripe,
-                      focusedBorder: widget.focusedBorder,
+                      focusedBorder: widget.focusedBorder!,
                       stripeColor1: widget.stripeColor1,
                       stripeColor2: widget.stripeColor2,
                       onChanged: (value) {
@@ -532,7 +529,7 @@ class EditableState extends State<Editable> {
                         }
                       },
                     ),
-                    if (columnCount == (index + 1)) _saveIcon(rowIndex)
+                    if (columnCount == (index + 1)) saveIcon(rowIndex)
                   ],
                 ),
               ],
@@ -603,7 +600,6 @@ class EditableState extends State<Editable> {
     //     );
     //   });
     // }
-    print('-- widget.createButtonAlign--${widget.createButtonAlign}');
     return Material(
       color: Colors.transparent,
       child: Padding(
@@ -615,7 +611,7 @@ class EditableState extends State<Editable> {
             children: [
               //Table Header
               createButton(),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               // Container(
@@ -633,7 +629,7 @@ class EditableState extends State<Editable> {
               // ),
 
               Column(
-                children: _tableRows(),
+                children: tableRows(),
               )
             ],
           ),
@@ -647,13 +643,13 @@ class EditableState extends State<Editable> {
     return Visibility(
       visible: widget.showCreateButton,
       child: Padding(
-        padding: EdgeInsets.only(left: 4.0, bottom: 4),
+        padding: const EdgeInsets.only(left: 4.0, bottom: 4),
         child: InkWell(
           onTap: () {
             // rows = addOneRow(columns, rows);
             // rowCount++;
             // setState(() {});
-            widget.onTap();
+            widget.onTap!();
             _onAlertWithCustomContentPressed(context);
           },
           child: Padding(
@@ -661,7 +657,7 @@ class EditableState extends State<Editable> {
             child: Container(
               height: 40,
               width: 40,
-              padding: EdgeInsets.all(2),
+              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color:
                     widget.createButtonColor ?? Theme.of(context).canvasColor,
@@ -697,9 +693,9 @@ class EditableState extends State<Editable> {
         buttons: [
           DialogButton(
             onPressed: () {
-              widget.onAddButtonPressed();
+              widget.onAddButtonPressed!();
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),

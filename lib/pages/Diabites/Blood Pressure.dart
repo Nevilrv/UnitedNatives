@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:date_format/date_format.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,17 +29,20 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class BloodPressure extends StatefulWidget {
+  const BloodPressure({super.key});
+
   @override
-  _BloodPressureState createState() => _BloodPressureState();
+  State<BloodPressure> createState() => _BloodPressureState();
 }
 
 class _BloodPressureState extends State<BloodPressure> {
-  UserController _userController = Get.find<UserController>();
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
+  final UserController _userController = Get.find<UserController>();
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
   int totalCount = 0;
   List list = [];
   RxBool isLoading = false.obs;
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   List<Datum> listDatum = [];
   List editList = [];
   List cols = [
@@ -93,9 +96,9 @@ class _BloodPressureState extends State<BloodPressure> {
   final _editableKey = GlobalKey<EditableState>();
   List<_BloodPressureData> data = [];
   TimeOfDay selectedTime = TimeOfDay.now();
-  String _setTime;
+  String? _setTime;
 
-  Future<HealthResponseModel> getBloodPressureData() async {
+  Future<HealthResponseModel?> getBloodPressureData() async {
     rows.clear();
     idList.clear();
     final String url = Constants.getRoutineHealthReport;
@@ -108,15 +111,14 @@ class _BloodPressureState extends State<BloodPressure> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
 
-    print('RESPONSE => ${response.body}');
     try {
       if (response != null) {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
-        listDatum = model.data;
-        model.data.forEach((element) {
-          idList.add(element.id);
-          list = (jsonDecode(element.tableData) as List);
+        listDatum = model.data!;
+        model.data?.forEach((element) {
+          idList.add(element.id!);
+          list = (jsonDecode(element.tableData!) as List);
           rows.add({
             'Date': list[0],
             'Time': list[1],
@@ -216,7 +218,7 @@ class _BloodPressureState extends State<BloodPressure> {
     }
   }
 
-  Future updateBloodPressureData({dynamic reportTableData, String id}) async {
+  Future updateBloodPressureData({dynamic reportTableData, String? id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -294,7 +296,7 @@ class _BloodPressureState extends State<BloodPressure> {
               "Blood Pressure",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
           ),
@@ -304,7 +306,7 @@ class _BloodPressureState extends State<BloodPressure> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Blood Pressure Logs',
@@ -314,7 +316,7 @@ class _BloodPressureState extends State<BloodPressure> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -326,200 +328,193 @@ class _BloodPressureState extends State<BloodPressure> {
                             : SingleChildScrollView(
                                 child: Column(
                                   children: [
-                                    Container(
-                                      child: Editable(
-                                        key: _editableKey,
-                                        columns: cols,
-                                        rows: rows,
-                                        popUpTitle: 'Blood Pressure Logs',
-                                        showSaveIcon: true,
-                                        borderWidth: 1,
-                                        saveIconColor: _isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        onAddButtonPressed: () async {
-                                          String text =
-                                              '${dateController.text},${timeController.text},${sbpController.text},${dbpController.text},${bpmController.text},${notesController.text}';
-                                          List<String> result = text.split(',');
-                                          print(result);
-                                          bool addData = true;
-                                          for (int i = 0;
-                                              i < result.length;
-                                              i++) {
-                                            if (result[i] == "") {
-                                              Utils.showSnackBar(
-                                                'Enter details',
-                                                'Please enter all required details!!',
-                                              );
-                                              addData = false;
-                                              break;
-                                            }
-                                          }
-                                          if (addData) {
-                                            rows.add({
-                                              'Date': result[0],
-                                              'Time': result[1],
-                                              'Sbp': result[2],
-                                              'Dbp': result[3],
-                                              'Bpm': result[4],
-                                              'Notes': result[5],
-                                            });
-
-                                            List dateFixedList =
-                                                result[0].toString().split('-');
-                                            data.add(
-                                              _BloodPressureData(
-                                                date: DateTime(
-                                                    int.parse(dateFixedList[2]),
-                                                    int.parse(dateFixedList[1]),
-                                                    int.parse(
-                                                        dateFixedList[0])),
-                                                sbpValue:
-                                                    double.parse(result[2]),
-                                                dbpValue:
-                                                    double.parse(result[3]),
-                                                bpmValue:
-                                                    double.parse(result[4]),
-                                              ),
+                                    Editable(
+                                      key: _editableKey,
+                                      columns: cols,
+                                      rows: rows,
+                                      popUpTitle: 'Blood Pressure Logs',
+                                      showSaveIcon: true,
+                                      borderWidth: 1,
+                                      saveIconColor:
+                                          _isDark ? Colors.white : Colors.black,
+                                      onAddButtonPressed: () async {
+                                        String text =
+                                            '${dateController.text},${timeController.text},${sbpController.text},${dbpController.text},${bpmController.text},${notesController.text}';
+                                        List<String> result = text.split(',');
+                                        bool addData = true;
+                                        for (int i = 0;
+                                            i < result.length;
+                                            i++) {
+                                          if (result[i] == "") {
+                                            Utils.showSnackBar(
+                                              'Enter details',
+                                              'Please enter all required details!!',
                                             );
-                                            data.sort((a, b) =>
-                                                a.date.compareTo(b.date));
-                                            Navigator.pop(context);
-                                            await addBloodPressureData(result);
-                                          } else {
-                                            // Navigator.pop(context);
+                                            addData = false;
+                                            break;
                                           }
-                                        },
-                                        onDeleteButtonPressed: (index) async {
-                                          await deleteBloodPressureData(
-                                              idList[index]);
-                                        },
-                                        onEditButtonPressed: (index) {
-                                          _editDialog(
-                                              context, index, listDatum);
-                                        },
-                                        onTap: () {
-                                          dateController.clear();
-                                          timeController.clear();
-                                          sbpController.clear();
-                                          sbpController.clear();
-                                          dbpController.clear();
-                                          bpmController.clear();
-                                          notesController.clear();
-                                        },
-                                        popUpChild: Container(
-                                          width: Get.width * 0.75,
-                                          child: Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  dateController.text =
-                                                      await Utils
-                                                          .selectedDateFormat(
-                                                              context);
-                                                },
-                                                child: TextField(
-                                                  enabled: false,
-                                                  readOnly: true,
-                                                  controller: dateController,
-                                                  decoration: InputDecoration(
-                                                      hintText: 'Date'),
-                                                ),
-                                              ),
-                                              TextField(
-                                                  readOnly: true,
-                                                  onTap: () async {
-                                                    final TimeOfDay picked =
-                                                        await showTimePicker(
-                                                      context: context,
-                                                      initialTime: selectedTime,
-                                                    );
-                                                    if (picked != null)
-                                                      setState(() {
-                                                        selectedTime = picked;
+                                        }
+                                        if (addData) {
+                                          rows.add({
+                                            'Date': result[0],
+                                            'Time': result[1],
+                                            'Sbp': result[2],
+                                            'Dbp': result[3],
+                                            'Bpm': result[4],
+                                            'Notes': result[5],
+                                          });
 
-                                                        _setTime = formatDate(
-                                                            DateTime(
-                                                                2019,
-                                                                08,
-                                                                1,
-                                                                selectedTime
-                                                                    .hour,
-                                                                selectedTime
-                                                                    .minute),
-                                                            [
-                                                              hh,
-                                                              ':',
-                                                              nn,
-                                                              ' ',
-                                                              am
-                                                            ]).toString();
-                                                        timeController.text =
-                                                            _setTime;
-                                                        debugPrint(
-                                                            "timeController${timeController.text}");
-                                                      });
-                                                  },
-                                                  controller: timeController,
-                                                  decoration: InputDecoration(
-                                                      hintText: 'Time')),
-                                              TextField(
-                                                controller: sbpController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(
-                                                    RegExp(r'[0-9.]'),
-                                                  ),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Systolic'),
+                                          List dateFixedList =
+                                              result[0].toString().split('-');
+                                          data.add(
+                                            _BloodPressureData(
+                                              date: DateTime(
+                                                  int.parse(dateFixedList[2]),
+                                                  int.parse(dateFixedList[1]),
+                                                  int.parse(dateFixedList[0])),
+                                              sbpValue: double.parse(result[2]),
+                                              dbpValue: double.parse(result[3]),
+                                              bpmValue: double.parse(result[4]),
+                                            ),
+                                          );
+                                          data.sort((a, b) =>
+                                              a.date.compareTo(b.date));
+                                          Navigator.pop(context);
+                                          await addBloodPressureData(result);
+                                        } else {
+                                          // Navigator.pop(context);
+                                        }
+                                      },
+                                      onDeleteButtonPressed: (index) async {
+                                        await deleteBloodPressureData(
+                                            idList[index]);
+                                      },
+                                      onEditButtonPressed: (index) {
+                                        _editDialog(context, index, listDatum);
+                                      },
+                                      onTap: () {
+                                        dateController.clear();
+                                        timeController.clear();
+                                        sbpController.clear();
+                                        sbpController.clear();
+                                        dbpController.clear();
+                                        bpmController.clear();
+                                        notesController.clear();
+                                      },
+                                      popUpChild: SizedBox(
+                                        width: Get.width * 0.75,
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                dateController.text =
+                                                    await Utils
+                                                        .selectedDateFormat(
+                                                            context);
+                                              },
+                                              child: TextField(
+                                                enabled: false,
+                                                readOnly: true,
+                                                controller: dateController,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        hintText: 'Date'),
                                               ),
-                                              TextField(
-                                                controller: dbpController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(
-                                                    RegExp(r'[0-9.]'),
-                                                  ),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Diastolic'),
-                                              ),
-                                              TextField(
-                                                controller: bpmController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText:
-                                                        'Heart beat per minute'),
-                                              ),
-                                              TextField(
-                                                controller: notesController,
-                                                decoration: InputDecoration(
-                                                    hintText: 'Notes'),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                            TextField(
+                                                readOnly: true,
+                                                onTap: () async {
+                                                  final TimeOfDay? picked =
+                                                      await showTimePicker(
+                                                    context: context,
+                                                    initialTime: selectedTime,
+                                                  );
+                                                  if (picked != null) {
+                                                    setState(() {
+                                                      selectedTime = picked;
+
+                                                      _setTime = formatDate(
+                                                          DateTime(
+                                                              2019,
+                                                              08,
+                                                              1,
+                                                              selectedTime.hour,
+                                                              selectedTime
+                                                                  .minute),
+                                                          [
+                                                            hh,
+                                                            ':',
+                                                            nn,
+                                                            ' ',
+                                                            am
+                                                          ]).toString();
+                                                      timeController.text =
+                                                          _setTime!;
+                                                      debugPrint(
+                                                          "timeController${timeController.text}");
+                                                    });
+                                                  }
+                                                },
+                                                controller: timeController,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        hintText: 'Time')),
+                                            TextField(
+                                              controller: sbpController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(
+                                                  RegExp(r'[0-9.]'),
+                                                ),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Systolic'),
+                                            ),
+                                            TextField(
+                                              controller: dbpController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(
+                                                  RegExp(r'[0-9.]'),
+                                                ),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Diastolic'),
+                                            ),
+                                            TextField(
+                                              controller: bpmController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText:
+                                                      'Heart beat per minute'),
+                                            ),
+                                            TextField(
+                                              controller: notesController,
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Notes'),
+                                            ),
+                                          ],
                                         ),
-                                        borderColor: Colors.blueGrey,
-                                        showCreateButton: true,
-                                        createButtonLabel: Text(
-                                          'New',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
+                                      ),
+                                      borderColor: Colors.blueGrey,
+                                      showCreateButton: true,
+                                      createButtonLabel: const Text(
+                                        'New',
+                                        style: TextStyle(
+                                          color: Colors.black,
                                         ),
                                       ),
                                     ),
-                                    if (data.isNotEmpty && data != null)
+                                    if (data.isNotEmpty)
                                       SfCartesianChart(
                                         // primaryXAxis: CategoryAxis(),
                                         enableAxisAnimation: true,
@@ -531,7 +526,7 @@ class _BloodPressureState extends State<BloodPressure> {
                                                 DateTimeIntervalType.auto
                                             // autoScrollingMode: AutoScrollingMode.end,
                                             ),
-                                        primaryYAxis: NumericAxis(
+                                        primaryYAxis: const NumericAxis(
                                             edgeLabelPlacement:
                                                 EdgeLabelPlacement.shift),
                                         // axes: [Charts()],
@@ -550,7 +545,7 @@ class _BloodPressureState extends State<BloodPressure> {
                                                     _) =>
                                                 bloodPressure.sbpValue,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                                     isVisible: true),
                                           ),
 
@@ -567,7 +562,7 @@ class _BloodPressureState extends State<BloodPressure> {
                                                     _) =>
                                                 bloodPressure.dbpValue,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                                     isVisible: true),
                                           ),
 
@@ -584,10 +579,10 @@ class _BloodPressureState extends State<BloodPressure> {
                                                     _) =>
                                                 bloodPressure.bpmValue,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                                     isVisible: true),
                                           ),
-                                        ],
+                                        ] as List<CartesianSeries>,
                                       ),
                                     if (data.isEmpty)
                                       Padding(
@@ -598,8 +593,8 @@ class _BloodPressureState extends State<BloodPressure> {
                                             'No blood pressure data!',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline6
-                                                .copyWith(fontSize: 20),
+                                                .titleLarge
+                                                ?.copyWith(fontSize: 20),
                                           ),
                                         ),
                                       )
@@ -612,7 +607,7 @@ class _BloodPressureState extends State<BloodPressure> {
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -634,7 +629,7 @@ class _BloodPressureState extends State<BloodPressure> {
         title: 'Add Blood Pressure Logs',
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Container(
+          child: SizedBox(
             width: Get.width * 0.75,
             child: Column(
               children: [
@@ -647,7 +642,7 @@ class _BloodPressureState extends State<BloodPressure> {
                     enabled: false,
                     readOnly: true,
                     controller: editDateController,
-                    decoration: InputDecoration(hintText: 'Date'),
+                    decoration: const InputDecoration(hintText: 'Date'),
                   ),
                 ),
                 TextField(
@@ -666,11 +661,11 @@ class _BloodPressureState extends State<BloodPressure> {
                         .split(' ')
                         .first);
 
-                    final TimeOfDay picked = await showTimePicker(
+                    final TimeOfDay? picked = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay(hour: hour, minute: minute),
                     );
-                    if (picked != null)
+                    if (picked != null) {
                       setState(() {
                         selectedTime = picked;
 
@@ -683,13 +678,14 @@ class _BloodPressureState extends State<BloodPressure> {
                               selectedTime.minute,
                             ),
                             [hh, ':', nn, ' ', am]).toString();
-                        editTimeController.text = _setTime;
+                        editTimeController.text = _setTime!;
 
                         debugPrint(editTimeController.text);
                       });
+                    }
                   },
                   controller: editTimeController,
-                  decoration: InputDecoration(hintText: 'Time'),
+                  decoration: const InputDecoration(hintText: 'Time'),
                 ),
                 TextField(
                   controller: editSbpController,
@@ -697,7 +693,7 @@ class _BloodPressureState extends State<BloodPressure> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Sbp'),
+                  decoration: const InputDecoration(hintText: 'Sbp'),
                 ),
                 TextField(
                   controller: editDbpController,
@@ -705,7 +701,7 @@ class _BloodPressureState extends State<BloodPressure> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Dbp'),
+                  decoration: const InputDecoration(hintText: 'Dbp'),
                 ),
                 TextField(
                   controller: editBpmController,
@@ -713,11 +709,11 @@ class _BloodPressureState extends State<BloodPressure> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Bpm'),
+                  decoration: const InputDecoration(hintText: 'Bpm'),
                 ),
                 TextField(
                   controller: editNotesController,
-                  decoration: InputDecoration(hintText: 'Notes'),
+                  decoration: const InputDecoration(hintText: 'Notes'),
                 ),
               ],
             ),
@@ -736,7 +732,7 @@ class _BloodPressureState extends State<BloodPressure> {
               await updateBloodPressureData(
                   id: idList[index], reportTableData: result);
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),
@@ -747,10 +743,10 @@ class _BloodPressureState extends State<BloodPressure> {
 
 class _BloodPressureData {
   _BloodPressureData({
-    this.date,
-    this.sbpValue,
-    this.dbpValue,
-    this.bpmValue,
+    required this.date,
+    required this.sbpValue,
+    required this.dbpValue,
+    required this.bpmValue,
   });
 
   final DateTime date;

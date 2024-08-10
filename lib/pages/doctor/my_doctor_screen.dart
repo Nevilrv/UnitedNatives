@@ -1,36 +1,35 @@
-import 'package:doctor_appointment_booking/components/custom_button.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/my_doctor_list_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_my_doctors_and_notes_view_model.dart';
+import 'package:united_natives/components/custom_button.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/my_doctor_list_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_my_doctors_and_notes_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyDoctorScreen extends StatefulWidget {
-  const MyDoctorScreen({Key key}) : super(key: key);
+  const MyDoctorScreen({super.key});
 
   @override
   State<MyDoctorScreen> createState() => _MyDoctorScreenState();
 }
 
 class _MyDoctorScreenState extends State<MyDoctorScreen> {
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
-  UserController _userController = Get.find<UserController>();
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final UserController _userController = Get.find<UserController>();
   MyDoctorNotesViewModel addMyDoctorNotesViewModel =
       Get.put(MyDoctorNotesViewModel());
 
   Future<void> getData() async {
     MyDoctorListRequestModel requestModel = MyDoctorListRequestModel(
-      patientId: int.parse(_userController.user.value.id),
+      patientId: int.parse(_userController.user.value.id!),
       doctorName: '',
     );
-    print('requestModel==========>>>>>$requestModel');
     await addMyDoctorNotesViewModel.getAllDoctorList(model: requestModel);
   }
 
@@ -47,7 +46,7 @@ class _MyDoctorScreenState extends State<MyDoctorScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: kColorBlue,
-        child: Icon(
+        child: const Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -69,7 +68,7 @@ class _MyDoctorScreenState extends State<MyDoctorScreen> {
           );
         } else if (controller.getMyDoctorListApiResponse.status ==
             Status.ERROR) {
-          return Center(
+          return const Center(
             child: Text("Error"),
           );
         } else if (controller.getMyDoctorListApiResponse.status ==
@@ -77,35 +76,35 @@ class _MyDoctorScreenState extends State<MyDoctorScreen> {
           MyDoctorsListDataResponseModel response =
               controller.getMyDoctorListApiResponse.data;
 
-          if (response.data.isEmpty || response.data == null) {
+          if (response.data!.isEmpty || response.data == null) {
             return Center(
               child: Text(
                 "No Providers",
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
-                    .copyWith(fontSize: 20),
+                    .titleLarge
+                    ?.copyWith(fontSize: 20),
                 textAlign: TextAlign.center,
               ),
             );
           }
 
           return ListView.separated(
-            physics: AlwaysScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => SizedBox(
+            physics: const AlwaysScrollableScrollPhysics(),
+            separatorBuilder: (context, index) => const SizedBox(
               height: 15,
             ),
-            itemCount: response.data.length,
+            itemCount: response.data!.length,
             shrinkWrap: true,
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             itemBuilder: (context, index) {
               return Container(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: _isDark
                       ? Colors.grey.withOpacity(0.2)
-                      : Color(0xffEBF2F5),
+                      : const Color(0xffEBF2F5),
                 ),
                 child: Row(
                   children: <Widget>[
@@ -114,15 +113,15 @@ class _MyDoctorScreenState extends State<MyDoctorScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "${response.data[index].doctorName}",
+                            "${response.data?[index].doctorName}",
                             style: TextStyle(
                                 color:
                                     _isDark ? Colors.white : kColorPrimaryDark,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          Text("${response.data[index].doctorMobile}",
-                              style: TextStyle(
+                          Text("${response.data?[index].doctorMobile}",
+                              style: const TextStyle(
                                   color: Colors.grey,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400),
@@ -131,17 +130,17 @@ class _MyDoctorScreenState extends State<MyDoctorScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     CustomButton(
-                      text: Translate.of(context).translate('details'),
+                      text: Translate.of(context)!.translate('details'),
                       textSize: 18,
                       onPressed: () {
                         Navigator.of(context)
                             .pushNamed(
                           Routes.myDoctorProfile,
-                          arguments: response.data[index].doctorName,
+                          arguments: response.data?[index].doctorName,
                         )
                             .then((value) {
                           if (value == true) {
@@ -149,8 +148,8 @@ class _MyDoctorScreenState extends State<MyDoctorScreen> {
                           }
                         });
                       },
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 5),
                     ),
                   ],
                 ),
@@ -158,7 +157,7 @@ class _MyDoctorScreenState extends State<MyDoctorScreen> {
             },
           );
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       }),
     );

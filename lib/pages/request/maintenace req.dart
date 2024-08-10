@@ -1,45 +1,44 @@
 import 'dart:async';
-
 import 'package:date_format/date_format.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/patient_add_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/message_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/utils/common_snackbar.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/patient_request_viewModel.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/patient_add_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/patient_request_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class MaintenanceRequestScreen extends StatefulWidget {
-  final String categoryId;
+  final String? categoryId;
 
-  const MaintenanceRequestScreen({Key key, this.categoryId}) : super(key: key);
+  const MaintenanceRequestScreen({super.key, this.categoryId});
   @override
-  _MaintenanceRequestScreenState createState() =>
+  State<MaintenanceRequestScreen> createState() =>
       _MaintenanceRequestScreenState();
 }
 
 class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
-  double _height;
-  double _width;
+  double? width;
+  double? height;
 
-  String _setTime, _setDate;
+  String? _setTime, setDate;
 
-  String _hour, _minute, _time;
+  String? _hour, _minute, _time;
 
-  String dateTime;
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  String? dateTime;
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
   DateTime selectedDate = DateTime.now();
   RequestController requestController = Get.find();
-  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
-  String mySelectDate, selectedStartTime;
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
+  TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
+  String? mySelectDate, selectedStartTime;
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -48,37 +47,36 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
             firstDate: DateTime.now(),
             lastDate: DateTime(2500))
         .then((value) {
-      if (value != null && value != selectedDate)
+      if (value != null && value != selectedDate) {
         setState(() {
           selectedDate = value;
           mySelectDate = "${value.toLocal()}".split(' ')[0];
         });
+      }
 
-      print(mySelectDate);
-
-      return;
+      return selectedDate;
     });
     debugPrint('picked==========>>>>>$picked');
   }
 
   Future<Null> _selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedTime = picked;
         _hour = selectedTime.hour.toString();
         _minute = selectedTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
+        _time = '$_hour : $_minute';
         _setTime = _time;
         _setTime = formatDate(
             DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
             [hh, ':', nn, ":", ss]).toString();
         selectedStartTime = _setTime;
-        print('DATA $selectedStartTime');
       });
+    }
   }
 
   @override
@@ -94,8 +92,8 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
   AdsController adsController = Get.find();
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery.of(context).size.height;
-    _width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     dateTime = DateFormat.yMd().format(DateTime.now());
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
@@ -109,7 +107,7 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
               'Request',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
               textAlign: TextAlign.center,
             ),
@@ -122,7 +120,7 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
                   boxShadow: [
                     BoxShadow(
                         color: Colors.grey.withOpacity(0.7),
-                        offset: Offset(0, 0),
+                        offset: const Offset(0, 0),
                         blurRadius: 10)
                   ],
                   borderRadius: BorderRadius.circular(20)),
@@ -186,14 +184,14 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
               CommonSnackBar.snackBar(message: "Please select time");
               return;
             }
-            if (noteController.text == null || noteController.text == '') {
+            if (noteController.text.isEmpty || noteController.text == '') {
               CommonSnackBar.snackBar(message: "please enter note");
               return;
             } else {
               dialog();
             }
           },
-          child: Container(
+          child: SizedBox(
             width: Get.width * 0.25,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -220,8 +218,8 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Text(
                   ' Request successfully submitted!!!',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -249,8 +247,8 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
                     MessageStatusResponseModel model =
                         requestController.addRequestApiResponse.data;
                     if (model.status == 'Success') {
-                      CommonSnackBar.snackBar(message: model.message);
-                      Future.delayed(Duration(seconds: 2), () {
+                      CommonSnackBar.snackBar(message: model.message!);
+                      Future.delayed(const Duration(seconds: 2), () {
                         FocusScope.of(context).unfocus();
                         Navigator.pop(context);
                       });
@@ -276,8 +274,8 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
                           decoration: BoxDecoration(
                               color: Colors.blue,
                               borderRadius: BorderRadius.circular(10)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
                             child: Center(
                                 child: Text(
                               'Submit',

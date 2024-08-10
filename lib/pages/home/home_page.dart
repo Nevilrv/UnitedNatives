@@ -1,33 +1,34 @@
 import 'dart:async';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/visited_doctor_list_item.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/widget.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/agora_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/patient_scheduled_class_viewmodel.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/visited_doctor_list_item.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/agora_view_model.dart';
+import 'package:united_natives/viewModel/patient_scheduled_class_viewmodel.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   final UserController _userController = Get.find();
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
   final PatientHomeScreenController _patientHomeScreenController =
       Get.put(PatientHomeScreenController());
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
       Get.put(PatientScheduledClassController());
   AgoraController agoraController = Get.put(AgoraController());
 
-  BookAppointmentController _bookAppointmentController =
+  final BookAppointmentController _bookAppointmentController =
       Get.put(BookAppointmentController());
   String stateName = '';
 
@@ -70,10 +71,10 @@ class _HomePageState extends State<HomePage> {
               .getClassPatientApiResponse.data.data ==
           null) {
         await patientScheduledClassController.getClassListPatient(
-            id: userController.user.value.id, date: '');
+            id: userController.user.value.id!, date: '');
       } else {
         await patientScheduledClassController.getClassListPatient(
-            id: userController.user.value.id, date: '');
+            id: userController.user.value.id!, date: '');
       }
     }
   }
@@ -218,7 +219,7 @@ class _HomePageState extends State<HomePage> {
             getUpcomingClassData();
           },
           child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
@@ -229,24 +230,24 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       children: <Widget>[
                         Image.asset('assets/images/hand.png'),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${Translate.of(context).translate('hello')} ${_userController.user.value.firstName ?? "Client"}',
+                              '${Translate.of(context)?.translate('hello')} ${_userController.user.value.firstName ?? "Client"}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
-                                  .copyWith(
+                                  .titleLarge
+                                  ?.copyWith(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 23,
                                   ),
                             ),
                             Text(
-                              Translate.of(context)
+                              Translate.of(context)!
                                   .translate('how_are_you_today'),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 21,
                                 fontFamily: 'NunitoSans',
@@ -267,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                           () => Column(
                             children: <Widget>[
                               SectionHeaderWidget(
-                                title: Translate.of(context)
+                                title: Translate.of(context)!
                                     .translate('next_appointment'),
                               ),
                               _patientHomeScreenController.isLoading.value
@@ -279,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                                       child: Utils.circular(),
                                     )*/
 
-                                  Container(
+                                  SizedBox(
                                       height: 205,
                                       child: AppPlaceholder(
                                         child: Center(
@@ -305,7 +306,7 @@ class _HomePageState extends State<HomePage> {
                                       ? Center(
                                           child: Column(
                                             children: [
-                                              Text(
+                                              const Text(
                                                 'You have nothing yet!',
                                                 style: TextStyle(fontSize: 21),
                                               ),
@@ -329,7 +330,7 @@ class _HomePageState extends State<HomePage> {
                                                                   children: [
                                                                     ConstrainedBox(
                                                                       constraints:
-                                                                          BoxConstraints(
+                                                                          const BoxConstraints(
                                                                               maxWidth: 500),
                                                                       child:
                                                                           Stack(
@@ -344,27 +345,27 @@ class _HomePageState extends State<HomePage> {
                                                                               onTap: () {
                                                                                 Navigator.pop(context);
                                                                               },
-                                                                              child: Icon(Icons.clear, color: Colors.black, size: 28),
+                                                                              child: const Icon(Icons.clear, color: Colors.black, size: 28),
                                                                             ),
                                                                           ),
                                                                           Column(
                                                                             mainAxisSize:
                                                                                 MainAxisSize.min,
                                                                             children: [
-                                                                              SizedBox(height: 20),
+                                                                              const SizedBox(height: 20),
                                                                               Padding(
-                                                                                padding: EdgeInsets.all(20),
+                                                                                padding: const EdgeInsets.all(20),
                                                                                 child: Align(
                                                                                   alignment: Alignment.topCenter,
                                                                                   child: Text(
-                                                                                    Translate.of(context).translate('choose_health_center'),
-                                                                                    style: Theme.of(context).textTheme.headline6.copyWith(
+                                                                                    Translate.of(context)!.translate('choose_health_center'),
+                                                                                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                                                                           fontWeight: FontWeight.w700,
                                                                                         ),
                                                                                   ),
                                                                                 ),
                                                                               ),
-                                                                              SizedBox(height: 20),
+                                                                              const SizedBox(height: 20),
 
                                                                               // GestureDetector(
                                                                               //   onTap: () {
@@ -755,10 +756,8 @@ class _HomePageState extends State<HomePage> {
                                                                                     showDialog(
                                                                                       context: context,
                                                                                       builder: (context) {
-                                                                                        return WillPopScope(
-                                                                                          onWillPop: () async {
-                                                                                            return false;
-                                                                                          },
+                                                                                        return PopScope(
+                                                                                          canPop: false,
                                                                                           child: StatefulBuilder(
                                                                                             builder: (context, setState234) {
                                                                                               return Dialog(
@@ -798,12 +797,12 @@ class _HomePageState extends State<HomePage> {
                                                                                                                       onChanged: (value) {
                                                                                                                         setState234(() {});
                                                                                                                       },
-                                                                                                                      decoration: InputDecoration(contentPadding: EdgeInsets.only(top: 10, left: 16), suffixIcon: Icon(Icons.search), enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, hintText: 'Search...'),
+                                                                                                                      decoration: const InputDecoration(contentPadding: EdgeInsets.only(top: 10, left: 16), suffixIcon: Icon(Icons.search), enabledBorder: InputBorder.none, focusedBorder: InputBorder.none, hintText: 'Search...'),
                                                                                                                     ),
                                                                                                                   ),
                                                                                                                 ),
                                                                                                               ),
-                                                                                                              SizedBox(
+                                                                                                              const SizedBox(
                                                                                                                 width: 15,
                                                                                                               ),
                                                                                                               GestureDetector(
@@ -811,7 +810,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                                   Navigator.pop(context, controller.medicalName);
                                                                                                                   searchController.clear();
                                                                                                                 },
-                                                                                                                child: Icon(
+                                                                                                                child: const Icon(
                                                                                                                   Icons.clear,
                                                                                                                   color: Colors.black,
                                                                                                                   size: 28,
@@ -826,7 +825,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                             child: Builder(builder: (context) {
                                                                                                               int index = controller.categoryOfMedicalCenter.indexWhere((element) => element['post_title'].toString().toLowerCase().contains(searchController.text.toString().toLowerCase()));
                                                                                                               if (index < 0) {
-                                                                                                                return Center(
+                                                                                                                return const Center(
                                                                                                                   child: Text(
                                                                                                                     'No Medical Center !',
                                                                                                                     style: TextStyle(
@@ -864,10 +863,10 @@ class _HomePageState extends State<HomePage> {
                                                                                                                             setState1(() {});
                                                                                                                           },
                                                                                                                           title: Text(
-                                                                                                                            "${controller.categoryOfMedicalCenter[index]['post_title'].toString()}",
+                                                                                                                            controller.categoryOfMedicalCenter[index]['post_title'].toString(),
                                                                                                                             style: TextStyle(
                                                                                                                               fontSize: 20,
-                                                                                                                              color: Theme.of(context).textTheme.subtitle1.color,
+                                                                                                                              color: Theme.of(context).textTheme.titleMedium?.color,
                                                                                                                             ),
                                                                                                                           ),
                                                                                                                         ),
@@ -875,7 +874,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                                       ],
                                                                                                                     );
                                                                                                                   } else {
-                                                                                                                    return SizedBox();
+                                                                                                                    return const SizedBox();
                                                                                                                   }
                                                                                                                 },
                                                                                                               );
@@ -894,7 +893,7 @@ class _HomePageState extends State<HomePage> {
                                                                                     );
                                                                                   } else if (_bookAppointmentController.medicalLoader.value == true) {
                                                                                     Get.showSnackbar(
-                                                                                      GetSnackBar(
+                                                                                      const GetSnackBar(
                                                                                         backgroundColor: Colors.blue,
                                                                                         duration: Duration(seconds: 2),
                                                                                         messageText: Text(
@@ -905,7 +904,7 @@ class _HomePageState extends State<HomePage> {
                                                                                     );
                                                                                   } else {
                                                                                     Get.showSnackbar(
-                                                                                      GetSnackBar(
+                                                                                      const GetSnackBar(
                                                                                         backgroundColor: Colors.red,
                                                                                         duration: Duration(seconds: 2),
                                                                                         messageText: Text(
@@ -918,12 +917,12 @@ class _HomePageState extends State<HomePage> {
                                                                                 },
                                                                                 child: commonContainer(
                                                                                   child: Padding(
-                                                                                    padding: EdgeInsets.only(left: 20, right: 12),
+                                                                                    padding: const EdgeInsets.only(left: 20, right: 12),
                                                                                     child: Row(
                                                                                       children: [
                                                                                         Expanded(
                                                                                           child: Text(
-                                                                                            controller.medicalName == "" ? 'Select Medical Center' : '${controller.medicalName}',
+                                                                                            controller.medicalName == "" ? 'Select Medical Center' : controller.medicalName,
                                                                                             overflow: TextOverflow.ellipsis,
                                                                                             style: TextStyle(
                                                                                               fontSize: 18,
@@ -948,7 +947,7 @@ class _HomePageState extends State<HomePage> {
                                                                                   ),
                                                                                 ),
                                                                               ),
-                                                                              SizedBox(height: 10),
+                                                                              const SizedBox(height: 10),
                                                                               // RadioListTile(
                                                                               //   title:
                                                                               //       Text('Indigenous Health'),
@@ -972,7 +971,7 @@ class _HomePageState extends State<HomePage> {
                                                                               //   },
                                                                               // ),
 
-                                                                              SizedBox(height: 10),
+                                                                              const SizedBox(height: 10),
                                                                               // Obx(
                                                                               //   () =>
                                                                               //       Container(
@@ -1079,17 +1078,17 @@ class _HomePageState extends State<HomePage> {
                                                                                   },
                                                                                   borderRadius: BorderRadius.circular(4),
                                                                                   child: Padding(
-                                                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                                                                                     child: Row(
                                                                                       children: <Widget>[
-                                                                                        CircleAvatar(backgroundColor: Colors.grey[300], backgroundImage: AssetImage('assets/images/medicine.png'), radius: 25),
-                                                                                        SizedBox(width: 10),
+                                                                                        CircleAvatar(backgroundColor: Colors.grey[300], backgroundImage: const AssetImage('assets/images/medicine.png'), radius: 25),
+                                                                                        const SizedBox(width: 10),
                                                                                         Expanded(
                                                                                           child: Text(
-                                                                                            Translate.of(context).translate('Provider') + '(${_bookAppointmentController.doctorCount.toString()})',
+                                                                                            '${Translate.of(context)?.translate('Provider')}(${_bookAppointmentController.doctorCount.toString()})',
                                                                                             maxLines: 2,
                                                                                             overflow: TextOverflow.ellipsis,
-                                                                                            style: TextStyle(
+                                                                                            style: const TextStyle(
                                                                                               fontSize: 18,
                                                                                             ),
                                                                                           ),
@@ -1115,7 +1114,7 @@ class _HomePageState extends State<HomePage> {
                                                                                   ),
                                                                                 ),
                                                                               ),
-                                                                              SizedBox(height: 20),
+                                                                              const SizedBox(height: 20),
                                                                               Padding(
                                                                                 padding: const EdgeInsets.symmetric(horizontal: 20),
                                                                                 child: ElevatedButton(
@@ -1131,13 +1130,13 @@ class _HomePageState extends State<HomePage> {
                                                                                     );
                                                                                     // Navigator.pop(context);
                                                                                   },
-                                                                                  child: Text(
+                                                                                  child: const Text(
                                                                                     'Apply',
                                                                                     style: TextStyle(fontSize: 20),
                                                                                   ),
                                                                                 ),
                                                                               ),
-                                                                              SizedBox(
+                                                                              const SizedBox(
                                                                                 height: 20,
                                                                               ),
                                                                             ],
@@ -1171,23 +1170,23 @@ class _HomePageState extends State<HomePage> {
                                                             page:
                                                                 HealthConcernPage()));*/
                                                   },
-                                                  child: Text(
+                                                  color: kColorBlue,
+                                                  child: const Text(
                                                     'BOOK NOW',
                                                     style: TextStyle(
                                                         fontSize: 24,
                                                         color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.bold),
-                                                  ),
-                                                  color: kColorBlue),
+                                                  )),
                                             ],
                                           ),
                                         )
-                                      : NextAppointmentWidget(),
+                                      : const NextAppointmentWidget(),
 
                               ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                               SectionHeaderWidget(
-                                title: Translate.of(context)
+                                title: Translate.of(context)!
                                     .translate('upcoming_appointments'),
                                 onPressed: () {
                                   return Navigator.of(context)
@@ -1216,7 +1215,7 @@ class _HomePageState extends State<HomePage> {
 
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   child: Row(
                                     children: List.generate(
                                         3,
@@ -1224,7 +1223,7 @@ class _HomePageState extends State<HomePage> {
                                               child: Center(
                                                 child: Container(
                                                   width: 140,
-                                                  margin: EdgeInsets.only(
+                                                  margin: const EdgeInsets.only(
                                                       right: 20),
                                                   height: 170,
                                                   decoration: BoxDecoration(
@@ -1251,7 +1250,7 @@ class _HomePageState extends State<HomePage> {
                                       height: 200,
                                       child: ListView.separated(
                                         separatorBuilder: (context, index) =>
-                                            SizedBox(width: 15),
+                                            const SizedBox(width: 15),
                                         itemCount: _patientHomeScreenController
                                                 .patientHomePageData
                                                 .value
@@ -1260,18 +1259,16 @@ class _HomePageState extends State<HomePage> {
                                                 ?.length ??
                                             0,
                                         scrollDirection: Axis.horizontal,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 20),
                                         itemBuilder: (context, index) {
                                           return VisitedDoctorListItem(
                                             isHome: true,
                                             doctor: _patientHomeScreenController
-                                                        .patientHomePageData
-                                                        .value
-                                                        .data
-                                                        ?.upcomingAppointments[
-                                                    index] ??
-                                                Text('No Visited Provider'),
+                                                .patientHomePageData
+                                                .value
+                                                .data!
+                                                .upcomingAppointments![index],
                                           );
                                         },
                                       ),
@@ -1280,7 +1277,7 @@ class _HomePageState extends State<HomePage> {
                                 : Container(
                                     color: Colors.transparent,
                                     height: 100,
-                                    child: Center(
+                                    child: const Center(
                                       child: Text(
                                         'You have nothing yet!',
                                         style: TextStyle(fontSize: 21),
@@ -1324,7 +1321,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.symmetric(horizontal: 12)
                             .copyWith(right: 20),
                         child: SectionHeaderWidget(
-                          title: Translate.of(context)
+                          title: Translate.of(context)!
                               .translate('your_prescriptions'),
                           onPressed: () {
                             return Navigator.of(context)
@@ -1353,7 +1350,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         )*/
 
-                                  Container(
+                                  SizedBox(
                                       height: 125,
                                       child: AppPlaceholder(
                                         child: Center(
@@ -1386,20 +1383,20 @@ class _HomePageState extends State<HomePage> {
                                                             .data
                                                             ?.prescriptions
                                                             ?.first
-                                                            ?.appointmentId)
-                                                .then((value) =>
+                                                            .appointmentId)
+                                                ?.then((value) =>
                                                     _patientHomeScreenController
                                                         .getPatientHomePage());
                                           },
                                           child: TestAndPrescriptionCardWidget(
                                               //subTitle: DateFormat('MM').format(DateTime.parse(_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first?.created)) ,
                                               title:
-                                                  '${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first?.medicineName ?? "Cipla X524"} ${'${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first?.additionalNotes ?? "Pain Killer"}'.tr()}',
+                                                  '${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first.medicineName ?? "Cipla X524"} ${(_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first.additionalNotes ?? "Pain Killer").tr()}',
                                               subTitle:
-                                                  '${Translate.of(context).translate('given_by')} Dr. ${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first?.doctorName ?? ""} on ${DateFormat('EEEE, d MMMM yyyy').format(Utils.formattedDate("${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first?.appointmentDate} ${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first?.appointmentTime}"))}',
+                                                  '${Translate.of(context)?.translate('given_by')} Dr. ${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first.doctorName ?? ""} on ${DateFormat('EEEE, d MMMM yyyy').format(Utils.formattedDate("${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first.appointmentDate} ${_patientHomeScreenController.patientHomePageData.value.data?.prescriptions?.first.appointmentTime}"))}',
                                               image: 'icon_medical_recipe.png'),
                                         )
-                                      : Container(
+                                      : const SizedBox(
                                           height: 100,
                                           child: Center(
                                             child: Text(
@@ -2054,7 +2051,7 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),*/
 
-                            SizedBox(height: 30),
+                            const SizedBox(height: 30),
                           ],
                         ),
                       ),
@@ -2070,22 +2067,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   Container buildContainerButton(
-      {String title, Color colorName, Color colorText, double h}) {
+      {required String title,
+      required Color colorName,
+      required Color colorText,
+      required double h}) {
     return Container(
       height: h * 0.044,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       margin: EdgeInsets.all(Get.width * 0.02),
-      child: Text(
-        "$title",
-        style: TextStyle(color: colorText, fontSize: 18),
-      ),
 
       decoration: BoxDecoration(
         color: colorName,
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.black26,
             blurRadius: 4,
             spreadRadius: 1,
@@ -2094,12 +2090,16 @@ class _HomePageState extends State<HomePage> {
         ],
         borderRadius: BorderRadius.circular(8),
       ),
+      child: Text(
+        "$title",
+        style: TextStyle(color: colorText, fontSize: 18),
+      ),
     );
   }
 
-  static Container commonContainer({Widget child}) {
+  static Container commonContainer({required Widget child}) {
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
         height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),

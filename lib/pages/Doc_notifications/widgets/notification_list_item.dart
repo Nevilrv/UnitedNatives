@@ -5,13 +5,13 @@ import '../../../model/docnotification.dart' as notif;
 
 class DocNotificationListItem extends StatelessWidget {
   final notif.DocNotification notification;
-  final Function onTap;
+  final void Function()? onTap;
 
   const DocNotificationListItem({
-    Key key,
-    @required this.notification,
-    @required this.onTap,
-  }) : super(key: key);
+    super.key,
+    required this.notification,
+    required this.onTap,
+  });
   @override
   Widget build(BuildContext context) {
     bool isDark = Prefs.isDark();
@@ -26,10 +26,10 @@ class DocNotificationListItem extends StatelessWidget {
               radius: 35,
               backgroundColor: Colors.transparent,
               backgroundImage: AssetImage(
-                notification.icon,
+                notification.icon!,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Expanded(
@@ -37,32 +37,32 @@ class DocNotificationListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    notification.title,
+                    notification.title ?? "",
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle1
-                        .copyWith(fontWeight: FontWeight.w500),
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Text(
-                    notification.body + '\n',
+                    '${notification.body}\n',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2
-                        .copyWith(fontSize: 14),
+                        .bodyMedium
+                        ?.copyWith(fontSize: 14),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Text(
-              notification.date,
+              notification.date!,
               style: TextStyle(
                 color: isDark
                     ? Colors.white.withOpacity(0.5)

@@ -1,35 +1,35 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class RowBuilder extends StatefulWidget {
   ///Builds row elements for the table
   /// its properties are not nullable
   const RowBuilder({
-    Key key,
-    @required this.tdAlignment,
-    @required this.tdStyle,
-    @required double trHeight,
-    @required Color borderColor,
-    @required double borderWidth,
-    @required this.cellData,
-    @required this.index,
+    super.key,
+    required this.tdAlignment,
+    required this.tdStyle,
+    required double trHeight,
+    required Color borderColor,
+    required double borderWidth,
+    required this.cellData,
+    required this.index,
     @required this.col,
-    @required this.tdPaddingLeft,
-    @required this.tdPaddingTop,
-    @required this.tdPaddingBottom,
-    @required this.tdPaddingRight,
-    @required this.tdEditableMaxLines,
-    @required this.onSubmitted,
-    @required this.onChanged,
-    @required this.widthRatio,
-    @required this.isEditable,
-    @required this.stripeColor1,
-    @required this.stripeColor2,
-    @required this.zebraStripe,
-    @required this.focusedBorder,
+    required this.tdPaddingLeft,
+    required this.tdPaddingTop,
+    required this.tdPaddingBottom,
+    required this.tdPaddingRight,
+    required this.tdEditableMaxLines,
+    required this.onSubmitted,
+    required this.onChanged,
+    required this.widthRatio,
+    required this.isEditable,
+    required this.stripeColor1,
+    required this.stripeColor2,
+    required this.zebraStripe,
+    required this.focusedBorder,
   })  : _trHeight = trHeight,
         _borderColor = borderColor,
-        _borderWidth = borderWidth,
-        super(key: key);
+        _borderWidth = borderWidth;
 
   /// Table row height
   final double _trHeight;
@@ -55,7 +55,14 @@ class RowBuilder extends StatefulWidget {
   final ValueChanged<String> onChanged;
 
   @override
-  _RowBuilderState createState() => _RowBuilderState();
+  State<RowBuilder> createState() => _RowBuilderState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder? properties) {
+    super.debugFillProperties(properties!);
+    properties.add(DiagnosticsProperty('cellData', cellData));
+    properties.add(DiagnosticsProperty('col', col));
+  }
 }
 
 class _RowBuilderState extends State<RowBuilder> {
@@ -122,10 +129,7 @@ class _RowBuilderState extends State<RowBuilder> {
                         child: Text(
                           widget.cellData.toString(),
                           textAlign: TextAlign.center,
-                          style: widget.tdStyle ??
-                              TextStyle(
-                                  // fontSize: Theme.of(context).textTheme.bodyText1.fontSize), // returns 14?
-                                  fontSize: 18),
+                          style: widget.tdStyle,
                         ),
                       ),
                     ),

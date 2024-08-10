@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'dart:developer' as d;
 import 'dart:developer';
 import 'dart:io';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/model/get_all_chat_messeage_doctor.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/doctormessages/msg_show_screen.dart';
-import 'package:doctor_appointment_booking/pages/myPatientMessageList/patient_information_screen.dart';
-import 'package:doctor_appointment_booking/pages/myPatientMessageList/upload_screen.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_new_chat_message_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/log_out_view_model.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/model/get_all_chat_messeage_doctor.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/doctormessages/msg_show_screen.dart';
+import 'package:united_natives/pages/myPatientMessageList/patient_information_screen.dart';
+import 'package:united_natives/pages/myPatientMessageList/upload_screen.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
+import 'package:united_natives/viewModel/log_out_view_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,15 +27,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class DoctorMessagesDetailPage extends StatefulWidget {
-//   final DoctorHomeScreenController _doctorHomeScreenC  ontroller =
-//       Get.find<DoctorHomeScreenController>()..getAllChatMessagesDoctor();
-
-  // DoctorMessagesDetailPage() {
-  //   _doctorHomeScreenController.getAllChatMessages();
-  // }
+  const DoctorMessagesDetailPage({super.key});
 
   @override
-  _DoctorMessagesDetailPageState createState() =>
+  State<DoctorMessagesDetailPage> createState() =>
       _DoctorMessagesDetailPageState();
 }
 
@@ -48,34 +43,35 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
       Get.put(AddNewChatMessageController());
   final TextEditingController messageController = TextEditingController();
 
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
 
   final _formKey = GlobalKey<FormState>();
 
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   LogOutController logOutController = Get.put(LogOutController());
 
-  ImagePicker _picker = ImagePicker();
-  FilePickerResult result;
-  File imageW;
-  File pdf;
+  final ImagePicker _picker = ImagePicker();
+  FilePickerResult? result;
+  File? imageW;
+  File? pdf;
 
-  Future getImage({ImageSource imgSource}) async {
-    final pickedFile = await _picker.pickImage(source: imgSource);
+  Future getImage({ImageSource? imgSource}) async {
+    final pickedFile =
+        await _picker.pickImage(source: imgSource ?? ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
         imageW = File(pickedFile.path);
         imageW != null
             ? Get.to(ChatUploadScreen(
-                image: imageW,
+                image: imageW!,
                 type: 'image',
                 loginType: 'doctor',
               ))
-            : print('imageW  $imageW');
-        print('imageW  $imageW');
+            : d.log('imageW  $imageW');
+        d.log(('imageW  $imageW'));
       } else {
-        print('No image selected.');
+        d.log(('No image selected.'));
       }
     });
   }
@@ -130,13 +126,11 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
 
     final response = await http.get(
         Uri.parse(
-            '${Constants.baseUrl + Constants.chatStatus}${_doctorHomeScreenController?.doctorChat?.value?.patientId}'),
+            '${Constants.baseUrl + Constants.chatStatus}${_doctorHomeScreenController.doctorChat.value.patientId}'),
         headers: header);
     d.log(
-        'response1?:>>>> ${"${Constants.baseUrl + Constants.chatStatus}${_doctorHomeScreenController?.doctorChat?.value?.patientId}"}');
+        'response1?:>>>> ${"${Constants.baseUrl + Constants.chatStatus}${_doctorHomeScreenController.doctorChat.value.patientId}"}');
     if (response.statusCode == 200) {
-      print('response1?:>>>> ${response.body}');
-
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load post');
@@ -156,9 +150,11 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
     addMsgController.allNewMessageApiResponse.data = null;
     try {
       _doctorHomeScreenController.getAllChatMessages(
-          chatKey: _doctorHomeScreenController?.doctorChat?.value?.chatKey,
+          chatKey: _doctorHomeScreenController.doctorChat.value.chatKey,
           id: _userController.user.value.id);
-    } catch (e) {}
+    } catch (e) {
+      d.log('e==========>>>>>$e');
+    }
   }
 
   List<DoctorChat> doctorChat = [];
@@ -167,8 +163,6 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
   AdsController adsController = Get.find();
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    print("++++++++++++++++++++++++++++++");
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
         bottomNavigationBar: AdsBottomBar(
@@ -183,10 +177,10 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                 setState(() {});
                 Navigator.pop(context);
               },
-              child: Icon(Icons.arrow_back_ios)),
+              child: const Icon(Icons.arrow_back_ios)),
           title: Row(
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: 50,
                 height: 50,
                 child: Stack(
@@ -202,17 +196,14 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                     // ),
 
                     Builder(builder: (context) {
-                      print(
-                          ' _doctorHomeScreenControlle==========>>>>>${_doctorHomeScreenController?.doctorChat?.value?.patientSocialProfilePic}');
-
-                      log('_doctorHomeScreenController==========>>>>>${_doctorHomeScreenController?.doctorChat?.value?.patientProfilePic}');
+                      log('_doctorHomeScreenController==========>>>>>${_doctorHomeScreenController.doctorChat.value.patientProfilePic}');
 
                       return Utils().patientProfile(
-                          _doctorHomeScreenController?.doctorChat?.value
-                                  ?.patientSocialProfilePic ??
+                          _doctorHomeScreenController
+                                  .doctorChat.value.patientSocialProfilePic ??
                               "",
                           _doctorHomeScreenController
-                                  ?.doctorChat?.value?.patientProfilePic ??
+                                  .doctorChat.value.patientProfilePic ??
                               "",
                           25);
                     }),
@@ -245,8 +236,8 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                       builder: (BuildContext context,
                           AsyncSnapshot<dynamic> snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
-                          if (snapshot.hasData.isBlank) {
-                            return SizedBox();
+                          if (snapshot.hasData.isBlank!) {
+                            return const SizedBox();
                           }
                           if (snapshot.hasData) {
                             return snapshot.data['status'] == 'Success'
@@ -254,42 +245,42 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                     ? Align(
                                         alignment: Alignment.bottomRight,
                                         child: Container(
-                                          margin: EdgeInsets.all(2),
-                                          padding: EdgeInsets.all(1),
+                                          margin: const EdgeInsets.all(2),
+                                          padding: const EdgeInsets.all(1),
                                           width: 12,
                                           height: 12,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: Colors.white,
                                           ),
-                                          child: CircleAvatar(
+                                          child: const CircleAvatar(
                                             backgroundColor: Colors.green,
                                           ),
                                         ),
                                       )
-                                    : SizedBox()
-                                : SizedBox();
+                                    : const SizedBox()
+                                : const SizedBox();
                           }
-                          return SizedBox();
+                          return const SizedBox();
                         } else if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return SizedBox();
+                          return const SizedBox();
                         }
-                        return SizedBox();
+                        return const SizedBox();
                       },
                     )
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${_doctorHomeScreenController?.doctorChat?.value?.patientFirstName ?? ""} ${_doctorHomeScreenController?.doctorChat?.value?.patientLastName ?? ""}',
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    '${_doctorHomeScreenController.doctorChat.value.patientFirstName ?? ""} ${_doctorHomeScreenController.doctorChat.value.patientLastName ?? ""}',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 22,
                         ),
@@ -299,12 +290,12 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData.isBlank) {
-                          return SizedBox();
+                        if (snapshot.hasData.isBlank!) {
+                          return const SizedBox();
                         }
                         if (snapshot.hasData) {
                           if (snapshot.data['status'] == 'Fail') {
-                            return SizedBox();
+                            return const SizedBox();
                           } else {
                             String lastSeen =
                                 snapshot.data['data']['last_seen'];
@@ -329,10 +320,8 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                               // print(
                               //     "DIFFERENCE ${diff == 1 ? 'today' : '$diff days'}");
 
-                              print('lastSeen======3====>>>>>$lastSeen');
-
                               var data1 =
-                                  "${Utils.timeAgo(Utils.formattedDate(lastSeen))}";
+                                  Utils.timeAgo(Utils.formattedDate(lastSeen));
 
                               return Text(
                                 snapshot.data['data']['is_online'] == true
@@ -342,20 +331,20 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2
-                                    .copyWith(fontSize: 18),
+                                    .titleSmall
+                                    ?.copyWith(fontSize: 18),
                               );
                             } else {
-                              return SizedBox();
+                              return const SizedBox();
                             }
                           }
                         }
-                        return SizedBox();
+                        return const SizedBox();
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return SizedBox();
+                        return const SizedBox();
                       }
-                      return SizedBox();
+                      return const SizedBox();
                     },
                   )
                 ],
@@ -367,33 +356,41 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
               onPressed: () {
                 Get.to(PatientDetailSCreen(
                   profilePic: _doctorHomeScreenController
-                      ?.doctorChat?.value?.patientProfilePic,
+                          .doctorChat.value.patientProfilePic ??
+                      "",
                   fullName: _doctorHomeScreenController
-                      ?.doctorChat?.value?.patientFirstName,
+                          .doctorChat.value.patientFirstName ??
+                      "",
                   lastName: _doctorHomeScreenController
-                      ?.doctorChat?.value?.patientLastName,
+                          .doctorChat.value.patientLastName ??
+                      "",
                   tribalStatus: _doctorHomeScreenController
-                      ?.doctorChat?.value?.tribalStatus,
+                          .doctorChat.value.tribalStatus ??
+                      "",
                   insuranceStatus: _doctorHomeScreenController
-                      ?.doctorChat?.value?.insuranceEligibility,
+                          .doctorChat.value.insuranceEligibility ??
+                      "",
                   gender:
-                      _doctorHomeScreenController?.doctorChat?.value?.gender,
-                  email: _doctorHomeScreenController?.doctorChat?.value?.mail,
-                  bloodGroup: _doctorHomeScreenController
-                      ?.doctorChat?.value?.bloodGroup,
+                      _doctorHomeScreenController.doctorChat.value.gender ?? "",
+                  email:
+                      _doctorHomeScreenController.doctorChat.value.mail ?? '',
+                  bloodGroup:
+                      _doctorHomeScreenController.doctorChat.value.bloodGroup ??
+                          "",
                 ));
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.info,
                 size: 30,
               ),
             ),
           ],
         ),
-        body: WillPopScope(
-          onWillPop: () {
+        body: PopScope(
+          canPop: true,
+          onPopInvokedWithResult: (didPop, result) {
             _doctorHomeScreenController.isLoadingOne = true;
-            return _doctorHomeScreenController.endTimer();
+            _doctorHomeScreenController.endTimer();
           },
           child: Column(
             children: <Widget>[
@@ -417,7 +414,8 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                               }
                               if (controller.allNewMessageApiResponse.status ==
                                   Status.ERROR) {
-                                return Center(child: Text('Server error'));
+                                return const Center(
+                                    child: Text('Server error'));
                               }
                               GetAllChatMessagesDoctor responseModel =
                                   controller.allNewMessageApiResponse.data;
@@ -429,13 +427,14 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                   'You Don\'t have any Messages',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline6
-                                      .copyWith(fontSize: 20),
+                                      .titleLarge
+                                      ?.copyWith(fontSize: 20),
                                   textAlign: TextAlign.center,
                                 ));
                               }
 
-                              doctorChat = responseModel.doctorChatList.reversed
+                              doctorChat = responseModel
+                                  .doctorChatList!.reversed
                                   .toList();
 
                               // log('tempMsg==========>>>>>${tempMsg.map((e) => e.message)}');
@@ -450,16 +449,17 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                   shrinkWrap: true,
                                   reverse: true,
                                   controller: _controller,
-                                  physics: AlwaysScrollableScrollPhysics(),
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
                                   separatorBuilder: (context, index) =>
-                                      SizedBox(
+                                      const SizedBox(
                                     height: 15,
                                   ),
                                   itemCount:
-                                      responseModel?.doctorChatList?.length ??
-                                          0,
+                                      responseModel.doctorChatList?.length ?? 0,
                                   itemBuilder: (context, index) {
-                                    DoctorChat _doctorChat = doctorChat[index];
+                                    DoctorChat doctorChat =
+                                        this.doctorChat[index];
                                     return Padding(
                                       padding: const EdgeInsets.only(top: 6.0),
                                       child: MessageItem(
@@ -469,8 +469,7 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                             () {
                                               _doctorHomeScreenController
                                                   .deleteDoctorMessage(
-                                                      _doctorChat?.id
-                                                          .toString())
+                                                      doctorChat.id.toString())
                                                   .then((value) {
                                                 Fluttertoast.showToast(
                                                     msg:
@@ -490,16 +489,18 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                             },
                                           );
                                         },
-                                        attachment: _doctorChat?.attachment,
-                                        send: _doctorChat?.fromType == "doctor",
-                                        message:
-                                            _doctorChat?.message.toString() ??
-                                                "",
-                                        time: _doctorChat?.created?.isEmpty
+                                        attachment: doctorChat.attachment!,
+                                        send: doctorChat.fromType == "doctor",
+                                        message: doctorChat.message.toString(),
+                                        time: doctorChat.created!.isEmpty
                                             ? ""
-                                            : '${DateFormat('hh:mm a').format(Utils.formattedDate("${_doctorChat?.created.toString()}"))}',
-                                        networkImage:
-                                            '${_userController?.user?.value?.profilePic ?? ""}',
+                                            : DateFormat('hh:mm a').format(
+                                                Utils.formattedDate(doctorChat
+                                                    .created
+                                                    .toString())),
+                                        networkImage: _userController
+                                                .user.value.profilePic ??
+                                            "",
                                       ),
                                     );
                                   },
@@ -583,10 +584,11 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                   // height: 70,
                   decoration: BoxDecoration(
                     border: Border(
-                      top: BorderSide(color: Colors.grey[200], width: 0.5),
+                      top: BorderSide(color: Colors.grey[200]!, width: 0.5),
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: Row(
                     children: <Widget>[
                       // IconButton(
@@ -616,7 +618,7 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                   minLines: 1,
                                   maxLines: 4,
                                   validator: (text) {
-                                    if (text.isEmpty) {
+                                    if (text!.isEmpty) {
                                       _doctorHomeScreenController
                                           .isLoading.value = false;
                                       return 'Enter Message';
@@ -633,17 +635,17 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                   decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(4),
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                           color: Colors.transparent, width: 0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(4),
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                           color: Colors.transparent, width: 0),
                                     ),
                                     filled: true,
                                     fillColor: Colors.grey[250],
-                                    contentPadding: EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                       vertical: 10,
                                       horizontal: 10,
                                     ),
@@ -718,7 +720,7 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                                     fromId: _userController.user.value.id,
                                     fromType: "doctor",
                                     toId: _doctorHomeScreenController
-                                            .doctorChat.value?.patientId ??
+                                            .doctorChat.value.patientId ??
                                         "",
                                     toType: "patient",
                                     attachment: imageW ?? pdf);
@@ -744,7 +746,7 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                               //     child: Utils.circular(),
                               //   )
                               :*/
-                            Icon(
+                            const Icon(
                           Icons.send,
                           size: 25,
                         ),
@@ -754,7 +756,7 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               )
             ],
@@ -767,7 +769,7 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
   _openBottomSheet(BuildContext context, Function() onTap) {
     showModalBottomSheet(
         context: context,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),
@@ -778,14 +780,14 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.delete,
                   size: 20,
                   color: Colors.red,
                 ),
                 title: Text(
-                  Translate.of(context).translate('Delete Message'),
-                  style: TextStyle(
+                  Translate.of(context)!.translate('Delete Message'),
+                  style: const TextStyle(
                     color: Colors.red,
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -795,14 +797,14 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                 onTap: onTap,
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.cancel,
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('cancel'),
+                  Translate.of(context)!.translate('cancel'),
                   style: TextStyle(
-                    color: _isDark ? Colors.blue : Color(0xff4a4a4a),
+                    color: _isDark ? Colors.blue : const Color(0xff4a4a4a),
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,
@@ -823,33 +825,32 @@ class MessageItem extends StatelessWidget {
   final String message;
   final String time;
   final String networkImage;
-  final String attachment;
-  final Function onLongPress;
+  final String? attachment;
+  final Function()? onLongPress;
 
   final DoctorHomeScreenController _doctorHomeScreenController =
       Get.find<DoctorHomeScreenController>();
 
   MessageItem(
-      {Key key,
+      {super.key,
       this.attachment,
-      @required this.send,
-      @required this.message,
-      @required this.time,
-      @required this.networkImage,
-      this.onLongPress})
-      : super(key: key);
+      required this.send,
+      required this.message,
+      required this.time,
+      required this.networkImage,
+      this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    String attach = attachment.split('.').last;
+    String? attach = attachment?.split('.').last;
     return InkWell(
       onLongPress: send ? onLongPress : null,
       child: Builder(
         builder: (context) {
           if (message == "" && attachment == "") {
-            return SizedBox();
+            return const SizedBox();
           } else {
             return message != "" && attachment != ""
                 ? Row(
@@ -863,10 +864,9 @@ class MessageItem extends StatelessWidget {
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(
-                              "${_doctorHomeScreenController?.doctorChat?.value?.patientProfilePic ?? ''}"),
-                          onBackgroundImageError: (context, error) {
-                            return Container();
-                          },
+                              _doctorHomeScreenController
+                                      .doctorChat.value.patientProfilePic ??
+                                  ''),
                         ),
                       ),
                       Flexible(
@@ -875,18 +875,19 @@ class MessageItem extends StatelessWidget {
                               left: !send ? 5 : (w / 2) - 80,
                               right: send ? 5 : (w / 2) - 80,
                             ),
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 10,
                               horizontal: 15,
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
+                                topLeft: const Radius.circular(20),
+                                topRight: const Radius.circular(20),
                                 bottomLeft: Radius.circular(send ? 20 : 0),
                                 bottomRight: Radius.circular(send ? 0 : 20),
                               ),
-                              color: send ? Color(0xffeaf2fe) : kColorBlue,
+                              color:
+                                  send ? const Color(0xffeaf2fe) : kColorBlue,
                             ),
                             child: attach != 'pdf'
                                 ? Column(
@@ -898,7 +899,7 @@ class MessageItem extends StatelessWidget {
                                         onTap: () {
                                           Get.to(MessageShowScreen(
                                             file:
-                                                'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                                'https://unhbackend.com/uploads/chat/$attachment',
                                             type: 'image',
                                           ));
                                         },
@@ -908,8 +909,10 @@ class MessageItem extends StatelessWidget {
                                           decoration: BoxDecoration(
                                               color: Colors.grey,
                                               borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
+                                                topLeft:
+                                                    const Radius.circular(20),
+                                                topRight:
+                                                    const Radius.circular(20),
                                                 bottomLeft: Radius.circular(
                                                     send ? 20 : 0),
                                                 bottomRight: Radius.circular(
@@ -917,11 +920,11 @@ class MessageItem extends StatelessWidget {
                                               ),
                                               image: DecorationImage(
                                                   image: NetworkImage(
-                                                      'https:\/\/unhbackend.com\/uploads\/chat\/$attachment'),
+                                                      'https://unhbackend.com/uploads/chat/$attachment'),
                                                   fit: BoxFit.fill)),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 2,
                                       ),
                                       SelectableText(
@@ -935,7 +938,7 @@ class MessageItem extends StatelessWidget {
                                         ),
                                         // textAlign: TextAlign.start,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 2,
                                       ),
                                       SelectableText(
@@ -958,7 +961,7 @@ class MessageItem extends StatelessWidget {
                                         onTap: () {
                                           Get.to(MessageShowScreen(
                                             file:
-                                                'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                                'https://unhbackend.com/uploads/chat/$attachment',
                                             type: 'pdf',
                                           ));
                                         },
@@ -968,8 +971,10 @@ class MessageItem extends StatelessWidget {
                                             decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
+                                                topLeft:
+                                                    const Radius.circular(20),
+                                                topRight:
+                                                    const Radius.circular(20),
                                                 bottomLeft: Radius.circular(
                                                     send ? 20 : 0),
                                                 bottomRight: Radius.circular(
@@ -984,7 +989,7 @@ class MessageItem extends StatelessWidget {
                                               ),
                                             )),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 2,
                                       ),
                                       SelectableText(
@@ -998,7 +1003,7 @@ class MessageItem extends StatelessWidget {
                                         ),
                                         // textAlign: TextAlign.start,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 2,
                                       ),
                                       SelectableText(
@@ -1021,9 +1026,6 @@ class MessageItem extends StatelessWidget {
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(networkImage),
-                          onBackgroundImageError: (context, error) {
-                            return Container();
-                          },
                         ),
                       ),
                     ],
@@ -1039,10 +1041,9 @@ class MessageItem extends StatelessWidget {
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(
-                              "${_doctorHomeScreenController?.doctorChat?.value?.patientProfilePic ?? ''}"),
-                          onBackgroundImageError: (context, error) {
-                            return Container();
-                          },
+                              _doctorHomeScreenController
+                                      .doctorChat.value.patientProfilePic ??
+                                  ''),
                         ),
                       ),
                       Flexible(
@@ -1051,18 +1052,18 @@ class MessageItem extends StatelessWidget {
                             left: !send ? 5 : (w / 2) - 80,
                             right: send ? 5 : (w / 2) - 80,
                           ),
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             vertical: 10,
                             horizontal: 15,
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
+                              topLeft: const Radius.circular(20),
+                              topRight: const Radius.circular(20),
                               bottomLeft: Radius.circular(send ? 20 : 0),
                               bottomRight: Radius.circular(send ? 0 : 20),
                             ),
-                            color: send ? Color(0xffeaf2fe) : kColorBlue,
+                            color: send ? const Color(0xffeaf2fe) : kColorBlue,
                           ),
                           child: message == ""
                               ? attach != 'pdf'
@@ -1075,7 +1076,7 @@ class MessageItem extends StatelessWidget {
                                           onTap: () {
                                             Get.to(MessageShowScreen(
                                               file:
-                                                  'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                                  "https://unhbackend.com/uploads/chat/$attachment",
                                               type: 'image',
                                             ));
                                           },
@@ -1085,8 +1086,10 @@ class MessageItem extends StatelessWidget {
                                             decoration: BoxDecoration(
                                                 color: Colors.grey,
                                                 borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(20),
-                                                  topRight: Radius.circular(20),
+                                                  topLeft:
+                                                      const Radius.circular(20),
+                                                  topRight:
+                                                      const Radius.circular(20),
                                                   bottomLeft: Radius.circular(
                                                       send ? 20 : 0),
                                                   bottomRight: Radius.circular(
@@ -1094,11 +1097,11 @@ class MessageItem extends StatelessWidget {
                                                 ),
                                                 image: DecorationImage(
                                                     image: NetworkImage(
-                                                        'https:\/\/unhbackend.com\/uploads\/chat\/$attachment'),
+                                                        'https://unhbackend.com/uploads/chat/$attachment'),
                                                     fit: BoxFit.fill)),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 2,
                                         ),
                                         SelectableText(
@@ -1124,8 +1127,10 @@ class MessageItem extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
+                                              topLeft:
+                                                  const Radius.circular(20),
+                                              topRight:
+                                                  const Radius.circular(20),
                                               bottomLeft: Radius.circular(
                                                   send ? 20 : 0),
                                               bottomRight: Radius.circular(
@@ -1136,7 +1141,7 @@ class MessageItem extends StatelessWidget {
                                             onTap: () {
                                               Get.to(MessageShowScreen(
                                                 file:
-                                                    'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                                    'https://unhbackend.com/uploads/chat/$attachment',
                                                 type: 'pdf',
                                               ));
                                             },
@@ -1149,7 +1154,7 @@ class MessageItem extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 2,
                                         ),
                                         SelectableText(
@@ -1205,9 +1210,6 @@ class MessageItem extends StatelessWidget {
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(networkImage),
-                          onBackgroundImageError: (context, error) {
-                            return Container();
-                          },
                         ),
                       ),
                     ],

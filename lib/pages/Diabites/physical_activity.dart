@@ -3,18 +3,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:date_format/date_format.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_update_contoller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/model/health_response_model.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/model/health_response_model.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,15 +28,18 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class PhysicalActivity extends StatefulWidget {
+  const PhysicalActivity({super.key});
+
   @override
-  _PhysicalActivityState createState() => _PhysicalActivityState();
+  State<PhysicalActivity> createState() => _PhysicalActivityState();
 }
 
 class _PhysicalActivityState extends State<PhysicalActivity> {
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
-  UserController _userController = Get.find<UserController>();
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
+  final UserController _userController = Get.find<UserController>();
   ChangeState changeState = Get.put(ChangeState());
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   List cols = [
     {
       "title": 'Date',
@@ -77,7 +79,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
   ];
   List rows = [];
   List<String> idList = [];
-  String _setTime;
+  String? _setTime;
 
   int totalCount = 0;
   List list = [];
@@ -103,16 +105,14 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
 
-    print('RESPONSE => ${response.body}');
-
     try {
       if (response != null) {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
-        listDatum = model.data;
-        model.data.forEach((element) {
-          idList.add(element.id);
-          list = (jsonDecode(element.tableData) as List);
+        listDatum = model.data!;
+        model.data?.forEach((element) {
+          idList.add(element.id!);
+          list = (jsonDecode(element.tableData!) as List);
           rows.add({
             'date': list[0],
             'dayofwek': list[1],
@@ -129,20 +129,16 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
               duration: double.parse(list[4]),
             ),
           );
-
-          print('--data--$data');
         });
         data.sort((a, b) => a.date.compareTo(b.date));
-        print('Rows $rows');
         getDataLength = rows.length;
         setState(() {});
       } else {
         _controller.isLoading.value = false;
-        return null;
+        return;
       }
     } catch (e) {
       _controller.isLoading.value = false;
-      print('Error $e');
     }
   }
 
@@ -168,11 +164,8 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
         body: jsonEncode(body), headers: Config.getHeaders());
     isLoading.value = false;
 
-    print('RESPONSE => ${response.body}');
-
     if (response != null) {
       await getPhysicalActivitiesData();
-      print('Client Routine Health Reports Added Successfully!!');
       Utils.showSnackBar(
         'Success',
         'Client Routine Health Reports Added Successfully!!',
@@ -196,7 +189,6 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
 
-    print('RESPONSE => ${response.body}');
     isLoading.value = false;
 
     if (response != null) {
@@ -213,7 +205,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
   }
 
   Future updatePhysicalActivityData(
-      {dynamic reportTableData, String id}) async {
+      {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -234,7 +226,6 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
 
-    print('RESPONSE => ${response.body}');
     isLoading.value = false;
 
     if (response != null) {
@@ -262,7 +253,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
   TextEditingController editTimeOfDayController = TextEditingController();
   TextEditingController editDescriptionController = TextEditingController();
   TextEditingController editDurationController = TextEditingController();
-  String descriptionOfActivityValue;
+  String? descriptionOfActivityValue;
   List<String> descriptionOFActivityList = ['lifting', 'running', 'crossfit'];
   List<String> trackerActivityList = ['walk', 'run', 'cycling'];
 
@@ -301,7 +292,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
               "Physical Activity",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
             leading: IconButton(
@@ -310,7 +301,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                 changeState.date = null;
                 Get.back();
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back_ios_new_rounded,
               ),
             ),
@@ -321,7 +312,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Physical Activity Tracker',
@@ -331,7 +322,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -367,21 +358,19 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                                     Get.height - 150),
                                                 items: List.generate(
                                                   trackerActivityList.length,
-                                                  (index) => new PopupMenuItem<
+                                                  (index) => PopupMenuItem<
                                                           String>(
                                                       onTap: () {
                                                         selectedValue =
                                                             trackerActivityList[
                                                                     index]
-                                                                .capitalizeFirst;
+                                                                .capitalizeFirst!;
                                                         setState(() {});
-                                                        print(
-                                                            'VALUE====>${trackerActivityList[index].capitalizeFirst}');
                                                       },
-                                                      child: Text(
-                                                          '${trackerActivityList[index].capitalizeFirst}'),
                                                       value:
-                                                          '${trackerActivityList[index]}'),
+                                                          '${trackerActivityList[index]}',
+                                                      child: Text(
+                                                          '${trackerActivityList[index].capitalizeFirst}')),
                                                 ),
                                               );
                                               dateController.text =
@@ -404,7 +393,6 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
 
                                               controller.startTimer(
                                                   value: selectedValue);
-                                              print('START');
                                             },
                                             child: Container(
                                               height: 40,
@@ -414,7 +402,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                                 borderRadius:
                                                     BorderRadius.circular(5),
                                               ),
-                                              child: Center(
+                                              child: const Center(
                                                 child: Text(
                                                   'Start',
                                                   style: TextStyle(
@@ -432,7 +420,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  Container(
+                                                  const SizedBox(
                                                     width: 100,
                                                     child: Text(
                                                       'Time :',
@@ -443,10 +431,10 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 10),
+                                                  const SizedBox(width: 10),
                                                   Text(
-                                                    '${controller.date.hour}:${controller.date.minute}:${controller.date.second}',
-                                                    style: TextStyle(
+                                                    '${controller.date?.hour}:${controller.date?.minute}:${controller.date?.second}',
+                                                    style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 20,
@@ -456,7 +444,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Container(
+                                                  const SizedBox(
                                                     width: 100,
                                                     child: Text(
                                                       'Distance :',
@@ -467,10 +455,10 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 10),
+                                                  const SizedBox(width: 10),
                                                   Text(
                                                     '${controller.totalDistance.toStringAsFixed(2)} km',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 20,
@@ -480,7 +468,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Container(
+                                                  const SizedBox(
                                                     width: 100,
                                                     child: Text(
                                                       'Activity :',
@@ -491,10 +479,10 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 10),
+                                                  const SizedBox(width: 10),
                                                   Text(
                                                     '$descriptionOfActivityValue',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 20,
@@ -511,30 +499,24 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
 
                                               if (DateTime.now()
                                                       .difference(controller
-                                                          .startTimerDate)
+                                                          .startTimerDate!)
                                                       .inMinutes <=
                                                   0) {
-                                                durationController.text = '0.' +
-                                                    DateTime.now()
-                                                        .difference(controller
-                                                            .startTimerDate)
-                                                        .inSeconds
-                                                        .toString();
+                                                durationController.text =
+                                                    '0.${DateTime.now().difference(controller.startTimerDate!).inSeconds}';
                                               } else {
                                                 durationController.text =
                                                     DateTime.now()
                                                         .difference(controller
-                                                            .startTimerDate)
+                                                            .startTimerDate!)
                                                         .inMinutes
                                                         .toString();
                                               }
 
-                                              print('END');
                                               String text =
                                                   '${dateController.text},${dayOfWeekController.text},${timeOfDayController.text},$descriptionOfActivityValue,${durationController.text}';
                                               List<String> result =
                                                   text.split(',');
-                                              print("result=??$result");
                                               bool addData = true;
                                               for (int i = 0;
                                                   i < result.length;
@@ -588,7 +570,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                                 borderRadius:
                                                     BorderRadius.circular(5),
                                               ),
-                                              child: Center(
+                                              child: const Center(
                                                 child: Text(
                                                   'End',
                                                   style: TextStyle(
@@ -603,221 +585,208 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                     );
                                   },
                                 ),
-                                Container(
-                                  child: Editable(
-                                    key: _editableKey,
-                                    columns: cols,
-                                    rows: rows,
-                                    popUpTitle: 'Physical Activity Tracker',
-                                    showSaveIcon: true,
-                                    tdAlignment: TextAlign.start,
-                                    saveIconColor:
-                                        _isDark ? Colors.white : Colors.black,
-                                    borderColor: Colors.blueGrey,
-                                    onAddButtonPressed: () async {
-                                      String text =
-                                          '${dateController.text},${dayOfWeekController.text},${timeOfDayController.text},$descriptionOfActivityValue,${durationController.text}';
-                                      List<String> result = text.split(',');
-                                      print("result=??$result");
-                                      bool addData = true;
-                                      for (int i = 0; i < result.length; i++) {
-                                        if (result[i] == "") {
-                                          Utils.showSnackBar(
-                                            'Enter details',
-                                            'Please enter all required details!!',
-                                          );
-                                          addData = false;
-                                          break;
-                                        }
-                                      }
-                                      if (addData) {
-                                        rows.add({
-                                          'date': result[0],
-                                          'dayofwek': result[1],
-                                          'timeofday': result[2],
-                                          'description': result[3],
-                                          'duration': result[4],
-                                        });
-
-                                        List dateFixedList =
-                                            result[0].toString().split('-');
-                                        data.add(
-                                          _PhysicalActivityData(
-                                            date: DateTime(
-                                                int.parse(dateFixedList[2]),
-                                                int.parse(dateFixedList[1]),
-                                                int.parse(dateFixedList[0])),
-                                            duration: double.parse(result[4]),
-                                          ),
+                                Editable(
+                                  key: _editableKey,
+                                  columns: cols,
+                                  rows: rows,
+                                  popUpTitle: 'Physical Activity Tracker',
+                                  showSaveIcon: true,
+                                  tdAlignment: TextAlign.start,
+                                  saveIconColor:
+                                      _isDark ? Colors.white : Colors.black,
+                                  borderColor: Colors.blueGrey,
+                                  onAddButtonPressed: () async {
+                                    String text =
+                                        '${dateController.text},${dayOfWeekController.text},${timeOfDayController.text},$descriptionOfActivityValue,${durationController.text}';
+                                    List<String> result = text.split(',');
+                                    bool addData = true;
+                                    for (int i = 0; i < result.length; i++) {
+                                      if (result[i] == "") {
+                                        Utils.showSnackBar(
+                                          'Enter details',
+                                          'Please enter all required details!!',
                                         );
-                                        data.sort(
-                                            (a, b) => a.date.compareTo(b.date));
-                                        Navigator.pop(context);
-                                        await addPhysicalActivityData(result);
-                                      } else {
-                                        // Navigator.pop(context);
+                                        addData = false;
+                                        break;
                                       }
-                                    },
-                                    onDeleteButtonPressed: (index) async {
-                                      print('Index $index');
-                                      await deletePhysicalActivityData(
-                                          idList[index]);
-                                    },
-                                    onEditButtonPressed: (index) {
-                                      _editDialog(context, index, listDatum);
-                                    },
-                                    onTap: () {
-                                      dateController.clear();
-                                      dayOfWeekController.clear();
-                                      timeOfDayController.clear();
-                                      descriptionController.clear();
-                                      durationController.clear();
-                                      descriptionOfActivityValue = null;
-                                    },
-                                    popUpChild: Container(
-                                      width: Get.width * 0.75,
-                                      child: Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () async {
-                                              final time = await showDatePicker(
-                                                  context: context,
-                                                  firstDate: DateTime(1900),
-                                                  initialDate: DateTime.now(),
-                                                  lastDate: DateTime(2100));
+                                    }
+                                    if (addData) {
+                                      rows.add({
+                                        'date': result[0],
+                                        'dayofwek': result[1],
+                                        'timeofday': result[2],
+                                        'description': result[3],
+                                        'duration': result[4],
+                                      });
 
-                                              if (time != null) {
-                                                dateController.text =
-                                                    DateFormat('dd-MM-yyyy')
-                                                        .format(time);
-                                                dayOfWeekController.text =
-                                                    DateFormat.EEEE()
-                                                        .format(time);
-                                              } else {
-                                                return '';
-                                              }
-                                            },
-                                            child: TextField(
-                                              controller: dateController,
-                                              enabled: false,
-                                              readOnly: true,
-                                              decoration: InputDecoration(
-                                                  hintText: 'Date'),
-                                            ),
-                                          ),
-                                          TextField(
-                                            controller: dayOfWeekController,
+                                      List dateFixedList =
+                                          result[0].toString().split('-');
+                                      data.add(
+                                        _PhysicalActivityData(
+                                          date: DateTime(
+                                              int.parse(dateFixedList[2]),
+                                              int.parse(dateFixedList[1]),
+                                              int.parse(dateFixedList[0])),
+                                          duration: double.parse(result[4]),
+                                        ),
+                                      );
+                                      data.sort(
+                                          (a, b) => a.date.compareTo(b.date));
+                                      Navigator.pop(context);
+                                      await addPhysicalActivityData(result);
+                                    } else {
+                                      // Navigator.pop(context);
+                                    }
+                                  },
+                                  onDeleteButtonPressed: (index) async {
+                                    await deletePhysicalActivityData(
+                                        idList[index]);
+                                  },
+                                  onEditButtonPressed: (index) {
+                                    _editDialog(context, index, listDatum);
+                                  },
+                                  onTap: () {
+                                    dateController.clear();
+                                    dayOfWeekController.clear();
+                                    timeOfDayController.clear();
+                                    descriptionController.clear();
+                                    durationController.clear();
+                                    descriptionOfActivityValue = null;
+                                  },
+                                  popUpChild: SizedBox(
+                                    width: Get.width * 0.75,
+                                    child: Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final time = await showDatePicker(
+                                                context: context,
+                                                firstDate: DateTime(1900),
+                                                initialDate: DateTime.now(),
+                                                lastDate: DateTime(2100));
+
+                                            if (time != null) {
+                                              dateController.text =
+                                                  DateFormat('dd-MM-yyyy')
+                                                      .format(time);
+                                              dayOfWeekController.text =
+                                                  DateFormat.EEEE()
+                                                      .format(time);
+                                            }
+                                          },
+                                          child: TextField(
+                                            controller: dateController,
                                             enabled: false,
                                             readOnly: true,
-                                            decoration: InputDecoration(
-                                                hintText: 'Day of week'),
+                                            decoration: const InputDecoration(
+                                                hintText: 'Date'),
                                           ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              final TimeOfDay picked =
-                                                  await showTimePicker(
-                                                context: context,
-                                                initialTime: selectedTime,
+                                        ),
+                                        TextField(
+                                          controller: dayOfWeekController,
+                                          enabled: false,
+                                          readOnly: true,
+                                          decoration: const InputDecoration(
+                                              hintText: 'Day of week'),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            final TimeOfDay? picked =
+                                                await showTimePicker(
+                                              context: context,
+                                              initialTime: selectedTime,
+                                            );
+                                            if (picked != null) {
+                                              setState(() {
+                                                selectedTime = picked;
+
+                                                _setTime = formatDate(
+                                                        DateTime(
+                                                          2019,
+                                                          08,
+                                                          1,
+                                                          selectedTime.hour,
+                                                          selectedTime.minute,
+                                                        ),
+                                                        [hh, ':', nn, ' ', am])
+                                                    .toString();
+                                                timeOfDayController.text =
+                                                    _setTime!;
+                                              });
+                                            }
+                                          },
+                                          child: TextField(
+                                            enabled: false,
+                                            readOnly: true,
+                                            controller: timeOfDayController,
+                                            decoration: const InputDecoration(
+                                                hintText: 'Time of Day'),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5),
+                                          child: StatefulBuilder(
+                                            builder: (context, setState1) {
+                                              return DropdownButton<String>(
+                                                value:
+                                                    descriptionOfActivityValue,
+                                                isExpanded: true,
+                                                onChanged: (String? newValue) {
+                                                  setState1(() {
+                                                    descriptionOfActivityValue =
+                                                        newValue;
+                                                  });
+                                                },
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium,
+                                                hint: const Text(
+                                                    'Description of Activity'),
+                                                items: descriptionOFActivityList
+                                                    .map<
+                                                            DropdownMenuItem<
+                                                                String>>(
+                                                        (String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: value,
+                                                    child: Text(
+                                                      value,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleMedium,
+                                                    ),
+                                                  );
+                                                }).toList(),
                                               );
-                                              if (picked != null)
-                                                setState(() {
-                                                  selectedTime = picked;
-
-                                                  _setTime = formatDate(
-                                                      DateTime(
-                                                        2019,
-                                                        08,
-                                                        1,
-                                                        selectedTime.hour,
-                                                        selectedTime.minute,
-                                                      ),
-                                                      [
-                                                        hh,
-                                                        ':',
-                                                        nn,
-                                                        ' ',
-                                                        am
-                                                      ]).toString();
-                                                  timeOfDayController.text =
-                                                      _setTime;
-
-                                                  print(
-                                                      timeOfDayController.text);
-                                                });
                                             },
-                                            child: TextField(
-                                              enabled: false,
-                                              readOnly: true,
-                                              controller: timeOfDayController,
-                                              decoration: InputDecoration(
-                                                  hintText: 'Time of Day'),
-                                            ),
                                           ),
-                                          Container(
-                                            width: double.infinity,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            child: StatefulBuilder(
-                                              builder: (context, setState1) {
-                                                return DropdownButton<String>(
-                                                  value:
-                                                      descriptionOfActivityValue,
-                                                  isExpanded: true,
-                                                  onChanged: (String newValue) {
-                                                    setState1(() {
-                                                      descriptionOfActivityValue =
-                                                          newValue;
-                                                    });
-                                                  },
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle1,
-                                                  hint: Text(
-                                                      'Description of Activity'),
-                                                  items: descriptionOFActivityList
-                                                      .map<
-                                                              DropdownMenuItem<
-                                                                  String>>(
-                                                          (String value) {
-                                                    return DropdownMenuItem<
-                                                        String>(
-                                                      value: value,
-                                                      child: Text(
-                                                        value,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .subtitle1,
-                                                      ),
-                                                    );
-                                                  }).toList(),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          // TextField(
-                                          //   controller: descriptionController,
-                                          //   decoration: InputDecoration(
-                                          //       hintText: 'Description of Activity'),
-                                          // ),
-                                          TextField(
-                                            controller: durationController,
-                                            decoration: InputDecoration(
-                                                hintText: 'Duration'),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                        // TextField(
+                                        //   controller: descriptionController,
+                                        //   decoration: InputDecoration(
+                                        //       hintText: 'Description of Activity'),
+                                        // ),
+                                        TextField(
+                                          controller: durationController,
+                                          decoration: const InputDecoration(
+                                              hintText: 'Duration'),
+                                        ),
+                                      ],
                                     ),
-                                    showCreateButton: true,
-                                    onSubmitted: (value) {},
-                                    createButtonLabel: Text(
-                                      'New',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
+                                  ),
+                                  showCreateButton: true,
+                                  onSubmitted: (value) {},
+                                  createButtonLabel: const Text(
+                                    'New',
+                                    style: TextStyle(
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                                if (data.isNotEmpty && data != null)
+                                if (data.isNotEmpty)
                                   SfCartesianChart(
                                     // primaryXAxis: CategoryAxis(),
                                     enableAxisAnimation: true,
@@ -830,7 +799,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                           DateTimeIntervalType.auto,
                                       // autoScrollingMode: AutoScrollingMode.end,
                                     ),
-                                    primaryYAxis: NumericAxis(
+                                    primaryYAxis: const NumericAxis(
                                         edgeLabelPlacement:
                                             EdgeLabelPlacement.shift),
                                     // axes: [Charts()],
@@ -845,11 +814,12 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                         yValueMapper:
                                             (_PhysicalActivityData weight, _) =>
                                                 weight.duration,
-                                        dataLabelSettings: DataLabelSettings(
+                                        dataLabelSettings:
+                                            const DataLabelSettings(
                                           isVisible: true,
                                         ),
                                       )
-                                    ],
+                                    ] as List<CartesianSeries>,
                                   ),
                                 if (data.isEmpty)
                                   Padding(
@@ -860,8 +830,8 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                         'No any physical activity',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline6
-                                            .copyWith(fontSize: 20),
+                                            .titleLarge
+                                            ?.copyWith(fontSize: 20),
                                       ),
                                     ),
                                   )
@@ -875,7 +845,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -886,7 +856,6 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
 
   _editDialog(context, index, listDatum) async {
     editList = (jsonDecode(listDatum[index].tableData) as List);
-    print('FOODD ${editList[4]}');
     editDateController.text = editList[0];
     editDayOfWeekController.text = editList[1];
     editTimeOfDayController.text = editList[2];
@@ -906,7 +875,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: StatefulBuilder(
               builder: (BuildContext context, setStates) {
-                return Container(
+                return SizedBox(
                   width: Get.width * 0.75,
                   child: Column(
                     children: [
@@ -919,12 +888,13 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                           enabled: false,
                           readOnly: true,
                           controller: editDateController,
-                          decoration: InputDecoration(hintText: 'Date'),
+                          decoration: const InputDecoration(hintText: 'Date'),
                         ),
                       ),
                       TextField(
                         controller: editDayOfWeekController,
-                        decoration: InputDecoration(hintText: 'Day of Week'),
+                        decoration:
+                            const InputDecoration(hintText: 'Day of Week'),
                       ),
                       TextField(
                         readOnly: true,
@@ -942,11 +912,11 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                               .split(' ')
                               .first);
 
-                          final TimeOfDay picked = await showTimePicker(
+                          final TimeOfDay? picked = await showTimePicker(
                             context: context,
                             initialTime: TimeOfDay(hour: hour, minute: minute),
                           );
-                          if (picked != null)
+                          if (picked != null) {
                             setState(() {
                               selectedTime = picked;
 
@@ -959,13 +929,13 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                     selectedTime.minute,
                                   ),
                                   [hh, ':', nn, ' ', am]).toString();
-                              editTimeOfDayController.text = _setTime;
-
-                              print(editTimeOfDayController.text);
+                              editTimeOfDayController.text = _setTime!;
                             });
+                          }
                         },
                         controller: editTimeOfDayController,
-                        decoration: InputDecoration(hintText: 'Time of Day'),
+                        decoration:
+                            const InputDecoration(hintText: 'Time of Day'),
                       ),
                       // TextField(
                       //   controller: editDescriptionController,
@@ -974,19 +944,19 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                       // ),
                       Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: StatefulBuilder(
                           builder: (context, setState1) {
                             return DropdownButton<String>(
                               value: descriptionOfActivityValue,
                               isExpanded: true,
-                              onChanged: (String newValue) {
+                              onChanged: (String? newValue) {
                                 setState1(() {
                                   descriptionOfActivityValue = newValue;
                                 });
                               },
-                              style: Theme.of(context).textTheme.subtitle1,
-                              hint: Text('Description of Activity'),
+                              style: Theme.of(context).textTheme.titleMedium,
+                              hint: const Text('Description of Activity'),
                               items: descriptionOFActivityList
                                   .map<DropdownMenuItem<String>>(
                                       (String value) {
@@ -995,7 +965,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                   child: Text(
                                     value,
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
                                 );
                               }).toList(),
@@ -1005,7 +975,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                       ),
                       TextField(
                         controller: editDurationController,
-                        decoration: InputDecoration(hintText: 'Duration'),
+                        decoration: const InputDecoration(hintText: 'Duration'),
                       ),
                     ],
                   ),
@@ -1015,16 +985,14 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
         buttons: [
           DialogButton(
             onPressed: () async {
-              print('call');
               String text =
                   '${editDateController.text},${editDayOfWeekController.text},${editTimeOfDayController.text},$descriptionOfActivityValue,${editDurationController.text}';
               List<String> result = text.split(',');
-              print("result=??$result");
               Navigator.pop(context);
               await updatePhysicalActivityData(
                   id: idList[index], reportTableData: result);
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),
@@ -1034,7 +1002,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
 }
 
 class _PhysicalActivityData {
-  _PhysicalActivityData({this.date, this.duration});
+  _PhysicalActivityData({required this.date, required this.duration});
 
   final DateTime date;
   final double duration;

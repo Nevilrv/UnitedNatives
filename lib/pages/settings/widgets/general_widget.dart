@@ -61,7 +61,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                   : Colors.grey[200],
               padding: const EdgeInsets.all(15),
               child: Text(
-                Translate.of(context).translate('general'),
+                Translate.of(context)!.translate('general'),
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 20,
@@ -71,7 +71,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
             ),
             ListTile(
               leading: Text(
-                Translate.of(context).translate('About United Natives'),
+                Translate.of(context)!.translate('About United Natives'),
                 // 'About United Native Health'.tr(),
                 style: const TextStyle(
                   fontSize: 22,
@@ -84,7 +84,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
             ),
             ListTile(
               leading: Text(
-                Translate.of(context).translate('privacy_policy'),
+                Translate.of(context)!.translate('privacy_policy'),
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
             ),
             ListTile(
               leading: Text(
-                Translate.of(context).translate('help_and_support'),
+                Translate.of(context)!.translate('help_and_support'),
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -110,7 +110,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
               builder: (controller) {
                 return ListTile(
                   leading: Text(
-                    Translate.of(context).translate('Rate United Natives'),
+                    Translate.of(context)!.translate('Rate United Natives'),
                     // 'Rate United Native Health'.tr(),
                     style: const TextStyle(
                       fontSize: 22,
@@ -144,7 +144,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
             // ), //*Notification Settings*
             ListTile(
                 leading: Text(
-                  Translate.of(context).translate('Change Password'),
+                  Translate.of(context)!.translate('Change Password'),
                   style: const TextStyle(
                       fontSize: 22, fontWeight: FontWeight.bold),
                 ),
@@ -152,7 +152,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                   _onAlertWithCustomContentPressed(
                       context,
                       () async => await _userController
-                          .changePassword(_userController.user.value.email));
+                          .changePassword(_userController.user.value.email!));
                 }),
             SwitchListTile(
               value: _darkTheme!,
@@ -172,7 +172,7 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                 ? const SizedBox()
                 : ListTile(
                     leading: Text(
-                      Translate.of(context).translate('Delete your account'),
+                      Translate.of(context)!.translate('Delete your account'),
                       style: const TextStyle(
                           fontSize: 22, fontWeight: FontWeight.bold),
                     ),

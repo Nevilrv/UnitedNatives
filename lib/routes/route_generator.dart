@@ -50,7 +50,10 @@ import 'package:united_natives/medicle_center/lib/screens/tags_picker/tags_picke
 import 'package:united_natives/medicle_center/lib/screens/theme_setting/theme_setting.dart';
 import 'package:united_natives/medicle_center/lib/screens/web/web.dart';
 import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/model/doctor_get_doctor_Appointments_model.dart';
 import 'package:united_natives/model/patient_homepage_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
 import 'package:united_natives/pages/Blogpage/Participate_catagory.dart';
 import 'package:united_natives/pages/Blogpage/blog_catagory_2.dart';
 import 'package:united_natives/pages/Blogpage/blog_detailed_view_doctor.dart';
@@ -205,30 +208,30 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => ForgotPasswordPage());
 
       case Routes.diabetes:
-        return CupertinoPageRoute(builder: (_) => Diabetes());
+        return CupertinoPageRoute(builder: (_) => const Diabetes());
 
       case Routes.landingPage:
         return CupertinoPageRoute(builder: (_) => LandingPage());
 
       case Routes.bp:
-        return CupertinoPageRoute(builder: (_) => BloodPressure());
+        return CupertinoPageRoute(builder: (_) => const BloodPressure());
       case Routes.weightloss:
-        return CupertinoPageRoute(builder: (_) => Weightloss());
+        return CupertinoPageRoute(builder: (_) => const Weightloss());
       case Routes.sober:
-        return CupertinoPageRoute(builder: (_) => SoberDay());
+        return CupertinoPageRoute(builder: (_) => const SoberDay());
       case Routes.wht:
-        return CupertinoPageRoute(builder: (_) => WomenHealth());
+        return CupertinoPageRoute(builder: (_) => const WomenHealth());
       case Routes.food:
-        return CupertinoPageRoute(builder: (_) => Food());
+        return CupertinoPageRoute(builder: (_) => const Food());
       case Routes.sleep:
-        return CupertinoPageRoute(builder: (_) => Sleep());
+        return CupertinoPageRoute(builder: (_) => const Sleep());
       case Routes.mood:
-        return CupertinoPageRoute(builder: (_) => Mood());
+        return CupertinoPageRoute(builder: (_) => const Mood());
 
       case Routes.physicalActivity:
-        return CupertinoPageRoute(builder: (_) => PhysicalActivity());
+        return CupertinoPageRoute(builder: (_) => const PhysicalActivity());
       case Routes.medication:
-        return CupertinoPageRoute(builder: (_) => MedicationCheckList());
+        return CupertinoPageRoute(builder: (_) => const MedicationCheckList());
 
       case Routes.home:
         return CupertinoPageRoute(builder: (_) => home.Home());
@@ -237,7 +240,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => Home2());
 
       case Routes.contact:
-        return CupertinoPageRoute(builder: (_) => Contact());
+        return CupertinoPageRoute(builder: (_) => const Contact());
       case Routes.reportAProblem:
         return CupertinoPageRoute(builder: (_) => Report());
 
@@ -259,16 +262,16 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const AddClassScreen());
 
       case Routes.availability:
-        return CupertinoPageRoute(builder: (_) => AvailabilityPage());
+        return CupertinoPageRoute(builder: (_) => const AvailabilityPage());
 
       case Routes.addprescription:
         return CupertinoPageRoute(
             builder: (_) => AddPrescription(
-                  patientAppoint: settings.arguments,
+                  patientAppoint: settings.arguments as PatientAppoint,
                 ));
 
       case Routes.message:
-        return CupertinoPageRoute(builder: (_) => MyDoctorMessageList());
+        return CupertinoPageRoute(builder: (_) => const MyDoctorMessageList());
       case Routes.messagePatient:
         return CupertinoPageRoute(builder: (_) => MyPatientMessageList());
 
@@ -295,32 +298,32 @@ class RouteGenerator {
       case Routes.bookingStep3:
         return CupertinoPageRoute(
             builder: (_) => TimeSlotPage(
-                  doctorDetails: settings.arguments,
+                  doctorDetails: settings.arguments as DoctorSpecialities,
                 ));
 
       case Routes.bookingStepDrawer3:
         return CupertinoPageRoute(
             builder: (_) => TimeSlotPage2(
-                  doctorDetails: settings.arguments,
+                  doctorDetails: settings.arguments as Appointment,
                 ));
 
       case Routes.bookingStep4:
         return CupertinoPageRoute(
             builder: (_) => PatientDetailsPage(
-                  navigationModel: settings.arguments,
+                  navigationModel: settings.arguments as NavigationModel,
                   // items:settings.arguments,
                 ));
 
       case Routes.bookingStep5:
         return CupertinoPageRoute(
             builder: (_) => AppointmentBookedPage(
-                  navigationModel: settings.arguments,
+                  navigationModel: settings.arguments as NavigationModel,
                 ));
 
       case Routes.appointmentDetail:
         return CupertinoPageRoute(
             builder: (_) => AppointmentDetailPage(
-                  navigationModel: settings.arguments,
+                  navigationModel: settings.arguments as NavigationModel,
                 ));
 
       case Routes.visitDetail:
@@ -352,10 +355,10 @@ class RouteGenerator {
                 ));
 
       case Routes.blogpage:
-        return CupertinoPageRoute(builder: (_) => BlogPage());
+        return CupertinoPageRoute(builder: (_) => const BlogPage());
 
       case Routes.blogpage1:
-        return CupertinoPageRoute(builder: (_) => BlogPage1());
+        return CupertinoPageRoute(builder: (_) => const BlogPage1());
 
       case Routes.survey:
         return CupertinoPageRoute(
@@ -378,7 +381,7 @@ class RouteGenerator {
       //   return CupertinoPageRoute(builder: (_) => DirectAppointmentScreen());
       case Routes.directAppointment:
         return CupertinoPageRoute(
-            builder: (_) => ChooseDirectAppointmentScreen());
+            builder: (_) => const ChooseDirectAppointmentScreen());
 
       case Routes.allPersonalMedicationNotesList:
         return CupertinoPageRoute(
@@ -400,13 +403,13 @@ class RouteGenerator {
       case Routes.doctorProfile:
         return CupertinoPageRoute(
             builder: (_) => DoctorProfilePage(
-                  doctor: settings.arguments,
+                  doctor: settings.arguments as DoctorSpecialities,
                 ));
 
       case Routes.doctorProfile2:
         return CupertinoPageRoute(
             builder: (_) => DoctorProfilePage2(
-                  doctor: settings.arguments,
+                  doctor: settings.arguments as Appointment,
                 ));
 
       case Routes.myDoctorProfile:
@@ -420,7 +423,7 @@ class RouteGenerator {
       case Routes.editMyDoctor:
         return CupertinoPageRoute(
             builder: (_) => EditMyDoctorScreen(
-                  doctor: settings.arguments,
+                  doctor: settings.arguments as DoctorData,
                 ));
 
       case Routes.addIHNotes:
@@ -431,13 +434,13 @@ class RouteGenerator {
       case Routes.addMyDocNotes:
         return CupertinoPageRoute(
             builder: (_) => AddMyDocNotesScreen(
-                  doctor: settings.arguments,
+                  doctor: settings.arguments as DoctorData,
                 ));
 
       case Routes.editMyDocNotes:
         return CupertinoPageRoute(
             builder: (_) => UpdateDocNotesScreen(
-                  doctor: settings.arguments,
+                  doctor: settings.arguments as DoctorData,
                 ));
 
       case Routes.editProfile:
@@ -453,7 +456,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => NotificationSettingsPage());
 
       case Routes.myDoctors:
-        return CupertinoPageRoute(builder: (_) => MyDoctorListPage());
+        return CupertinoPageRoute(builder: (_) => const MyDoctorListPage());
       case Routes.hospitalStructure:
         return CupertinoPageRoute(builder: (_) => HospitalStructureScreen());
 
@@ -470,10 +473,10 @@ class RouteGenerator {
                 PatientListVisitDetailPage(patientData: settings.arguments));
 
       case Routes.myAppointments:
-        return CupertinoPageRoute(builder: (_) => MyAppointmentsPage());
+        return CupertinoPageRoute(builder: (_) => const MyAppointmentsPage());
 
       case Routes.appointments:
-        return CupertinoPageRoute(builder: (_) => MyAppointmentsDoctor());
+        return CupertinoPageRoute(builder: (_) => const MyAppointmentsDoctor());
       case Routes.catagoryblog:
         return CupertinoPageRoute(builder: (_) => CategoryView());
       case Routes.catagoryblogdoctor:
@@ -488,7 +491,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const TeleHealth());
 
       case Routes.docnotification:
-        return CupertinoPageRoute(builder: (_) => DocNotificationsPage());
+        return CupertinoPageRoute(builder: (_) => const DocNotificationsPage());
 
       case Routes.phoneAuthScreen:
         return CupertinoPageRoute(builder: (_) => PhoneVerification());

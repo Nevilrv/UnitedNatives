@@ -1,20 +1,20 @@
 import 'dart:core';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/model/booked_appointment_data.dart';
-import 'package:doctor_appointment_booking/model/paymentPaypalModel.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/sevices/patient_home_screen_service.dart';
-import 'package:doctor_appointment_booking/sevices/paypal_service.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/model/booked_appointment_data.dart';
+import 'package:united_natives/model/paymentPaypalModel.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/sevices/patient_home_screen_service.dart';
+import 'package:united_natives/sevices/paypal_service.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaypalPayment extends StatefulWidget {
-  final Function onFinish;
-  final PaypalPaymentModel paypalPaymentModel;
+  final Function()? onFinish;
+  final PaypalPaymentModel? paypalPaymentModel;
 
-  PaypalPayment({this.onFinish, this.paypalPaymentModel});
+  const PaypalPayment({super.key, this.onFinish, this.paypalPaymentModel});
 
   @override
   State<StatefulWidget> createState() {
@@ -23,13 +23,13 @@ class PaypalPayment extends StatefulWidget {
 }
 
 class PaypalPaymentState extends State<PaypalPayment> {
-  PatientHomeScreenController _patientHomeScreenController = Get.find();
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String checkoutUrl;
-  String executeUrl;
-  String accessToken;
+  final PatientHomeScreenController _patientHomeScreenController = Get.find();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String? checkoutUrl;
+  String? executeUrl;
+  String? accessToken;
   PaypalServices services = PaypalServices();
-  String doctorFee;
+  String? doctorFee;
 
   Map<dynamic, dynamic> defaultCurrency = {
     "symbol": "USD",
@@ -47,32 +47,23 @@ class PaypalPaymentState extends State<PaypalPayment> {
   @override
   void initState() {
     super.initState();
-    print('hello.......');
-    doctorFee = widget.paypalPaymentModel.doctorFees;
+    doctorFee = widget.paypalPaymentModel?.doctorFees;
     Future.delayed(Duration.zero, () async {
-      print('hello.......111');
       try {
-        print('hello.......122');
         accessToken = await services.getAccessToken();
-        print('accessToken $accessToken');
         final transactions = getOrderParams();
-        print('transactions $transactions');
         final res =
             await services.createPaypalPayment(transactions, accessToken);
-        print('hello.......1');
         if (res != null) {
           setState(() {
-            print("checkoutUrl  => $checkoutUrl");
             checkoutUrl = res["approvalUrl"];
-            print("checkoutUrl  => $checkoutUrl");
             executeUrl = res["executeUrl"];
           });
         }
       } catch (e) {
-        print('exception: ' + e.toString());
         final snackBar = SnackBar(
           content: Text(e.toString()),
-          duration: Duration(seconds: 10),
+          duration: const Duration(seconds: 10),
           action: SnackBarAction(
             label: 'Close',
             onPressed: () {
@@ -80,13 +71,15 @@ class PaypalPaymentState extends State<PaypalPayment> {
             },
           ),
         );
-        _scaffoldKey.currentState.showSnackBar(snackBar);
+
+        ScaffoldMessenger.of(_scaffoldKey.currentState!.context)
+            .showSnackBar(snackBar);
       }
     });
   }
 
   // item name, price and quantity
-  String itemName = 'Doctor Appoirment';
+  String itemName = 'Doctor Appointment';
   //String itemPrice = '1.99';
   int quantity = 1;
 
@@ -101,12 +94,12 @@ class PaypalPaymentState extends State<PaypalPayment> {
     ];
 
     // checkout invoice details
-    String totalAmount = doctorFee;
-    String subTotalAmount = doctorFee;
+    String? totalAmount = doctorFee;
+    String? subTotalAmount = doctorFee;
     String shippingCost = '0';
     int shippingDiscountCost = 0;
-    String userFirstName = widget.paypalPaymentModel.firstName;
-    String userLastName = widget.paypalPaymentModel.lastName;
+    String? userFirstName = widget.paypalPaymentModel?.firstName;
+    String? userLastName = widget.paypalPaymentModel?.lastName;
     String addressCity = 'Delhi';
     String addressStreet = 'Mathura Road';
     String addressZipCode = '110014';
@@ -140,7 +133,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
                 "line2": "",
                 "city": addressCity,
                 "country_code": addressCountry,
-                "recipient_name": userFirstName + " " + userLastName,
+                "recipient_name": "$userFirstName $userLastName",
                 // "line1": addressStreet,
                 // "line2": "",
                 // "city": addressCity,
@@ -160,13 +153,12 @@ class PaypalPaymentState extends State<PaypalPayment> {
 
   @override
   Widget build(BuildContext context) {
-    print("doctorrrfeess ==> $doctorFee");
     if (checkoutUrl != null) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           leading: GestureDetector(
-            child: Icon(Icons.arrow_back_ios),
+            child: const Icon(Icons.arrow_back_ios),
             onTap: () => Navigator.pop(context),
           ),
         ),
@@ -179,10 +171,6 @@ class PaypalPaymentState extends State<PaypalPayment> {
               final payerID = uri.queryParameters['PayerID'];
               final token = uri.queryParameters['token'];
               final paymentID = uri.queryParameters['paymentId'];
-              print(
-                  "token----->$token\npaymentID----->$paymentID\npayerID-------->$payerID");
-              print(
-                  "token----->$token\npaymentID----->$paymentID\npayerID-------->$payerID");
               if (payerID != null) {
                 services
                     .executePayment(executeUrl, payerID, accessToken)
@@ -214,9 +202,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
                     paypalpaymentId: paymentID,
                     paypalToken: accessToken,
                     payType: "paypal",
-                    userId: widget.paypalPaymentModel.patientId);
+                    userId: widget.paypalPaymentModel?.patientId);
 
-                print("sucessfullpayment ==> ");
                 await Get.offNamed(Routes.bookingStep5);
               } else {
                 Navigator.of(context).pop();
@@ -235,7 +222,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
         key: _scaffoldKey,
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.of(context).pop();
               }),
@@ -243,10 +230,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
           elevation: 0.0,
         ),
         body: Center(
-            child: Container(
-                child: Center(
           child: Utils.circular(),
-        ))),
+        ),
       );
     }
   }

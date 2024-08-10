@@ -16,7 +16,7 @@ class AccountWidget extends StatelessWidget {
           color: color,
           padding: const EdgeInsets.all(15),
           child: Text(
-            Translate.of(context).translate('accounts'),
+            Translate.of(context)!.translate('accounts'),
             style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -25,7 +25,7 @@ class AccountWidget extends StatelessWidget {
         ),
         ListTile(
           leading: Text(
-            Translate.of(context).translate('logout'),
+            Translate.of(context)!.translate('logout'),
             style: const TextStyle(
                 color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold),
           ),

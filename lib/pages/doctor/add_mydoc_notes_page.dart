@@ -1,17 +1,16 @@
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/utils/common_snackbar.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/my_clinician_screen_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/my_doctor_list_reposne_model.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/my_clinician_screen_view_model.dart';
 
 class AddMyDocNotesScreen extends StatefulWidget {
-  final DoctorData doctor;
+  final DoctorData? doctor;
 
-  const AddMyDocNotesScreen({Key key, this.doctor}) : super(key: key);
+  const AddMyDocNotesScreen({super.key, this.doctor});
 
   @override
   State<AddMyDocNotesScreen> createState() => _AddMyDocNotesScreenState();
@@ -66,30 +65,30 @@ class _AddMyDocNotesScreenState extends State<AddMyDocNotesScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<MyClinicianScreenViewModel>(builder: (controller) {
-      return WillPopScope(
-        onWillPop: () async {
+      return PopScope(
+        canPop: true,
+        onPopInvokedWithResult: (didPop, result) {
           Navigator.pop(context);
           textController.clear();
-          return true;
         },
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              Translate.of(context).translate('Add Notes'),
+              Translate.of(context)!.translate('Add Notes'),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
               textAlign: TextAlign.center,
             ),
             actions: <Widget>[
               IconButton(
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
+                  if (_formKey.currentState!.validate()) {
                     await controller.addNotesRepo1(
-                        mobile: widget.doctor.doctorMobile,
-                        doctorName: widget.doctor.doctorName,
+                        mobile: widget.doctor?.doctorMobile ?? "",
+                        doctorName: widget.doctor?.doctorName ?? "",
                         patientId: '${userController.user.value.id}',
                         notes: textController.text);
                     textController.clear();
@@ -100,7 +99,7 @@ class _AddMyDocNotesScreenState extends State<AddMyDocNotesScreen> {
 
                   // model.print('add');
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.done,
                 ),
               )
@@ -112,7 +111,7 @@ class _AddMyDocNotesScreenState extends State<AddMyDocNotesScreen> {
                   child: Utils.circular(),
                 )
               : Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 15,
                   ),
@@ -169,17 +168,17 @@ class _AddMyDocNotesScreenState extends State<AddMyDocNotesScreen> {
       children: [
         Text(
           "Enter Note",
-          style: Theme.of(context).textTheme.subtitle1.copyWith(
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontSize: 22,
               ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 15,
         ),
         TextFormField(
-          style: TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20),
           validator: (text) {
-            if (text.isEmpty) {
+            if (text!.isEmpty) {
               return "*enter notes";
             }
             return null;
@@ -189,33 +188,33 @@ class _AddMyDocNotesScreenState extends State<AddMyDocNotesScreen> {
           minLines: 5,
           maxLines: 20,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(15),
+            contentPadding: const EdgeInsets.all(15),
             hintText: 'Enter notes here',
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               fontSize: 20,
               color: Color(0xffbcbcbc),
               fontFamily: 'NunitoSans',
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Color(0xff575757).withOpacity(0.5),
+                color: const Color(0xff575757).withOpacity(0.5),
               ),
               borderRadius: BorderRadius.circular(5),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Color(0xff575757),
               ),
               borderRadius: BorderRadius.circular(5),
             ),
             errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.red,
               ),
               borderRadius: BorderRadius.circular(5),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Color(0xff575757),
               ),
               borderRadius: BorderRadius.circular(5),

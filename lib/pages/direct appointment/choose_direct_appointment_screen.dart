@@ -1,20 +1,20 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/doctor_item.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/direct%20appointment/time_slot_page_direct_appointment.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/direct_doctor_view_model.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/doctor_item.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/direct%20appointment/time_slot_page_direct_appointment.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/direct_doctor_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 class ChooseDirectAppointmentScreen extends StatefulWidget {
-  ChooseDirectAppointmentScreen({Key key}) : super(key: key);
+  const ChooseDirectAppointmentScreen({super.key});
 
   @override
-  _ChooseDirectAppointmentScreenState createState() =>
+  State<ChooseDirectAppointmentScreen> createState() =>
       _ChooseDirectAppointmentScreenState();
 }
 
@@ -44,10 +44,10 @@ class _ChooseDirectAppointmentScreenState
               appBar: AppBar(
                 centerTitle: true,
                 title: Text(
-                  Translate.of(context).translate('doctor'),
+                  Translate.of(context)!.translate('doctor'),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).textTheme.subtitle1.color,
+                      color: Theme.of(context).textTheme.titleMedium?.color,
                       fontSize: 24),
                 ),
                 // actions: <Widget>[
@@ -89,21 +89,21 @@ class _ChooseDirectAppointmentScreenState
                   }
                   if (controller.getDirectDoctorApiResponse.status ==
                       Status.ERROR) {
-                    return Center(
+                    return const Center(
                       child: Text("Server error"),
                     );
                   }
                   GetDirectDoctorResponseModel responseModel =
                       controller.getDirectDoctorApiResponse.data;
                   if (responseModel.data == null) {
-                    return Center(
+                    return const Center(
                       child: Text(
                         "No data found",
                         style: TextStyle(fontSize: 21),
                       ),
                     );
-                  } else if (responseModel.data.length <= 0) {
-                    return Center(
+                  } else if (responseModel.data!.isEmpty) {
+                    return const Center(
                       child: Text(
                         "No data found",
                         style: TextStyle(fontSize: 21),
@@ -116,31 +116,30 @@ class _ChooseDirectAppointmentScreenState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         ListView.separated(
-                          separatorBuilder: (context, index) =>
-                              Divider(height: 1, indent: 15, endIndent: 15),
+                          separatorBuilder: (context, index) => const Divider(
+                              height: 1, indent: 15, endIndent: 15),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: responseModel.data.length,
+                          itemCount: responseModel.data!.length,
                           itemBuilder: (context, index) {
                             String doctorName =
-                                "${responseModel.data[index].firstName ?? "Dr."}" +
-                                    " ${responseModel.data[index].lastName ?? "Lee"}";
+                                "${responseModel.data?[index].firstName ?? "Dr."} ${responseModel.data?[index].lastName ?? "Lee"}";
                             return DoctorItem(
                                 doctorAvatar:
-                                    responseModel.data[index].profilePic ??
+                                    responseModel.data?[index].profilePic ??
                                         "assets/images/Doctor_lee.png",
                                 doctorName: doctorName,
                                 doctorPrice: responseModel
-                                        .data[index].perAppointmentCharge ??
+                                        .data?[index].perAppointmentCharge ??
                                     "100",
                                 doctorSpeciality:
-                                    responseModel.data[index].speciality,
-                                rating:
-                                    responseModel.data[index].rating.toString(),
+                                    responseModel.data?[index].speciality ?? "",
+                                rating: responseModel.data![index].rating
+                                    .toString(),
                                 // onTap: () => Get.toNamed(Routes.bookingStep3, arguments: _bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]),
                                 onTap: () {
                                   // _bookAppointmentController
@@ -154,7 +153,7 @@ class _ChooseDirectAppointmentScreenState
                                   //           .userId,
                                   //       context);
                                   Get.to(TimeSlotPageDirectPage(
-                                    doctorDetails: responseModel.data[index],
+                                    doctorDetails: responseModel.data?[index],
                                   ));
                                   // Get.toNamed(Routes.bookingStep3,
                                   //     arguments: _bookAppointmentController

@@ -1,19 +1,19 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/progress_indicator.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/progress_indicator.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 class TimeSlotPageDirectPage extends StatefulWidget {
-  final Data doctorDetails;
+  final Data? doctorDetails;
 
-  TimeSlotPageDirectPage({this.doctorDetails});
+  const TimeSlotPageDirectPage({super.key, this.doctorDetails});
 
   @override
   State<TimeSlotPageDirectPage> createState() => _TimeSlotPageDirectPageState();
@@ -25,7 +25,7 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
 
   AdsController adsController = Get.find();
   Widget _slot() {
-    return SizedBox();
+    return const SizedBox();
 
     // return Obx(
     //   () {
@@ -178,7 +178,7 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
   @override
   Widget build(BuildContext context) {
     _bookAppointmentController.getPatientAppointment(
-        widget.doctorDetails.userId, context);
+        widget.doctorDetails!.userId!, context);
     // _bookAppointmentController.getPatientAppointment(
     //     doctorDetails.userId, context);
     return Stack(
@@ -192,10 +192,10 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
             appBar: AppBar(
               centerTitle: true,
               title: Text(
-                Translate.of(context).translate('time_slot'),
+                Translate.of(context)!.translate('time_slot'),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                     fontSize: 24),
               ),
             ),
@@ -205,7 +205,7 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Row(
                       children: <Widget>[
                         // CircleAvatar(
@@ -218,7 +218,7 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
                             widget.doctorDetails?.profilePic ?? "",
                             widget.doctorDetails?.socialProfilePic ?? "",
                             20),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,10 +227,10 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
                                 widget.doctorDetails?.firstName ?? "",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle2
-                                    .copyWith(fontWeight: FontWeight.w700),
+                                    .titleSmall
+                                    ?.copyWith(fontWeight: FontWeight.w700),
                               ),
-                              SizedBox(height: 3),
+                              const SizedBox(height: 3),
                               Text(
                                 widget.doctorDetails?.speciality ?? "",
                                 style: TextStyle(
@@ -245,7 +245,7 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
                   Container(
                     width: double.infinity,
                     height: 90,
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 10,
                     ),
                     color: Prefs.getBool(Prefs.DARKTHEME, def: false)
@@ -288,30 +288,30 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child:
-                          _bookAppointmentController.selectedIndex.value == -1
-                              ? Text(
-                                  'Select DateTime to Show Available Slot',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              : Obx(
-                                  () => Text(
-                                    '${DateFormat('EEEE, dd MMM yyyy').format(DateTime.parse(_bookAppointmentController.mySelectedDate.value))}',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
+                      child: _bookAppointmentController.selectedIndex.value ==
+                              -1
+                          ? const Text(
+                              'Select DateTime to Show Available Slot',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            )
+                          : Obx(
+                              () => Text(
+                                DateFormat('EEEE, dd MMM yyyy').format(
+                                    DateTime.parse(_bookAppointmentController
+                                        .mySelectedDate.value)),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
                     ),
                   ),
                   Obx(
                     () => _bookAppointmentController.selectedIndex.value == -1
-                        ? LinearProgressIndicator()
-                        : Divider(color: Colors.grey, height: 1),
+                        ? const LinearProgressIndicator()
+                        : const Divider(color: Colors.grey, height: 1),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Obx(
                     () => _bookAppointmentController.selectedIndex.value == -1
                         ? Container()
@@ -327,7 +327,7 @@ class _TimeSlotPageDirectPageState extends State<TimeSlotPageDirectPage> {
         Obx(
           () => Container(
             child: _bookAppointmentController.isLoading.value
-                ? ProgressIndicatorScreen()
+                ? const ProgressIndicatorScreen()
                 : Container(),
           ),
         ),

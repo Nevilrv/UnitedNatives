@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
+import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class NewsLetterScreen extends StatefulWidget {
-  const NewsLetterScreen({Key key}) : super(key: key);
+  const NewsLetterScreen({super.key});
 
   @override
   State<NewsLetterScreen> createState() => _NewsLetterScreenState();
@@ -23,7 +22,7 @@ class NewsLetterScreen extends StatefulWidget {
 class _NewsLetterScreenState extends State<NewsLetterScreen> {
   Future newsLetterGetData() async {
     http.Response response = await http.get(
-      Uri.parse('${Constants.baseUrl + Constants.allNewsLetter}'),
+      Uri.parse(Constants.baseUrl + Constants.allNewsLetter),
     );
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
@@ -34,7 +33,6 @@ class _NewsLetterScreenState extends State<NewsLetterScreen> {
 
   AdsController adsController = Get.find();
 
-  int randomAd;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AdsController>(builder: (ads) {
@@ -46,12 +44,12 @@ class _NewsLetterScreenState extends State<NewsLetterScreen> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
-            title: Text(
+            title: const Text(
               'News Letter',
               style: TextStyle(fontSize: 25, color: Colors.black),
             ),
             leading: GestureDetector(
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 color: Colors.black,
               ),
@@ -66,10 +64,10 @@ class _NewsLetterScreenState extends State<NewsLetterScreen> {
               if (snapshot.connectionState == ConnectionState.done) {
                 return SafeArea(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: Column(
                       children: [
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Container(
                         //   height: MediaQuery.of(context).size.height * 0.3,
                         //   width: MediaQuery.of(context).size.width,
@@ -81,14 +79,14 @@ class _NewsLetterScreenState extends State<NewsLetterScreen> {
                         // ),
                         // SizedBox(height: 20),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: CachedNetworkImage(
                             imageUrl:
                                 '${snapshot.data['data'][0]['image_url']}',
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
                               child: Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.28,
@@ -97,13 +95,13 @@ class _NewsLetterScreenState extends State<NewsLetterScreen> {
                               ),
                             ),
                             errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
+                                const Icon(Icons.error),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Expanded(
                           child: snapshot.data['data'].isEmpty
-                              ? Center(
+                              ? const Center(
                                   child: Text(
                                     'NO DATA FOUND',
                                     style: TextStyle(
@@ -116,27 +114,35 @@ class _NewsLetterScreenState extends State<NewsLetterScreen> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
                                       child: Column(
                                         children: [
-                                          Html(
-                                            data:
-                                                '${snapshot.data['data'][index]['content']}',
-                                          ),
-                                          SizedBox(height: 10),
+                                          Builder(builder: (context) {
+                                            var document = parse(
+                                                '${snapshot.data['data'][index]['content']}');
+                                            return Text(document.body!.text);
+                                          }),
+                                          // Html(
+                                          //   data:
+                                          //       '${snapshot.data['data'][index]['content']}',
+                                          // ),
+                                          const SizedBox(height: 10),
                                           Row(
                                             children: [
                                               Text(
-                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data['data'][index]['created_at']))}',
-                                                style: TextStyle(
+                                                DateFormat('dd-MM-yyyy').format(
+                                                    DateTime.parse(snapshot
+                                                            .data['data'][index]
+                                                        ['created_at'])),
+                                                style: const TextStyle(
                                                   fontSize: 20,
                                                 ),
                                               ),
-                                              Spacer(),
+                                              const Spacer(),
                                               Text(
                                                 '${snapshot.data['data'][index]['author']}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 20,
                                                 ),
                                               )

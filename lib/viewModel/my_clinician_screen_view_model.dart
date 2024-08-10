@@ -48,7 +48,7 @@ class MyClinicianScreenViewModel extends GetxController {
       required String doctorName,
       required String notes,
       required String mobile,
-      required int id}) async {
+      int? id}) async {
     isLoad = true;
     update();
     var headers = {

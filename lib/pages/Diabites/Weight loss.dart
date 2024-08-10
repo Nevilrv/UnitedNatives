@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,18 +26,21 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class Weightloss extends StatefulWidget {
+  const Weightloss({super.key});
+
   @override
-  _WeightlossState createState() => _WeightlossState();
+  State<Weightloss> createState() => _WeightlossState();
 }
 
 class _WeightlossState extends State<Weightloss> {
-  UserController _userController = Get.find<UserController>();
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
+  final UserController _userController = Get.find<UserController>();
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
   int totalCount = 0;
   List list = [];
   RxBool isLoading = false.obs;
   List<Datum> listDatum = [];
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   List editList = [];
 
   AdsController adsController = Get.find();
@@ -92,7 +95,7 @@ class _WeightlossState extends State<Weightloss> {
   final _editableKey = GlobalKey<EditableState>();
   List<_WeightLossData> data = [];
 
-  Future<HealthResponseModel> getWeightLossData() async {
+  Future<HealthResponseModel?> getWeightLossData() async {
     rows.clear();
     data.clear();
     idList.clear();
@@ -111,10 +114,10 @@ class _WeightlossState extends State<Weightloss> {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
 
-        model.data.forEach((element) {
-          listDatum = model.data;
-          idList.add(element.id);
-          list = (jsonDecode(element.tableData) as List);
+        model.data?.forEach((element) {
+          listDatum = model.data!;
+          idList.add(element.id!);
+          list = (jsonDecode(element.tableData!) as List);
           rows.add({
             'Date': list[0],
             'Weight': list[1],
@@ -214,7 +217,8 @@ class _WeightlossState extends State<Weightloss> {
     }
   }
 
-  Future updateWeightLossData({dynamic reportTableData, String id}) async {
+  Future updateWeightLossData(
+      {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -291,7 +295,7 @@ class _WeightlossState extends State<Weightloss> {
               "Weight Loss",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
           ),
@@ -301,7 +305,7 @@ class _WeightlossState extends State<Weightloss> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Weight Loss Data',
@@ -311,7 +315,7 @@ class _WeightlossState extends State<Weightloss> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -323,160 +327,154 @@ class _WeightlossState extends State<Weightloss> {
                             : SingleChildScrollView(
                                 child: Column(
                                   children: [
-                                    Container(
-                                      child: Editable(
-                                        key: _editableKey,
-                                        columns: cols,
-                                        rows: rows,
-                                        popUpTitle: 'Weight Loss Data',
-                                        borderColor: Colors.blueGrey,
-                                        showSaveIcon: true,
-                                        saveIconColor: _isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        onAddButtonPressed: () async {
-                                          String text =
-                                              '${dateController.text},${weightController.text},${chestController.text},${waistController.text},${hipsController.text},${notesController.text}';
-                                          List<String> result = text.split(',');
-                                          bool addData = true;
-                                          for (int i = 0;
-                                              i < result.length;
-                                              i++) {
-                                            if (result[i] == "") {
-                                              Utils.showSnackBar(
-                                                  'Enter details',
-                                                  'Please enter all required details!!');
-                                              addData = false;
-                                              break;
-                                            }
+                                    Editable(
+                                      key: _editableKey,
+                                      columns: cols,
+                                      rows: rows,
+                                      popUpTitle: 'Weight Loss Data',
+                                      borderColor: Colors.blueGrey,
+                                      showSaveIcon: true,
+                                      saveIconColor:
+                                          _isDark ? Colors.white : Colors.black,
+                                      onAddButtonPressed: () async {
+                                        String text =
+                                            '${dateController.text},${weightController.text},${chestController.text},${waistController.text},${hipsController.text},${notesController.text}';
+                                        List<String> result = text.split(',');
+                                        bool addData = true;
+                                        for (int i = 0;
+                                            i < result.length;
+                                            i++) {
+                                          if (result[i] == "") {
+                                            Utils.showSnackBar('Enter details',
+                                                'Please enter all required details!!');
+                                            addData = false;
+                                            break;
                                           }
-                                          if (addData) {
-                                            rows.add({
-                                              'Date': result[0],
-                                              'Weight': result[1],
-                                              'Chest': result[2],
-                                              'Waist': result[3],
-                                              'Hips': result[4],
-                                              'Comments/Notes': result[5],
-                                            });
+                                        }
+                                        if (addData) {
+                                          rows.add({
+                                            'Date': result[0],
+                                            'Weight': result[1],
+                                            'Chest': result[2],
+                                            'Waist': result[3],
+                                            'Hips': result[4],
+                                            'Comments/Notes': result[5],
+                                          });
 
-                                            List dateFixedList =
-                                                result[0].toString().split('-');
+                                          List dateFixedList =
+                                              result[0].toString().split('-');
 
-                                            data.add(_WeightLossData(
-                                                date: DateTime(
-                                                    int.parse(dateFixedList[2]),
-                                                    int.parse(dateFixedList[1]),
-                                                    int.parse(
-                                                        dateFixedList[0])),
-                                                weight:
-                                                    double.parse(result[1])));
-                                            data.sort((a, b) =>
-                                                a.date.compareTo(b.date));
-                                            Navigator.pop(context);
-                                            await addWeightLossData(result);
-                                          } else {
-                                            // Navigator.pop(context);
-                                          }
-                                        },
-                                        onDeleteButtonPressed: (index) async {
-                                          await deleteWeightLossData(
-                                              idList[index]);
-                                        },
-                                        onEditButtonPressed: (index) {
-                                          _editDialog(
-                                              context, index, listDatum);
-                                        },
-                                        onTap: () {
-                                          dateController.clear();
-                                          weightController.clear();
-                                          chestController.clear();
-                                          waistController.clear();
-                                          hipsController.clear();
-                                          notesController.clear();
-                                        },
-                                        popUpChild: Container(
-                                          width: Get.width * 0.75,
-                                          child: Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  dateController.text =
-                                                      await Utils
-                                                          .selectedDateFormat(
-                                                              context);
-                                                },
-                                                child: TextField(
-                                                  enabled: false,
-                                                  readOnly: true,
-                                                  controller: dateController,
-                                                  decoration: InputDecoration(
-                                                      hintText: 'Date'),
-                                                ),
+                                          data.add(_WeightLossData(
+                                              date: DateTime(
+                                                  int.parse(dateFixedList[2]),
+                                                  int.parse(dateFixedList[1]),
+                                                  int.parse(dateFixedList[0])),
+                                              weight: double.parse(result[1])));
+                                          data.sort((a, b) =>
+                                              a.date.compareTo(b.date));
+                                          Navigator.pop(context);
+                                          await addWeightLossData(result);
+                                        } else {
+                                          // Navigator.pop(context);
+                                        }
+                                      },
+                                      onDeleteButtonPressed: (index) async {
+                                        await deleteWeightLossData(
+                                            idList[index]);
+                                      },
+                                      onEditButtonPressed: (index) {
+                                        _editDialog(context, index, listDatum);
+                                      },
+                                      onTap: () {
+                                        dateController.clear();
+                                        weightController.clear();
+                                        chestController.clear();
+                                        waistController.clear();
+                                        hipsController.clear();
+                                        notesController.clear();
+                                      },
+                                      popUpChild: SizedBox(
+                                        width: Get.width * 0.75,
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                dateController.text =
+                                                    await Utils
+                                                        .selectedDateFormat(
+                                                            context);
+                                              },
+                                              child: TextField(
+                                                enabled: false,
+                                                readOnly: true,
+                                                controller: dateController,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        hintText: 'Date'),
                                               ),
-                                              TextField(
-                                                controller: weightController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Weight'),
-                                              ),
-                                              TextField(
-                                                controller: chestController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Chest'),
-                                              ),
-                                              TextField(
-                                                controller: waistController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Waist'),
-                                              ),
-                                              TextField(
-                                                controller: hipsController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                inputFormatters: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9.]')),
-                                                ],
-                                                decoration: InputDecoration(
-                                                    hintText: 'Hips'),
-                                              ),
-                                              TextField(
-                                                controller: notesController,
-                                                decoration: InputDecoration(
-                                                    hintText: 'Notes'),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                            TextField(
+                                              controller: weightController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Weight'),
+                                            ),
+                                            TextField(
+                                              controller: chestController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Chest'),
+                                            ),
+                                            TextField(
+                                              controller: waistController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Waist'),
+                                            ),
+                                            TextField(
+                                              controller: hipsController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp(r'[0-9.]')),
+                                              ],
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Hips'),
+                                            ),
+                                            TextField(
+                                              controller: notesController,
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Notes'),
+                                            ),
+                                          ],
                                         ),
-                                        showCreateButton: true,
-                                        onSubmitted: (value) {},
-                                        createButtonLabel: Text(
-                                          'New',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
+                                      ),
+                                      showCreateButton: true,
+                                      onSubmitted: (value) {},
+                                      createButtonLabel: const Text(
+                                        'New',
+                                        style: TextStyle(
+                                          color: Colors.black,
                                         ),
                                       ),
                                     ),
-                                    if (data.isNotEmpty && data != null)
+                                    if (data.isNotEmpty)
                                       SfCartesianChart(
                                         // primaryXAxis: CategoryAxis(),
                                         enableAxisAnimation: true,
@@ -489,13 +487,12 @@ class _WeightlossState extends State<Weightloss> {
                                               DateTimeIntervalType.auto,
                                           // autoScrollingMode: AutoScrollingMode.end,
                                         ),
-                                        primaryYAxis: NumericAxis(
+                                        primaryYAxis: const NumericAxis(
                                             edgeLabelPlacement:
                                                 EdgeLabelPlacement.shift),
                                         // axes: [Charts()],
-                                        series: <
-                                            ChartSeries<_WeightLossData,
-                                                dynamic>>[
+                                        series: <ChartSeries<_WeightLossData,
+                                            dynamic>>[
                                           LineSeries<_WeightLossData, dynamic>(
                                             dataSource: data,
                                             xValueMapper:
@@ -505,11 +502,11 @@ class _WeightlossState extends State<Weightloss> {
                                                 (_WeightLossData weight, _) =>
                                                     weight.weight,
                                             dataLabelSettings:
-                                                DataLabelSettings(
+                                                const DataLabelSettings(
                                               isVisible: true,
                                             ),
                                           )
-                                        ],
+                                        ] as List<CartesianSeries>,
                                       ),
                                     if (data.isEmpty)
                                       Padding(
@@ -520,8 +517,8 @@ class _WeightlossState extends State<Weightloss> {
                                             'No weight loss data',
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline6
-                                                .copyWith(fontSize: 20),
+                                                .titleLarge
+                                                ?.copyWith(fontSize: 20),
                                           ),
                                         ),
                                       )
@@ -534,7 +531,7 @@ class _WeightlossState extends State<Weightloss> {
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -556,7 +553,7 @@ class _WeightlossState extends State<Weightloss> {
         title: 'Weight Loss Data',
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Container(
+          child: SizedBox(
             width: Get.width * 0.75,
             child: Column(
               children: [
@@ -577,7 +574,7 @@ class _WeightlossState extends State<Weightloss> {
                     enabled: false,
                     readOnly: true,
                     controller: editDateController,
-                    decoration: InputDecoration(hintText: 'Date'),
+                    decoration: const InputDecoration(hintText: 'Date'),
                   ),
                 ),
                 TextField(
@@ -586,7 +583,7 @@ class _WeightlossState extends State<Weightloss> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Weight'),
+                  decoration: const InputDecoration(hintText: 'Weight'),
                 ),
                 TextField(
                   controller: editChestController,
@@ -594,7 +591,7 @@ class _WeightlossState extends State<Weightloss> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Chest'),
+                  decoration: const InputDecoration(hintText: 'Chest'),
                 ),
                 TextField(
                   controller: editWaistController,
@@ -602,7 +599,7 @@ class _WeightlossState extends State<Weightloss> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Waist'),
+                  decoration: const InputDecoration(hintText: 'Waist'),
                 ),
                 TextField(
                   controller: editHipsController,
@@ -610,11 +607,11 @@ class _WeightlossState extends State<Weightloss> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                   ],
-                  decoration: InputDecoration(hintText: 'Hips'),
+                  decoration: const InputDecoration(hintText: 'Hips'),
                 ),
                 TextField(
                   controller: editNotesController,
-                  decoration: InputDecoration(hintText: 'Notes'),
+                  decoration: const InputDecoration(hintText: 'Notes'),
                 ),
               ],
             ),
@@ -631,7 +628,7 @@ class _WeightlossState extends State<Weightloss> {
               await updateWeightLossData(
                   id: idList[index], reportTableData: result);
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),
@@ -641,7 +638,7 @@ class _WeightlossState extends State<Weightloss> {
 }
 
 class _WeightLossData {
-  _WeightLossData({this.date, this.weight});
+  _WeightLossData({required this.date, required this.weight});
 
   final DateTime date;
   final double weight;

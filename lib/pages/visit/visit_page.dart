@@ -30,7 +30,7 @@ class _VisitPageState extends State<VisitPage> {
             APIState.COMPLETE) {
           return Obx(
             () => (_patientHomeScreenController
-                        .visitedDoctorUpcomingPastData.value?.past?.isEmpty ??
+                        .visitedDoctorUpcomingPastData.value.past?.isEmpty ??
                     true)
                 ? const Center(
                     child: Text(
@@ -46,16 +46,13 @@ class _VisitPageState extends State<VisitPage> {
                       height: 15,
                     ),
                     itemCount: _patientHomeScreenController
-                            .visitedDoctorUpcomingPastData
-                            .value
-                            ?.past
-                            ?.length ??
+                            .visitedDoctorUpcomingPastData.value.past?.length ??
                         0,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 25),
                     itemBuilder: (context, index) {
                       Appointment doctor = _patientHomeScreenController
-                          .visitedDoctorUpcomingPastData.value.past[index];
+                          .visitedDoctorUpcomingPastData.value.past![index];
 
                       DateTime appointmentDate = Utils.formattedDate(
                           '${DateTime.parse('${doctor.appointmentDate} ${doctor.appointmentTime}')}');
@@ -74,10 +71,10 @@ class _VisitPageState extends State<VisitPage> {
                               Get.toNamed(Routes.visitDetail,
                                   arguments: doctor);
                             },
-                            title: doctor.doctorFirstName,
-                            subTitle: doctor.doctorSpeciality,
+                            title: doctor.doctorFirstName!,
+                            subTitle: doctor.doctorSpeciality!,
                             buttonTitle: 'See Full Reports',
-                            imagePath: doctor.doctorProfilePic,
+                            imagePath: doctor.doctorProfilePic!,
                           ),
                         ),
                       );

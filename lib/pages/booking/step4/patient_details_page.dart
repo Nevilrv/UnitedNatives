@@ -1,25 +1,25 @@
 import 'dart:developer';
-import 'package:doctor_appointment_booking/components/custom_button.dart';
-import 'package:doctor_appointment_booking/components/progress_indicator.dart';
-import 'package:doctor_appointment_booking/components/text_form_field.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/configs/routes.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/doctor_by_specialities.dart';
-import 'package:doctor_appointment_booking/model/paymentPaypalModel.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_states_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/intake_form_list_res_model.dart'
+import 'package:united_natives/components/custom_button.dart';
+import 'package:united_natives/components/progress_indicator.dart';
+import 'package:united_natives/components/text_form_field.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/configs/routes.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/model/paymentPaypalModel.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_states_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/intake_form_list_res_model.dart'
     as unh;
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/booking/step4/intake_form_list.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/get_city_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/get_states_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/intake_form_view_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/booking/step4/intake_form_list.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/get_city_view_model.dart';
+import 'package:united_natives/viewModel/get_states_view_model.dart';
+import 'package:united_natives/viewModel/intake_form_view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -27,26 +27,26 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart' hide Trans;
 
 class PatientDetailsPage extends StatefulWidget {
-  final NavigationModel navigationModel;
+  final NavigationModel? navigationModel;
 
-  PatientDetailsPage({this.navigationModel});
+  const PatientDetailsPage({super.key, this.navigationModel});
 
   @override
-  _PatientDetailsPageState createState() => _PatientDetailsPageState();
+  State<PatientDetailsPage> createState() => _PatientDetailsPageState();
 }
 
 class _PatientDetailsPageState extends State<PatientDetailsPage> {
   final _formKey = GlobalKey<FormState>();
-  bool _isdark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isdark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   bool _patient = true;
   final searchController = TextEditingController();
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
   IntakeFormViewModel unitedNativesFormViewModel =
       Get.put(IntakeFormViewModel());
   PaypalPaymentModel paypalPaymentModel = PaypalPaymentModel();
-  PatientHomeScreenController _patientHomeScreenController = Get.find();
-  UserController _userController = Get.find();
+  final PatientHomeScreenController _patientHomeScreenController = Get.find();
+  final UserController _userController = Get.find();
   GetStatesViewModel getStatesViewModel = Get.put(GetStatesViewModel());
   GetCitiesViewModel getCitiesViewModel = Get.put(GetCitiesViewModel());
   List<GetStatesResponseModel> stateList = [];
@@ -67,42 +67,40 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
     if (getStatesViewModel.getStatesApiResponse.status == Status.COMPLETE) {
       stateList = getStatesViewModel.getStatesApiResponse.data;
 
-      stateList.forEach(
-        (element) async {
-          if (element.id == _userController.user.value.state) {
-            bookAppointmentController.setStateName(element);
-            bookAppointmentController.clearStateCity();
-            await getCitiesViewModel
-                .getCitiesViewModel(
-                    stateId: bookAppointmentController.selectedState.id)
-                .then((value) => bookAppointmentController.changeCityValue(
-                    getCitiesViewModel.getCitiesApiResponse.data));
+      for (var element in stateList) {
+        if (element.id == _userController.user.value.state) {
+          bookAppointmentController.setStateName(element);
+          bookAppointmentController.clearStateCity();
+          await getCitiesViewModel
+              .getCitiesViewModel(
+                  stateId: bookAppointmentController.selectedState?.id)
+              .then((value) => bookAppointmentController.changeCityValue(
+                  getCitiesViewModel.getCitiesApiResponse.data));
 
-            if (getCitiesViewModel.getCitiesApiResponse.status ==
-                Status.COMPLETE) {
-              await bookAppointmentController.changeCityValue(
-                  getCitiesViewModel.getCitiesApiResponse.data);
-              bookAppointmentController.cityList.forEach((element) {
-                if (element.id == _userController.user.value.city) {
-                  bookAppointmentController.setCityName(element);
-                }
-              });
+          if (getCitiesViewModel.getCitiesApiResponse.status ==
+              Status.COMPLETE) {
+            await bookAppointmentController
+                .changeCityValue(getCitiesViewModel.getCitiesApiResponse.data);
+            for (var element in bookAppointmentController.cityList) {
+              if (element.id == _userController.user.value.city) {
+                bookAppointmentController.setCityName(element);
+              }
             }
           }
-        },
-      );
+        }
+      }
     }
 
     bookAppointmentController.nameController.text =
         "${_userController.user.value.firstName}";
     bookAppointmentController.phoneController.text =
-        '${_userController.user.value.contactNumber ?? ""}';
+        _userController.user.value.contactNumber ?? "";
     bookAppointmentController.emailController.text =
-        '${_userController.user.value.email ?? ""}';
+        _userController.user.value.email ?? "";
   }
 
   bool isAllSubmitted = false;
-  unh.IntakeFormListResponseModel resData;
+  unh.IntakeFormListResponseModel? resData;
   getIntakeForms() async {
     await unitedNativesFormViewModel.getIntakeForm(
         medicalCenterID: bookAppointmentController.chooseMedicalCenter,
@@ -112,8 +110,8 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
         Status.COMPLETE) {
       resData = unitedNativesFormViewModel.getIntakeFormApiResponse.data;
 
-      for (var i = 0; i < resData.data.forms.length; i++) {
-        if (resData.data.forms[i].userStatus == "Filled") {
+      for (var i = 0; i < resData!.data!.forms!.length; i++) {
+        if (resData?.data?.forms?[i].userStatus == "Filled") {
           isAllSubmitted = true;
         } else {
           isAllSubmitted = false;
@@ -126,24 +124,24 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
 
   @override
   void dispose() {
-    FocusManager.instance.primaryFocus.unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
     bookAppointmentController.clearData();
     bookAppointmentController.clearStateCity();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     super.dispose();
   }
 
-  FocusScopeNode currentFocus;
+  FocusScopeNode? currentFocus;
 
   unFocus() {
-    FocusManager.instance.primaryFocus.unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
   }
 
-  String validateMobile(String value) {
+  String? validateMobile(String? value) {
     String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-    RegExp regExp = new RegExp(pattern);
-    if (value.length == 0) {
+    RegExp regExp = RegExp(pattern);
+    if (value!.isEmpty) {
       return 'Please Enter Mobile Number';
     } else if (value.length != 10) {
       return 'Mobile Number Should be Only 10 Digit';
@@ -162,29 +160,29 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
             children: <Widget>[
               Text(
                 _patient
-                    ? '${Translate.of(context).translate('please_provide_following_information_about')} ${bookAppointmentController.nameController.text}'
-                    : Translate.of(context).translate(
+                    ? '${Translate.of(context)?.translate('please_provide_following_information_about')} ${bookAppointmentController.nameController.text}'
+                    : Translate.of(context)!.translate(
                         'please_provide_following_patient_details_dot'),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
 
               ///FULL NAME
               Text(
                 _patient
-                    ? '${Translate.of(context).translate('full_name')}*'
-                    : '${Translate.of(context).translate('patient_full_name')}*',
+                    ? '${Translate.of(context)?.translate('full_name')}*'
+                    : '${Translate.of(context)?.translate('patient_full_name')}*',
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 // textInputAction: TextInputAction.next,
                 validator: (text) {
-                  if (text.isEmpty) {
+                  if (text!.isEmpty) {
                     return 'Enter Your Name';
                   }
                   return null;
@@ -193,13 +191,13 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                 hintText:
                     _patient ? '' : '${_userController.user.value.firstName}',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
 
               ///MOBILE NUMBER
               Text(
-                '${Translate.of(context).translate('mobile')}*',
+                '${Translate.of(context)!.translate('mobile')}*',
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -211,11 +209,11 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                   LengthLimitingTextInputFormatter(10),
                 ],
                 controller: bookAppointmentController.phoneController,
-                hintText:
-                    '${_userController.user.value.contactNumber ?? "Enter mobile number"}',
+                hintText: _userController.user.value.contactNumber ??
+                    "Enter mobile number",
               ),
               _patient ? Container() : _patientsMobile(),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
 
@@ -232,57 +230,58 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
               //   hintText:
               //       '${Translate.of(context).translate('enter_your_fax')}',
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
 
               ///YOUR EMAIL
               Text(
                 _patient
-                    ? '${Translate.of(context).translate('your_email')}*'
-                    : '${Translate.of(context).translate('patient_email')}*',
+                    ? '${Translate.of(context)?.translate('your_email')}*'
+                    : '${Translate.of(context)?.translate('patient_email')}*',
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 keyboardType: TextInputType.emailAddress,
                 // textInputAction: TextInputAction.next,
-                validator: (value) => EmailValidator.validate(value)
+                validator: (value) => EmailValidator.validate(value!)
                     ? null
                     : "Please Enter a Valid Email.",
                 controller: bookAppointmentController.emailController,
                 hintText: _patient
-                    ? Translate.of(context).translate('enter_your_email_id')
-                    : Translate.of(context).translate('enter_patient_email_id'),
+                    ? Translate.of(context)!.translate('enter_your_email_id')
+                    : Translate.of(context)!
+                        .translate('enter_patient_email_id'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
 
               ///COMPANY NAME
               Text(
-                '${Translate.of(context).translate('company_name')} (optional)',
+                '${Translate.of(context)?.translate('company_name')} (optional)',
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 controller: bookAppointmentController.companyController,
                 hintText:
-                    '${Translate.of(context).translate('enter_your_company_name')}',
+                    Translate.of(context)!.translate('enter_your_company_name'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
 
               ///PROVIDER NAME
               Text(
-                '${Translate.of(context).translate('provider_name')} (optional)',
+                '${Translate.of(context)?.translate('provider_name')} (optional)',
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 controller: bookAppointmentController.providerController,
-                hintText:
-                    '${Translate.of(context).translate('enter_your_provider_name')}',
+                hintText: Translate.of(context)!
+                    .translate('enter_your_provider_name'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
 
@@ -293,7 +292,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                     children: [
                       ///STATE NAME
                       Text(
-                        '${Translate.of(context).translate('state')}*',
+                        '${Translate.of(context)?.translate('state')}*',
                         style: kInputTextStyle,
                       ).paddingOnly(bottom: 15),
 
@@ -302,11 +301,12 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                         colorCon: stateList.isEmpty,
                         textStyleCon: bController.selectedState == null,
                         text: bController.selectedState != null
-                            ? '${bController.selectedState.name}'
+                            ? '${bController.selectedState?.name}'
                             : 'Select State',
                         onTap: () async {
                           unFocus();
-                          await Future.delayed(Duration(milliseconds: 300));
+                          await Future.delayed(
+                              const Duration(milliseconds: 300));
 
                           if (stateList.isNotEmpty) {
                             selectStateCity(
@@ -321,21 +321,21 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                       ),
 
                       ///CITY NAME
-                      Text('${Translate.of(context).translate('city')}*',
+                      Text('${Translate.of(context)?.translate('city')}*',
                               style: kInputTextStyle)
                           .paddingOnly(bottom: 15),
 
                       dropDownView(
                         state: false,
-                        colorCon: bController.cityList == null ||
-                            bController.cityList.isEmpty,
+                        colorCon: bController.cityList.isEmpty,
                         textStyleCon: bController.selectedCity == null,
                         text: bController.selectedCity != null
-                            ? '${bController.selectedCity.name.toString().capitalizeFirst}'
+                            ? '${bController.selectedCity?.name.toString().capitalizeFirst}'
                             : 'Select City',
                         onTap: () async {
                           unFocus();
-                          await Future.delayed(Duration(milliseconds: 300));
+                          await Future.delayed(
+                              const Duration(milliseconds: 300));
 
                           if (bController.cityList.isNotEmpty) {
                             selectStateCity(
@@ -354,7 +354,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
             ],
           );
         } else if (statesController.getStatesApiResponse.status ==
@@ -367,18 +367,18 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
           return Center(
               child: Text('${statesController.getStatesApiResponse.message}'));
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       },
     );
   }
 
   Widget dropDownView(
-      {void Function() onTap,
-      String text,
-      bool textStyleCon,
-      bool colorCon,
-      bool state}) {
+      {required void Function() onTap,
+      required String text,
+      required bool textStyleCon,
+      required bool colorCon,
+      required bool state}) {
     return GestureDetector(
       onTap: onTap,
       child: commonContainer(
@@ -391,13 +391,14 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                     text,
                     overflow: TextOverflow.ellipsis,
                     style: textStyleCon
-                        ? TextStyle(
+                        ? const TextStyle(
                             fontSize: 22,
                             color: Color(0xffbcbcbc),
                             fontFamily: 'NunitoSans')
                         : TextStyle(
                             fontSize: 22,
-                            color: Theme.of(context).textTheme.subtitle1.color),
+                            color:
+                                Theme.of(context).textTheme.titleMedium?.color),
                   ),
                 ),
                 (state == true &&
@@ -406,7 +407,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                         (state == false &&
                             getCitiesViewModel.getCitiesApiResponse.status ==
                                 Status.LOADING)
-                    ? Container(
+                    ? SizedBox(
                         height: 20,
                         width: 20,
                         // child:  CircularProgressIndicator(
@@ -425,7 +426,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                 : Colors.grey.shade800)
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
                 height: 1, width: double.infinity, color: Colors.grey.shade500)
           ],
@@ -435,18 +436,16 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
   }
 
   selectStateCity(
-      {double h,
-      double w,
-      bool state,
-      List<GetStatesResponseModel> stateList,
-      BookAppointmentController bController}) {
+      {required double h,
+      required double w,
+      required bool state,
+      required List<GetStatesResponseModel> stateList,
+      required BookAppointmentController bController}) async {
     showDialog(
       context: context,
       builder: (context) {
-        return WillPopScope(
-          onWillPop: () async {
-            return false;
-          },
+        return PopScope(
+          canPop: false,
           child: StatefulBuilder(
             builder: (context, setState234) {
               return Dialog(
@@ -488,7 +487,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                       onChanged: (value) {
                                         setState234(() {});
                                       },
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         contentPadding:
                                             EdgeInsets.only(top: 10, left: 16),
                                         suffixIcon: Icon(Icons.search),
@@ -500,13 +499,13 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               IconButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                   searchController.clear();
                                 },
-                                icon: Icon(Icons.clear,
+                                icon: const Icon(Icons.clear,
                                     color: Colors.black, size: 25),
                               )
                             ],
@@ -538,8 +537,8 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                           fontSize: 16,
                                           color: Theme.of(context)
                                               .textTheme
-                                              .subtitle1
-                                              .color,
+                                              .titleMedium
+                                              ?.color,
                                           fontWeight: FontWeight.w400),
                                     ),
                                   );
@@ -583,7 +582,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                                 await getCitiesViewModel
                                                     .getCitiesViewModel(
                                                         stateId: bController
-                                                            .selectedState.id)
+                                                            .selectedState?.id)
                                                     .then((value) => bController
                                                         .changeCityValue(
                                                             getCitiesViewModel
@@ -599,22 +598,24 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                             },
                                             title: Text(
                                               state
-                                                  ? "${stateList[index].name.toString()}"
+                                                  ? stateList[index]
+                                                      .name
+                                                      .toString()
                                                   : "${bController.cityList[index].name.toString().capitalizeFirst}",
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 color: Theme.of(context)
                                                     .textTheme
-                                                    .subtitle1
-                                                    .color,
+                                                    .titleMedium
+                                                    ?.color,
                                               ),
                                             ),
                                           ),
-                                          Divider(height: 0)
+                                          const Divider(height: 0)
                                         ],
                                       );
                                     } else {
-                                      return SizedBox();
+                                      return const SizedBox();
                                     }
                                   },
                                 );
@@ -638,8 +639,8 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 15),
-        Text(
+        const SizedBox(height: 15),
+        const Text(
           'Patient\'s Mobile*',
           style: kInputTextStyle,
         ),
@@ -667,10 +668,10 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
         Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(Translate.of(context).translate('patient_details'),
+            title: Text(Translate.of(context)!.translate('patient_details'),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                     fontSize: 24),
                 textAlign: TextAlign.center),
           ),
@@ -691,36 +692,38 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                               color:
                                   _isdark ? Colors.transparent : Colors.white,
                               child: Container(
-                                padding: EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20),
                                 child: Row(
                                   children: <Widget>[
-                                    widget.navigationModel.doctorSpecialities !=
+                                    widget.navigationModel
+                                                ?.doctorSpecialities !=
                                             null
-                                        ? Utils().patientProfile(
-                                            widget
-                                                    .navigationModel
-                                                    .doctorSpecialities
-                                                    .profilePic ??
-                                                "",
-                                            widget
-                                                    .navigationModel
-                                                    .doctorSpecialities
-                                                    .socialProfilePic ??
-                                                "",
-                                            20)
+                                        ? Utils()
+                                            .patientProfile(
+                                                widget
+                                                        .navigationModel
+                                                        ?.doctorSpecialities
+                                                        ?.profilePic ??
+                                                    "",
+                                                widget
+                                                        .navigationModel
+                                                        ?.doctorSpecialities
+                                                        ?.socialProfilePic ??
+                                                    "",
+                                                20)
                                         : Utils().patientProfile(
-                                            widget.navigationModel.doctor
+                                            widget.navigationModel?.doctor
                                                     ?.doctorProfilePic ??
                                                 "",
-                                            widget.navigationModel.doctor
+                                            widget.navigationModel?.doctor
                                                     ?.doctorSocialProfilePic ??
                                                 "",
                                             20),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 15,
                                     ),
                                     if (widget.navigationModel
-                                            .doctorSpecialities !=
+                                            ?.doctorSpecialities !=
                                         null)
                                       Expanded(
                                         child: Column(
@@ -728,21 +731,24 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              widget.navigationModel
-                                                  .doctorSpecialities.firstName,
+                                              widget
+                                                  .navigationModel!
+                                                  .doctorSpecialities!
+                                                  .firstName!,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle2
-                                                  .copyWith(
+                                                  .titleSmall
+                                                  ?.copyWith(
                                                       fontWeight:
                                                           FontWeight.w700),
                                             ),
-                                            SizedBox(height: 3),
+                                            const SizedBox(height: 3),
                                             Text(
                                               widget
-                                                  .navigationModel
-                                                  .doctorSpecialities
-                                                  .speciality,
+                                                      .navigationModel
+                                                      ?.doctorSpecialities
+                                                      ?.speciality ??
+                                                  "",
                                               style: TextStyle(
                                                   color: Colors.grey[350],
                                                   fontSize: 14),
@@ -750,7 +756,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                           ],
                                         ),
                                       )
-                                    else if (widget.navigationModel.doctor !=
+                                    else if (widget.navigationModel?.doctor !=
                                         null)
                                       Expanded(
                                         child: Column(
@@ -758,19 +764,19 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              widget.navigationModel.doctor
-                                                  .doctorFirstName,
+                                              widget.navigationModel!.doctor!
+                                                  .doctorFirstName!,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle2
-                                                  .copyWith(
+                                                  .titleSmall
+                                                  ?.copyWith(
                                                       fontWeight:
                                                           FontWeight.w700),
                                             ),
-                                            SizedBox(height: 3),
+                                            const SizedBox(height: 3),
                                             Text(
-                                              widget.navigationModel.doctor
-                                                  .doctorSpeciality,
+                                              widget.navigationModel!.doctor!
+                                                  .doctorSpeciality!,
                                               style: TextStyle(
                                                   color: Colors.grey[350],
                                                   fontSize: 14),
@@ -792,32 +798,33 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                   ? Colors.white.withOpacity(0.12)
                                   : Colors.white,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                     Text(
-                                      Translate.of(context)
+                                      Translate.of(context)!
                                           .translate('purpose_of_visit'),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w400),
                                     ),
                                     CustomTextFormField(
                                       textInputAction: TextInputAction.done,
                                       validator: (text) {
-                                        if (text.isEmpty) {
+                                        if (text!.isEmpty) {
                                           return 'Enter Purpose of Visit';
                                         }
                                         return null;
                                       },
                                       controller: bookAppointmentController
                                           .purposeOfVisitController,
-                                      hintText: Translate.of(context)
+                                      hintText: Translate.of(context)!
                                           .translate('Reason for visit'),
                                     ),
-                                    SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                   ],
                                 ),
                               ),
@@ -832,33 +839,34 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                   ? Colors.white.withOpacity(0.12)
                                   : Colors.white,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                     Text(
-                                      Translate.of(context)
+                                      Translate.of(context)!
                                           .translate('date_and_time'),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
                                     Text(
-                                      '${DateFormat('EEEE, dd MMM yyyy').format(DateTime.parse(widget.navigationModel.mySelectedDate))}, ${widget.navigationModel.time > 12 ? widget.navigationModel.time - 12 : widget.navigationModel.time}:${widget.navigationModel.minute == 0 ? "00" : "0"} ${widget.navigationModel.time >= 12 ? 'PM' : 'AM'}',
+                                      '${DateFormat('EEEE, dd MMM yyyy').format(DateTime.parse(widget.navigationModel!.mySelectedDate!))}, ${widget.navigationModel!.time! > 12 ? widget.navigationModel!.time! - 12 : widget.navigationModel?.time}:${widget.navigationModel?.minute == 0 ? "00" : "0"} ${widget.navigationModel!.time! >= 12 ? 'PM' : 'AM'}',
                                       // '${widget.navigationModel.time}:00 ${widget.navigationModel.time >= 12 ? 'PM' : 'AM'}, ${widget.navigationModel.mySelectedDate}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                   ],
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Container(
@@ -867,19 +875,19 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                   ? Colors.white.withOpacity(0.12)
                                   : Colors.white,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      Translate.of(context).translate(
+                                      Translate.of(context)!.translate(
                                           'this_appointment_for_dot'),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
                                     Material(
@@ -905,8 +913,9 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                               value: true,
                                               onChanged: (value) async {
                                                 unFocus();
-                                                await Future.delayed(Duration(
-                                                    milliseconds: 300));
+                                                await Future.delayed(
+                                                    const Duration(
+                                                        milliseconds: 300));
 
                                                 setState(() {
                                                   _patient = true;
@@ -915,9 +924,9 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                               },
                                               groupValue: _patient,
                                               title: Text(
-                                                Translate.of(context).translate(
-                                                    _userController
-                                                        .user.value.firstName),
+                                                Translate.of(context)!
+                                                    .translate(_userController
+                                                        .user.value.firstName!),
                                               ),
                                             ),
                                             Divider(
@@ -930,8 +939,9 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                               onChanged: (value) async {
                                                 unFocus();
 
-                                                await Future.delayed(Duration(
-                                                    milliseconds: 300));
+                                                await Future.delayed(
+                                                    const Duration(
+                                                        milliseconds: 300));
 
                                                 setState(() {
                                                   bookAppointmentController
@@ -940,28 +950,28 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                                 });
                                               },
                                               groupValue: _patient,
-                                              title: Text(Translate.of(context)
+                                              title: Text(Translate.of(context)!
                                                   .translate('someone_else')),
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                     _patientDetails(h, w),
                                   ],
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 20, horizontal: 15),
                               child: RichText(
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
                                       text: Translate.of(context)
-                                          .translate('booking_agreement'),
+                                          ?.translate('booking_agreement'),
                                       style: TextStyle(
                                           color: Colors.grey[600],
                                           fontSize: 18,
@@ -969,8 +979,8 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                     ),
                                     TextSpan(
                                       text: Translate.of(context)
-                                          .translate('t_and_c'),
-                                      style: TextStyle(
+                                          ?.translate('t_and_c'),
+                                      style: const TextStyle(
                                           color: Colors.blue,
                                           fontSize: 18,
                                           fontWeight: FontWeight.w400,
@@ -990,14 +1000,14 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                   builder: (bController) {
                     return Container(
                       //color: Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
                       child: CustomButton(
                         textSize: 24,
                         onPressed: () async {
                           unFocus();
                           try {
-                            if (_formKey.currentState.validate()) {
+                            if (_formKey.currentState!.validate()) {
                               if (bController.selectedState == null) {
                                 Get.snackbar(
                                   'Alert',
@@ -1021,7 +1031,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                     (bController.medicalCenterForm != null) &&
                                     isAllSubmitted == false &&
                                     (resData != null &&
-                                        resData.data.forms.isNotEmpty)) {
+                                        resData!.data!.forms!.isNotEmpty)) {
                                   return Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -1037,15 +1047,15 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                   ).then(
                                     (value) =>
                                         bController.getPatientAppointment(
-                                            widget.navigationModel
-                                                .doctorSpecialities.userId,
+                                            widget.navigationModel!
+                                                .doctorSpecialities!.userId!,
                                             context),
                                   );
                                 } else {
                                   bController.updateLoader(true);
 
                                   DateTime localTime = DateTime.parse(
-                                      "${widget.navigationModel.utcDateTime}:00");
+                                      "${widget.navigationModel?.utcDateTime}:00");
                                   DateTime utcTime = localTime.toUtc();
 
                                   final date =
@@ -1059,39 +1069,36 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                           .navigationModel
                                           ?.doctorSpecialities
                                           ?.userId ??
-                                      widget.navigationModel.doctor.id;
+                                      widget.navigationModel?.doctor?.id;
                                   paypalPaymentModel.purposeOfVisit =
                                       bController.purposeOfVisitController.text;
                                   paypalPaymentModel.appointmentDate = date;
                                   paypalPaymentModel.appointmentTime = time;
                                   paypalPaymentModel.appointmentFor =
-                                      _patient ?? true
-                                          ? 'self'
-                                          : 'someone else';
-                                  paypalPaymentModel.fullName = _patient ?? true
+                                      _patient ? 'self' : 'someone else';
+                                  paypalPaymentModel.fullName = _patient
                                       ? _userController.user.value.firstName
                                       : bController.nameController.text;
-                                  paypalPaymentModel.mobile = _patient ?? true
+                                  paypalPaymentModel.mobile = _patient
                                       ? 'NA'
                                       : bController.patientPhoneController.text;
                                   paypalPaymentModel.email =
-                                      bController.emailController.text ??
-                                          _userController.user.value.email;
+                                      bController.emailController.text;
                                   paypalPaymentModel.patientMobile =
                                       bController.phoneController.text;
                                   paypalPaymentModel.doctorFees = widget
                                       .navigationModel
-                                      .doctorSpecialities
-                                      .perAppointmentCharge;
+                                      ?.doctorSpecialities
+                                      ?.perAppointmentCharge;
                                   paypalPaymentModel.firstName =
                                       _userController.user.value.firstName;
                                   paypalPaymentModel.lastName =
                                       _userController.user.value.lastName;
 
                                   paypalPaymentModel.city =
-                                      bController.selectedCity.id;
+                                      bController.selectedCity?.id;
                                   paypalPaymentModel.state =
-                                      bController.selectedState.id;
+                                      bController.selectedState?.id;
                                   paypalPaymentModel.companyName =
                                       bController.companyController.text;
                                   paypalPaymentModel.providerName =
@@ -1120,8 +1127,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                     patientMobile:
                                         paypalPaymentModel.patientMobile ?? "",
                                     purposeOfVisit:
-                                        paypalPaymentModel?.purposeOfVisit ??
-                                            "",
+                                        paypalPaymentModel.purposeOfVisit ?? "",
                                     city: paypalPaymentModel.city,
                                     state: paypalPaymentModel.state,
                                     companyName:
@@ -1139,8 +1145,8 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                       bController.clearData();
                                       Get.offAllNamed(Routes.home);
                                       return bController.getPatientAppointment(
-                                          widget.navigationModel
-                                              .doctorSpecialities.userId,
+                                          widget.navigationModel!
+                                              .doctorSpecialities!.userId!,
                                           context);
                                     },
                                   );
@@ -1156,9 +1162,9 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                                 (bController.medicalCenterForm != null) &&
                                 isAllSubmitted == false &&
                                 (resData != null &&
-                                    resData.data.forms.isNotEmpty)
+                                    resData!.data!.forms!.isNotEmpty)
                             ? "Next"
-                            : Translate.of(context).translate('confirm'),
+                            : Translate.of(context)!.translate('confirm'),
                       ),
                     );
                   },
@@ -1171,8 +1177,8 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
           builder: (bController) {
             return Container(
                 child: bController.isLoader
-                    ? ProgressIndicatorScreen()
-                    : SizedBox());
+                    ? const ProgressIndicatorScreen()
+                    : const SizedBox());
           },
         )
       ],
@@ -1182,7 +1188,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
   showDialogBoxForCircularBuilder(BuildContext context) {
     return showDialog(
       barrierColor: Colors.black.withOpacity(0.3),
-      context: Get.overlayContext,
+      context: Get.overlayContext!,
       builder: (context) {
         return Center(
           child: Utils.circular(),
@@ -1191,7 +1197,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
     );
   }
 
-  static Container commonContainer({Widget child}) {
+  static Container commonContainer({required Widget child}) {
     return Container(
       height: 60,
       decoration: BoxDecoration(

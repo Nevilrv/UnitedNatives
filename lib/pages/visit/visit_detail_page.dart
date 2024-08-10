@@ -29,7 +29,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
           context: context,
         ),
         appBar: AppBar(
-          title: Text(Translate.of(context).translate('visit_detail'),
+          title: Text(Translate.of(context)!.translate('visit_detail'),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).textTheme.titleMedium?.color,
@@ -61,7 +61,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                               backgroundColor: Colors.transparent,
                               radius: 30,
                               backgroundImage: NetworkImage(
-                                widget.doctorDetails.doctorProfilePic,
+                                widget.doctorDetails.doctorProfilePic!,
                               ),
                             ),
                             const SizedBox(width: 15),
@@ -78,7 +78,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    widget.doctorDetails.doctorSpeciality,
+                                    widget.doctorDetails.doctorSpeciality!,
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontFamily: 'NunitoSans',
@@ -156,7 +156,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        Translate.of(context).translate('diagnosis'),
+                        Translate.of(context)!.translate('diagnosis'),
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge
@@ -177,9 +177,9 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                 CustomProfileItem(
                   onTap: () {},
                   title:
-                      Translate.of(context).translate('physical_examination'),
+                      Translate.of(context)!.translate('physical_examination'),
                   subTitle: '14/02/2019',
-                  buttonTitle: Translate.of(context).translate('see_reports'),
+                  buttonTitle: Translate.of(context)!.translate('see_reports'),
                   imagePath: 'assets/images/icon_examination.png',
                 ),
                 const SizedBox(height: 20),
@@ -187,7 +187,7 @@ class _VisitDetailPageState extends State<VisitDetailPage> {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        Translate.of(context).translate('recommendation'),
+                        Translate.of(context)!.translate('recommendation'),
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.w700,
                             ),

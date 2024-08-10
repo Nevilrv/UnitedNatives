@@ -2,18 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:html/parser.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 
 class EventScreen extends StatefulWidget {
-  const EventScreen({Key key}) : super(key: key);
+  const EventScreen({super.key});
 
   @override
   State<EventScreen> createState() => _EventScreenState();
@@ -22,20 +22,16 @@ class EventScreen extends StatefulWidget {
 class _EventScreenState extends State<EventScreen> {
   Future upcomingEventData() async {
     http.Response response = await http.get(
-      Uri.parse('${Constants.baseUrl + Constants.upcomingEvent}'),
+      Uri.parse(Constants.baseUrl + Constants.upcomingEvent),
     );
-
-    print('response==========>>>>>${response.statusCode}');
 
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
-      print('response--------${jsonDecode(response.body)}');
       return result;
     } else {}
   }
 
   AdsController adsController = Get.find();
-  int randomAd;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AdsController>(builder: (ads) {
@@ -47,12 +43,12 @@ class _EventScreenState extends State<EventScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          title: Text(
+          title: const Text(
             'Upcoming Event',
             style: TextStyle(fontSize: 25, color: Colors.black),
           ),
           leading: GestureDetector(
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: Colors.black,
             ),
@@ -70,18 +66,19 @@ class _EventScreenState extends State<EventScreen> {
                   ? Center(
                       child: Text(
                         "Server Error",
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
                       ),
                     )
                   : Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             // Container(
                             //   height: MediaQuery.of(context).size.height * 0.35,
                             //   width: MediaQuery.of(context).size.width,
@@ -97,8 +94,8 @@ class _EventScreenState extends State<EventScreen> {
                               imageUrl: '${snapshot.data['data']['image_url']}',
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
                                 child: Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.28,
@@ -107,28 +104,33 @@ class _EventScreenState extends State<EventScreen> {
                                 ),
                               ),
                               errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                                  const Icon(Icons.error),
                             ),
-                            SizedBox(height: 40),
+                            const SizedBox(height: 40),
 
-                            Text(
+                            const Text(
                               'Upcoming Event',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            SizedBox(height: 15),
-                            Html(
-                              data: snapshot.data['data']
-                                  ['content'], //html string to be parsed
-                              style: {
-                                "br": Style(
-                                  color: Colors.green,
-                                  fontSize: FontSize(22),
-                                ),
-                              },
-                            ),
+                            const SizedBox(height: 15),
+                            Builder(builder: (context) {
+                              var document =
+                                  parse(snapshot.data['data']['content']);
+                              return Text(document.body!.text);
+                            }),
+                            // Html(
+                            //   data: snapshot.data['data']
+                            //       ['content'], //html string to be parsed
+                            //   style: {
+                            //     "br": Style(
+                            //       color: Colors.green,
+                            //       fontSize: FontSize(22),
+                            //     ),
+                            //   },
+                            // ),
                             // Text(
                             //   '${snapshot.data['data']['image']}',
                             //   textAlign: TextAlign.justify,

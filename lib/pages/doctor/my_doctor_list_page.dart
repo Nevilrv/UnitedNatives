@@ -1,17 +1,19 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/my_doctor_list_item.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/appointment.dart';
-import 'package:doctor_appointment_booking/pages/doctor/my_doctor_screen.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/my_doctor_list_item.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/pages/doctor/my_doctor_screen.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 class MyDoctorListPage extends StatefulWidget {
+  const MyDoctorListPage({super.key});
+
   @override
   State<MyDoctorListPage> createState() => _MyDoctorListPageState();
 }
@@ -37,7 +39,7 @@ class _MyDoctorListPageState extends State<MyDoctorListPage> {
 
   @override
   Widget build(BuildContext context) {
-    PatientHomeScreenController _patientHomeScreenController = Get.find()
+    PatientHomeScreenController patientHomeScreenController = Get.find()
       ..getVisitedDoctors();
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
@@ -47,10 +49,10 @@ class _MyDoctorListPageState extends State<MyDoctorListPage> {
         ),
         appBar: AppBar(
           title: Text(
-            Translate.of(context).translate('My Providers'),
+            Translate.of(context)!.translate('My Providers'),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24),
             textAlign: TextAlign.center,
           ),
@@ -70,10 +72,10 @@ class _MyDoctorListPageState extends State<MyDoctorListPage> {
                 tabs: [
                   Tab(
                     text: Translate.of(context)
-                        .translate('United Natives Providers'),
+                        ?.translate('United Natives Providers'),
                   ),
                   Tab(
-                    text: Translate.of(context).translate('Other Providers'),
+                    text: Translate.of(context)?.translate('Other Providers'),
                   ),
                 ],
               ),
@@ -82,64 +84,62 @@ class _MyDoctorListPageState extends State<MyDoctorListPage> {
                   children: [
                     Obx(
                       () {
-                        if (_patientHomeScreenController
+                        if (patientHomeScreenController
                                 .visitedDoctorUpcomingPastData.value.apiState ==
                             APIState.COMPLETE) {
                           return Obx(
-                            () => (_patientHomeScreenController
+                            () => (patientHomeScreenController
                                         .visitedDoctorUpcomingPastData
-                                        ?.value
-                                        ?.past
+                                        .value
+                                        .past
                                         ?.isEmpty ??
                                     true)
                                 ? Center(
-                                    child: Container(
-                                      child: Text(
-                                        "No data!",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6
-                                            .copyWith(fontSize: 20),
-                                        textAlign: TextAlign.center,
-                                      ),
+                                    child: Text(
+                                      "No data!",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(fontSize: 20),
+                                      textAlign: TextAlign.center,
                                     ),
                                   )
                                 : RefreshIndicator(
-                                    onRefresh: _patientHomeScreenController
+                                    onRefresh: patientHomeScreenController
                                         .getVisitedDoctors,
                                     child: Builder(builder: (context) {
                                       List<Appointment> data = [];
 
                                       Set doctorId = {};
-                                      _patientHomeScreenController
+                                      patientHomeScreenController
                                           .visitedDoctorUpcomingPastData
-                                          ?.value
-                                          ?.past
+                                          .value
+                                          .past
                                           ?.forEach((element) {
                                         doctorId.add(element.doctorId);
                                       });
                                       doctorId.toList().forEach((element1) {
                                         final tempData =
-                                            _patientHomeScreenController
+                                            patientHomeScreenController
                                                 .visitedDoctorUpcomingPastData
-                                                ?.value
-                                                ?.past
+                                                .value
+                                                .past
                                                 ?.where((element) =>
                                                     element.doctorId ==
                                                     element1)
-                                                ?.toList();
-                                        data.add(tempData.first);
+                                                .toList();
+                                        data.add(tempData!.first);
                                       });
 
                                       return ListView.separated(
                                         physics:
-                                            AlwaysScrollableScrollPhysics(),
+                                            const AlwaysScrollableScrollPhysics(),
                                         separatorBuilder: (context, index) =>
-                                            SizedBox(
+                                            const SizedBox(
                                           height: 15,
                                         ),
-                                        itemCount: data.length ?? 0,
-                                        padding: EdgeInsets.symmetric(
+                                        itemCount: data.length,
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 20, vertical: 25),
                                         itemBuilder: (context, index) {
                                           return MyDoctorListItem(
@@ -150,43 +150,37 @@ class _MyDoctorListPageState extends State<MyDoctorListPage> {
                                     }),
                                   ),
                           );
-                        } else if (_patientHomeScreenController
+                        } else if (patientHomeScreenController
                                 .visitedDoctorUpcomingPastData.value.apiState ==
                             APIState.COMPLETE_WITH_NO_DATA) {
                           return Center(
-                            child: Container(
-                              child: Text(
-                                "No data!",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(fontSize: 20),
-                                textAlign: TextAlign.center,
-                              ),
+                            child: Text(
+                              "No data!",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(fontSize: 20),
+                              textAlign: TextAlign.center,
                             ),
                           );
-                        } else if (_patientHomeScreenController
+                        } else if (patientHomeScreenController
                                 .visitedDoctorUpcomingPastData.value.apiState ==
                             APIState.ERROR) {
-                          return Center(child: Text("Error"));
-                        } else if (_patientHomeScreenController
+                          return const Center(child: Text("Error"));
+                        } else if (patientHomeScreenController
                                 .visitedDoctorUpcomingPastData.value.apiState ==
                             APIState.PROCESSING) {
-                          return Container(
-                              // child: Center(
-                              //   child: CircularProgressIndicator(),
-                              // ),
-                              child: Center(
-                            child: Utils.circular(),
-                          ));
-                        } else {
                           return Center(
+                            child: Utils.circular(),
+                          );
+                        } else {
+                          return const Center(
                             child: Text(""),
                           );
                         }
                       },
                     ),
-                    MyDoctorScreen(),
+                    const MyDoctorScreen(),
                   ],
                 ),
               ),

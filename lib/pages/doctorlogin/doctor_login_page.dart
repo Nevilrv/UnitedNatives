@@ -1,42 +1,41 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/login_verification.dart';
-import 'package:doctor_appointment_booking/model/pin_status_model.dart';
-import 'package:doctor_appointment_booking/model/user.dart';
-import 'package:doctor_appointment_booking/pages/login/phoneAuthScreen3.dart';
-import 'package:doctor_appointment_booking/pages/resources/show_all_screen.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/login_verification.dart';
+import 'package:united_natives/model/pin_status_model.dart';
+import 'package:united_natives/model/user.dart';
+import 'package:united_natives/pages/login/phoneAuthScreen3.dart';
+import 'package:united_natives/pages/resources/show_all_screen.dart';
+import 'package:united_natives/utils/utils.dart';
+
 import '../../components/custom_button.dart';
 import '../../components/text_form_field.dart';
 import '../../routes/routes.dart';
 import '../../utils/constants.dart';
 
 class DoctorLoginPage extends StatefulWidget {
-  _DoctorLoginPageState createState() => _DoctorLoginPageState();
+  const DoctorLoginPage({super.key});
+
+  @override
+  State<DoctorLoginPage> createState() => _DoctorLoginPageState();
 }
 
 class _DoctorLoginPageState extends State<DoctorLoginPage> {
   // LocalAuthentication _auth = LocalAuthentication();
   // bool _checkBio = false;
   // bool _isBioFinger = false;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   UserController userController = Get.put<UserController>(UserController());
-  UserCredential authResult;
-  final RoundedLoadingButtonController btnController =
-      new RoundedLoadingButtonController();
+  UserCredential? authResult;
 
   @override
   void initState() {
     super.initState();
-    print('HELLO');
 
     // _checkBiometrics();
     // _listBioAndFindFingerType();
@@ -67,13 +66,13 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Expanded(
+                        const Expanded(
                           child: SizedBox(height: 80),
                         ),
                         Row(children: [
                           Text(
-                            Translate.of(context).translate('Provider Login'),
-                            style: TextStyle(
+                            Translate.of(context)!.translate('Provider Login'),
+                            style: const TextStyle(
                               fontSize: 32,
                               fontWeight: FontWeight.w700,
                             ),
@@ -87,10 +86,10 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                           //   iconSize: 100,
                           // ),
                         ]),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
-                        WidgetSignin(),
+                        const WidgetSignin(),
                         Center(
                           child: MaterialButton(
                             onPressed: () {
@@ -98,16 +97,16 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                                   .pushNamed(Routes.forgotPassword);
                             },
                             child: Text(
-                              Translate.of(context)
+                              Translate.of(context)!
                                   .translate('forgot_yout_password'),
                               style: Theme.of(context)
                                   .textTheme
-                                  .button
-                                  .copyWith(fontSize: 18),
+                                  .labelLarge
+                                  ?.copyWith(fontSize: 18),
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
 
@@ -190,7 +189,7 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                             // ),
                           ),
                         ),*/
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
@@ -199,8 +198,8 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                             Container(
                               width: 99,
                               height: 99,
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.all(2),
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
@@ -217,7 +216,7 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         CustomButton(
@@ -226,21 +225,21 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                                 () => /*_onAlertWithCustomContentPressed(context), */
                                     Navigator.of(context).popAndPushNamed(
                                         Routes.login), //Doctor login path
-                            text: Translate.of(context)
+                            text: Translate.of(context)!
                                 .translate('I am a Client')),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
-                              return ShowAllScreen();
+                              return const ShowAllScreen();
                             }));
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: Color(0xff2e83f8),
+                              backgroundColor: const Color(0xff2e83f8),
                               fixedSize:
                                   Size(MediaQuery.of(context).size.width, 45)),
-                          child: Text(
+                          child: const Text(
                             'Resources',
                             style: TextStyle(
                                 color: Colors.white,
@@ -255,9 +254,9 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(5),
                                   child: Text(
-                                    Translate.of(context)
+                                    Translate.of(context)!
                                         .translate('Register as Provider'),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Color(0xffbcbcbc),
                                       fontSize: 20,
                                       fontFamily: 'NunitoSans',
@@ -273,12 +272,12 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Text(
-                                      Translate.of(context)
+                                      Translate.of(context)!
                                           .translate('Click here'),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .button
-                                          .copyWith(fontSize: 20),
+                                          .labelLarge
+                                          ?.copyWith(fontSize: 20),
                                     ),
                                   ),
                                 ),
@@ -286,7 +285,7 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         )
                       ],
@@ -349,12 +348,12 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
 }
 
 class WidgetSignin extends StatefulWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
-  WidgetSignin({this.scaffoldKey});
+  const WidgetSignin({super.key, this.scaffoldKey});
 
   @override
-  _WidgetSigninState createState() => _WidgetSigninState();
+  State<WidgetSignin> createState() => _WidgetSigninState();
 }
 
 class _WidgetSigninState extends State<WidgetSignin> {
@@ -383,7 +382,7 @@ class _WidgetSigninState extends State<WidgetSignin> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            Translate.of(context).translate('email_dot'),
+            Translate.of(context)!.translate('email_dot'),
             style: kInputTextStyle,
           ),
           CustomTextFormField(
@@ -391,7 +390,7 @@ class _WidgetSigninState extends State<WidgetSignin> {
             controller: _emailController,
             hintText: 'contact@sataware.com',
             validator: (text) {
-              if (text.isEmpty) {
+              if (text!.isEmpty) {
                 setState(() {
                   isLoading = false;
                 });
@@ -400,11 +399,11 @@ class _WidgetSigninState extends State<WidgetSignin> {
               return null;
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Text(
-            Translate.of(context).translate('password_dot'),
+            Translate.of(context)!.translate('password_dot'),
             style: kInputTextStyle,
           ),
           CustomTextFormField(
@@ -413,7 +412,7 @@ class _WidgetSigninState extends State<WidgetSignin> {
             hintText: '* * * * * *',
             obscureText: true,
             validator: (text) {
-              if (text.isEmpty) {
+              if (text!.isEmpty) {
                 setState(() {
                   isLoading = false;
                 });
@@ -422,7 +421,7 @@ class _WidgetSigninState extends State<WidgetSignin> {
               return null;
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 35,
           ),
           isLoading
@@ -430,7 +429,7 @@ class _WidgetSigninState extends State<WidgetSignin> {
               //     child: CircularProgressIndicator(
               //     strokeWidth: 1,
               //   ))
-              ? Container(
+              ? SizedBox(
                   height: 60,
                   child: Center(
                     child: Utils.circular(height: 60),
@@ -450,7 +449,7 @@ class _WidgetSigninState extends State<WidgetSignin> {
                     setState(() {
                       isLoading = true;
                     });
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       _userController.loginData = User(
                         email: _emailController.text,
                         password: _passwordController.text,
@@ -459,15 +458,15 @@ class _WidgetSigninState extends State<WidgetSignin> {
 
                       loginVerificationData =
                           await _userController.loginVerificationDetails(
-                              _userController.loginData?.email,
+                              _userController.loginData!.email!,
                               _userController.loginData?.password);
 
                       if (loginVerificationData != null) {
                         pinStatusModelData = await _userController
-                            .statusPIN(loginVerificationData.id);
+                            .statusPIN(loginVerificationData.id!);
 
                         if (pinStatusModelData.pinStatusData != null) {
-                          if (pinStatusModelData.pinStatusData.requestStatus ==
+                          if (pinStatusModelData.pinStatusData?.requestStatus ==
                               "2") {
                             Navigator.push(
                                 context,
@@ -475,24 +474,25 @@ class _WidgetSigninState extends State<WidgetSignin> {
                                   builder: (context) => PhoneVerification3(
                                       loginVerificationData:
                                           loginVerificationData,
-                                      resetPINId:
-                                          pinStatusModelData.pinStatusData.id),
+                                      resetPINId: pinStatusModelData
+                                          .pinStatusData!.id!),
                                 ));
 
-                            await Future.delayed(Duration(milliseconds: 500))
+                            await Future.delayed(
+                                    const Duration(milliseconds: 500))
                                 .then((value) => Utils.showSnackBar(
                                     'Reset Password',
                                     'Admin Verified Pin Reset Request'));
                           } else {
                             await _userController.loginVerification(
-                                _userController.loginData.email,
-                                _userController.loginData.password,
+                                _userController.loginData!.email!,
+                                _userController.loginData!.password,
                                 _passwordController.text);
                           }
                         } else {
                           await _userController.loginVerification(
-                              _userController.loginData.email,
-                              _userController.loginData.password,
+                              _userController.loginData!.email!,
+                              _userController.loginData!.password,
                               _passwordController.text);
                         }
                       }
@@ -506,7 +506,7 @@ class _WidgetSigninState extends State<WidgetSignin> {
                       //     useProfilePic: _image);
                     }
                   },
-                  text: Translate.of(context).translate('login'),
+                  text: Translate.of(context)!.translate('login'),
                 )
         ],
       ),

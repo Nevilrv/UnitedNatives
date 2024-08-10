@@ -1,8 +1,8 @@
-import 'package:doctor_appointment_booking/components/agora_video_call.dart';
-import 'package:doctor_appointment_booking/components/custom_button.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/model/patient_homepage_model.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/agora_video_call.dart';
+import 'package:united_natives/components/custom_button.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/model/patient_homepage_model.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
@@ -25,10 +25,10 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
 
   getData(UpcomingAppointments data) async {
     if (data.meetingData != null) {
-      if (data.meetingData.id.isNotEmpty &&
-          data.meetingData.password.isNotEmpty) {
+      if (data.meetingData!.id!.isNotEmpty &&
+          data.meetingData!.password!.isNotEmpty) {
         data.status = await _patientHomeScreenController.getMeetingStatus(
-            data.meetingData.id, data.doctorId);
+            data.meetingData!.id!, data.doctorId!);
       }
     }
     temp = 1;
@@ -39,10 +39,10 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        List<UpcomingAppointments> dataList = _patientHomeScreenController
-            .patientHomePageData?.value?.data?.upcomingAppointments;
+        List<UpcomingAppointments>? dataList = _patientHomeScreenController
+            .patientHomePageData.value.data?.upcomingAppointments;
 
-        dataList.sort(
+        dataList?.sort(
           (b, a) {
             String dateA = "${b.appointmentDate} ${b.appointmentTime}";
             String dateB = "${a.appointmentDate} ${a.appointmentTime}";
@@ -50,19 +50,19 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
           },
         );
 
-        UpcomingAppointments data = dataList.first;
+        UpcomingAppointments? data = dataList?.first;
 
         final time = Utils.formattedDate(
-            '${DateTime.parse('${data.appointmentDate} ${data.appointmentTime}')}');
+            '${DateTime.parse('${data?.appointmentDate} ${data?.appointmentTime}')}');
 
         if (temp == 0) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            getData(data);
+            getData(data!);
           });
         }
 
         return Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4), color: kColorBlue),
           child: Column(
@@ -75,20 +75,20 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '${DateFormat('EEEE, d MMMM').format(time)}',
-                          style: TextStyle(
+                          DateFormat('EEEE, d MMMM').format(time),
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 27,
                               fontWeight: FontWeight.w400),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text(
-                          '${DateFormat('hh:mm a').format(time)}',
+                          DateFormat('hh:mm a').format(time),
                           // '${data.appointmentTime}',
                           // '${_patientHomeScreenController.visitedDoctorUpcomingPastData.value.upcomingPast?.upcoming?.first?.appointmentDate}, ${_patientHomeScreenController.visitedDoctorUpcomingPastData.value.upcomingPast?.upcoming?.first?.appointmentTime}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w300),
@@ -96,7 +96,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Builder(
@@ -104,7 +104,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                       DateTime currentTime = DateTime.now();
 
                       final dateTime = Utils.formattedDate(
-                          '${DateTime.parse('${data.appointmentDate} ${data.appointmentTime}')}');
+                          '${DateTime.parse('${data?.appointmentDate} ${data?.appointmentTime}')}');
 
                       DateTime appointmentDate = DateTime.parse("$dateTime");
 
@@ -121,7 +121,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                               :*/
                           CustomButton(
                         textSize: 18,
-                        color: data.appointmentStatus == "0"
+                        color: data?.appointmentStatus == "0"
                             ? Colors.white70
                             : appointmentDate.difference(currentTime).inDays ==
                                     0
@@ -130,11 +130,11 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                                     : Colors.white
                                 : Colors.white70,
                         fontColor: kColorBlue,
-                        text: data.status == "rejoin"
+                        text: data?.status == "rejoin"
                             ? "Rejoin Meeting"
                             : "Join Meeting",
                         onPressed: () async {
-                          if (data.appointmentStatus == "0") {
+                          if (data?.appointmentStatus == "0") {
                             messageDialog(
                                 title: "Appointment not accepted",
                                 message:
@@ -162,7 +162,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                               //     message:
                               //         'Meeting scheduled on ${DateFormat('EEEE, d MMMM').format(DateTime.parse("${data.appointmentDate}"))} ${DateFormat("hh:mm a").format(DateTime.parse(targetTime))}. You can join meeting 10 minutes before the scheduled time when doctor started meeting.');
                             } else {
-                              if (data.meetingData.id.toString().isEmpty) {
+                              if (data!.meetingData!.id.toString().isEmpty) {
                                 return messageDialog(
                                     title: "Stay tuned",
                                     message:
@@ -177,27 +177,27 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                                     builder: (context) => MyVideoCall(
                                         docId: data.doctorId,
                                         s1: "${data.id}",
-                                        s2: "${data.meetingData.id}",
-                                        channelName: "${data.meetingData.id}",
-                                        token: "${data.meetingData.password}"),
+                                        s2: "${data.meetingData?.id}",
+                                        channelName: "${data.meetingData?.id}",
+                                        token: "${data.meetingData?.password}"),
                                   ),
                                 ).then(
                                   (value) async {
                                     await Future.delayed(
-                                        Duration(milliseconds: 500));
+                                        const Duration(milliseconds: 500));
 
                                     await showDialog<String>(
                                       context: context,
                                       barrierDismissible: false,
                                       builder: (BuildContext c1) => AlertDialog(
-                                        title: Text(
+                                        title: const Text(
                                           "Appointment Ended",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 24),
                                         ),
-                                        content: Column(
+                                        content: const Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
@@ -212,7 +212,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                                                 MainAxisAlignment.end,
                                             children: [
                                               TextButton(
-                                                child: Text(
+                                                child: const Text(
                                                   "Okay",
                                                   style:
                                                       TextStyle(fontSize: 22),
@@ -254,7 +254,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                   ),
                 ],
               ),
-              Divider(color: Colors.grey, height: 40, thickness: 0.5),
+              const Divider(color: Colors.grey, height: 40, thickness: 0.5),
               Row(
                 children: <Widget>[
                   Utils().patientProfile(data?.doctorProfilePic ?? "",
@@ -287,23 +287,23 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                   //   ),
                   // ),*/
                   //     ),
-                  SizedBox(width: 10),
-                  Container(
+                  const SizedBox(width: 10),
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 0.65,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '${data.doctorFirstName} ${data.doctorLastName}',
-                          style: TextStyle(
+                          '${data?.doctorFirstName} ${data?.doctorLastName}',
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.w400),
                         ),
-                        SizedBox(height: 2),
+                        const SizedBox(height: 2),
                         Text(
-                          '${data.doctorSpeciality}' ?? "Women Specialist",
-                          style: TextStyle(
+                          '${data?.doctorSpeciality}',
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w300),
@@ -320,7 +320,10 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
     );
   }
 
-  messageDialog({BuildContext context, String message, String title}) async {
+  messageDialog(
+      {required BuildContext context,
+      required String message,
+      required String title}) async {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -338,7 +341,8 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                       Navigator.pop(context);
                       _patientHomeScreenController.getPatientHomePage();
                     },
-                    child: Icon(Icons.clear, color: Colors.black, size: 28),
+                    child:
+                        const Icon(Icons.clear, color: Colors.black, size: 28),
                   ),
                 ),
                 Padding(
@@ -346,15 +350,15 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(height: 45),
+                      const SizedBox(height: 45),
                       Align(
                         alignment: Alignment.topCenter,
                         child: Text(
                           title,
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontWeight: FontWeight.w700),
+                              .titleLarge
+                              ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                       ),
                       Padding(
@@ -366,14 +370,14 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
-                                .copyWith(fontWeight: FontWeight.w400),
+                                .titleLarge
+                                ?.copyWith(fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 20),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.of(context).pop();
@@ -382,7 +386,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
                           style: ElevatedButton.styleFrom(
                             fixedSize: Size(Get.width, 40),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Okay",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
@@ -404,7 +408,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
     PermissionStatus cameraStatus = await Permission.camera.request();
 
     if (cameraStatus == PermissionStatus.denied) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You need to provide a Camera Permission'),
       ));
     }
@@ -415,7 +419,7 @@ class _NextAppointmentWidgetState extends State<NextAppointmentWidget> {
     PermissionStatus microPhoneStatus = await Permission.microphone.request();
 
     if (microPhoneStatus == PermissionStatus.denied) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You need to provide a MicroPhone Permission'),
       ));
     }

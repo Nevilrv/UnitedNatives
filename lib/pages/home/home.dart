@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/main.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
-import 'package:doctor_appointment_booking/pages/home2/drawer_controller.dart';
-import 'package:doctor_appointment_booking/utils/time.dart';
-import 'package:doctor_appointment_booking/viewModel/log_out_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/patient_scheduled_class_viewmodel.dart';
-import 'package:doctor_appointment_booking/viewModel/rate_and%20_contactus_viewModel.dart';
+import 'package:flutter/foundation.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/main.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
+import 'package:united_natives/pages/home2/drawer_controller.dart';
+import 'package:united_natives/utils/time.dart';
+import 'package:united_natives/viewModel/log_out_view_model.dart';
+import 'package:united_natives/viewModel/patient_scheduled_class_viewmodel.dart';
+import 'package:united_natives/viewModel/rate_and%20_contactus_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -29,8 +30,10 @@ import 'home_page.dart';
 import 'widgets/widgets.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> with WidgetsBindingObserver {
@@ -45,8 +48,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   final _pages = [
     HomePage(),
     ProfilePage(),
-    MessagesPage(),
-    SettingsPage(),
+    const MessagesPage(),
+    const SettingsPage(),
   ];
 
   @override
@@ -63,12 +66,12 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     addChatOnlineStatus(type: true);
     patientScheduledClassController.getClassListPatient(
-        id: userController.user.value.id, date: '');
+        id: userController.user.value.id!, date: '');
     drawerController2.initPageView();
     super.initState();
   }
 
-  BookAppointmentController _bookAppointmentController =
+  final BookAppointmentController _bookAppointmentController =
       Get.put(BookAppointmentController());
 
   @override
@@ -90,7 +93,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> addChatOnlineStatus({bool type}) async {
+  Future<void> addChatOnlineStatus({required bool type}) async {
     AddChatOnlineStatusReqModel model = AddChatOnlineStatusReqModel();
     model.isOnline = type;
     model.lastSeen = DateTime.now().toUtc().toString();
@@ -232,7 +235,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       "city": city
     };
     http.Response response = await http.post(
-      Uri.parse('${Constants.baseUrl + Constants.getAllDoctorByLocation}'),
+      Uri.parse(Constants.baseUrl + Constants.getAllDoctorByLocation),
       headers: header,
       body: jsonEncode(body),
     );
@@ -247,18 +250,12 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+    bool isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
     final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
 
-    return WillPopScope(
-      onWillPop: () async {
-        if (Get.find<UserController>().user.value == null) {
-          return true;
-        }
-        return false;
-      },
+    return PopScope(
+      canPop: Get.find<UserController>().user.value == null ? true : false,
       child: GetBuilder<DrawerController2>(builder: (controller) {
         return Stack(
           children: <Widget>[
@@ -273,7 +270,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   controller.xOffset, controller.yOffset, 0)
                 ..scale(controller.scaleFactor)
                 ..rotateY(controller.isDrawerOpen ? -0.5 : 0),
-              duration: Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 250),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius:
@@ -286,7 +283,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   appBar: AppBar(
                     leading: controller.isDrawerOpen
                         ? IconButton(
-                            icon: Icon(Icons.arrow_back_ios),
+                            icon: const Icon(Icons.arrow_back_ios),
                             iconSize: 40,
                             onPressed: () {
                               controller.closeDrawer();
@@ -294,7 +291,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                             },
                           )
                         : IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.menu,
                               size: 30,
                             ),
@@ -303,16 +300,16 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   .openDrawer(MediaQuery.of(context).size);
                             },
                           ),
-                    title: AppBarTitleWidget(),
+                    title: const AppBarTitleWidget(),
                     actions: <Widget>[
                       controller.selectedIndex == 2
                           ? IconButton(
                               onPressed: () async {
-                                TimerChange.timer.cancel();
+                                TimerChange.timer?.cancel();
 
                                 Navigator.of(context).pushNamed(Routes.message);
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.add,
                                 size: 30,
                               ),
@@ -324,13 +321,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                     .then((value) => patientHomeScreenController
                                         .getPatientHomePage());
                               },
-                              icon: Icon(Icons.notifications_on_rounded,
+                              icon: const Icon(Icons.notifications_on_rounded,
                                   size: 30),
                             )
                     ],
                   ),
                   body: PageView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     controller: controller.pageController,
                     onPageChanged: (index) {
                       // _selectedIndex.value = index;
@@ -340,16 +337,16 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   floatingActionButton: KeyboardVisibilityBuilder(
                     builder: (context, visible) {
                       return visible
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Container(
                               width: 80,
                               height: 80,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(0x202e83f8),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(15),
                                 child: GestureDetector(
                                   onTap: () {
                                     showDialog(
@@ -366,7 +363,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                   children: [
                                                     ConstrainedBox(
                                                       constraints:
-                                                          BoxConstraints(
+                                                          const BoxConstraints(
                                                               maxWidth: 500),
                                                       child: Stack(
                                                         children: [
@@ -378,7 +375,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                 Navigator.pop(
                                                                     context);
                                                               },
-                                                              child: Icon(
+                                                              child: const Icon(
                                                                   Icons.clear,
                                                                   color: Colors
                                                                       .black,
@@ -390,27 +387,27 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                 MainAxisSize
                                                                     .min,
                                                             children: [
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                   height: 20),
                                                               Padding(
                                                                 padding:
-                                                                    EdgeInsets
+                                                                    const EdgeInsets
                                                                         .all(
-                                                                            20),
+                                                                        20),
                                                                 child: Align(
                                                                   alignment:
                                                                       Alignment
                                                                           .topCenter,
                                                                   child: Text(
                                                                     Translate.of(
-                                                                            context)
+                                                                            context)!
                                                                         .translate(
                                                                             'choose_health_center'),
                                                                     style: Theme.of(
                                                                             context)
                                                                         .textTheme
-                                                                        .headline6
-                                                                        .copyWith(
+                                                                        .titleLarge
+                                                                        ?.copyWith(
                                                                             fontWeight:
                                                                                 FontWeight.w700),
                                                                   ),
@@ -650,7 +647,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                               //   ),
                                                               // ),
 
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                   height: 20),
 
                                                               GestureDetector(
@@ -663,11 +660,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                           context,
                                                                       builder:
                                                                           (context) {
-                                                                        return WillPopScope(
-                                                                          onWillPop:
-                                                                              () async {
-                                                                            return false;
-                                                                          },
+                                                                        return PopScope(
+                                                                          canPop:
+                                                                              false,
                                                                           child:
                                                                               StatefulBuilder(
                                                                             builder:
@@ -677,7 +672,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                                 child: ConstrainedBox(
                                                                                   constraints: BoxConstraints(maxHeight: h * 0.6, maxWidth: 550),
                                                                                   child: Container(
-                                                                                    decoration: BoxDecoration(color: _isDark ? Colors.grey.shade800 : Colors.white, borderRadius: BorderRadius.circular(5)),
+                                                                                    decoration: BoxDecoration(color: isDark ? Colors.grey.shade800 : Colors.white, borderRadius: BorderRadius.circular(5)),
                                                                                     // height: h * 0.6,
                                                                                     // width: w * 0.85,
                                                                                     padding: EdgeInsets.symmetric(horizontal: h * 0.015).copyWith(top: h * 0.015),
@@ -689,7 +684,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                                             Expanded(
                                                                                               child: Container(
                                                                                                 decoration: BoxDecoration(
-                                                                                                  color: _isDark ? Colors.grey.shade800 : Colors.white,
+                                                                                                  color: isDark ? Colors.grey.shade800 : Colors.white,
                                                                                                   borderRadius: BorderRadius.circular(25),
                                                                                                   border: Border.all(color: Colors.grey),
                                                                                                 ),
@@ -700,7 +695,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                                                     onChanged: (value) {
                                                                                                       setState234(() {});
                                                                                                     },
-                                                                                                    decoration: InputDecoration(
+                                                                                                    decoration: const InputDecoration(
                                                                                                       contentPadding: EdgeInsets.only(top: 10, left: 16),
                                                                                                       suffixIcon: Icon(Icons.search),
                                                                                                       enabledBorder: InputBorder.none,
@@ -711,13 +706,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                                                 ),
                                                                                               ),
                                                                                             ),
-                                                                                            SizedBox(width: 15),
+                                                                                            const SizedBox(width: 15),
                                                                                             GestureDetector(
                                                                                               onTap: () {
                                                                                                 Navigator.pop(context, controller.medicalName);
                                                                                                 searchController.clear();
                                                                                               },
-                                                                                              child: Icon(
+                                                                                              child: const Icon(
                                                                                                 Icons.clear,
                                                                                                 color: Colors.black,
                                                                                                 size: 28,
@@ -731,7 +726,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                                             builder: (context) {
                                                                                               int index = controller.categoryOfMedicalCenter.indexWhere((element) => element['post_title'].toString().toLowerCase().contains(searchController.text.toString().toLowerCase()));
                                                                                               if (index < 0) {
-                                                                                                return Center(
+                                                                                                return const Center(
                                                                                                   child: Text(
                                                                                                     'No Medical Center !',
                                                                                                     style: TextStyle(
@@ -765,10 +760,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                                                             await _bookAppointmentController.getDoctorSpecialities("", context, stateId: chooseStateId ?? "", medicalCenterId: controller.chooseMedicalCenter ?? '');
                                                                                                           },
                                                                                                           title: Text(
-                                                                                                            "${controller.categoryOfMedicalCenter[index]['post_title'].toString()}",
+                                                                                                            controller.categoryOfMedicalCenter[index]['post_title'].toString(),
                                                                                                             style: TextStyle(
                                                                                                               fontSize: 20,
-                                                                                                              color: Theme.of(context).textTheme.subtitle1.color,
+                                                                                                              color: Theme.of(context).textTheme.titleMedium?.color,
                                                                                                             ),
                                                                                                           ),
                                                                                                         ),
@@ -776,7 +771,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                                                       ],
                                                                                                     );
                                                                                                   } else {
-                                                                                                    return SizedBox();
+                                                                                                    return const SizedBox();
                                                                                                   }
                                                                                                 },
                                                                                               );
@@ -798,7 +793,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                           .value ==
                                                                       true) {
                                                                     Get.showSnackbar(
-                                                                      GetSnackBar(
+                                                                      const GetSnackBar(
                                                                         backgroundColor:
                                                                             Colors.blue,
                                                                         duration:
@@ -813,7 +808,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                     );
                                                                   } else {
                                                                     Get.showSnackbar(
-                                                                      GetSnackBar(
+                                                                      const GetSnackBar(
                                                                         backgroundColor:
                                                                             Colors.red,
                                                                         duration:
@@ -833,7 +828,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                   child:
                                                                       Padding(
                                                                     padding:
-                                                                        EdgeInsets
+                                                                        const EdgeInsets
                                                                             .symmetric(
                                                                       horizontal:
                                                                           15,
@@ -845,14 +840,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                               Text(
                                                                             controller.medicalName == ""
                                                                                 ? 'Select Medical Center'
-                                                                                : '${controller.medicalName}',
+                                                                                : controller.medicalName,
                                                                             overflow:
                                                                                 TextOverflow.ellipsis,
                                                                             style:
                                                                                 TextStyle(
                                                                               fontSize: 18,
                                                                               color: controller.medicalName != ""
-                                                                                  ? _isDark
+                                                                                  ? isDark
                                                                                       ? Colors.white
                                                                                       : Colors.black
                                                                                   : Colors.grey,
@@ -864,7 +859,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                               .arrow_drop_down,
                                                                           color: controller.categoryOfMedicalCenter.isEmpty
                                                                               ? Colors.grey
-                                                                              : _isDark
+                                                                              : isDark
                                                                                   ? Colors.white
                                                                                   : Colors.black,
                                                                         )
@@ -873,7 +868,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                   ),
                                                                 ),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                   height: 10),
 
                                                               // RadioListTile(
@@ -909,7 +904,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                               //   },
                                                               // ),
 
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                   height: 10),
 
                                                               // Obx(
@@ -1040,33 +1035,32 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                               4),
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsets.symmetric(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
                                                                         horizontal:
                                                                             10,
                                                                         vertical:
                                                                             15),
                                                                     child: Row(
-                                                                      children: <
-                                                                          Widget>[
+                                                                      children: <Widget>[
                                                                         CircleAvatar(
                                                                             backgroundColor:
                                                                                 Colors.grey[300],
-                                                                            backgroundImage: AssetImage('assets/images/medicine.png'),
+                                                                            backgroundImage: const AssetImage('assets/images/medicine.png'),
                                                                             radius: 25),
-                                                                        SizedBox(
+                                                                        const SizedBox(
                                                                             width:
                                                                                 10),
                                                                         Expanded(
                                                                           child:
                                                                               Text(
-                                                                            Translate.of(context).translate('Provider') +
-                                                                                '(${_bookAppointmentController.doctorCount.toString()})',
+                                                                            '${Translate.of(context)?.translate('Provider')}(${_bookAppointmentController.doctorCount.toString()})',
                                                                             maxLines:
                                                                                 2,
                                                                             overflow:
                                                                                 TextOverflow.ellipsis,
                                                                             style:
-                                                                                TextStyle(fontSize: 16),
+                                                                                const TextStyle(fontSize: 16),
                                                                           ),
                                                                         ),
                                                                       ],
@@ -1074,11 +1068,11 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                   ),
                                                                 ),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                   height: 20),
                                                               Padding(
                                                                 padding: const EdgeInsets
-                                                                        .symmetric(
+                                                                    .symmetric(
                                                                     horizontal:
                                                                         20),
                                                                 child:
@@ -1109,7 +1103,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                           ',${chooseStateId ?? ""},${controller.chooseMedicalCenter ?? ''}' /* : '${_bookAppointmentController.specialitiesModelData.value.specialities[index].id ?? ""},${chooseStateId ?? ""},${controller.chooseMedicalCenter ?? ""}'*/,
                                                                     );
                                                                   },
-                                                                  child: Text(
+                                                                  child:
+                                                                      const Text(
                                                                     'Apply',
                                                                     style: TextStyle(
                                                                         fontSize:
@@ -1117,7 +1112,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                                   ),
                                                                 ),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                   height: 20),
                                                             ],
                                                           ),
@@ -1136,10 +1131,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                     //     NavSlideFromBottom(page: HealthConcernPage()));
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: kColorBlue),
-                                    child: Icon(Icons.search,
+                                    child: const Icon(Icons.search,
                                         size: 30, color: Colors.white),
                                   ),
                                 ),
@@ -1163,7 +1158,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 // TimerChange.timer.cancel();
                               },
                               iconData: Icons.home,
-                              text: Translate.of(context).translate('home'),
+                              text: Translate.of(context)!.translate('home'),
                               color: controller.selectedIndex == 0
                                   ? kColorBlue
                                   : Colors.grey),
@@ -1175,13 +1170,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               controller.selectPage(2);
                             },
                             iconData: Icons.message,
-                            text: Translate.of(context).translate('messages'),
+                            text: Translate.of(context)!.translate('messages'),
                             color: controller.selectedIndex == 2
                                 ? kColorBlue
                                 : Colors.grey,
                           ),
                         ),
-                        Expanded(
+                        const Expanded(
                           flex: 1,
                           child: SizedBox(height: 1),
                         ),
@@ -1209,10 +1204,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   rateContactUsController.setRate(
                                       rate1: '${data["data"]['rating']}');
                                 }
-                                print(data["status"]);
                               },
                               iconData: Icons.settings,
-                              text: Translate.of(context).translate('settings'),
+                              text:
+                                  Translate.of(context)!.translate('settings'),
                               color: controller.selectedIndex == 3
                                   ? kColorBlue
                                   : Colors.grey),
@@ -1224,7 +1219,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                 controller.selectPage(1);
                               },
                               iconData: Icons.person,
-                              text: Translate.of(context).translate('profile'),
+                              text: Translate.of(context)!.translate('profile'),
                               color: controller.selectedIndex == 1
                                   ? kColorBlue
                                   : Colors.grey),
@@ -1241,9 +1236,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     );
   }
 
-  static Container commonContainer({Widget child}) {
+  static Container commonContainer({required Widget child}) {
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
         height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
@@ -1251,6 +1246,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           border: Border.all(color: Colors.grey),
         ),
         child: child);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty(
+        'categoryOfStatesDropDowns', categoryOfStatesDropDowns));
   }
 
   // _onAlertWithCustomContentPress(context) {

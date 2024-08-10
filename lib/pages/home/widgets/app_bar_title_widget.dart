@@ -1,14 +1,16 @@
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:united_natives/data/pref_manager.dart';
 
 class AppBarTitleWidget extends StatelessWidget {
+  const AppBarTitleWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
-    bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+    bool isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        _isDark
+        isDark
             ? Image.asset('assets/images/neww_b_Logo.png',
                 width: 50.0, height: 50.0, fit: BoxFit.cover)
             : Image.asset(
@@ -17,7 +19,7 @@ class AppBarTitleWidget extends StatelessWidget {
                 height: 50.0,
                 fit: BoxFit.cover,
               ),
-        SizedBox(
+        const SizedBox(
           width: 5,
         ),
         Text.rich(
@@ -27,9 +29,9 @@ class AppBarTitleWidget extends StatelessWidget {
                   text: 'United ',
                   style: Theme.of(context)
                       .textTheme
-                      .headline6
-                      .copyWith(fontWeight: FontWeight.w700, fontSize: 24)),
-              TextSpan(
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 24)),
+              const TextSpan(
                 text: 'Natives',
                 style: TextStyle(
                   color: Colors.red,

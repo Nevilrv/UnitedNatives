@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
 class NavBarItemWidget extends StatelessWidget {
-  final Function onTap;
+  final Function() onTap;
   final IconData iconData;
   final String text;
   final Color color;
 
   const NavBarItemWidget({
-    Key key,
-    @required this.onTap,
-    @required this.iconData,
-    @required this.text,
-    @required this.color,
-  }) : super(key: key);
+    super.key,
+    required this.onTap,
+    required this.iconData,
+    required this.text,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[

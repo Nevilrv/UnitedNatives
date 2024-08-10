@@ -128,7 +128,7 @@ class _SignupPageState extends State<SignupPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 38),
                         child: Text(
-                          Translate.of(context).translate('sign_up'),
+                          Translate.of(context)!.translate('sign_up'),
                           style: const TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w700,
@@ -151,7 +151,7 @@ class _SignupPageState extends State<SignupPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '${Translate.of(context).translate('Already a Client')} ?',
+                                '${Translate.of(context)!.translate('Already a Client')} ?',
                                 style: const TextStyle(
                                   color: Color(0xffbcbcbc),
                                   fontSize: 20,
@@ -167,7 +167,7 @@ class _SignupPageState extends State<SignupPage> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(5),
                                   child: Text(
-                                    Translate.of(context).translate('login'),
+                                    Translate.of(context)!.translate('login'),
                                     style: Theme.of(context)
                                         .textTheme
                                         .labelLarge
@@ -293,10 +293,10 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
     }
   }
 
-  String? validateMobile(String value) {
+  String? validateMobile(String? value) {
     String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     RegExp regExp = RegExp(pattern);
-    if (value.isEmpty) {
+    if (value!.isEmpty) {
       return 'Please Enter Mobile Number';
     } else if (value.length != 10) {
       return 'Mobile Number Should be 10 Digit';
@@ -384,7 +384,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "${Translate.of(context).translate('first_name_dot')} *",
+                  "${Translate.of(context)!.translate('first_name_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -393,7 +393,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   controller: _firstNameController,
                   hintText: 'John',
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Enter First Name';
                     }
                     return null;
@@ -403,7 +403,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('last_name_dot')} *",
+                  "${Translate.of(context)!.translate('last_name_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -412,7 +412,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   controller: _lastNameController,
                   hintText: 'Doe',
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Enter Last Name';
                     }
                     return null;
@@ -422,7 +422,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('gender_dot')} *",
+                  "${Translate.of(context)!.translate('gender_dot')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -439,7 +439,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         ? null
                         : _userController.selectedGender.value,
                     hint: Text(
-                      Translate.of(context).translate('add_gender'),
+                      Translate.of(context)!.translate('add_gender'),
                       style: hintStyle,
                     ),
                     onChanged: _userController.onChangeGender,
@@ -458,7 +458,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "${Translate.of(context).translate('email_dot')} *",
+                  "${Translate.of(context)!.translate('email_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -466,7 +466,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   textInputAction: TextInputAction.next,
                   controller: _emailController,
                   hintText: 'contact@sataware.com',
-                  validator: (value) => EmailValidator.validate(value)
+                  validator: (value) => EmailValidator.validate(value!)
                       ? null
                       : "Please Enter a Valid Email.",
                 ),
@@ -474,7 +474,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Contact number')} *",
+                  "${Translate.of(context)!.translate('Contact number')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -493,7 +493,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('date_of_birth_dot')} *",
+                  "${Translate.of(context)!.translate('date_of_birth_dot')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -554,25 +554,25 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('height_dot')} (Optional)",
+                  "${Translate.of(context)!.translate('height_dot')} (Optional)",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
                   controller: heightController,
-                  hintText: Translate.of(context).translate('in_cm'),
+                  hintText: Translate.of(context)!.translate('in_cm'),
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  "${Translate.of(context).translate('weight_dot')} (Optional)",
+                  "${Translate.of(context)!.translate('weight_dot')} (Optional)",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
                   controller: weightController,
-                  hintText: Translate.of(context).translate('in_kg'),
+                  hintText: Translate.of(context)!.translate('in_kg'),
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -592,7 +592,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  "${Translate.of(context).translate('Current Case Manger info')} (Optional)",
+                  "${Translate.of(context)!.translate('Current Case Manger info')} (Optional)",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -603,7 +603,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  "${Translate.of(context).translate('Blood Group')} (Optional)",
+                  "${Translate.of(context)!.translate('Blood Group')} (Optional)",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -618,7 +618,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         ? null
                         : _userController.selectedBloodGroup.value,
                     hint: Text(
-                      Translate.of(context).translate('add_blood_group'),
+                      Translate.of(context)!.translate('add_blood_group'),
                       style: hintStyle,
                     ),
                     onChanged: _userController.onChangeBloodGroup,
@@ -629,7 +629,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Allergies and Medication Allergies')} (Optional)",
+                  "${Translate.of(context)!.translate('Allergies and Medication Allergies')} (Optional)",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -643,7 +643,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Marital Status')} (Optional)",
+                  "${Translate.of(context)!.translate('Marital Status')} (Optional)",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -658,7 +658,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         ? null
                         : _userController.selectedMaritalStatus.value,
                     hint: Text(
-                      Translate.of(context).translate('add_marital_status'),
+                      Translate.of(context)!.translate('add_marital_status'),
                       style: hintStyle,
                     ),
                     onChanged: _userController.onChangeMaritalStatus,
@@ -669,7 +669,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Medical Insurance')} *",
+                  "${Translate.of(context)!.translate('Medical Insurance')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -691,7 +691,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                             : _userController
                                 .selectedInsuranceEligibility.value,
                         hint: Text(
-                          Translate.of(context)
+                          Translate.of(context)!
                               .translate('Please Select Insurance Eligibility'),
                           style: hintStyle,
                         ),
@@ -707,7 +707,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               height: 20,
                             ),
                             Text(
-                              "${Translate.of(context).translate('State the name of your Medical Insurance')} *",
+                              "${Translate.of(context)!.translate('State the name of your Medical Insurance')} *",
                               style: kInputTextStyle,
                             ),
                             CustomTextFormField(
@@ -717,7 +717,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               hintText:
                                   'Enter State the name of Medical Insurance',
                               validator: (text) {
-                                if (text.isEmpty) {
+                                if (text!.isEmpty) {
                                   return 'Enter State the name of Medical Insurance';
                                 }
                                 return null;
@@ -732,7 +732,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Are you a US Veteran?')} *",
+                  "${Translate.of(context)!.translate('Are you a US Veteran?')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -752,7 +752,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                             ? null
                             : _userController.areYouAUSVeteran.value,
                         hint: Text(
-                          Translate.of(context)
+                          Translate.of(context)!
                               .translate('Select US Veteran or not?'),
                           style: hintStyle,
                         ),
@@ -766,7 +766,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Tribal Status')} *",
+                  "${Translate.of(context)!.translate('Tribal Status')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -783,7 +783,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         ? null
                         : _userController.selectedTribalStatus.value,
                     hint: Text(
-                      Translate.of(context).translate('Select Tribal Status'),
+                      Translate.of(context)!.translate('Select Tribal Status'),
                       style: hintStyle,
                     ),
                     onChanged: _userController.onChangeTribalStatus,
@@ -794,7 +794,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Are you enrolled in a Federally Recognized Tribe?')} *",
+                  "${Translate.of(context)!.translate('Are you enrolled in a Federally Recognized Tribe?')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -815,7 +815,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                 ? null
                                 : _userController.tribalFederallyMember.value,
                         hint: Text(
-                          Translate.of(context)
+                          Translate.of(context)!
                               .translate('Select Enrolled or not'),
                           style: hintStyle,
                         ),
@@ -831,7 +831,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               height: 20,
                             ),
                             Text(
-                              "${Translate.of(context).translate('What tribe?')} *",
+                              "${Translate.of(context)!.translate('What tribe?')} *",
                               style: kInputTextStyle,
                             ),
                             CustomTextFormField(
@@ -840,7 +840,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               controller: whatTribe1Controller,
                               hintText: 'Enter state tribal affiliation',
                               validator: (text) {
-                                if (text.isEmpty) {
+                                if (text!.isEmpty) {
                                   return 'Please state tribal affiliation';
                                 }
                                 return null;
@@ -855,7 +855,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('Are you enrolled in a State Recognized Tribe?')} *",
+                  "${Translate.of(context)!.translate('Are you enrolled in a State Recognized Tribe?')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -876,7 +876,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                 ? null
                                 : _userController.tribalFederallyState.value,
                         hint: Text(
-                            Translate.of(context)
+                            Translate.of(context)!
                                 .translate('Select Enrolled or not'),
                             style: hintStyle),
                         onChanged: _userController.onChangeTribalStateStatus,
@@ -890,7 +890,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               height: 20,
                             ),
                             Text(
-                              "${Translate.of(context).translate('Please state tribal affiliation')} *",
+                              "${Translate.of(context)!.translate('Please state tribal affiliation')} *",
                               style: kInputTextStyle,
                             ),
                             CustomTextFormField(
@@ -899,7 +899,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               controller: whatTribe2Controller,
                               hintText: 'Enter state tribal affiliation',
                               validator: (text) {
-                                if (text.isEmpty) {
+                                if (text!.isEmpty) {
                                   return 'Please state tribal affiliation';
                                 }
                                 return null;
@@ -914,7 +914,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('If you are not enrolled tribal member, please select racial/ethnic background')} *",
+                  "${Translate.of(context)!.translate('If you are not enrolled tribal member, please select racial/ethnic background')} *",
                   style: kInputTextStyle,
                 ),
                 Obx(
@@ -932,7 +932,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         ? null
                         : _userController.tribalBackgroundStatus.value,
                     hint: Text(
-                        Translate.of(context)
+                        Translate.of(context)!
                             .translate('Select racial/ethnic background'),
                         style: hintStyle),
                     onChanged: _userController.onChangeTribalBackgroundStatus,
@@ -943,7 +943,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('password_dot')} *",
+                  "${Translate.of(context)!.translate('password_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -953,7 +953,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   hintText: '* * * * * * * *',
                   obscureText: true,
                   validator: (text) {
-                    if (text.toString().length < 8 || text.isEmpty) {
+                    if (text.toString().length < 8 || text!.isEmpty) {
                       return 'Password Should be Greater Than 8 Digit';
                     }
                     return null;
@@ -963,7 +963,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('confirm_password_dot')} *",
+                  "${Translate.of(context)!.translate('confirm_password_dot')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -973,7 +973,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   hintText: '* * * * * * * *',
                   obscureText: true,
                   validator: (text) {
-                    if (text.isEmpty) {
+                    if (text!.isEmpty) {
                       return 'Enter Confirm Password';
                     } else if (_passwordController.text !=
                         _confirmPasswordController.text) {
@@ -986,7 +986,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   height: 20,
                 ),
                 Text(
-                  "${Translate.of(context).translate('State')} *",
+                  "${Translate.of(context)!.translate('State')} *",
                   style: kInputTextStyle,
                 ),
                 const SizedBox(
@@ -1007,7 +1007,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   },
                 ),
                 Text(
-                  "${Translate.of(context).translate('City')} *",
+                  "${Translate.of(context)!.translate('City')} *",
                   style: kInputTextStyle,
                 ),
                 const SizedBox(
@@ -1030,7 +1030,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  "${Translate.of(context).translate('How did you hear about us?')} (Optional)",
+                  "${Translate.of(context)!.translate('How did you hear about us?')} (Optional)",
                   style: kInputTextStyle,
                 ),
                 const SizedBox(height: 3),
@@ -1049,7 +1049,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         ? null
                         : _userController.howYouHereAboutUs.value,
                     hint: Text(
-                        Translate.of(context)
+                        Translate.of(context)!
                             .translate('Select how did you here about us'),
                         style: hintStyle),
                     onChanged: (value) {
@@ -1379,7 +1379,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                       // }
                     }
                   },
-                  text: Translate.of(context).translate('sign_up'),
+                  text: Translate.of(context)!.translate('sign_up'),
                 ),
               ],
             ),
@@ -1417,7 +1417,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('take_a_photo'),
+                  Translate.of(context)!.translate('take_a_photo'),
                   style: const TextStyle(
                     color: Color(0xff4a4a4a),
                     fontSize: 20,
@@ -1436,7 +1436,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('choose_a_photo'),
+                  Translate.of(context)!.translate('choose_a_photo'),
                   style: const TextStyle(
                     color: Color(0xff4a4a4a),
                     fontSize: 20,

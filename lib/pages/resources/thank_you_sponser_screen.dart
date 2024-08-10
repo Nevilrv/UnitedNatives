@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:html/parser.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 
 class ThankYouScreen extends StatefulWidget {
-  const ThankYouScreen({Key key}) : super(key: key);
+  const ThankYouScreen({super.key});
 
   @override
   State<ThankYouScreen> createState() => _ThankYouScreenState();
@@ -22,16 +21,13 @@ class ThankYouScreen extends StatefulWidget {
 class _ThankYouScreenState extends State<ThankYouScreen> {
   Future thankYouSpOnSer() async {
     http.Response response = await http.get(
-      Uri.parse('${Constants.baseUrl + Constants.thanksSponser}'),
+      Uri.parse(Constants.baseUrl + Constants.thanksSponser),
     );
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
-      print('response--------${jsonDecode(response.body)}');
       return result;
     } else {}
   }
-
-  int randomAd;
 
   AdsController adsController = Get.find();
   @override
@@ -45,12 +41,12 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
-            title: Text(
+            title: const Text(
               'Thank You Sponsor',
               style: TextStyle(fontSize: 25, color: Colors.black),
             ),
             leading: GestureDetector(
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 color: Colors.black,
               ),
@@ -64,12 +60,12 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         // Container(
                         //   height: MediaQuery.of(context).size.height * 0.35,
                         //   width: MediaQuery.of(context).size.width,
@@ -85,8 +81,8 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                           imageUrl: '${snapshot.data['data']['image_url']}',
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Shimmer.fromColors(
-                            baseColor: Colors.grey[300],
-                            highlightColor: Colors.grey[100],
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.28,
                               width: MediaQuery.of(context).size.width,
@@ -94,27 +90,34 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                             ),
                           ),
                           errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                              const Icon(Icons.error),
                         ),
-                        SizedBox(height: 40),
-                        Text(
+                        const SizedBox(height: 40),
+                        const Text(
                           'Thank You Sponsor',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        Html(
-                          data: snapshot.data['data']
-                              ['content'], //html string to be parsed
-                          style: {
-                            "br": Style(
-                              color: Colors.green,
-                              fontSize: FontSize(22),
-                            ),
-                          },
-                        ),
-                        SizedBox(height: 15),
+
+                        Builder(builder: (context) {
+                          var document =
+                              parse(snapshot.data['data']['content']);
+                          return Text(document.body!.text);
+                        }),
+
+                        // Html(
+                        //   data: snapshot.data['data']
+                        //       ['content'], //html string to be parsed
+                        //   style: {
+                        //     "br": Style(
+                        //       color: Colors.green,
+                        //       fontSize: FontSize(22),
+                        //     ),
+                        //   },
+                        // ),
+                        const SizedBox(height: 15),
                         // Text(
                         //   'Though instances of doctors and patients entering romantic relationships are indeed rare, it does sometimes happen. Physicians sometimes have sexual relationships with patients, or with former patients. Sometimes the initiator is the physician, and sometimes it is the patient. Every allopathic doctor in India, the Commission had estimated, caters to at least 1,511 people, much higher than the WHO norm of one doctor for every 1,000 people. The shortage of trained nurses is more dire, with a nurse-to-population ratio of 1:670 against the WHO norm of 1:300.',
                         //   textAlign: TextAlign.justify,

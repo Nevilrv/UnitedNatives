@@ -17,10 +17,10 @@ import 'package:get/instance_manager.dart';
 import '../../utils/constants.dart';
 
 class MessagesPage extends StatefulWidget {
-  const MessagesPage({Key key}) : super(key: key);
+  const MessagesPage({super.key});
 
   @override
-  _MessagesPageState createState() => _MessagesPageState();
+  State<MessagesPage> createState() => _MessagesPageState();
 }
 
 class _MessagesPageState extends State<MessagesPage> {

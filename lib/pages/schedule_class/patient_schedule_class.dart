@@ -1,32 +1,34 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/book_withdraw_req_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_class_list_patient_data_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/message_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/schedule_class/coursedetail%20screen.dart';
-import 'package:doctor_appointment_booking/utils/common_snackbar.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/patient_scheduled_class_viewmodel.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/book_withdraw_req_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_class_list_patient_data_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/schedule_class/coursedetail%20screen.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/patient_scheduled_class_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:octo_image/octo_image.dart';
 
 class ScheduleClass extends StatefulWidget {
+  const ScheduleClass({super.key});
+
   @override
-  _ScheduleClassState createState() => _ScheduleClassState();
+  State<ScheduleClass> createState() => _ScheduleClassState();
 }
 
 class _ScheduleClassState extends State<ScheduleClass> {
   DateTime selectedDate = DateTime.now();
-  String mySelectDate;
+  String? mySelectDate;
   bool isSelected = true;
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   final UserController userController = Get.find();
   PatientScheduledClassController patientScheduledClassController = Get.find();
   Future<void> _selectDate(BuildContext context) async {
@@ -36,16 +38,16 @@ class _ScheduleClassState extends State<ScheduleClass> {
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101),
     ).then((value) {
-      if (value != null && value != selectedDate)
+      if (value != null && value != selectedDate) {
         setState(() {
           selectedDate = value;
         });
-      mySelectDate = "${value.toLocal()}".split(' ')[0];
+      }
+      mySelectDate = "${value?.toLocal()}".split(' ')[0];
       patientScheduledClassController.getClassListPatient(
-          id: userController.user.value.id, date: mySelectDate);
-      print("IS FILTER $mySelectDate");
+          id: userController.user.value.id!, date: mySelectDate!);
 
-      return;
+      return selectedDate;
     });
     log('picked==========>>>>>$picked');
   }
@@ -72,7 +74,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
             'Scheduled class',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).textTheme.subtitle1.color,
+              color: Theme.of(context).textTheme.titleMedium?.color,
               fontSize: 24,
             ),
           ),
@@ -87,23 +89,32 @@ class _ScheduleClassState extends State<ScheduleClass> {
               },
               child: Container(
                 width: Get.width * 1.5,
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.all(8),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    width: 2,
+                    color:
+                        _isDark ? Colors.grey.withOpacity(0.2) : Colors.black26,
+                  ),
+                ),
 
                 // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 17,
                       backgroundColor: Colors.blueAccent,
                       child: Icon(Icons.calendar_today_outlined,
                           size: 18, color: Colors.white),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(
@@ -117,18 +128,10 @@ class _ScheduleClassState extends State<ScheduleClass> {
                               ),
                             ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward_ios_rounded,
                     )
                   ],
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    width: 2,
-                    color:
-                        _isDark ? Colors.grey.withOpacity(0.2) : Colors.black26,
-                  ),
                 ),
               ),
             ),
@@ -150,17 +153,17 @@ class _ScheduleClassState extends State<ScheduleClass> {
                 ClassListPatientResponseModel response =
                     controller.getClassPatientApiResponse.data;
                 if (response.data == null) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 40),
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 40),
                     child: Center(
                         child: Text(
                       "No data found",
                       style: TextStyle(fontSize: 21),
                     )),
                   );
-                } else if (response.data.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 40),
+                } else if (response.data!.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 40),
                     child: Center(
                         child: Text(
                       "No data found",
@@ -171,7 +174,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: response.data.length,
+                    itemCount: response.data?.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(12.0),
@@ -179,8 +182,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                           onTap: () {
                             Get.to(
                               CourseDetailScreen(
-                                classId: response.data[index].id,
-                                isBooked: response.data[index].isBooked,
+                                classId: response.data?[index].id,
+                                isBooked: response.data?[index].isBooked,
                                 mySelectedDate: mySelectDate,
                               ),
                             );
@@ -191,10 +194,10 @@ class _ScheduleClassState extends State<ScheduleClass> {
                               color: _isDark
                                   ? Colors.grey.withOpacity(0.2)
                                   : Colors.white,
-                              borderRadius: BorderRadius.all(
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(15),
                               ),
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                   color: Colors.black26,
                                   blurRadius: 4,
@@ -215,7 +218,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                       Container(
                                         // width: Get.width,
                                         height: Get.height * 0.2,
-                                        margin: EdgeInsets.only(bottom: 30),
+                                        margin:
+                                            const EdgeInsets.only(bottom: 30),
                                         decoration: BoxDecoration(
                                           /* image: DecorationImage(
                                                     image: NetworkImage(response
@@ -237,15 +241,15 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                               BorderRadius.circular(10),
                                           child: OctoImage(
                                             image: CachedNetworkImageProvider(
-                                              response.data[index]
+                                              response.data![index]
                                                               .classFeaturedImage ==
                                                           null ||
-                                                      response.data[index]
+                                                      response.data![index]
                                                               .classFeaturedImage ==
                                                           ''
                                                   ? 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png'
-                                                  : response.data[index]
-                                                      .classFeaturedImage,
+                                                  : response.data![index]
+                                                      .classFeaturedImage!,
                                             ),
                                             // placeholderBuilder:
                                             //     OctoPlaceholder.blurHash(
@@ -281,7 +285,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                         right: 15,
                                         child: Container(
                                           width: Get.width,
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                               horizontal: 10),
                                           child: Row(
                                             children: [
@@ -289,7 +293,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                 flex: 2,
                                                 child: buildContainer(
                                                   title:
-                                                      "Dr. ${response.data[index].doctorFullName ?? ''}",
+                                                      "Dr. ${response.data?[index].doctorFullName ?? ''}",
                                                   colorName: Colors.white,
                                                   colorText: Colors.black,
                                                 ),
@@ -327,18 +331,18 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                       Expanded(
                                         flex: 1,
                                         child: Text(
-                                          response.data[index].title
-                                                  .toUpperCase() ??
+                                          response.data?[index].title
+                                                  ?.toUpperCase() ??
                                               '',
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                     ],
@@ -347,7 +351,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                 Container(
                                   width: Get.width * 2,
                                   height: 2,
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 20),
                                   color: Colors.black12,
                                 ),
                                 Padding(
@@ -375,9 +380,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                               ),
                                             ),
                                             Text(
-                                              "${response.data[index].classDate}" ??
-                                                  '',
-                                              style: TextStyle(
+                                              "${response.data?[index].classDate}",
+                                              style: const TextStyle(
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -414,8 +418,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                 ),
                                               ),
                                               Text(
-                                                '${response.data[index].classStartTime} to ${response.data[index].classEndTime}',
-                                                style: TextStyle(
+                                                '${response.data?[index].classStartTime} to ${response.data?[index].classEndTime}',
+                                                style: const TextStyle(
                                                   fontSize: 22,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -430,7 +434,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                 Container(
                                   width: Get.width * 2,
                                   height: 2,
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 20),
                                   color: Colors.black12,
                                 ),
                                 GestureDetector(
@@ -453,7 +458,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                           Navigator.pop(
                                                               context);
                                                         },
-                                                        child: Icon(
+                                                        child: const Icon(
                                                           Icons.clear,
                                                           color: Colors.black,
                                                           size: 28,
@@ -464,16 +469,17 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                       mainAxisSize:
                                                           MainAxisSize.min,
                                                       children: [
-                                                        SizedBox(height: 20),
+                                                        const SizedBox(
+                                                            height: 20),
                                                         Padding(
                                                           padding:
-                                                              EdgeInsets.all(
-                                                                  20),
+                                                              const EdgeInsets
+                                                                  .all(20),
                                                           child: Align(
                                                             alignment: Alignment
                                                                 .topCenter,
                                                             child: Text(
-                                                              response.data[index]
+                                                              response.data?[index]
                                                                           .isBooked ==
                                                                       false
                                                                   ? "Book Now"
@@ -481,8 +487,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                               style: Theme.of(
                                                                       context)
                                                                   .textTheme
-                                                                  .headline6
-                                                                  .copyWith(
+                                                                  .titleLarge
+                                                                  ?.copyWith(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
@@ -490,7 +496,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(height: 20),
+                                                        const SizedBox(
+                                                            height: 20),
                                                         Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -514,7 +521,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                                       Get.width,
                                                                       40),
                                                                 ),
-                                                                child: Text(
+                                                                child:
+                                                                    const Text(
                                                                   "Cancel",
                                                                   style:
                                                                       TextStyle(
@@ -527,7 +535,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                                 ),
                                                               ),
                                                             ),
-                                                            SizedBox(
+                                                            const SizedBox(
                                                               width: 15,
                                                             ),
                                                             Expanded(
@@ -539,7 +547,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                                       model =
                                                                       BookWithdrawReqModel();
                                                                   model.action =
-                                                                      response.data[index].isBooked ==
+                                                                      response.data?[index].isBooked ==
                                                                               false
                                                                           ? '1'
                                                                           : '2';
@@ -548,11 +556,11 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                                           model:
                                                                               model,
                                                                           classId: response
-                                                                              .data[
+                                                                              .data![
                                                                                   index]
-                                                                              .id,
-                                                                          id: Prefs.getString(Prefs
-                                                                              .SOCIALID))
+                                                                              .id!,
+                                                                          id: Prefs.getString(Prefs.SOCIALID) ??
+                                                                              "")
                                                                       .then(
                                                                           (value) {
                                                                     if (patientScheduledClassController
@@ -570,22 +578,22 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                                           'Success') {
                                                                         CommonSnackBar.snackBar(
                                                                             message:
-                                                                                response.message);
+                                                                                response.message ?? "");
                                                                         Future.delayed(
-                                                                            Duration(seconds: 2),
+                                                                            const Duration(seconds: 2),
                                                                             () {
                                                                           Navigator.pop(
                                                                               context);
                                                                           patientScheduledClassController.getClassListPatient(
-                                                                              id: userController.user.value.id,
+                                                                              id: userController.user.value.id!,
                                                                               date: mySelectDate ?? '');
                                                                         });
                                                                       } else {
                                                                         CommonSnackBar.snackBar(
                                                                             message:
-                                                                                response.message);
+                                                                                response.message ?? "");
                                                                         Future.delayed(
-                                                                            Duration(seconds: 2),
+                                                                            const Duration(seconds: 2),
                                                                             () {
                                                                           Navigator.pop(
                                                                               context);
@@ -604,7 +612,8 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                                       Get.width,
                                                                       40),
                                                                 ),
-                                                                child: Text(
+                                                                child:
+                                                                    const Text(
                                                                   "Confirm",
                                                                   style:
                                                                       TextStyle(
@@ -623,7 +632,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 20,
                                                         ),
                                                       ],
@@ -648,7 +657,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                                             ),
                                                           );
                                                         }
-                                                        return SizedBox();
+                                                        return const SizedBox();
                                                       },
                                                     )
                                                   ],
@@ -864,7 +873,7 @@ class _ScheduleClassState extends State<ScheduleClass> {
                                         ),
                                       );*/
                                   },
-                                  child: response.data[index].isBooked == false
+                                  child: response.data?[index].isBooked == false
                                       ? buildContainerButton(
                                           title: "Book Now",
                                           colorText: Colors.white,
@@ -893,27 +902,20 @@ class _ScheduleClassState extends State<ScheduleClass> {
   }
 
   Container buildContainer({
-    String title,
-    Color colorName,
-    Color colorText,
+    String? title,
+    Color? colorName,
+    Color? colorText,
   }) {
     return Container(
       height: 40,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-      child: Text(
-        "$title",
-        style: TextStyle(
-          color: colorText == null ? Colors.black : colorText,
-          fontSize: Get.height * 0.025,
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
 
       decoration: BoxDecoration(
         color: colorName,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 4,
@@ -923,39 +925,46 @@ class _ScheduleClassState extends State<ScheduleClass> {
         ],
         borderRadius: BorderRadius.circular(8),
       ),
+      child: Text(
+        "$title",
+        style: TextStyle(
+          color: colorText ?? Colors.black,
+          fontSize: Get.height * 0.025,
+        ),
+      ),
     );
   }
 
   Container buildContainerButton({
-    String title,
-    Color colorName,
-    Color colorText,
+    String? title,
+    Color? colorName,
+    Color? colorText,
   }) {
     return Container(
       height: 50,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+
+      decoration: BoxDecoration(
+        color: colorName,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4,
+            spreadRadius: 1,
+            offset: Offset(0.5, 0.5),
+          )
+        ],
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Text(
         "$title",
         style: TextStyle(
           color: colorText,
           fontSize: 20,
         ),
-      ),
-
-      decoration: BoxDecoration(
-        color: colorName,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 4,
-            spreadRadius: 1,
-            offset: Offset(0.5, 0.5),
-          )
-        ],
-        borderRadius: BorderRadius.circular(8),
       ),
     );
   }

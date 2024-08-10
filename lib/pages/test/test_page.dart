@@ -24,9 +24,9 @@ class _TestPageState extends State<TestPage>
             CustomProfileItem(
               onTap: () {},
               title:
-                  Translate.of(context).translate('monthly_medical_check_up'),
+                  Translate.of(context)!.translate('monthly_medical_check_up'),
               subTitle: '01/02/2019',
-              buttonTitle: Translate.of(context).translate('see_reports'),
+              buttonTitle: Translate.of(context)!.translate('see_reports'),
               imagePath: 'assets/images/icon_medical_check_up.png',
             ),
             const SizedBox(
@@ -35,9 +35,9 @@ class _TestPageState extends State<TestPage>
             CustomProfileItem(
               onTap: () {},
               title:
-                  Translate.of(context).translate('monthly_medical_check_up'),
+                  Translate.of(context)!.translate('monthly_medical_check_up'),
               subTitle: '01/01/2019',
-              buttonTitle: Translate.of(context).translate('see_reports'),
+              buttonTitle: Translate.of(context)!.translate('see_reports'),
               imagePath: 'assets/images/icon_medical_check_up.png',
             ),
           ],

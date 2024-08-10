@@ -111,7 +111,7 @@ class TermsAndCondition extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            text: Translate.of(context).translate('Okay'),
+                            text: Translate.of(context)!.translate('Okay'),
                           ),
                         ],
                       ),

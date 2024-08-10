@@ -1,10 +1,10 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/progress_indicator.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/doctor_by_specialities.dart';
-import 'package:doctor_appointment_booking/pages/booking/filter/filter_page.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/progress_indicator.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/pages/booking/filter/filter_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import '../../../components/doctor_item.dart';
@@ -13,9 +13,9 @@ import '../../../routes/routes.dart';
 import '../../../utils/constants.dart';
 
 class ChooseDoctorPage extends StatefulWidget {
-  final String id;
+  final String? id;
 
-  ChooseDoctorPage({Key key, this.id});
+  const ChooseDoctorPage({super.key, this.id});
 
   @override
   State<ChooseDoctorPage> createState() => _ChooseDoctorPageState();
@@ -25,27 +25,27 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
   final BookAppointmentController _bookAppointmentController =
       Get.find<BookAppointmentController>();
 
-  DoctorBySpecialitiesModel responseData;
+  DoctorBySpecialitiesModel? responseData;
 
   AdsController adsController = Get.find();
-  List idList;
-  String specialityId;
-  String stateId;
-  String medicalCenterId;
+  List? idList;
+  String? specialityId;
+  String? stateId;
+  String? medicalCenterId;
 
   @override
   void initState() {
-    idList = widget.id.split(',');
-    specialityId = idList.length > 0 ? idList[0] : "";
-    stateId = idList.length > 1 ? idList[1] : '';
-    medicalCenterId = idList.length > 2 ? idList[2] : '';
+    idList = widget.id?.split(',');
+    specialityId = idList!.isNotEmpty ? idList![0] : "";
+    stateId = idList!.length > 1 ? idList![1] : '';
+    medicalCenterId = idList!.length > 2 ? idList![2] : '';
     getData();
     super.initState();
   }
 
   getData() async {
     await _bookAppointmentController
-        .getDoctorSpecialities(specialityId, context,
+        .getDoctorSpecialities(specialityId!, context,
             stateId: stateId, medicalCenterId: medicalCenterId)
         .whenComplete(() {
       responseData =
@@ -70,10 +70,10 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
             appBar: AppBar(
               centerTitle: true,
               title: Text(
-                Translate.of(context).translate('doctor'),
+                Translate.of(context)!.translate('doctor'),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                     fontSize: 24),
                 textAlign: TextAlign.center,
               ),
@@ -94,7 +94,7 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                             // Get.toNamed(Routes.filter, arguments: specialityId);
                             // Navigator.of(context).pushNamed(Routes.filter);
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.filter_list,
                           ),
                         )
@@ -112,7 +112,7 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                             // Get.toNamed(Routes.filter, arguments: id);
                             // Navigator.of(context).pushNamed(Routes.filter);
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.close,
                           ),
                         ),
@@ -125,19 +125,19 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Text(
-                      Translate.of(context).translate('choose_a_doctor'),
-                      style: Theme.of(context).textTheme.headline6.copyWith(
+                      Translate.of(context)!.translate('choose_a_doctor'),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(
+                    margin: const EdgeInsets.symmetric(
                       horizontal: 20,
                     ),
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       color: kColorBlue,
@@ -148,13 +148,13 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                           onPressed: () {},
                           icon: Icons.person_pin,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Text(
-                          Translate.of(context)
+                          Translate.of(context)!
                               .translate('any_available_doctor'),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
@@ -164,26 +164,27 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(20).copyWith(bottom: 20),
+                    padding: const EdgeInsets.all(20).copyWith(bottom: 20),
                     child: TextField(
                       controller: searchController,
-                      autofillHints: [AutofillHints.name],
+                      autofillHints: const [AutofillHints.name],
                       onChanged: (value) {
                         setState(() {});
                       },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(color: kColorBlue, width: 0.5),
+                          borderSide:
+                              const BorderSide(color: kColorBlue, width: 0.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide:
-                              BorderSide(color: Colors.grey[300], width: 0.5),
+                              BorderSide(color: Colors.grey[300]!, width: 0.5),
                         ),
                         filled: true,
                         fillColor: Colors.grey[250],
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           vertical: 10,
                           horizontal: 15,
                         ),
@@ -193,7 +194,7 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                           size: 30,
                         ),
                         hintText:
-                            Translate.of(context).translate('search_messages'),
+                            Translate.of(context)?.translate('search_messages'),
                         hintStyle:
                             TextStyle(color: Colors.grey[400], fontSize: 22),
                       ),
@@ -205,24 +206,23 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                     () => _bookAppointmentController.isFiltered.value
                         ? Builder(
                             builder: (context) {
-                              int index1 = _bookAppointmentController
+                              int? index1 = _bookAppointmentController
                                   .doctorBySpecialitiesModelData
                                   .value
                                   .doctorSpecialities
-                                  .indexWhere((element) =>
-                                      ("${element?.firstName ?? "Dr."}" +
-                                              " ${element?.lastName ?? "Lee"}")
+                                  ?.indexWhere((element) =>
+                                      ("${element.firstName ?? "Dr."} ${element.lastName ?? "Lee"}")
                                           .toLowerCase()
                                           .trim()
                                           .contains(searchController.text
                                               .toLowerCase()
                                               .trim()));
 
-                              if (index1 < 0 &&
+                              if (index1! < 0 &&
                                   _bookAppointmentController
                                       .doctorBySpecialitiesModelData
                                       .value
-                                      .doctorSpecialities
+                                      .doctorSpecialities!
                                       .isNotEmpty) {
                                 return Center(
                                   child: Padding(
@@ -231,8 +231,8 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                       'Provider not available !',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headline6
-                                          .copyWith(fontSize: 20),
+                                          .titleLarge
+                                          ?.copyWith(fontSize: 20),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -242,8 +242,7 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                 () => ListView.separated(
                                   separatorBuilder: (context, index) {
                                     String doctorName =
-                                        "${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]?.firstName ?? "Dr."}" +
-                                            " ${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]?.lastName ?? "Lee"}";
+                                        "${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities?[index].firstName ?? "Dr."} ${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities?[index].lastName ?? "Lee"}";
 
                                     if (doctorName
                                         .toString()
@@ -253,13 +252,13 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                             .toString()
                                             .toLowerCase()
                                             .trim())) {
-                                      return Divider(
+                                      return const Divider(
                                         height: 1,
                                         indent: 15,
                                         endIndent: 15,
                                       );
                                     } else {
-                                      return SizedBox();
+                                      return const SizedBox();
                                     }
                                   },
                                   shrinkWrap: true,
@@ -272,8 +271,7 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                       0,
                                   itemBuilder: (context, index) {
                                     String doctorName =
-                                        "${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]?.firstName ?? "Dr."}" +
-                                            " ${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]?.lastName ?? "Lee"}";
+                                        "${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities?[index].firstName ?? "Dr."} ${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities?[index].lastName ?? "Lee"}";
 
                                     if (doctorName
                                         .toString()
@@ -287,37 +285,38 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                         () => _bookAppointmentController
                                                 .doctorBySpecialitiesModelData
                                                 .value
-                                                .doctorSpecialities
+                                                .doctorSpecialities!
                                                 .isEmpty
-                                            ? SizedBox()
+                                            ? const SizedBox()
                                             : DoctorItem(
                                                 doctorAvatar: _bookAppointmentController
                                                         .doctorBySpecialitiesModelData
                                                         .value
-                                                        .doctorSpecialities[
+                                                        .doctorSpecialities?[
                                                             index]
-                                                        ?.profilePic ??
+                                                        .profilePic ??
                                                     "assets/images/Doctor_lee.png",
                                                 doctorName: doctorName,
                                                 doctorPrice: _bookAppointmentController
                                                         .doctorBySpecialitiesModelData
                                                         .value
-                                                        .doctorSpecialities[
+                                                        .doctorSpecialities?[
                                                             index]
-                                                        ?.perAppointmentCharge ??
+                                                        .perAppointmentCharge ??
                                                     "100",
                                                 doctorSpeciality:
                                                     _bookAppointmentController
-                                                        .doctorBySpecialitiesModelData
-                                                        .value
-                                                        .doctorSpecialities[
-                                                            index]
-                                                        ?.speciality,
+                                                            .doctorBySpecialitiesModelData
+                                                            .value
+                                                            .doctorSpecialities![
+                                                                index]
+                                                            .speciality ??
+                                                        "",
                                                 rating: _bookAppointmentController
                                                     .doctorBySpecialitiesModelData
                                                     .value
-                                                    .doctorSpecialities[index]
-                                                    ?.rating
+                                                    .doctorSpecialities![index]
+                                                    .rating
                                                     .toString(),
                                                 // onTap: () => Get.toNamed(Routes.bookingStep3, arguments: _bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]),
                                                 onTap: () {
@@ -328,23 +327,24 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                                             .obs
                                                     ..getPatientAppointment(
                                                         _bookAppointmentController
-                                                            .doctorBySpecialitiesModelData
-                                                            .value
-                                                            .doctorSpecialities[
-                                                                index]
-                                                            .userId,
+                                                                .doctorBySpecialitiesModelData
+                                                                .value
+                                                                .doctorSpecialities?[
+                                                                    index]
+                                                                .userId ??
+                                                            "",
                                                         context);
                                                   Get.toNamed(
                                                       Routes.bookingStep3,
                                                       arguments: _bookAppointmentController
                                                           .doctorBySpecialitiesModelData
                                                           .value
-                                                          .doctorSpecialities[index]);
+                                                          .doctorSpecialities?[index]);
                                                 },
                                               ),
                                       );
                                     } else {
-                                      return SizedBox();
+                                      return const SizedBox();
                                     }
                                   },
                                 ),
@@ -352,20 +352,19 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                             },
                           )
                         : Builder(builder: (context) {
-                            int index1 = _bookAppointmentController
+                            int? index1 = _bookAppointmentController
                                 .doctorBySpecialitiesModelData
                                 .value
                                 .doctorSpecialities
-                                .indexWhere((element) =>
-                                    ("${element?.firstName ?? "Dr."}" +
-                                            " ${element?.lastName ?? "Lee"}")
+                                ?.indexWhere((element) =>
+                                    ("${element.firstName ?? "Dr."} ${element.lastName ?? "Lee"}")
                                         .toLowerCase()
                                         .trim()
                                         .contains(searchController.text
                                             .toLowerCase()
                                             .trim()));
 
-                            if (index1 < 0) {
+                            if (index1! < 0) {
                               return Center(
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 20),
@@ -373,8 +372,8 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                     'Provider not available !',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline6
-                                        .copyWith(fontSize: 20),
+                                        .titleLarge
+                                        ?.copyWith(fontSize: 20),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -383,8 +382,7 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                             return ListView.separated(
                               separatorBuilder: (context, index) {
                                 String doctorName =
-                                    "${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]?.firstName ?? "Dr."}" +
-                                        " ${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]?.lastName ?? "Lee"}";
+                                    "${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities?[index].firstName ?? "Dr."} ${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities?[index].lastName ?? "Lee"}";
 
                                 if (doctorName
                                     .toString()
@@ -394,13 +392,13 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                         .toString()
                                         .toLowerCase()
                                         .trim())) {
-                                  return Divider(
+                                  return const Divider(
                                     height: 1,
                                     indent: 15,
                                     endIndent: 15,
                                   );
                                 } else {
-                                  return SizedBox();
+                                  return const SizedBox();
                                 }
                               },
                               shrinkWrap: true,
@@ -413,8 +411,7 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                   0,
                               itemBuilder: (context, index) {
                                 String doctorName =
-                                    "${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]?.firstName ?? "Dr."}" +
-                                        " ${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]?.lastName ?? "Lee"}";
+                                    "${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities?[index].firstName ?? "Dr."} ${_bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities?[index].lastName ?? "Lee"}";
 
                                 if (doctorName
                                     .toString()
@@ -428,30 +425,32 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                     () => _bookAppointmentController
                                             .doctorBySpecialitiesModelData
                                             .value
-                                            .doctorSpecialities
+                                            .doctorSpecialities!
                                             .isEmpty
-                                        ? SizedBox()
+                                        ? const SizedBox()
                                         : DoctorItem(
                                             rating: "4.4",
                                             doctorAvatar: _bookAppointmentController
                                                     .doctorBySpecialitiesModelData
                                                     .value
-                                                    .doctorSpecialities[index]
-                                                    ?.profilePic ??
+                                                    .doctorSpecialities?[index]
+                                                    .profilePic ??
                                                 "assets/images/Doctor_lee.png",
                                             doctorName: doctorName,
                                             doctorPrice: _bookAppointmentController
                                                     .doctorBySpecialitiesModelData
                                                     .value
-                                                    .doctorSpecialities[index]
-                                                    ?.perAppointmentCharge ??
+                                                    .doctorSpecialities?[index]
+                                                    .perAppointmentCharge ??
                                                 "100",
                                             doctorSpeciality:
                                                 _bookAppointmentController
-                                                    .doctorBySpecialitiesModelData
-                                                    .value
-                                                    .doctorSpecialities[index]
-                                                    ?.speciality,
+                                                        .doctorBySpecialitiesModelData
+                                                        .value
+                                                        .doctorSpecialities?[
+                                                            index]
+                                                        .speciality ??
+                                                    "",
 
                                             // onTap: () => Get.toNamed(Routes.bookingStep3, arguments: _bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]),
                                             onTap: () {
@@ -461,23 +460,22 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                                     <Map<String, dynamic>>[].obs
                                                 ..getPatientAppointment(
                                                     _bookAppointmentController
-                                                        .doctorBySpecialitiesModelData
-                                                        .value
-                                                        .doctorSpecialities[
-                                                            index]
-                                                        .userId,
+                                                            .doctorBySpecialitiesModelData
+                                                            .value
+                                                            .doctorSpecialities?[
+                                                                index]
+                                                            .userId ??
+                                                        "",
                                                     context);
                                               Get.toNamed(Routes.bookingStep3,
                                                   arguments: _bookAppointmentController
                                                       .doctorBySpecialitiesModelData
                                                       .value
-                                                      .doctorSpecialities[index]);
+                                                      .doctorSpecialities?[index]);
                                             }),
                                   );
                                 } else {
-                                  print("22222222");
-
-                                  return SizedBox();
+                                  return const SizedBox();
                                 }
                               },
                             );
@@ -491,9 +489,9 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
         Obx(
           () => Container(
             child: _bookAppointmentController.isLoading.value
-                ? ProgressIndicatorScreen()
-                : responseData.doctorsCount == 0 ||
-                        responseData.doctorsCount == null
+                ? const ProgressIndicatorScreen()
+                : responseData?.doctorsCount == 0 ||
+                        responseData?.doctorsCount == null
                     ? Center(
                         child: Material(
                           color: Colors.transparent,
@@ -504,28 +502,27 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                               'Provider not available !',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
-                                  .copyWith(fontSize: 20),
+                                  .titleLarge
+                                  ?.copyWith(fontSize: 20),
                               textAlign: TextAlign.center,
                             ),
                           ),
                         ),
                       )
-                    : responseData.doctorSpecialities != null ||
-                            responseData.doctorSpecialities.isNotEmpty ||
+                    : responseData?.doctorSpecialities != null ||
+                            responseData!.doctorSpecialities!.isNotEmpty ||
                             (_bookAppointmentController.isFiltered.value !=
                                     false &&
                                 _bookAppointmentController
-                                        .doctorBySpecialitiesModelData
-                                        .value
-                                        .doctorSpecialities
-                                        ?.length !=
-                                    0)
-                        ? responseData.doctorsCount == 0 ||
+                                    .doctorBySpecialitiesModelData
+                                    .value
+                                    .doctorSpecialities!
+                                    .isNotEmpty)
+                        ? responseData?.doctorsCount == 0 ||
                                 _bookAppointmentController
                                     .doctorBySpecialitiesModelData
                                     .value
-                                    .doctorSpecialities
+                                    .doctorSpecialities!
                                     .isEmpty
                             ? Center(
                                 child: Material(
@@ -537,8 +534,8 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                       'Provider not available !',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headline6
-                                          .copyWith(fontSize: 20),
+                                          .titleLarge
+                                          ?.copyWith(fontSize: 20),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -555,8 +552,8 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
                                   'Provider not available !',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline6
-                                      .copyWith(fontSize: 20),
+                                      .titleLarge
+                                      ?.copyWith(fontSize: 20),
                                   textAlign: TextAlign.center,
                                 ),
                               ),

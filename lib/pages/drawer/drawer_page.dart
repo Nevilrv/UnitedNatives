@@ -1,23 +1,22 @@
 import 'dart:async';
 import 'dart:io' show Platform;
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/app.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/main.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/home2/drawer_controller.dart';
-import 'package:doctor_appointment_booking/utils/time.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/log_out_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/patient_scheduled_class_viewmodel.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/app.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/main.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/home2/drawer_controller.dart';
+import 'package:united_natives/utils/time.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/log_out_view_model.dart';
+import 'package:united_natives/viewModel/patient_scheduled_class_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:share/share.dart';
 import '../../routes/routes.dart';
 
 var getIhPatient;
@@ -31,33 +30,32 @@ class ChangeState extends GetxController {
 }
 
 class DrawerPage extends StatefulWidget {
-  final Function onTap;
+  final Function()? onTap;
 
-  DrawerPage({Key key, @required this.onTap}) : super(key: key);
+  const DrawerPage({super.key, required this.onTap});
 
   @override
   State<DrawerPage> createState() => _DrawerPageState();
 }
 
 class _DrawerPageState extends State<DrawerPage> {
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
   // ChangeState changeState = Get.find();
 
   Utils utils = Utils();
-  String subject;
-  String text;
+  String? subject;
+  String? text;
 
   LogOutController logOutController = Get.put(LogOutController());
   PatientScheduledClassController patientScheduledClassController = Get.find();
   DrawerController2 drawerController2 = Get.put(DrawerController2());
-  PatientHomeScreenController patientHomeScreenController;
+  PatientHomeScreenController? patientHomeScreenController;
 
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
 
-    getIhPatient = _userController.user?.value?.isIhUser;
-    print('=========ih_user_data=========  $getIhPatient');
+    getIhPatient = _userController.user.value.isIhUser;
     if (Platform.isAndroid) {
       subject =
           'Hi there, I hope United Natives app will be helpful for you. Here is the link to install UN App: com.sataware.unitednativesllc&hl  Stay Safe!';
@@ -83,30 +81,31 @@ class _DrawerPageState extends State<DrawerPage> {
             scrollDirection: Axis.vertical,
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 35, horizontal: 0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 35, horizontal: 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Obx(() {
                             return utils.patientProfile(
-                                _userController.user?.value?.profilePic ?? '',
-                                _userController.user?.value?.socialProfilePic ??
+                                _userController.user.value.profilePic ?? '',
+                                _userController.user.value.socialProfilePic ??
                                     '',
                                 40);
                           }),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           SizedBox(
                             width: w * 0.5,
                             child: Text(
-                              '${_userController?.user?.value?.firstName ?? ''} ${_userController.user.value.lastName}',
-                              style: TextStyle(
+                              '${_userController.user.value.firstName ?? ''} ${_userController.user.value.lastName}',
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 23,
                                 fontWeight: FontWeight.w700,
@@ -116,7 +115,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
 
@@ -128,7 +127,7 @@ class _DrawerPageState extends State<DrawerPage> {
                         controller.selectPage(0);
                         patientHomeScreenController =
                             Get.put(PatientHomeScreenController())
-                              ..getPatientHomePage();
+                              ?..getPatientHomePage();
                       },
                     ),
 
@@ -166,8 +165,8 @@ class _DrawerPageState extends State<DrawerPage> {
                             onTap: () async {
                               Bloc.observer = AppBlocObserver();
                               setState(() {});
-                              Get.to(App1())
-                                  .then((value) => AppBloc.loginCubit.onLogin(
+                              Get.to(const App1())
+                                  ?.then((value) => AppBloc.loginCubit.onLogin(
                                         username: Prefs.getString(Prefs.EMAIL),
                                         password:
                                             Prefs.getString(Prefs.PASSWORD),
@@ -228,7 +227,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             onTap: () => Navigator.of(context)
                                 .pushNamed(Routes.servicesPatient),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
 
                     ///TEMPORARY HIDE
                     // _drawerItem(
@@ -253,11 +252,12 @@ class _DrawerPageState extends State<DrawerPage> {
                       image: 'group',
                       text: 'Invite Friends',
                       onTap: () {
-                        final RenderBox box = context.findRenderObject();
-                        Share.share(text,
-                            subject: subject,
-                            sharePositionOrigin:
-                                box.localToGlobal(Offset.zero) & box.size);
+                        /// NEW CODE COMMENT
+                        // final RenderBox box = context.findRenderObject();
+                        // Share.share(text,
+                        //     subject: subject,
+                        //     sharePositionOrigin:
+                        //         box.localToGlobal(Offset.zero) & box.size);
                       },
                     ),
                     _drawerItem(
@@ -309,7 +309,7 @@ class _DrawerPageState extends State<DrawerPage> {
                                                     context,
                                                     Routes.login,
                                                     (route) => false);
-                                            TimerChange.timer.cancel();
+                                            TimerChange.timer?.cancel();
                                           });
                                         } else {
                                           setState(() {
@@ -344,13 +344,10 @@ class _DrawerPageState extends State<DrawerPage> {
                                                 .addChatStatusApiResponse
                                                 .status ==
                                             Status.COMPLETE) {
-                                          print('COMPLETE');
                                         } else if (logOutController
                                                 .addChatStatusApiResponse
                                                 .status ==
-                                            Status.ERROR) {
-                                          print('ERROR');
-                                        }
+                                            Status.ERROR) {}
                                         controller.closeDrawer();
                                         controller.selectPage(0);
                                       },
@@ -377,23 +374,18 @@ class _DrawerPageState extends State<DrawerPage> {
     });
   }
 
-  Future<void> addChatOnlineStatus({bool type}) async {
+  Future<void> addChatOnlineStatus({required bool type}) async {
     AddChatOnlineStatusReqModel model = AddChatOnlineStatusReqModel();
     model.isOnline = type;
     model.lastSeen = DateTime.now().toString();
     await logOutController.addChatStatus(model: model);
     if (logOutController.addChatStatusApiResponse.status == Status.COMPLETE) {
-      print('COMPLETE>>>>>>>>>>');
     } else if (logOutController.addChatStatusApiResponse.status ==
-        Status.ERROR) {
-      print('ERROR');
-    }
+        Status.ERROR) {}
   }
 
   InkWell _drawerItem(
-      {@required String image,
-      @required String text,
-      @required Function onTap}) {
+      {required String image, required String text, required Function onTap}) {
     return InkWell(
       onTap: () {
         onTap();
@@ -410,10 +402,10 @@ class _DrawerPageState extends State<DrawerPage> {
               height: Get.height * 0.043,
               width: 40,
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Text(
-              Translate.of(context).translate(text),
-              style: TextStyle(
+              Translate.of(context)!.translate(text),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 21,
                 fontWeight: FontWeight.w500,

@@ -1,15 +1,17 @@
-import 'package:doctor_appointment_booking/components/my_doctor_message_list.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/get_all_doctor.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/time.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/my_doctor_message_list.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/get_all_doctor.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/time.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 class MyDoctorMessageList extends StatefulWidget {
+  const MyDoctorMessageList({super.key});
+
   @override
   State<MyDoctorMessageList> createState() => _MyDoctorMessageListState();
 }
@@ -23,35 +25,35 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
   @override
   Widget build(BuildContext context) {
     // _patientHomeScreenController.getAllDoctors();
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
         TimerChange().patientTimerChange();
-        return true;
       },
       child: Stack(
         children: [
           Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios_sharp),
+                icon: const Icon(Icons.arrow_back_ios_sharp),
                 onPressed: () {
                   Navigator.pop(context);
                   TimerChange().patientTimerChange();
                 },
               ),
               title: Text(
-                Translate.of(context).translate('My Provider List'),
+                Translate.of(context)!.translate('My Provider List'),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                     fontSize: 24),
               ),
             ),
             body: Column(
               children: [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
                     controller: searchController,
                     onChanged: (value) {
@@ -60,16 +62,17 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
-                        borderSide: BorderSide(color: kColorBlue, width: 0.5),
+                        borderSide:
+                            const BorderSide(color: kColorBlue, width: 0.5),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide:
-                            BorderSide(color: Colors.grey[300], width: 0.5),
+                            BorderSide(color: Colors.grey[300]!, width: 0.5),
                       ),
                       filled: true,
                       fillColor: Colors.grey[250],
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 15,
                       ),
@@ -78,7 +81,7 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
                         color: Colors.grey[400],
                         size: 30,
                       ),
-                      hintText: Translate.of(context).translate('search'),
+                      hintText: Translate.of(context)?.translate('search'),
                       hintStyle:
                           TextStyle(color: Colors.grey[400], fontSize: 22),
                     ),
@@ -86,14 +89,14 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
                     maxLines: 1,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Expanded(
                   child: Obx(() {
                     if (_patientHomeScreenController
                             .getAllDoctor.value.apiState ==
                         APIState.COMPLETE) {
                       List<Doctor> data = [];
-                      _patientHomeScreenController?.getAllDoctor?.value?.data
+                      _patientHomeScreenController.getAllDoctor.value.data
                           ?.forEach((element) {
                         if (element.chatKey == "") {
                           data.add(element);
@@ -112,21 +115,22 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
                         child: indexFind < 0
                             ? Center(
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 25)
-                                      .copyWith(bottom: 35),
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 25)
+                                          .copyWith(bottom: 35),
                                   child: Text(
                                     'You can only start a conversation with providers with whom you currently have or have had appointments. Start booking appointments and come back here.',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline6
-                                        .copyWith(fontSize: 20),
+                                        .titleLarge
+                                        ?.copyWith(fontSize: 20),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
                               )
                             : ListView.builder(
-                                itemCount: data.length ?? 0,
-                                padding: EdgeInsets.symmetric(
+                                itemCount: data.length,
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
                                 itemBuilder: (context, index) {
                                   return "${data[index].firstName}${data[index].lastName}"
@@ -139,9 +143,9 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
                                       ? Column(
                                           children: [
                                             MyDoctorMessageLists(
-                                              doctor: data[index] ?? '',
+                                              doctor: data[index],
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 15,
                                             )
                                           ],
@@ -155,14 +159,14 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
                         APIState.COMPLETE_WITH_NO_DATA) {
                       return Center(
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 25)
+                          margin: const EdgeInsets.symmetric(horizontal: 25)
                               .copyWith(bottom: 35),
                           child: Text(
                             'You can only start a conversation with providers with whom you currently have or have had appointments. Start booking appointments and come back here.',
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
-                                .copyWith(fontSize: 20),
+                                .titleLarge
+                                ?.copyWith(fontSize: 20),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -170,28 +174,22 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
                     } else if (_patientHomeScreenController
                             .getAllDoctor.value.apiState ==
                         APIState.ERROR) {
-                      return Container(
-                        child: Text(
-                          "Error",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
-                          textAlign: TextAlign.center,
-                        ),
+                      return Text(
+                        "Error",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontSize: 20),
+                        textAlign: TextAlign.center,
                       );
                     } else if (_patientHomeScreenController
                             .getAllDoctor.value.apiState ==
                         APIState.PROCESSING) {
-                      return Container(
-                          // child: Center(
-                          //   child: CircularProgressIndicator(),
-                          // ),
-                          child: Center(
-                        child: Utils.circular(),
-                      ));
-                    } else {
                       return Center(
+                        child: Utils.circular(),
+                      );
+                    } else {
+                      return const Center(
                         child: Text(""),
                       );
                     }

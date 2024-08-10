@@ -1,28 +1,28 @@
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/class_detail_doctor_data_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/edit_scheduled_class.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/class_detail_doctor_data_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/edit_scheduled_class.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DrCourseDetailScreen extends StatefulWidget {
-  final String classId;
+  final String? classId;
 
-  DrCourseDetailScreen({Key key, this.classId}) : super(key: key);
+  const DrCourseDetailScreen({super.key, this.classId});
   @override
-  _DrCourseDetailScreenState createState() => _DrCourseDetailScreenState();
+  State<DrCourseDetailScreen> createState() => _DrCourseDetailScreenState();
 }
 
 class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
     with SingleTickerProviderStateMixin {
-  TabController controller;
+  TabController? controller;
   EditScheduledClassController editScheduledClassController =
       Get.put(EditScheduledClassController());
   var data = Get.arguments;
   final UserController userController = Get.find();
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   @override
   void initState() {
     editScheduledClassController.classDetailDoctor(
@@ -48,8 +48,8 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
                   }
                   if (controller.classDetailDoctorApiResponse.status ==
                       Status.ERROR) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 40),
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 40),
                       child: Center(child: Text("Server error")),
                     );
                   }
@@ -58,12 +58,13 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
                   return ListView(
                     children: [
                       headerView(
-                          image: responseModel.data.classFeaturedImage,
-                          title: responseModel.data.title,
-                          date: responseModel.data.classDate,
-                          attendance: responseModel.data.classAttendees,
-                          endTime: responseModel.data.classEndTime,
-                          startTime: responseModel.data.classStartTime),
+                        image: responseModel.data?.classFeaturedImage ?? "",
+                        title: responseModel.data?.title ?? "",
+                        date: responseModel.data?.classDate ?? "",
+                        attendance: responseModel.data?.classAttendees ?? "",
+                        endTime: responseModel.data?.classEndTime ?? "",
+                        startTime: responseModel.data?.classStartTime ?? "",
+                      ),
                       // Get.width * 0.05
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -81,7 +82,7 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
                         padding:
                             EdgeInsets.symmetric(horizontal: Get.height * 0.02),
                         child:
-                            tab1(description: responseModel.data.description),
+                            tab1(description: responseModel.data!.description!),
                       ),
                     ],
                   );
@@ -90,12 +91,12 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
     );
   }
 
-  Column tab1({String description}) {
+  Column tab1({required String description}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          description ?? '',
+          description,
           style: TextStyle(
               fontSize: Get.height * 0.022,
               color: _isDark ? Colors.white.withOpacity(0.8) : Colors.grey),
@@ -105,12 +106,12 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
   }
 
   Widget headerView(
-      {String image,
-      String title,
-      String attendance,
-      String date,
-      String startTime,
-      String endTime}) {
+      {String? image,
+      String? title,
+      String? attendance,
+      String? date,
+      String? startTime,
+      String? endTime}) {
     return Stack(
       children: [
         Column(
@@ -123,7 +124,7 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
                   Container(
                     // width: Get.width,
                     height: 300,
-                    margin: EdgeInsets.only(bottom: 30),
+                    margin: const EdgeInsets.only(bottom: 30),
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(image == null || image == ''
@@ -151,7 +152,7 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title.toUpperCase() ?? "",
+                    title?.toUpperCase() ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -159,7 +160,7 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
                         fontSize: 22,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
@@ -179,7 +180,7 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
             Container(
               width: Get.width * 2,
               height: 2,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               color: Colors.black12,
             ),
             Padding(
@@ -254,7 +255,7 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
             Container(
               width: Get.width * 2,
               height: 2,
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               color: Colors.black12,
             ),
             // index.isEven
@@ -273,7 +274,7 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
             child: CircleAvatar(
               backgroundColor: Colors.black.withOpacity(0.5),
               radius: Get.height * 0.025,
-              child: Center(
+              child: const Center(
                 child: Icon(
                   Icons.arrow_back_rounded,
                   color: Colors.white,
@@ -287,55 +288,51 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
   }
 
   Container buildContainer({
-    String title,
-    Color colorName,
-    Color colorText,
+    required String title,
+    required Color colorName,
+    required Color colorText,
   }) {
     return Container(
       height: 40,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+
+      decoration: BoxDecoration(
+          color: colorName,
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 4,
+              spreadRadius: 1,
+              offset: Offset(0.5, 0.5),
+            )
+          ],
+          borderRadius: BorderRadius.circular(8)),
       child: Text(
         "$title",
         style: TextStyle(
             color: colorText == null ? Colors.black : colorText, fontSize: 20),
       ),
-
-      decoration: BoxDecoration(
-          color: colorName,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 4,
-              spreadRadius: 1,
-              offset: Offset(0.5, 0.5),
-            )
-          ],
-          borderRadius: BorderRadius.circular(8)),
     );
   }
 
   Container buildContainerButton({
-    String title,
-    Color colorName,
-    Color colorText,
+    required String title,
+    required Color colorName,
+    required Color colorText,
   }) {
     return Container(
       height: 50,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.only(bottom: 25, right: 25, left: 25, top: 10),
-      child: Text(
-        "$title",
-        style: TextStyle(color: colorText, fontSize: 20),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.only(bottom: 25, right: 25, left: 25, top: 10),
 
       decoration: BoxDecoration(
           color: colorName,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 4,
@@ -344,6 +341,10 @@ class _DrCourseDetailScreenState extends State<DrCourseDetailScreen>
             )
           ],
           borderRadius: BorderRadius.circular(8)),
+      child: Text(
+        "$title",
+        style: TextStyle(color: colorText, fontSize: 20),
+      ),
     );
   }
 }

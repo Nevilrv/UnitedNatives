@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,14 +25,17 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class WomenHealth extends StatefulWidget {
+  const WomenHealth({super.key});
+
   @override
-  _WomenHealthState createState() => _WomenHealthState();
+  State<WomenHealth> createState() => _WomenHealthState();
 }
 
 class _WomenHealthState extends State<WomenHealth> {
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
 
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
 
   AdsController adsController = Get.find();
   int totalCount = 0;
@@ -40,7 +43,7 @@ class _WomenHealthState extends State<WomenHealth> {
   List<String> idList = [];
   List<Datum> listDatum = [];
   List list = [];
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   int getDataLength = 0;
   List editList = [];
   List cols = [
@@ -68,7 +71,7 @@ class _WomenHealthState extends State<WomenHealth> {
   TextEditingController daysController = TextEditingController();
   TextEditingController editdaysController = TextEditingController();
 
-  Future<HealthResponseModel> getWomenHealthData() async {
+  Future<HealthResponseModel?> getWomenHealthData() async {
     rows.clear();
     idList.clear();
     final String url = Constants.getRoutineHealthReport;
@@ -81,19 +84,16 @@ class _WomenHealthState extends State<WomenHealth> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
 
-    print('RESPONSE => ${response.body}');
-
     try {
       if (response != null) {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
-        listDatum = model.data;
-        model.data.forEach((element) {
-          idList.add(element.id);
-          list = (jsonDecode(element.tableData) as List);
+        listDatum = model.data!;
+        model.data?.forEach((element) {
+          idList.add(element.id!);
+          list = (jsonDecode(element.tableData!) as List);
           rows.add({'date': list[0], 'day': list[1]});
         });
-        print('Rows $rows');
         getDataLength = rows.length;
         setState(() {});
         return null;
@@ -103,7 +103,6 @@ class _WomenHealthState extends State<WomenHealth> {
       }
     } catch (e) {
       _controller.isLoading.value = false;
-      print('Error $e');
       return null;
     }
   }
@@ -123,8 +122,6 @@ class _WomenHealthState extends State<WomenHealth> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
     isLoading.value = false;
-
-    print('RESPONSE => ${response.body}');
 
     if (response != null) {
       await getWomenHealthData();
@@ -149,7 +146,6 @@ class _WomenHealthState extends State<WomenHealth> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
 
-    print('RESPONSE => ${response.body}');
     isLoading.value = false;
 
     if (response != null) {
@@ -163,7 +159,8 @@ class _WomenHealthState extends State<WomenHealth> {
     }
   }
 
-  Future updateWomenHealthData({dynamic reportTableData, String id}) async {
+  Future updateWomenHealthData(
+      {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -178,7 +175,6 @@ class _WomenHealthState extends State<WomenHealth> {
     var response = await http.post(Uri.parse(url),
         body: jsonEncode(body), headers: Config.getHeaders());
 
-    print('RESPONSE => ${response.body}');
     isLoading.value = false;
 
     if (response != null) {
@@ -219,7 +215,7 @@ class _WomenHealthState extends State<WomenHealth> {
               "Women Health Tracker",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
           ),
@@ -229,7 +225,7 @@ class _WomenHealthState extends State<WomenHealth> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Women Health Tracker',
@@ -237,7 +233,7 @@ class _WomenHealthState extends State<WomenHealth> {
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Expanded(
                       child: Obx(() {
                         return _controller.isLoading.value
@@ -247,86 +243,82 @@ class _WomenHealthState extends State<WomenHealth> {
                             Center(
                                 child: Utils.circular(),
                               )
-                            : Container(
-                                child: Editable(
-                                  key: _editableKey,
-                                  columns: cols,
-                                  rows: rows,
-                                  popUpTitle: 'Women Health Tracker',
-                                  showSaveIcon: true,
-                                  saveIconColor:
-                                      _isDark ? Colors.white : Colors.black,
-                                  borderColor: Colors.blueGrey,
-                                  onAddButtonPressed: () async {
-                                    String text =
-                                        '${dateController.text},${daysController.text}';
-                                    List<String> result = text.split(',');
-                                    print("result=??$result");
-                                    bool addData = true;
-                                    for (int i = 0; i < result.length; i++) {
-                                      if (result[i] == "") {
-                                        Utils.showSnackBar(
-                                          'Enter details',
-                                          'Please enter all required details!!',
-                                        );
-                                        addData = false;
-                                        break;
-                                      }
+                            : Editable(
+                                key: _editableKey,
+                                columns: cols,
+                                rows: rows,
+                                popUpTitle: 'Women Health Tracker',
+                                showSaveIcon: true,
+                                saveIconColor:
+                                    _isDark ? Colors.white : Colors.black,
+                                borderColor: Colors.blueGrey,
+                                onAddButtonPressed: () async {
+                                  String text =
+                                      '${dateController.text},${daysController.text}';
+                                  List<String> result = text.split(',');
+                                  bool addData = true;
+                                  for (int i = 0; i < result.length; i++) {
+                                    if (result[i] == "") {
+                                      Utils.showSnackBar(
+                                        'Enter details',
+                                        'Please enter all required details!!',
+                                      );
+                                      addData = false;
+                                      break;
                                     }
-                                    if (addData) {
-                                      rows.add({
-                                        'date': result[0],
-                                        'day': result[1],
-                                      });
-                                      Navigator.pop(context);
-                                      await addWomenHealthData(result);
-                                    } else {
-                                      // Navigator.pop(context);
-                                    }
-                                  },
-                                  onDeleteButtonPressed: (index) async {
-                                    print('Index $index');
-                                    await deleteWomenHealthData(idList[index]);
-                                  },
-                                  onEditButtonPressed: (index) {
-                                    _editDialog(context, index, listDatum);
-                                  },
-                                  onTap: () {
-                                    dateController.clear();
-                                    daysController.clear();
-                                  },
-                                  popUpChild: Container(
-                                    width: Get.width * 0.75,
-                                    child: Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () async {
-                                            dateController.text =
-                                                await Utils.selectedDateFormat(
-                                                    context);
-                                          },
-                                          child: TextField(
-                                            controller: dateController,
-                                            enabled: false,
-                                            readOnly: true,
-                                            decoration: InputDecoration(
-                                                hintText: 'Start Date'),
-                                          ),
+                                  }
+                                  if (addData) {
+                                    rows.add({
+                                      'date': result[0],
+                                      'day': result[1],
+                                    });
+                                    Navigator.pop(context);
+                                    await addWomenHealthData(result);
+                                  } else {
+                                    // Navigator.pop(context);
+                                  }
+                                },
+                                onDeleteButtonPressed: (index) async {
+                                  await deleteWomenHealthData(idList[index]);
+                                },
+                                onEditButtonPressed: (index) {
+                                  _editDialog(context, index, listDatum);
+                                },
+                                onTap: () {
+                                  dateController.clear();
+                                  daysController.clear();
+                                },
+                                popUpChild: SizedBox(
+                                  width: Get.width * 0.75,
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          dateController.text =
+                                              await Utils.selectedDateFormat(
+                                                  context);
+                                        },
+                                        child: TextField(
+                                          controller: dateController,
+                                          enabled: false,
+                                          readOnly: true,
+                                          decoration: const InputDecoration(
+                                              hintText: 'Start Date'),
                                         ),
-                                        TextField(
-                                          controller: daysController,
-                                          decoration: InputDecoration(
-                                              hintText: 'Number of Days'),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      TextField(
+                                        controller: daysController,
+                                        decoration: const InputDecoration(
+                                            hintText: 'Number of Days'),
+                                      ),
+                                    ],
                                   ),
-                                  showCreateButton: true,
-                                  onSubmitted: (value) {},
-                                  createButtonLabel: Text(
-                                    'New',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                                ),
+                                showCreateButton: true,
+                                onSubmitted: (value) {},
+                                createButtonLabel: const Text(
+                                  'New',
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               );
                       }),
@@ -340,15 +332,15 @@ class _WomenHealthState extends State<WomenHealth> {
                           'No women health tracker data',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
+                              .titleLarge
+                              ?.copyWith(fontSize: 20),
                         ),
                       )
                   ],
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -359,7 +351,6 @@ class _WomenHealthState extends State<WomenHealth> {
 
   _editDialog(context, index, listDatum) async {
     editList = (jsonDecode(listDatum[index].tableData) as List);
-    print('===editList===>$editList');
     editdateController.text = editList[0];
     editdaysController.text = editList[1];
 
@@ -368,7 +359,7 @@ class _WomenHealthState extends State<WomenHealth> {
         title: 'Physical Activity Tracker',
         content: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Container(
+            child: SizedBox(
               width: Get.width * 0.75,
               child: StatefulBuilder(
                 builder: (BuildContext context, setStates) {
@@ -383,12 +374,12 @@ class _WomenHealthState extends State<WomenHealth> {
                           enabled: false,
                           readOnly: true,
                           controller: editdateController,
-                          decoration: InputDecoration(hintText: 'Date'),
+                          decoration: const InputDecoration(hintText: 'Date'),
                         ),
                       ),
                       TextField(
                         controller: editdaysController,
-                        decoration: InputDecoration(hintText: 'M'),
+                        decoration: const InputDecoration(hintText: 'M'),
                       ),
                     ],
                   );
@@ -398,16 +389,14 @@ class _WomenHealthState extends State<WomenHealth> {
         buttons: [
           DialogButton(
             onPressed: () async {
-              print('call');
               String text =
                   '${editdateController.text},${editdaysController.text}';
               List<String> result = text.split(',');
-              print("result=??$result");
               Navigator.pop(context);
               await updateWomenHealthData(
                   id: idList[index], reportTableData: result);
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),

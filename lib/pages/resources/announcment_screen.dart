@@ -2,19 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:html/parser.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 
 class AnnoucMentScreen extends StatefulWidget {
-  const AnnoucMentScreen({Key key}) : super(key: key);
+  const AnnoucMentScreen({super.key});
 
   @override
   State<AnnoucMentScreen> createState() => _AnnoucMentScreenState();
@@ -25,19 +25,17 @@ var tempData = [];
 class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
   Future announce() async {
     http.Response response = await http.get(
-      Uri.parse('${Constants.baseUrl + Constants.allAnnouncement}'),
+      Uri.parse(Constants.baseUrl + Constants.allAnnouncement),
     );
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
 
-      print('===========$result');
       return result;
     } else {}
   }
 
   AdsController adsController = Get.find();
 
-  int randomAd;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AdsController>(builder: (ads) {
@@ -50,12 +48,12 @@ class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
-            title: Text(
+            title: const Text(
               'Announcement',
               style: TextStyle(fontSize: 25, color: Colors.black),
             ),
             leading: GestureDetector(
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 color: Colors.black,
               ),
@@ -69,13 +67,13 @@ class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20),
-                        Padding(
+                        const SizedBox(height: 20),
+                        const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 6),
                           child: Text(
                             'Earlier This Year',
@@ -86,16 +84,16 @@ class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: CachedNetworkImage(
                             imageUrl:
                                 '${snapshot.data['data'][0]['image_url']}',
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
                               child: Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.28,
@@ -104,12 +102,12 @@ class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
                               ),
                             ),
                             errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
+                                const Icon(Icons.error),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         snapshot.data['data'].isEmpty
-                            ? Center(
+                            ? const Center(
                                 child: Text(
                                   'NO DATA FOUND',
                                   style: TextStyle(
@@ -118,7 +116,7 @@ class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
                               )
                             : ListView.builder(
                                 shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 itemCount:
                                     (snapshot.data['data'] as List).length,
                                 itemBuilder: (BuildContext context, int index) {
@@ -128,23 +126,28 @@ class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
                                     child: SingleChildScrollView(
                                       child: Column(
                                         children: [
-                                          Html(
-                                            data:
-                                                '${snapshot.data['data'][index]['content']}',
-                                          ),
-                                          SizedBox(height: 10),
+                                          Builder(builder: (context) {
+                                            var document = parse(
+                                                snapshot.data['data'][index]
+                                                    ['content']);
+                                            return Text(document.body!.text);
+                                          }),
+                                          const SizedBox(height: 10),
                                           Row(
                                             children: [
                                               Text(
-                                                '${DateFormat('dd-MM-yyyy').format(DateTime.parse(snapshot.data['data'][index]['created_at']))}',
-                                                style: TextStyle(
+                                                DateFormat('dd-MM-yyyy').format(
+                                                    DateTime.parse(snapshot
+                                                            .data['data'][index]
+                                                        ['created_at'])),
+                                                style: const TextStyle(
                                                   fontSize: 20,
                                                 ),
                                               ),
-                                              Spacer(),
+                                              const Spacer(),
                                               Text(
                                                 '${snapshot.data['data'][index]['author']}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 20,
                                                 ),
                                               )

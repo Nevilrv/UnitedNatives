@@ -1,48 +1,47 @@
 import 'dart:async';
 import 'dart:io' show Platform;
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/app.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/home2/drawer_controller.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/time.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart' as utils;
-import 'package:doctor_appointment_booking/viewModel/log_out_view_model.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/app.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/home2/drawer_controller.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/time.dart';
+import 'package:united_natives/utils/utils.dart' as utils;
+import 'package:united_natives/viewModel/log_out_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:share/share.dart';
 
 var getIhDoctor;
 var getIhDoctorData;
 
 class DocDrawerPage extends StatefulWidget {
-  final Function onTap;
+  final Function()? onTap;
 
-  DocDrawerPage({Key key, @required this.onTap}) : super(key: key);
+  const DocDrawerPage({super.key, required this.onTap});
 
   @override
   State<DocDrawerPage> createState() => _DocDrawerPageState();
 }
 
 class _DocDrawerPageState extends State<DocDrawerPage> {
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
 
   LogOutController logOutController = Get.put(LogOutController());
-  String subject;
-  String text;
+  String? subject;
+  String? text;
 
   DrawerController2 drawerController2 = Get.put(DrawerController2());
-  DoctorHomeScreenController doctorHomeScreenController;
+  DoctorHomeScreenController? doctorHomeScreenController;
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-    getIhDoctor = _userController.user?.value?.isIhUser;
+    getIhDoctor = _userController.user.value.isIhUser;
 
     // String subject = 'Invite your Friends and get a Free promo Code';
     // String text = 'promo code 2FK876G';
@@ -72,7 +71,7 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
             scrollDirection: Axis.vertical,
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 35),
+                padding: const EdgeInsets.symmetric(vertical: 35),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -83,17 +82,17 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                         children: <Widget>[
                           Obx(() {
                             return utils.Utils().patientProfile(
-                                _userController.user?.value?.profilePic ?? '',
-                                _userController.user?.value?.socialProfilePic ??
+                                _userController.user.value.profilePic ?? '',
+                                _userController.user.value.socialProfilePic ??
                                     '',
                                 40);
                           }),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           SizedBox(
                             width: w * 0.5,
                             child: Text(
                               '${_userController.user.value.firstName} ${_userController.user.value.lastName}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700),
@@ -102,7 +101,7 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     _docdrawerItem(
                       image: 'home_icon',
@@ -112,7 +111,7 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                         controller.selectPage(0);
                         doctorHomeScreenController =
                             Get.put(DoctorHomeScreenController())
-                              ..getDoctorHomePage()
+                              ?..getDoctorHomePage()
                               ..filterData();
                       },
                     ),
@@ -195,7 +194,7 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                               // log('USER NAME ${Prefs.getString(Prefs.EMAIL)}');
                               // log('USER NAME ${Prefs.getString(Prefs.normalPassword)}');
                               // Bloc.observer = AppBlocObserver();
-                              Get.to(App1()) /*.then(
+                              Get.to(const App1()) /*.then(
                                   (value) => AppBloc.loginCubit.onLogin(
                                     username: Prefs.getString(Prefs.EMAIL),
                                     password: Prefs.getString(Prefs.PASSWORD),
@@ -254,7 +253,7 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                             onTap: () => Navigator.of(context)
                                 .pushNamed(Routes.servicesDoctor),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                     _docdrawerItem(
                       image: 'Contactus',
                       text: 'Contact Us',
@@ -271,11 +270,13 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                       image: 'group',
                       text: 'Invite Friends',
                       onTap: () {
-                        final RenderBox box = context.findRenderObject();
-                        Share.share(text,
-                            subject: subject,
-                            sharePositionOrigin:
-                                box.localToGlobal(Offset.zero) & box.size);
+                        /// NEW CODE COMMENT
+
+                        // final RenderBox box = context.findRenderObject();
+                        // Share.share(text,
+                        //     subject: subject,
+                        //     sharePositionOrigin:
+                        //         box.localToGlobal(Offset.zero) & box.size);
                       },
                     ),
 
@@ -313,7 +314,7 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                                                     (Route<dynamic> route) =>
                                                         false);
 
-                                            TimerChange.timer.cancel();
+                                            TimerChange.timer?.cancel();
                                           },
                                         );
                                       } else {
@@ -347,13 +348,10 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                                               .addChatStatusApiResponse
                                               .status ==
                                           Status.COMPLETE) {
-                                        print('COMPLETE');
                                       } else if (logOutController
                                               .addChatStatusApiResponse
                                               .status ==
-                                          Status.ERROR) {
-                                        print('ERROR');
-                                      }
+                                          Status.ERROR) {}
 
                                       controller.closeDrawer();
                                       controller.selectPage(0);
@@ -378,24 +376,20 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
     });
   }
 
-  Future<void> addChatOnlineStatus({bool type}) async {
+  Future<void> addChatOnlineStatus({bool? type}) async {
     AddChatOnlineStatusReqModel model = AddChatOnlineStatusReqModel();
     model.isOnline = type;
     model.lastSeen = DateTime.now().toString();
     await logOutController.addChatStatus(model: model);
-    print('modelmodelmodelmodel $model');
     if (logOutController.addChatStatusApiResponse.status == Status.COMPLETE) {
-      print('COMPLETE>>>>>>>>>>>');
     } else if (logOutController.addChatStatusApiResponse.status ==
-        Status.ERROR) {
-      print('ERROR');
-    }
+        Status.ERROR) {}
   }
 
   InkWell _docdrawerItem({
-    @required String image,
-    @required String text,
-    @required Function onTap,
+    required String image,
+    required String text,
+    required Function onTap,
   }) {
     return InkWell(
       onTap: () {
@@ -414,12 +408,12 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
               height: Get.height * 0.043,
               width: 40,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Text(
-              Translate.of(context).translate(text),
-              style: TextStyle(
+              Translate.of(context)!.translate(text),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 21,
                 fontWeight: FontWeight.w500,

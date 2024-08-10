@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/self_monitoring_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_update_contoller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/pages/Diabites/custom_package/editable_custom_package.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/self_monitoring_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,8 +26,10 @@ void enablePlatformOverrideForDesktop() {
 }
 
 class Diabetes extends StatefulWidget {
+  const Diabetes({super.key});
+
   @override
-  _DiabetesState createState() => _DiabetesState();
+  State<Diabetes> createState() => _DiabetesState();
 }
 
 class _DiabetesState extends State<Diabetes> {
@@ -38,10 +40,11 @@ class _DiabetesState extends State<Diabetes> {
     'Blood Sugar 1 Hour',
     'Blood Sugar 2 Hour',
   ];
-  UserController _userController = Get.find<UserController>();
+  final UserController _userController = Get.find<UserController>();
 
   ChangeState changeState = Get.put(ChangeState());
-  SelfMonitoringController _controller = Get.put(SelfMonitoringController());
+  final SelfMonitoringController _controller =
+      Get.put(SelfMonitoringController());
   int totalCount = 0;
   List list = [];
   List<Datum> listDatum = [];
@@ -94,13 +97,13 @@ class _DiabetesState extends State<Diabetes> {
 
   AdsController adsController = Get.find();
 
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   List rows = [];
   List<String> idList = [];
 
   final _editableKey = GlobalKey<EditableState>();
 
-  Future<HealthResponseModel> getDiabetesData() async {
+  Future<HealthResponseModel?> getDiabetesData() async {
     rows.clear();
     idList.clear();
     final String url = Constants.getRoutineHealthReport;
@@ -118,10 +121,10 @@ class _DiabetesState extends State<Diabetes> {
       if (response != null) {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
-        listDatum = model.data;
-        model.data.forEach((element) {
-          idList.add(element.id);
-          list = (jsonDecode(element.tableData) as List);
+        listDatum = model.data!;
+        model.data?.forEach((element) {
+          idList.add(element.id!);
+          list = (jsonDecode(element.tableData!) as List);
           rows.add({
             'date': list[0],
             'm': list[1],
@@ -212,7 +215,8 @@ class _DiabetesState extends State<Diabetes> {
     }
   }
 
-  Future updateDiabetesData({dynamic reportTableData, String id}) async {
+  Future updateDiabetesData(
+      {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
     final String url = Constants.updateRoutineHealthReport;
@@ -294,7 +298,7 @@ class _DiabetesState extends State<Diabetes> {
               "Blood Sugar Tracker",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24,
               ),
             ),
@@ -305,7 +309,7 @@ class _DiabetesState extends State<Diabetes> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Blood Sugar Tracker',
@@ -315,7 +319,7 @@ class _DiabetesState extends State<Diabetes> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -324,160 +328,157 @@ class _DiabetesState extends State<Diabetes> {
                             ? Center(
                                 child: Utils.circular(),
                               )
-                            : Container(
-                                child: Editable(
-                                  key: _editableKey,
-                                  columns: cols,
-                                  rows: rows,
-                                  popUpTitle: 'Blood Sugar Tracker',
-                                  showSaveIcon: true,
-                                  saveIconColor:
-                                      _isDark ? Colors.white : Colors.black,
-                                  borderColor: Colors.blueGrey,
-                                  onAddButtonPressed: () async {
-                                    debugPrint(dropdownvalue);
-                                    String text =
-                                        '${dateController.text},${mController.text},${bsController.text},$dropdownvalue,${foodController.text}';
-                                    List<String> result = text.split(',');
-                                    debugPrint("result=??$result");
-                                    bool addData = true;
-                                    for (int i = 0; i < result.length; i++) {
-                                      if (result[i] == "") {
-                                        Utils.showSnackBar(
-                                          'Enter details',
-                                          'Please enter all required details!!',
-                                        );
-                                        addData = false;
-                                        break;
-                                      }
+                            : Editable(
+                                key: _editableKey,
+                                columns: cols,
+                                rows: rows,
+                                popUpTitle: 'Blood Sugar Tracker',
+                                showSaveIcon: true,
+                                saveIconColor:
+                                    _isDark ? Colors.white : Colors.black,
+                                borderColor: Colors.blueGrey,
+                                onAddButtonPressed: () async {
+                                  debugPrint(dropdownvalue);
+                                  String text =
+                                      '${dateController.text},${mController.text},${bsController.text},$dropdownvalue,${foodController.text}';
+                                  List<String> result = text.split(',');
+                                  debugPrint("result=??$result");
+                                  bool addData = true;
+                                  for (int i = 0; i < result.length; i++) {
+                                    if (result[i] == "") {
+                                      Utils.showSnackBar(
+                                        'Enter details',
+                                        'Please enter all required details!!',
+                                      );
+                                      addData = false;
+                                      break;
                                     }
-                                    if (addData) {
-                                      rows.add({
-                                        'date': result[0],
-                                        'm': result[1],
-                                        'sugar fasting': result[2],
-                                        'one hour': result[3],
-                                        'two hour': result[4],
-                                        'status': result[4],
-                                      });
-                                      Navigator.pop(context);
-                                      await addDiabetesData(result);
-                                    } else {
-                                      // Navigator.pop(context);
-                                    }
-                                  },
-                                  onDeleteButtonPressed: (index) async {
-                                    await deleteDiabetesData(idList[index]);
-                                  },
-                                  onEditButtonPressed: (index) {
-                                    _editDialog(context, index, listDatum);
-                                  },
-                                  onTap: () {
-                                    dateController.clear();
-                                    foodController.clear();
-                                    bs2Controller.clear();
-                                    bs1Controller.clear();
-                                    bsController.clear();
-                                    mController.clear();
-                                  },
-                                  popUpChild: Container(
-                                    width: Get.width * 0.75,
-                                    child: Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () async {
-                                            dateController.text =
-                                                await Utils.selectedDateFormat(
-                                                    context);
-                                          },
-                                          child: TextField(
-                                            controller: dateController,
-                                            enabled: false,
-                                            readOnly: true,
-                                            decoration: InputDecoration(
-                                                hintText: 'Date'),
-                                          ),
+                                  }
+                                  if (addData) {
+                                    rows.add({
+                                      'date': result[0],
+                                      'm': result[1],
+                                      'sugar fasting': result[2],
+                                      'one hour': result[3],
+                                      'two hour': result[4],
+                                      'status': result[4],
+                                    });
+                                    Navigator.pop(context);
+                                    await addDiabetesData(result);
+                                  } else {
+                                    // Navigator.pop(context);
+                                  }
+                                },
+                                onDeleteButtonPressed: (index) async {
+                                  await deleteDiabetesData(idList[index]);
+                                },
+                                onEditButtonPressed: (index) {
+                                  _editDialog(context, index, listDatum);
+                                },
+                                onTap: () {
+                                  dateController.clear();
+                                  foodController.clear();
+                                  bs2Controller.clear();
+                                  bs1Controller.clear();
+                                  bsController.clear();
+                                  mController.clear();
+                                },
+                                popUpChild: SizedBox(
+                                  width: Get.width * 0.75,
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          dateController.text =
+                                              await Utils.selectedDateFormat(
+                                                  context);
+                                        },
+                                        child: TextField(
+                                          controller: dateController,
+                                          enabled: false,
+                                          readOnly: true,
+                                          decoration: const InputDecoration(
+                                              hintText: 'Date'),
                                         ),
-                                        TextField(
-                                          controller: mController,
-                                          decoration:
-                                              InputDecoration(hintText: 'M'),
-                                        ),
-                                        TextField(
-                                          controller: bsController,
-                                          decoration: InputDecoration(
-                                              hintText: 'Blood Sugar Fasting'),
-                                        ),
-                                        GetBuilder<ChangeState>(
-                                          builder: (controller) {
-                                            return Container(
-                                              width: double.infinity,
-                                              child: DropdownButton(
-                                                // Initial Value
-                                                value: controller.change,
-                                                style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.6),
-                                                  fontSize: 18,
-                                                ),
-                                                isExpanded: true,
-                                                // Down Arrow Icon
-                                                icon: const Icon(
-                                                    Icons.keyboard_arrow_down),
-                                                // Array list of items
-                                                items:
-                                                    items.map((String items) {
-                                                  return DropdownMenuItem(
-                                                    value: items,
-                                                    child: Text(
-                                                      items,
-                                                      style: TextStyle(
-                                                          color: _isDark
-                                                              ? Colors.white
-                                                                  .withOpacity(
-                                                                      0.8)
-                                                              : Colors.black),
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                                // After selecting the desired option,it will
-                                                // change button value to selected value
-                                                onChanged: (String newValue) {
-                                                  controller
-                                                      .changeString(newValue);
-                                                  dropdownvalue =
-                                                      controller.change;
-                                                },
+                                      ),
+                                      TextField(
+                                        controller: mController,
+                                        decoration: const InputDecoration(
+                                            hintText: 'M'),
+                                      ),
+                                      TextField(
+                                        controller: bsController,
+                                        decoration: const InputDecoration(
+                                            hintText: 'Blood Sugar Fasting'),
+                                      ),
+                                      GetBuilder<ChangeState>(
+                                        builder: (controller) {
+                                          return SizedBox(
+                                            width: double.infinity,
+                                            child: DropdownButton(
+                                              // Initial Value
+                                              value: controller.change,
+                                              style: TextStyle(
+                                                color: Colors.black
+                                                    .withOpacity(0.6),
+                                                fontSize: 18,
                                               ),
-                                            );
-                                          },
-                                        ),
-                                        // TextField(
-                                        //   controller: bs1Controller,
-                                        //   decoration: InputDecoration(
-                                        //       hintText: 'Blood Sugar 1 Hour'),
-                                        // ),
-                                        // TextField(
-                                        //   controller: bs2Controller,
-                                        //   decoration: InputDecoration(
-                                        //       hintText: 'Blood Sugar 2 Hour'),
-                                        // ),
-                                        TextField(
-                                          controller: foodController,
-                                          decoration: InputDecoration(
-                                              hintText:
-                                                  'Food(s) Eaten Before Testing'),
-                                        ),
-                                      ],
-                                    ),
+                                              isExpanded: true,
+                                              // Down Arrow Icon
+                                              icon: const Icon(
+                                                  Icons.keyboard_arrow_down),
+                                              // Array list of items
+                                              items: items.map((String items) {
+                                                return DropdownMenuItem(
+                                                  value: items,
+                                                  child: Text(
+                                                    items,
+                                                    style: TextStyle(
+                                                        color: _isDark
+                                                            ? Colors.white
+                                                                .withOpacity(
+                                                                    0.8)
+                                                            : Colors.black),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                              // After selecting the desired option,it will
+                                              // change button value to selected value
+                                              onChanged: (String? newValue) {
+                                                controller
+                                                    .changeString(newValue!);
+                                                dropdownvalue =
+                                                    controller.change;
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      // TextField(
+                                      //   controller: bs1Controller,
+                                      //   decoration: InputDecoration(
+                                      //       hintText: 'Blood Sugar 1 Hour'),
+                                      // ),
+                                      // TextField(
+                                      //   controller: bs2Controller,
+                                      //   decoration: InputDecoration(
+                                      //       hintText: 'Blood Sugar 2 Hour'),
+                                      // ),
+                                      TextField(
+                                        controller: foodController,
+                                        decoration: const InputDecoration(
+                                            hintText:
+                                                'Food(s) Eaten Before Testing'),
+                                      ),
+                                    ],
                                   ),
-                                  showCreateButton: true,
-                                  onSubmitted: (value) {},
-                                  createButtonLabel: Text(
-                                    'New',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
+                                ),
+                                showCreateButton: true,
+                                onSubmitted: (value) {},
+                                createButtonLabel: const Text(
+                                  'New',
+                                  style: TextStyle(
+                                    color: Colors.black,
                                   ),
                                 ),
                               );
@@ -492,15 +493,15 @@ class _DiabetesState extends State<Diabetes> {
                           'No blood sugar details',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
+                              .titleLarge
+                              ?.copyWith(fontSize: 20),
                         ),
                       )
                   ],
                 ),
               ),
               Obx(
-                () => isLoading.value ? Utils.loadingBar() : SizedBox(),
+                () => isLoading.value ? Utils.loadingBar() : const SizedBox(),
               )
             ],
           ),
@@ -527,7 +528,7 @@ class _DiabetesState extends State<Diabetes> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: StatefulBuilder(
             builder: (BuildContext context, setStates) {
-              return Container(
+              return SizedBox(
                 width: Get.width * 0.75,
                 child: Column(
                   children: [
@@ -540,23 +541,23 @@ class _DiabetesState extends State<Diabetes> {
                         enabled: false,
                         readOnly: true,
                         controller: editDateController,
-                        decoration: InputDecoration(hintText: 'Date'),
+                        decoration: const InputDecoration(hintText: 'Date'),
                       ),
                     ),
                     TextField(
                       controller: editMController,
-                      decoration: InputDecoration(hintText: 'M'),
+                      decoration: const InputDecoration(hintText: 'M'),
                     ),
                     TextField(
                       controller: editBsController,
-                      decoration:
-                          InputDecoration(hintText: 'Blood Sugar Fasting'),
+                      decoration: const InputDecoration(
+                          hintText: 'Blood Sugar Fasting'),
                     ),
                     GetBuilder<ChangeState>(
                       builder: (controller) {
                         controller.change = dropdownvalue;
 
-                        return Container(
+                        return SizedBox(
                           width: double.infinity,
                           child: DropdownButton(
                             // Initial Value
@@ -577,9 +578,9 @@ class _DiabetesState extends State<Diabetes> {
                             }).toList(),
                             // After selecting the desired option,it will
                             // change button value to selected value
-                            onChanged: (String newValue) {
+                            onChanged: (String? newValue) {
                               setStates(() {
-                                controller.changeString(newValue);
+                                controller.changeString(newValue!);
                                 dropdownvalue = controller.change;
                               });
                             },
@@ -598,7 +599,7 @@ class _DiabetesState extends State<Diabetes> {
                     // ),
                     TextField(
                       controller: editFoodController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: 'Food(s) Eaten Before Testing'),
                     ),
                   ],
@@ -618,7 +619,7 @@ class _DiabetesState extends State<Diabetes> {
               await updateDiabetesData(
                   id: idList[index], reportTableData: result);
             },
-            child: Text(
+            child: const Text(
               "Save",
               style: TextStyle(
                 color: Colors.white,

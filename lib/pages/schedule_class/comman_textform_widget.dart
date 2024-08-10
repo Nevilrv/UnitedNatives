@@ -1,36 +1,36 @@
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
+import 'package:united_natives/data/pref_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 typedef OnChangeString = void Function(String value);
-String verificationCode, smsCode;
-int resendingTokenID;
+String? verificationCode, smsCode;
+int? resendingTokenID;
 FirebaseAuth auth = FirebaseAuth.instance;
 
 class CommonTextField extends StatelessWidget {
-  final String labelText;
-  final String initialValue;
-  final TextStyle style;
-  final bool isValidate;
-  final bool readOnly;
-  final bool isChange;
-  final TextInputType textInputType;
-  final String validationType;
-  final String regularExpression;
-  final int inputLength;
-  final String hintText;
-  final String validationMessage;
-  final int maxLine;
-  final Widget sIcon;
-  final String isBottomLabel;
-  final bool obscureValue;
-  final OnChangeString onChange;
-  final Function isBottomFunction;
-  final TextEditingController textEditingController;
+  final String? labelText;
+  final String? initialValue;
+  final TextStyle? style;
+  final bool? isValidate;
+  final bool? readOnly;
+  final bool? isChange;
+  final TextInputType? textInputType;
+  final String? validationType;
+  final String? regularExpression;
+  final int? inputLength;
+  final String? hintText;
+  final String? validationMessage;
+  final int? maxLine;
+  final Widget? sIcon;
+  final String? isBottomLabel;
+  final bool? obscureValue;
+  final OnChangeString? onChange;
+  final Function? isBottomFunction;
+  final TextEditingController? textEditingController;
   const CommonTextField(
-      {Key key,
+      {super.key,
       this.labelText,
       this.isChange,
       this.isValidate,
@@ -49,38 +49,37 @@ class CommonTextField extends StatelessWidget {
       this.isBottomLabel,
       this.isBottomFunction,
       this.textEditingController,
-      this.style})
-      : super(key: key);
+      this.style});
 
   /// PLEASE IMPORT GETX PACKAGE
-  static InputBorder outLineRed = OutlineInputBorder(
+  static InputBorder outLineRed = const OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(8.0)),
     borderSide: BorderSide(color: Colors.red, width: 1.0),
   );
-  static InputBorder outLineGrey = OutlineInputBorder(
+  static InputBorder outLineGrey = const OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(8.0)),
     borderSide: BorderSide(color: Colors.black38, width: 1.0),
   );
 
   @override
   Widget build(BuildContext context) {
-    bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+    bool isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          labelText == null || labelText.isEmpty
-              ? SizedBox()
+          labelText == null || labelText!.isEmpty
+              ? const SizedBox()
               : Text(
                   labelText ?? '',
                   // style: FontTextStyle.nunito600Black3dS14Style,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: _isDark ? Colors.white : Colors.black,
+                      color: isDark ? Colors.white : Colors.black,
                       fontSize: Get.height * 0.022),
                 ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           TextFormField(
@@ -91,16 +90,16 @@ class CommonTextField extends StatelessWidget {
             autocorrect: false,
             inputFormatters: [
               LengthLimitingTextInputFormatter(inputLength),
-              FilteringTextInputFormatter.allow(RegExp(regularExpression))
+              FilteringTextInputFormatter.allow(RegExp(regularExpression!))
             ],
-            obscureText: validationType == 'password' ? obscureValue : false,
+            obscureText: validationType! == 'password' ? obscureValue! : false,
             onChanged: onChange,
-            readOnly: readOnly,
+            readOnly: readOnly!,
             validator: (value) {
               print("isValidate  $value");
 
               return isValidate == true
-                  ? value.isEmpty
+                  ? value!.isEmpty
                       ? 'required...'
                       : null
                   : null;
@@ -111,7 +110,8 @@ class CommonTextField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hintText ?? '',
 
-              contentPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
               enabledBorder: outLineGrey,
               focusedErrorBorder: outLineRed,
               focusedBorder: outLineGrey,
@@ -125,7 +125,7 @@ class CommonTextField extends StatelessWidget {
               // this is new
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
         ],

@@ -1,33 +1,33 @@
 import 'dart:io';
 import 'package:date_format/date_format.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/edit_class_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/add_class_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/schedule_class/comman_textform_widget.dart';
-import 'package:doctor_appointment_booking/utils/common_snackbar.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/utils/validation_utility.dart';
-import 'package:doctor_appointment_booking/viewModel/edit_scheduled_class.dart';
-import 'package:doctor_appointment_booking/viewModel/scheduled_class_viewmodel.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/edit_class_request_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/add_class_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/schedule_class/comman_textform_widget.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/utils/validation_utility.dart';
+import 'package:united_natives/viewModel/edit_scheduled_class.dart';
+import 'package:united_natives/viewModel/scheduled_class_viewmodel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditScheduledForm extends StatefulWidget {
-  final String classId;
-  final String image;
-  String startDate;
-  final String startTime;
-  final String title;
-  final String description;
-  final String endTime;
-  final String urlSelectebDate;
+  final String? classId;
+  final String? image;
+  String? startDate;
+  final String? startTime;
+  final String? title;
+  final String? description;
+  final String? endTime;
+  final String? urlSelectebDate;
 
   EditScheduledForm(
-      {Key key,
+      {super.key,
       this.classId,
       this.image,
       this.startDate,
@@ -35,10 +35,9 @@ class EditScheduledForm extends StatefulWidget {
       this.startTime,
       this.title,
       this.description,
-      this.urlSelectebDate})
-      : super(key: key);
+      this.urlSelectebDate});
   @override
-  _EditScheduledFormState createState() => _EditScheduledFormState();
+  State<EditScheduledForm> createState() => _EditScheduledFormState();
 }
 
 class _EditScheduledFormState extends State<EditScheduledForm> {
@@ -46,68 +45,67 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
   ScheduledClassController scheduledClassController = Get.find();
   EditScheduledClassController editScheduledClassController =
       Get.put(EditScheduledClassController());
-  String mySelectDate, selectedStartTime, selectedEndTime;
-  String _setTime;
+  String? mySelectDate, selectedStartTime, selectedEndTime;
+  String? _setTime;
 
-  String _hour, _minute, _time;
-  GlobalKey<FormState> formKey;
+  String? _hour, _minute, _time;
+  GlobalKey<FormState>? formKey;
   final UserController userController = Get.find();
-  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
-  String imagee;
-  String image;
+  TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
+  String? imagee;
+  String? image;
 
   Future<void> _selectDate(BuildContext context) async {
     widget.startDate = null;
     selectedDate = DateTime.now();
-    final DateTime pickedData = await showDatePicker(
+    final DateTime? pickedData = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime.now(),
         lastDate: DateTime(2500));
 
-    if (pickedData != null && pickedData != selectedDate)
+    if (pickedData != null && pickedData != selectedDate) {
       setState(() {
         selectedDate = pickedData;
         mySelectDate = DateFormat('dd-MM-yyyy').format(selectedDate);
       });
-
-    print(selectedDate);
+    }
   }
 
   Future<Null> _selectTime(BuildContext context, String time) async {
-    final TimeOfDay picked = await showTimePicker(
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() {
         selectedTime = picked;
         _hour = selectedTime.hour.toString();
         _minute = selectedTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
+        _time = '$_hour : $_minute';
         _setTime = _time;
         _setTime = formatDate(
             DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
             [hh, ':', nn, " ", am]).toString();
         if (time == 'start') {
           selectedStartTime = _setTime;
-          print(selectedStartTime);
         } else {
           selectedEndTime = _setTime;
         }
       });
+    }
   }
 
-  TextEditingController titleEditingController, descriptionController;
-  File imageW;
+  TextEditingController? titleEditingController, descriptionController;
+  File? imageW;
 
   @override
   void initState() {
     // TODO: implement initState
     formKey = GlobalKey<FormState>();
 
-    titleEditingController = new TextEditingController(text: widget.title);
-    descriptionController = new TextEditingController(text: widget.description);
+    titleEditingController = TextEditingController(text: widget.title);
+    descriptionController = TextEditingController(text: widget.description);
 
     data();
     // _fileFromImageUrl();
@@ -125,7 +123,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
     super.initState();
   }
 
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   Future<void> data() async {
     await editScheduledClassController.classDetailDoctor(
         id: userController.user.value.id, classId: widget.classId);
@@ -133,7 +131,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+    bool isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -141,7 +139,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
           "Edit Schedule class ",
           style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).textTheme.subtitle1.color,
+              color: Theme.of(context).textTheme.titleMedium?.color,
               fontSize: 24),
           textAlign: TextAlign.center,
         ),
@@ -154,7 +152,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
               key: formKey,
               child: ListView(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   CommonTextField(
@@ -197,7 +195,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                           fontSize: Get.height * 0.022),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   InkWell(
@@ -209,30 +207,30 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                       height: Get.height * 0.20,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Color(0XffF3F3F3),
+                          color: const Color(0XffF3F3F3),
                           border: Border.all(color: Colors.black38, width: 1)),
-                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
                       child: imageW != null
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Image.file(
-                                imageW,
+                                imageW!,
                                 fit: BoxFit.fill,
                               ),
                             )
                           : widget.image == null
-                              ? Text("Select image..")
+                              ? const Text("Select image..")
                               : ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
                                   child: Image.network(
-                                    widget.image,
+                                    widget.image ?? "",
                                     width: Get.width,
                                     fit: BoxFit.fill,
                                   ),
                                 ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Column(
@@ -253,18 +251,25 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                         },
                         child: Container(
                           width: Get.width * 1.5,
-                          padding: EdgeInsets.all(8),
-                          margin: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.all(8),
+                          margin: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                              color: isDark
+                                  ? Colors.grey.withOpacity(0.2)
+                                  : const Color(0XffF3F3F3),
+                              borderRadius: BorderRadius.circular(10),
+                              border:
+                                  Border.all(width: 2, color: Colors.black26)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.calendar_today_outlined,
                                 size: 25,
                                 color: Colors.grey,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 15,
                               ),
 
@@ -273,11 +278,14 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                 child: mySelectDate != null &&
                                         mySelectDate != ""
                                     ? widget.startDate != null
-                                        ? Text(widget.startDate,
+                                        ? Text(widget.startDate!,
                                             style: TextStyle(
                                                 fontSize: Get.height * 0.022))
                                         : Text(
-                                            "${selectedDate.toLocal().toString().split(' ')[0]}",
+                                            selectedDate
+                                                .toLocal()
+                                                .toString()
+                                                .split(' ')[0],
                                             style: TextStyle(
                                                 fontSize: Get.height * 0.022))
                                     : Text(
@@ -289,18 +297,11 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                               // Icon(Icons.arrow_forward_ios_rounded)
                             ],
                           ),
-                          decoration: BoxDecoration(
-                              color: _isDark
-                                  ? Colors.grey.withOpacity(0.2)
-                                  : Color(0XffF3F3F3),
-                              borderRadius: BorderRadius.circular(10),
-                              border:
-                                  Border.all(width: 2, color: Colors.black26)),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Padding(
@@ -319,7 +320,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color:
-                                          _isDark ? Colors.white : Colors.black,
+                                          isDark ? Colors.white : Colors.black,
                                       fontSize: Get.height * 0.022),
                                 ),
                               ),
@@ -329,28 +330,35 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                 },
                                 child: Container(
                                   width: Get.width * 1.5,
-                                  padding: EdgeInsets.all(8),
-                                  margin: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.all(8),
+                                  margin: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
+                                  decoration: BoxDecoration(
+                                      color: isDark
+                                          ? Colors.grey.withOpacity(0.2)
+                                          : const Color(0XffF3F3F3),
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          width: 2, color: Colors.black26)),
 
                                   // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.access_time,
                                         size: 25,
                                         color: Colors.grey,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 15,
                                       ),
                                       Expanded(
                                         flex: 2,
                                         child: selectedStartTime != null
                                             ? selectedStartTime == null
-                                                ? Text(widget.startTime,
+                                                ? Text(widget.startTime!,
                                                     style: TextStyle(
                                                         fontSize:
                                                             Get.height * 0.022))
@@ -368,13 +376,6 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                       // Icon(Icons.arrow_forward_ios_rounded)
                                     ],
                                   ),
-                                  decoration: BoxDecoration(
-                                      color: _isDark
-                                          ? Colors.grey.withOpacity(0.2)
-                                          : Color(0XffF3F3F3),
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          width: 2, color: Colors.black26)),
                                 ),
                               ),
                             ],
@@ -392,7 +393,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color:
-                                          _isDark ? Colors.white : Colors.black,
+                                          isDark ? Colors.white : Colors.black,
                                       fontSize: Get.height * 0.022),
                                 ),
                               ),
@@ -402,28 +403,35 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                 },
                                 child: Container(
                                   width: Get.width * 1.5,
-                                  padding: EdgeInsets.all(8),
-                                  margin: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.all(8),
+                                  margin: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
+                                  decoration: BoxDecoration(
+                                      color: isDark
+                                          ? Colors.grey.withOpacity(0.2)
+                                          : const Color(0XffF3F3F3),
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          width: 2, color: Colors.black26)),
 
                                   // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.access_time,
                                         size: 25,
                                         color: Colors.grey,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 15,
                                       ),
                                       Expanded(
                                         flex: 2,
                                         child: selectedEndTime != null
                                             ? selectedEndTime == null
-                                                ? Text(widget.endTime,
+                                                ? Text(widget.endTime!,
                                                     style: TextStyle(
                                                         fontSize:
                                                             Get.height * 0.022))
@@ -431,18 +439,11 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                                     style: TextStyle(
                                                         fontSize:
                                                             Get.height * 0.022))
-                                            : Text("Choose end time"),
+                                            : const Text("Choose end time"),
                                       ),
                                       // Icon(Icons.arrow_forward_ios_rounded)
                                     ],
                                   ),
-                                  decoration: BoxDecoration(
-                                      color: _isDark
-                                          ? Colors.grey.withOpacity(0.2)
-                                          : Color(0XffF3F3F3),
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          width: 2, color: Colors.black26)),
                                 ),
                               ),
                             ],
@@ -451,7 +452,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   GetBuilder<ScheduledClassController>(
@@ -468,31 +469,30 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                             EdgeInsets.symmetric(horizontal: Get.width / 4),
                         child: InkWell(
                           onTap: () async {
-                            if (formKey.currentState != null) {
-                              if (formKey.currentState.validate()) {
+                            if (formKey?.currentState != null) {
+                              if (formKey!.currentState!.validate()) {
                                 if (mySelectDate == null ||
-                                    mySelectDate.isBlank) {
+                                    mySelectDate.isBlank!) {
                                   Utils.showSnackBar(
                                       'Validation', 'Select date');
                                 } else if (selectedStartTime == null ||
-                                    selectedStartTime.isBlank) {
+                                    selectedStartTime.isBlank!) {
                                   Utils.showSnackBar(
                                       'Validation', 'Select start time');
                                 } else if (selectedEndTime == null ||
-                                    selectedEndTime.isBlank) {
+                                    selectedEndTime.isBlank!) {
                                   Utils.showSnackBar(
                                       'Validation', 'Select end time');
                                 } else {
-                                  print("valid");
                                   FocusScope.of(context).unfocus();
                                   EditClassReqModel model = EditClassReqModel();
-                                  model.title = titleEditingController.text;
+                                  model.title = titleEditingController!.text;
                                   model.description =
-                                      descriptionController.text;
+                                      descriptionController!.text;
                                   model.featuredImage =
-                                      imageW == null || imageW.path == ''
+                                      imageW == null || imageW!.path == ''
                                           ? ''
-                                          : imageW.path;
+                                          : imageW!.path;
 
                                   model.date = mySelectDate;
                                   model.startTime = selectedStartTime;
@@ -500,10 +500,9 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
 
                                   await scheduledClassController.editClass(
                                       model,
-                                      id: userController.user.value.id,
-                                      classId: widget.classId);
+                                      id: userController.user.value.id!,
+                                      classId: widget.classId!);
 
-                                  print('model>>>>>>>>>>  $model');
                                   if (scheduledClassController
                                           .editclassApiResponse.status ==
                                       Status.COMPLETE) {
@@ -513,10 +512,11 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
 
                                     if (responseModel.status == "Success") {
                                       CommonSnackBar.snackBar(
-                                          message: responseModel.message);
-                                      Future.delayed(Duration(seconds: 2), () {
+                                          message: responseModel.message!);
+                                      Future.delayed(const Duration(seconds: 2),
+                                          () {
                                         controller.getClassDoctor(
-                                            id: userController.user.value.id,
+                                            id: userController.user.value.id!,
                                             date: widget.urlSelectebDate ?? '');
                                         Navigator.pop(context);
                                       });
@@ -532,29 +532,21 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                     CommonSnackBar.snackBar(
                                         message: "Server error");
                                   }
-                                  print(model);
                                 }
-                              } else {
-                                print("In valid");
-                              }
+                              } else {}
                             }
                           },
                           child: Container(
                             height: 50,
                             // width: 50,
                             alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(horizontal: 4),
-                            margin: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 18, vertical: 12),
-                            child: Text(
-                              "Submit",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
 
                             decoration: BoxDecoration(
                                 color: Colors.blueAccent,
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     color: Colors.black26,
                                     blurRadius: 4,
@@ -563,6 +555,11 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                                   )
                                 ],
                                 borderRadius: BorderRadius.circular(8)),
+                            child: const Text(
+                              "Submit",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
                           ),
                         ),
                       );
@@ -594,7 +591,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                           getImage(imgSource: ImageSource.camera);
                           Navigator.pop(context);
                         },
-                        child: Text(
+                        child: const Text(
                           "Camera",
                           style: TextStyle(color: Colors.white),
                         )),
@@ -604,7 +601,7 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
                           getImage(imgSource: ImageSource.gallery);
                           Navigator.pop(context);
                         },
-                        child: Text(
+                        child: const Text(
                           "Gallery",
                           style: TextStyle(color: Colors.white),
                         ))
@@ -613,16 +610,13 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
         barrierDismissible: true);
   }
 
-  Future getImage({ImageSource imgSource}) async {
+  Future getImage({required ImageSource imgSource}) async {
     final pickedFile = await _picker.pickImage(source: imgSource);
 
     setState(() {
       if (pickedFile != null) {
         imageW = File(pickedFile.path);
-        print("IMAGE?>>>>>>${imageW.path}");
-      } else {
-        print('No image selected.');
-      }
+      } else {}
     });
   }
 

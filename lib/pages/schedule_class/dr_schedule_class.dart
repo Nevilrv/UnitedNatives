@@ -1,18 +1,18 @@
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_class_doctor_data_reponse_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/message_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/schedule_class/dr_edit_scheduled_form.dart';
-import 'package:doctor_appointment_booking/pages/schedule_class/dr_schedule_form.dart';
-import 'package:doctor_appointment_booking/utils/common_snackbar.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/scheduled_class_viewmodel.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_class_doctor_data_reponse_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/schedule_class/dr_edit_scheduled_form.dart';
+import 'package:united_natives/pages/schedule_class/dr_schedule_form.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/scheduled_class_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:octo_image/octo_image.dart';
@@ -20,14 +20,16 @@ import 'package:octo_image/octo_image.dart';
 import 'dr_course_detail_screen.dart';
 
 class DrScheduleClass extends StatefulWidget {
+  const DrScheduleClass({super.key});
+
   @override
-  _DrScheduleClassState createState() => _DrScheduleClassState();
+  State<DrScheduleClass> createState() => _DrScheduleClassState();
 }
 
 class _DrScheduleClassState extends State<DrScheduleClass> {
   DateTime selectedDate = DateTime.now();
-  String mySelectDate;
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  String? mySelectDate;
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   final UserController userController = Get.find();
   ScheduledClassController scheduledClassController =
       Get.put(ScheduledClassController());
@@ -40,16 +42,16 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101),
     ).then((value) {
-      if (value != null && value != selectedDate)
+      if (value != null && value != selectedDate) {
         setState(() {
           selectedDate = value;
           mySelectDate = mySelectDate = "${value.toLocal()}".split(' ')[0];
           scheduledClassController.getClassDoctor(
-              id: userController.user.value.id, date: mySelectDate);
+              id: userController.user.value.id!, date: mySelectDate!);
         });
-      mySelectDate = "${value.toLocal()}".split(' ')[0];
-
-      return;
+      }
+      mySelectDate = "${value?.toLocal()}".split(' ')[0];
+      return selectedDate;
     });
     debugPrint('picked==========>>>>>$picked');
   }
@@ -57,7 +59,7 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
   @override
   void initState() {
     scheduledClassController.getClassDoctor(
-        id: userController.user.value.id, date: '');
+        id: userController.user.value.id!, date: '');
     // TODO: implement initState
     super.initState();
   }
@@ -75,7 +77,7 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
             'Scheduled class',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24),
             textAlign: TextAlign.center,
           ),
@@ -92,14 +94,22 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                   },
                   child: Container(
                     width: Get.width * 1.5,
-                    padding: EdgeInsets.all(8),
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.all(8),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            width: 2,
+                            color: _isDark
+                                ? Colors.grey.withOpacity(0.2)
+                                : Colors.black26)),
 
                     // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 15,
                           backgroundColor: Colors.blueAccent,
                           child: Icon(
@@ -108,7 +118,7 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                         Expanded(
@@ -116,7 +126,7 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                           child: mySelectDate != null && mySelectDate != ""
                               ? Text(
                                   "${selectedDate.toLocal()}".split(' ')[0],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                   ),
                                 )
@@ -127,18 +137,11 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                   ),
                                 ),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.arrow_forward_ios_rounded,
                         )
                       ],
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            width: 2,
-                            color: _isDark
-                                ? Colors.grey.withOpacity(0.2)
-                                : Colors.black26)),
                   ),
                 ),
                 GetBuilder<ScheduledClassController>(
@@ -154,13 +157,13 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                     }
                     if (controller.getClassDoctorApiResponse.status ==
                         Status.ERROR) {
-                      return Text("Server error");
+                      return const Text("Server error");
                     }
                     GetClassDoctorDataResponseModel response =
                         controller.getClassDoctorApiResponse.data;
-                    if (response.data.isEmpty) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 40),
+                    if (response.data!.isEmpty) {
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 40),
                         child: Center(
                           child: Text(
                             "No data found",
@@ -172,7 +175,7 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                     return Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: response.data.length,
+                        itemCount: response.data?.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(12.0),
@@ -180,7 +183,7 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                               onTap: () {
                                 Get.to(
                                   DrCourseDetailScreen(
-                                    classId: response.data[index].id,
+                                    classId: response.data?[index].id,
                                   ),
                                 );
                                 // Get.to(CourseDetailScreen(), arguments: courses[index]);
@@ -191,9 +194,9 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                   color: _isDark
                                       ? Colors.grey.withOpacity(0.2)
                                       : Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                  boxShadow: [
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Colors.black26,
                                       blurRadius: 4,
@@ -214,7 +217,8 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                           Container(
                                             // width: Get.width,
                                             height: Get.height * 0.2,
-                                            margin: EdgeInsets.only(bottom: 30),
+                                            margin: const EdgeInsets.only(
+                                                bottom: 30),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10),
@@ -225,15 +229,15 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                               child: OctoImage(
                                                 image:
                                                     CachedNetworkImageProvider(
-                                                  response.data[index]
+                                                  response.data?[index]
                                                                   .classFeaturedImage ==
                                                               null ||
-                                                          response.data[index]
+                                                          response.data?[index]
                                                                   .classFeaturedImage ==
                                                               ''
                                                       ? 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png'
-                                                      : response.data[index]
-                                                          .classFeaturedImage,
+                                                      : response.data![index]
+                                                          .classFeaturedImage!,
                                                 ),
                                                 // placeholderBuilder:
                                                 //     OctoPlaceholder.blurHash(
@@ -286,18 +290,18 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            response.data[index].title
-                                                    .toUpperCase() ??
+                                            response.data?[index].title
+                                                    ?.toUpperCase() ??
                                                 "",
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                           Text(
-                                            "Attendance ${response.data[index].classAttendees ?? ""}",
+                                            "Attendance ${response.data?[index].classAttendees ?? ""}",
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -315,8 +319,8 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                     Container(
                                       width: Get.width * 2,
                                       height: 2,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 20),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 20),
                                       color: Colors.black12,
                                     ),
                                     Padding(
@@ -346,10 +350,10 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  response.data[index]
+                                                  response.data?[index]
                                                           .classDate ??
                                                       "",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 22,
                                                     fontWeight: FontWeight.w600,
                                                   ),
@@ -390,8 +394,8 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '${response.data[index].classStartTime ?? ""} to ${response.data[index].classEndTime ?? ""}',
-                                                    style: TextStyle(
+                                                    '${response.data?[index].classStartTime ?? ""} to ${response.data?[index].classEndTime ?? ""}',
+                                                    style: const TextStyle(
                                                       fontSize: 22,
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -407,8 +411,8 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                     Container(
                                       width: Get.width * 2,
                                       height: 2,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 20),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 20),
                                       color: Colors.black12,
                                     ),
                                     Row(
@@ -418,19 +422,19 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                             onTap: () {
                                               Get.to(EditScheduledForm(
                                                 title:
-                                                    response.data[index].title,
+                                                    response.data?[index].title,
                                                 description: response
-                                                    .data[index].description,
+                                                    .data?[index].description,
                                                 classId:
-                                                    response.data[index].id,
-                                                image: response.data[index]
+                                                    response.data?[index].id,
+                                                image: response.data?[index]
                                                     .classFeaturedImage,
                                                 startDate: response
-                                                    .data[index].classDate,
+                                                    .data?[index].classDate,
                                                 endTime: response
-                                                    .data[index].classEndTime,
-                                                startTime: response
-                                                    .data[index].classStartTime,
+                                                    .data?[index].classEndTime,
+                                                startTime: response.data?[index]
+                                                    .classStartTime,
                                                 urlSelectebDate: mySelectDate,
                                               ));
                                             },
@@ -447,9 +451,9 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                               await scheduledClassController
                                                   .deleteClassDoctor(
                                                 classId:
-                                                    response.data[index].id,
+                                                    response.data![index].id!,
                                                 id: userController
-                                                    .user.value.id,
+                                                    .user.value.id!,
                                               );
                                               if (scheduledClassController
                                                       .deleteClassApiResponse
@@ -464,14 +468,16 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                                                     'Success') {
                                                   CommonSnackBar.snackBar(
                                                       message:
-                                                          response.message);
+                                                          response.message ??
+                                                              "");
                                                   Future.delayed(
-                                                      Duration(seconds: 2),
+                                                      const Duration(
+                                                          seconds: 2),
                                                       () async {
                                                     await scheduledClassController
                                                         .getClassDoctor(
                                                             id: userController
-                                                                .user.value.id,
+                                                                .user.value.id!,
                                                             date:
                                                                 mySelectDate ??
                                                                     '');
@@ -522,7 +528,7 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
                     ),
                   );
                 }
-                return SizedBox();
+                return const SizedBox();
               },
             )
           ],
@@ -530,10 +536,10 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
         floatingActionButton: InkWell(
           onTap: () {
             Get.to(ScheduleForm(
-              urlSelectedTime: mySelectDate,
+              urlSelectedTime: mySelectDate!,
             ));
           },
-          child: CircleAvatar(
+          child: const CircleAvatar(
             radius: 35,
             backgroundColor: Colors.blue,
             child: Icon(
@@ -548,28 +554,21 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
   }
 
   Container buildContainer({
-    String title,
-    Color colorName,
-    Color colorText,
+    String? title,
+    Color? colorName,
+    Color? colorText,
   }) {
     return Container(
       height: 40,
 
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-      child: Text(
-        "$title",
-        style: TextStyle(
-          color: colorText == null ? Colors.black : colorText,
-          fontSize: 20,
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
 
       decoration: BoxDecoration(
         color: colorName,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 4,
@@ -579,32 +578,32 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
         ],
         borderRadius: BorderRadius.circular(8),
       ),
+      child: Text(
+        title!,
+        style: TextStyle(
+          color: colorText ?? Colors.black,
+          fontSize: 20,
+        ),
+      ),
     );
   }
 
   Container buildContainerButton({
-    String title,
-    Color colorName,
-    Color colorText,
+    required String title,
+    required Color colorName,
+    required Color colorText,
   }) {
     return Container(
       height: 50,
       width: Get.width,
       // width: 50,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 4),
-      margin: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-      child: Text(
-        "$title",
-        style: TextStyle(
-          color: colorText,
-          fontSize: 20,
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
 
       decoration: BoxDecoration(
         color: colorName,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 4,
@@ -613,6 +612,13 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
           )
         ],
         borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: colorText,
+          fontSize: 20,
+        ),
       ),
     );
   }

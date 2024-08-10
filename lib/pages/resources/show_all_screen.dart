@@ -1,18 +1,18 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/pages/resources/about_native_american_screen.dart';
-import 'package:doctor_appointment_booking/pages/resources/about_the_app_screen.dart';
-import 'package:doctor_appointment_booking/pages/resources/about_the_ihapp_screen.dart';
-import 'package:doctor_appointment_booking/pages/resources/guideline_who_screen.dart';
-import 'package:doctor_appointment_booking/pages/resources/health_recommandation_screen.dart';
-import 'package:doctor_appointment_booking/pages/resources/newsletter_screen.dart';
-import 'package:doctor_appointment_booking/pages/resources/thank_you_sponser_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/pages/resources/about_the_app_screen.dart';
+import 'package:united_natives/pages/resources/newsletter_screen.dart';
+import 'package:united_natives/pages/resources/thank_you_sponser_screen.dart';
+import 'about_native_american_screen.dart';
+import 'about_the_ihapp_screen.dart';
 import 'announcment_screen.dart';
+import 'guideline_who_screen.dart';
+import 'health_recommandation_screen.dart';
 
 class ShowAllScreen extends StatefulWidget {
-  const ShowAllScreen({Key key}) : super(key: key);
+  const ShowAllScreen({super.key});
 
   @override
   State<ShowAllScreen> createState() => _ShowAllScreenState();
@@ -32,18 +32,18 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
   ];
 
   List screen = [
-    NewsLetterScreen(),
-    AnnoucMentScreen(),
-    AboutAppScreen(),
-    IhAppScreen(),
-    AboutNativeAmericanScreen(),
+    const NewsLetterScreen(),
+    const AnnoucMentScreen(),
+    const AboutAppScreen(),
+    const IhAppScreen(),
+    const AboutNativeAmericanScreen(),
     // EventScreen(),
-    ThankYouScreen(),
-    HealthScreen(),
-    GuideLineScreen(),
+    const ThankYouScreen(),
+    const HealthScreen(),
+    const GuideLineScreen(),
   ];
   int selector = 0;
-  int randomAd;
+  int? randomAd;
   bool adShow = true;
   AdsController adsController = Get.find();
 
@@ -56,7 +56,7 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
           context: context,
         ),
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Resources',
             style: TextStyle(fontSize: 27),
           ),
@@ -64,7 +64,7 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
             ),
@@ -78,13 +78,12 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
           itemBuilder: (BuildContext context, int index) {
             return SafeArea(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
                       selector = index;
                     });
-                    print(selector);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (BuildContext context) {
                       return screen[index];
@@ -97,9 +96,9 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
                         borderRadius: BorderRadius.circular(20),
                         // color: Color(0xff2e83f8),
                         color: selector == index
-                            ? Color(0xff2e83f8)
+                            ? const Color(0xff2e83f8)
                             : Colors.white,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                               color: Color(0xffe8e8e8),
                               blurRadius: 5.0,
@@ -107,8 +106,9 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
                           //   BoxShadow(color: Colors.white, offset: Offset(-5, 0)),
                           //BoxShadow(color: Colors.white, offset: Offset(5, 0)),
                         ]),
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       children: [
                         Text(
@@ -116,17 +116,17 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
                           style: TextStyle(
                               color: selector == index
                                   ? Colors.white
-                                  : Color(0xff2e83f8),
+                                  : const Color(0xff2e83f8),
                               fontWeight: FontWeight.w600,
                               fontSize: 20),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Icon(
                           Icons.arrow_forward_ios_rounded,
                           size: 18,
                           color: selector == index
                               ? Colors.white
-                              : Color(0xff2e83f8),
+                              : const Color(0xff2e83f8),
                         )
                       ],
                     ),

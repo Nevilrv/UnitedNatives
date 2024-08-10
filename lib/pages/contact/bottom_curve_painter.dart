@@ -1,4 +1,4 @@
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class BottomCurvePainter extends CustomPainter {
