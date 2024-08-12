@@ -1,14 +1,15 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import '../../data/pref_manager.dart';
 
 enum Language { english, spanish, italian, portuguese }
 
 class ChangeLanguagePage extends StatefulWidget {
+  const ChangeLanguagePage({super.key});
+
   @override
-  _ChangeLanguagePageState createState() => _ChangeLanguagePageState();
+  State<ChangeLanguagePage> createState() => _ChangeLanguagePageState();
 }
 
 class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
@@ -39,7 +40,7 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
   }
 
   _changeLanguage(int index) {
-    Locale locale = EasyLocalization.of(context).locale;
+    Locale? locale = EasyLocalization.of(context)?.locale;
     switch (index) {
       case 0:
         _language = Language.english;
@@ -62,9 +63,7 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
         break;
     }
 
-    locale = EasyLocalization.of(context).supportedLocales[index];
-
-    print("language" + _language.toString() + "$locale");
+    locale = EasyLocalization.of(context)?.supportedLocales[index];
   }
 
   @override
@@ -72,7 +71,7 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          Translate.of(context).translate('language_settings'),
+          Translate.of(context)!.translate('language_settings'),
         ),
       ),
       body: SingleChildScrollView(
@@ -85,10 +84,10 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
               onChanged: (value) => _changeLanguage(0),
               groupValue: _language,
               title: Text(
-                Translate.of(context).translate('english'),
+                Translate.of(context)!.translate('english'),
               ),
             ),
-            Divider(
+            const Divider(
               height: 0.5,
               indent: 10,
               endIndent: 10,
@@ -98,10 +97,10 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
               onChanged: (value) => _changeLanguage(1),
               groupValue: _language,
               title: Text(
-                Translate.of(context).translate('spanish'),
+                Translate.of(context)!.translate('spanish'),
               ),
             ),
-            Divider(
+            const Divider(
               height: 0.5,
               indent: 10,
               endIndent: 10,
@@ -111,10 +110,10 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
               onChanged: (value) => _changeLanguage(2),
               groupValue: _language,
               title: Text(
-                Translate.of(context).translate('italian'),
+                Translate.of(context)!.translate('italian'),
               ),
             ),
-            Divider(
+            const Divider(
               height: 0.5,
               indent: 10,
               endIndent: 10,
@@ -124,7 +123,7 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
               onChanged: (value) => _changeLanguage(3),
               groupValue: _language,
               title: Text(
-                Translate.of(context).translate('portuguese'),
+                Translate.of(context)!.translate('portuguese'),
               ),
             ),
           ],

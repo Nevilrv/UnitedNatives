@@ -109,17 +109,21 @@ dependencies:
   open_filex: ^4.4.0
   flutter_widget_from_html: ^0.15.1
   agora_rtc_engine: ^6.3.2
-  syncfusion_flutter_charts: ^26.2.8
+#  syncfusion_flutter_charts: ^26.1.41
   flutter_keyboard_visibility:
   responsive_builder: ^0.7.1
   video_player: ^2.9.1
   flutter_launcher_icons: ^0.13.1
+  drift: ^2.19.1+1
+  drift_flutter: ^0.1.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  drift_dev: ^2.19.1
+  build_runner: ^2.4.12
 
 flutter:
 

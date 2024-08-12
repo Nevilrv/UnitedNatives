@@ -5,28 +5,27 @@ class FadeAnimation extends StatelessWidget {
   final double delay;
   final Widget child;
 
-  FadeAnimation(this.delay, this.child);
+  const FadeAnimation(this.delay, this.child, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final tween = MultiTrackTween([
-      Track("opacity")
-          .add(Duration(milliseconds: 500), Tween(begin: 0.0, end: 1.0)),
-      Track("translateY").add(
-          Duration(milliseconds: 500), Tween(begin: -30.0, end: 0.0),
-          curve: Curves.easeOut)
-    ]);
+    final opacityTween = Tween<double>(begin: 0.0, end: 1.0);
+    final translateYTween = Tween<double>(begin: -30.0, end: 0.0);
 
-    return ControlledAnimation(
+    return PlayAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 500),
       delay: Duration(milliseconds: (500 * delay).round()),
-      duration: tween.duration,
-      tween: tween,
+      tween: opacityTween,
+      builder: (context, opacity, child) {
+        return Transform.translate(
+          offset: Offset(0, translateYTween.transform(opacity)),
+          child: Opacity(
+            opacity: opacity,
+            child: child,
+          ),
+        );
+      },
       child: child,
-      builderWithChild: (context, child, animation) => Opacity(
-        opacity: animation["opacity"],
-        child: Transform.translate(
-            offset: Offset(0, animation["translateY"]), child: child),
-      ),
     );
   }
 }

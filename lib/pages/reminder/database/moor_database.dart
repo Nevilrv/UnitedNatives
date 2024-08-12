@@ -1,8 +1,9 @@
-import 'package:moor_flutter/moor_flutter.dart';
+import 'dart:io';
+import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
 part 'moor_database.g.dart';
 
 class MedicinesTable extends Table {
-  // autoincrement sets this to the primary key
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 5, max: 50)();
   TextColumn get image => text()();
@@ -10,11 +11,9 @@ class MedicinesTable extends Table {
   TextColumn get time => text()();
 }
 
-@UseMoor(tables: [MedicinesTable])
+@DriftDatabase(tables: [MedicinesTable])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase()
-      : super(FlutterQueryExecutor.inDatabaseFolder(
-            path: 'db.sqlite', logStatements: true));
+  AppDatabase() : super(NativeDatabase(File('db.sqlite'), logStatements: true));
 
   @override
   int get schemaVersion => 1;

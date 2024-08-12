@@ -1,32 +1,32 @@
-import 'package:doctor_appointment_booking/components/custom_profile_item.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/utils.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/visited_patient_model.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/custom_profile_item.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/utils.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class DoctorPrescriptionCard extends StatefulWidget {
-  final VisitedPatient patientData;
+  final VisitedPatient? patientData;
 
-  DoctorPrescriptionCard({Key key, this.patientData});
+  const DoctorPrescriptionCard({super.key, this.patientData});
   @override
   State<DoctorPrescriptionCard> createState() => _DoctorPrescriptionCardState();
 }
 
 class _DoctorPrescriptionCardState extends State<DoctorPrescriptionCard> {
-  DoctorHomeScreenController _doctorHomeScreenController =
+  final DoctorHomeScreenController _doctorHomeScreenController =
       Get.find<DoctorHomeScreenController>();
 
   @override
   void initState() {
     _doctorHomeScreenController.getDoctorPrescriptions(
-        patientId: widget.patientData.patientId ?? '',
-        appointmentId: widget.patientData.appointmentId ?? "");
+        patientId: widget.patientData?.patientId ?? '',
+        appointmentId: widget.patientData?.appointmentId ?? "");
     super.initState();
   }
 
@@ -45,26 +45,27 @@ class _DoctorPrescriptionCardState extends State<DoctorPrescriptionCard> {
           return Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(bottom: 15),
+                padding: const EdgeInsets.only(bottom: 15),
                 child: TextField(
                   controller: controller.prescriptionController,
-                  autofillHints: [AutofillHints.name],
+                  autofillHints: const [AutofillHints.name],
                   onChanged: (value) {
                     controller.searchPrescription(value);
                   },
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
-                      borderSide: BorderSide(color: kColorBlue, width: 0.5),
+                      borderSide:
+                          const BorderSide(color: kColorBlue, width: 0.5),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                       borderSide:
-                          BorderSide(color: Colors.grey[300], width: 0.5),
+                          BorderSide(color: Colors.grey[300]!, width: 0.5),
                     ),
                     filled: true,
                     fillColor: Colors.grey[250],
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 15,
                     ),
@@ -74,7 +75,7 @@ class _DoctorPrescriptionCardState extends State<DoctorPrescriptionCard> {
                       size: 30,
                     ),
                     hintText:
-                        Translate.of(context).translate('search_messages'),
+                        Translate.of(context)?.translate('search_messages'),
                     hintStyle: TextStyle(color: Colors.grey[400], fontSize: 22),
                   ),
                   cursorWidth: 1,
@@ -88,8 +89,8 @@ class _DoctorPrescriptionCardState extends State<DoctorPrescriptionCard> {
                           'You Don\'t have any Prescription',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
+                              .titleLarge
+                              ?.copyWith(fontSize: 20),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -99,17 +100,16 @@ class _DoctorPrescriptionCardState extends State<DoctorPrescriptionCard> {
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: controller.doctorPrescription.length ?? 0,
+                        itemCount: controller.doctorPrescription.length,
                         itemBuilder: (BuildContext context, int index) {
-                          var _prescriptionsDoctor =
+                          var prescriptionsDoctor =
                               controller.doctorPrescription[index];
                           DateTime appointmentDate = Utils.formattedDate(
-                              '${DateTime.parse('${_prescriptionsDoctor.appointmentDate} ${_prescriptionsDoctor.appointmentTime}')}');
+                              '${DateTime.parse('${prescriptionsDoctor.appointmentDate} ${prescriptionsDoctor.appointmentTime}')}');
                           return GestureDetector(
                             onTap: () {
                               Get.toNamed(Routes.prescriptionpage,
-                                  arguments:
-                                      _prescriptionsDoctor.appointmentId);
+                                  arguments: prescriptionsDoctor.appointmentId);
                             },
                             child: Column(
                               children: [
@@ -117,22 +117,22 @@ class _DoctorPrescriptionCardState extends State<DoctorPrescriptionCard> {
                                   onTap: () {
                                     Get.toNamed(Routes.prescriptionpage,
                                         arguments:
-                                            _prescriptionsDoctor.appointmentId);
+                                            prescriptionsDoctor.appointmentId);
                                   },
                                   title:
-                                      "Patient name : ${_prescriptionsDoctor.patientFirstName}",
+                                      "Patient name : ${prescriptionsDoctor.patientFirstName}",
                                   subTitle:
-                                      "Purpose of visit : ${_prescriptionsDoctor.purposeOfVisit}",
+                                      "Purpose of visit : ${prescriptionsDoctor.purposeOfVisit}",
                                   subTitle2:
-                                      'Give ${_prescriptionsDoctor.modified}' ??
-                                          "",
+                                      'Give ${prescriptionsDoctor.modified}',
                                   appointmentDate:
-                                      '${DateFormat('EE, d MMM, yyyy, hh:mm a').format(appointmentDate) ?? ""}',
+                                      DateFormat('EE, d MMM, yyyy, hh:mm a')
+                                          .format(appointmentDate),
                                   buttonTitle: 'See Prescription',
                                   imagePath:
-                                      '${_prescriptionsDoctor.pationtImage}',
+                                      '${prescriptionsDoctor.pationtImage}',
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                               ],
                             ),
                           );
@@ -146,14 +146,16 @@ class _DoctorPrescriptionCardState extends State<DoctorPrescriptionCard> {
           return Center(
             child: Text(
               'You Don\'t have any Prescription',
-              style:
-                  Theme.of(context).textTheme.headline6.copyWith(fontSize: 20),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(fontSize: 20),
               textAlign: TextAlign.center,
             ),
           );
         } else if (controller.doctorPrescriptionsModelData.apiState ==
             APIState.ERROR) {
-          return Center(
+          return const Center(
             child: Text("Error"),
           );
         } else if (controller.doctorPrescriptionsModelData.apiState ==
@@ -165,7 +167,7 @@ class _DoctorPrescriptionCardState extends State<DoctorPrescriptionCard> {
             child: Utils.circular(),
           );
         } else {
-          return Center(
+          return const Center(
             child: Text(
               "No Data to show !",
               style: TextStyle(fontSize: 21),

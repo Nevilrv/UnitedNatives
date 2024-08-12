@@ -1,15 +1,23 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 
 class NotificationSettingsPage extends StatefulWidget {
+  const NotificationSettingsPage({super.key});
+
   @override
-  _NotificationSettingsPageState createState() =>
+  State<NotificationSettingsPage> createState() =>
       _NotificationSettingsPageState();
 }
 
 class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
-  var _allNotifications;
-  var _campain, _pm, _alerts, _appointments, _healthTips, _reminders, _updates;
+  bool? _allNotifications;
+  bool? _campain,
+      _pm,
+      _alerts,
+      _appointments,
+      _healthTips,
+      _reminders,
+      _updates;
 
   @override
   void initState() {
@@ -30,7 +38,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          Translate.of(context).translate('notification_settings'),
+          Translate.of(context)!.translate('notification_settings'),
         ),
       ),
       body: SingleChildScrollView(
@@ -38,117 +46,117 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SwitchListTile(
-              value: _allNotifications,
+              value: _allNotifications!,
               onChanged: (_) {
                 setState(() {
-                  _allNotifications = !_allNotifications;
+                  _allNotifications = !_allNotifications!;
                 });
               },
               title: Text(
-                Translate.of(context).translate('all_notifications'),
+                Translate.of(context)!.translate('all_notifications'),
                 style: Theme.of(context)
                     .textTheme
-                    .subtitle1
-                    .copyWith(fontWeight: FontWeight.w700),
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w700),
               ),
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             CheckboxListTile(
               value: _campain,
-              onChanged: _allNotifications
+              onChanged: _allNotifications!
                   ? (value) {
-                      if (!_allNotifications) return;
+                      if (!_allNotifications!) return;
                       setState(() {
-                        _campain = !_campain;
+                        _campain = !_campain!;
                       });
                     }
                   : null,
               title: Text(
-                Translate.of(context).translate('campain_messages'),
+                Translate.of(context)!.translate('campain_messages'),
               ),
             ),
-            Divider(),
+            const Divider(),
             CheckboxListTile(
               value: _pm,
-              onChanged: _allNotifications
+              onChanged: _allNotifications!
                   ? (value) {
                       setState(() {
-                        _pm = !_pm;
+                        _pm = !_pm!;
                       });
                     }
                   : null,
               title: Text(
-                Translate.of(context).translate('conversation_messages'),
+                Translate.of(context)!.translate('conversation_messages'),
               ),
             ),
-            Divider(),
+            const Divider(),
             CheckboxListTile(
               value: _alerts,
-              onChanged: _allNotifications
+              onChanged: _allNotifications!
                   ? (value) {
                       setState(() {
-                        _alerts = !_alerts;
+                        _alerts = !_alerts!;
                       });
                     }
                   : null,
               title: Text(
-                Translate.of(context).translate('alerts'),
+                Translate.of(context)!.translate('alerts'),
               ),
             ),
-            Divider(),
+            const Divider(),
             CheckboxListTile(
               value: _appointments,
-              onChanged: _allNotifications
+              onChanged: _allNotifications!
                   ? (value) {
                       setState(() {
-                        _appointments = !_appointments;
+                        _appointments = !_appointments!;
                       });
                     }
                   : null,
               title: Text(
-                Translate.of(context).translate('appointments'),
+                Translate.of(context)!.translate('appointments'),
               ),
             ),
-            Divider(),
+            const Divider(),
             CheckboxListTile(
               value: _healthTips,
-              onChanged: _allNotifications
+              onChanged: _allNotifications!
                   ? (value) {
                       setState(() {
-                        _healthTips = !_healthTips;
+                        _healthTips = !_healthTips!;
                       });
                     }
                   : null,
               title: Text(
-                Translate.of(context).translate('health_tips'),
+                Translate.of(context)!.translate('health_tips'),
               ),
             ),
-            Divider(),
+            const Divider(),
             CheckboxListTile(
               value: _reminders,
-              onChanged: _allNotifications
+              onChanged: _allNotifications!
                   ? (value) {
                       setState(() {
-                        _reminders = !_reminders;
+                        _reminders = !_reminders!;
                       });
                     }
                   : null,
               title: Text(
-                Translate.of(context).translate('reminders_and_records'),
+                Translate.of(context)!.translate('reminders_and_records'),
               ),
             ),
-            Divider(),
+            const Divider(),
             CheckboxListTile(
               value: _updates,
-              onChanged: _allNotifications
+              onChanged: _allNotifications!
                   ? (value) {
                       setState(() {
-                        _updates = !_updates;
+                        _updates = !_updates!;
                       });
                     }
                   : null,
               title: Text(
-                Translate.of(context).translate('updates_and_offers'),
+                Translate.of(context)!.translate('updates_and_offers'),
               ),
             ),
           ],

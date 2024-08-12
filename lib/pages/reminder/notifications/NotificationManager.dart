@@ -1,10 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class NotificationManager {
   var flutterLocalNotificationsPlugin;
 
   NotificationManager() {
-    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     initNotifications();
   }
 
@@ -15,9 +16,16 @@ class NotificationManager {
   void initNotifications() {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     var initializationSettingsAndroid =
-        new AndroidInitializationSettings('@drawable/ic_launcher');
-    var initializationSettingsIOS = IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+        const AndroidInitializationSettings('@drawable/ic_launcher');
+
+    // Initialization settings for iOS
+    final DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      onDidReceiveLocalNotification:
+          (int id, String? title, String? body, String? payload) async {
+        onDidReceiveLocalNotification(id, title!, body!, payload!);
+      },
+    );
 
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
@@ -28,30 +36,65 @@ class NotificationManager {
 
   void showNotification(
       int id, String title, String body, int hour, int minute) async {
-    var time = new Time(hour, minute, 0);
+    final timeZone = tz.local;
+    final scheduledDate = tz.TZDateTime(
+      timeZone,
+      tz.TZDateTime.now(timeZone).year,
+      tz.TZDateTime.now(timeZone).month,
+      tz.TZDateTime.now(timeZone).day,
+      hour,
+      minute,
+    );
+    if (scheduledDate.isBefore(tz.TZDateTime.now(timeZone))) {
+      scheduledDate.add(const Duration(days: 1));
+    }
 
-    await flutterLocalNotificationsPlugin.showDailyAtTime(
-        id, title, body, time, getPlatformChannelSpecfics());
-    print('Notification Succesfully Scheduled at ${time.toString()}');
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      scheduledDate,
+      getPlatformChannelSpecfics(),
+      androidAllowWhileIdle: true,
+      matchDateTimeComponents: DateTimeComponents.time,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+    );
   }
 
   void showOnceNotification(
       int id, String title, String body, int hour, int minute) async {
-    var time = new Time(hour, minute, 0);
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
 
-    await flutterLocalNotificationsPlugin.periodicallyShow(
-        id, title, body, time, getPlatformChannelSpecfics());
+    final tz.TZDateTime scheduledDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+    );
 
-    print('Notification Succesfully Scheduled at ${time.toString()}');
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      scheduledDate,
+      await getPlatformChannelSpecfics(),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
   }
 
   getPlatformChannelSpecfics() {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         'your channel id', 'your channel name',
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'Medicine Reminder');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
@@ -60,7 +103,6 @@ class NotificationManager {
   }
 
   Future onSelectNotification(String payload) async {
-    print('Notification clicked');
     return Future.value(0);
   }
 

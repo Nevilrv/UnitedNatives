@@ -1,43 +1,41 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_update_contoller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:loading_btn/loading_btn.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/utils/utils.dart';
 
 import '../../../components/text_form_field.dart';
 import '../../../utils/constants.dart';
 
 class EditWidget extends StatefulWidget {
+  const EditWidget({super.key});
+
   @override
-  _EditWidgetState createState() => _EditWidgetState();
+  State<EditWidget> createState() => _EditWidgetState();
 }
 
 class _EditWidgetState extends State<EditWidget> {
   final UserUpdateController _userUpdateController = Get.find();
   final UserController _userController = Get.find();
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
-
   bool stateLoader = false;
   bool cityLoader = false;
 
-  String dropdownValuesState;
+  String? dropdownValuesState;
   List categoryItemListState = [];
-  String dropdownValuesCity;
+  String? dropdownValuesCity;
   List categoryItemListCity = [];
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   final searchController = TextEditingController();
 
   initName() {
@@ -52,7 +50,7 @@ class _EditWidgetState extends State<EditWidget> {
     });
 
     http.Response response = await http.get(
-      Uri.parse('${Constants.baseUrl + Constants.getAllStates}'),
+      Uri.parse(Constants.baseUrl + Constants.getAllStates),
     );
 
     if (response.statusCode == 200) {
@@ -61,11 +59,11 @@ class _EditWidgetState extends State<EditWidget> {
       setState(() {
         categoryItemListState = result;
 
-        categoryItemListState.forEach((element) {
+        for (var element in categoryItemListState) {
           if (element['id'].toString() == _userUpdateController.getStateId) {
             dropdownValuesState = element['name'];
           }
-        });
+        }
         stateLoader = false;
       });
 
@@ -77,7 +75,7 @@ class _EditWidgetState extends State<EditWidget> {
     }
   }
 
-  Future getCities({String stateId}) async {
+  Future getCities({String? stateId}) async {
     setState(() {
       cityLoader = true;
     });
@@ -93,11 +91,11 @@ class _EditWidgetState extends State<EditWidget> {
       setState(() {
         categoryItemListCity = result;
 
-        categoryItemListCity.forEach((element) {
+        for (var element in categoryItemListCity) {
           if (element['id'].toString() == _userUpdateController.getCityId) {
             dropdownValuesCity = element['name'];
           }
-        });
+        }
         cityLoader = false;
       });
 
@@ -118,6 +116,7 @@ class _EditWidgetState extends State<EditWidget> {
     super.initState();
   }
 
+  @override
   void dispose() {
     categoryItemListState = [];
     categoryItemListCity = [];
@@ -126,7 +125,7 @@ class _EditWidgetState extends State<EditWidget> {
     super.dispose();
   }
 
-  File _image;
+  File? _image;
   ImagePicker imagePicker = ImagePicker();
 
   Future<void> _getImage(ImageSource imageSource) async {
@@ -134,33 +133,31 @@ class _EditWidgetState extends State<EditWidget> {
       final pickedFile = await imagePicker.pickImage(source: imageSource);
 
       if (pickedFile != null) {
-        final croppedImage = await ImageCropper.cropImage(
+        final croppedImage = await ImageCropper().cropImage(
           sourcePath: pickedFile.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
+          aspectRatio: const CropAspectRatio(ratioX: 1.1, ratioY: 1.1),
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: "",
+              showCropGrid: true,
+              toolbarColor: _isDark ? Colors.grey.shade600 : Colors.white,
+              hideBottomControls: true,
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: true,
+              backgroundColor: Colors.black,
+            ),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+              title: "",
+              aspectRatioLockEnabled: true,
+            )
           ],
-          cropStyle: CropStyle.rectangle,
-          aspectRatio: CropAspectRatio(ratioX: 1.1, ratioY: 1.1),
-          androidUiSettings: AndroidUiSettings(
-            toolbarTitle: "",
-            showCropGrid: true,
-            toolbarColor: _isDark ? Colors.grey.shade600 : Colors.white,
-            hideBottomControls: true,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true,
-            backgroundColor: Colors.black,
-          ),
-          iosUiSettings: IOSUiSettings(
-            minimumAspectRatio: 1.0,
-            title: "",
-            aspectRatioLockEnabled: true,
-          ),
         );
         if (croppedImage != null) {
           setState(() {
             final croppedFile = File(croppedImage.path);
             _image = croppedFile;
-            print("Image Path===>${_image.path}");
+            print("Image Path===>${_image?.path}");
           });
         }
       }
@@ -169,10 +166,10 @@ class _EditWidgetState extends State<EditWidget> {
     }
   }
 
-  String validateMobile(String value) {
+  String? validateMobile(String? value) {
     String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-    RegExp regExp = new RegExp(pattern);
-    if (value.length == 0) {
+    RegExp regExp = RegExp(pattern);
+    if (value!.isEmpty) {
       return 'Please Enter Mobile Number';
     } else if (value.length != 10) {
       return 'Mobile Number Should be 10 Digit';
@@ -189,7 +186,7 @@ class _EditWidgetState extends State<EditWidget> {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
       child: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -208,13 +205,13 @@ class _EditWidgetState extends State<EditWidget> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(50),
                               child: Image.file(
-                                _image,
+                                _image!,
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.fitHeight,
                               ),
                             ),
-                            Positioned.fill(
+                            const Positioned.fill(
                               child:
                                   Icon(Icons.camera_alt, color: Colors.white),
                             )
@@ -225,15 +222,11 @@ class _EditWidgetState extends State<EditWidget> {
                             radius: 50,
                             backgroundColor: Colors.grey,
                             backgroundImage: NetworkImage(
-                              _userController.user?.value?.profilePic ??
-                                  _userController
-                                      .user?.value?.socialProfilePic ??
+                              _userController.user.value.profilePic ??
+                                  _userController.user.value.socialProfilePic ??
                                   'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png',
                             ),
-                            onBackgroundImageError: (context, error) {
-                              return Container();
-                            },
-                            child: Icon(
+                            child: const Icon(
                               Icons.camera_alt,
                               color: Colors.white,
                             ),
@@ -241,39 +234,40 @@ class _EditWidgetState extends State<EditWidget> {
                         ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Center(
                 child: Text(
-                  Translate.of(context).translate('Profile Picture'),
-                  style: TextStyle(
+                  Translate.of(context)!.translate('Profile Picture'),
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               Text(
-                "${Translate.of(context).translate('first_name_dot')} *",
+                "${Translate.of(context)!.translate('first_name_dot')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 textInputAction: TextInputAction.next,
                 hintText: 'John',
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please Enter First Name';
                   }
+                  return null;
                 },
                 controller: _userUpdateController.firstNameController,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('last_name_dot')} *",
+                "${Translate.of(context)?.translate('last_name_dot')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -281,14 +275,15 @@ class _EditWidgetState extends State<EditWidget> {
                 hintText: 'Brad',
                 controller: _userUpdateController.lastNameController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please Enter Last Name';
                   }
+                  return null;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('contact_number_dot')} *",
+                "${Translate.of(context)?.translate('contact_number_dot')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -302,9 +297,9 @@ class _EditWidgetState extends State<EditWidget> {
                 validator: validateMobile,
                 hintText: '+1 520 44 54 661',
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('email_dot')} *",
+                "${Translate.of(context)?.translate('email_dot')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -314,9 +309,9 @@ class _EditWidgetState extends State<EditWidget> {
                 enabled: false,
                 controller: _userUpdateController.emailController,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('gender_dot')} *",
+                "${Translate.of(context)?.translate('gender_dot')} *",
                 style: kInputTextStyle,
               ),
               Obx(
@@ -325,44 +320,43 @@ class _EditWidgetState extends State<EditWidget> {
                       value == null ? 'Please Select Gender' : null,
                   style: TextStyle(
                     fontSize: 20,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                   ),
                   isExpanded: true,
                   value: _userUpdateController.selectedGender.value.isEmpty
                       ? null
                       : _userUpdateController.selectedGender.value,
                   hint: Text(
-                    Translate.of(context).translate('add_gender'),
+                    Translate.of(context)!.translate('add_gender'),
                     style: hintStyle,
                   ),
                   onChanged: _userUpdateController.onChangeGender,
                   items: _userUpdateController.dropDownGender,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('date_of_birth_dot')} *",
+                "${Translate.of(context)?.translate('date_of_birth_dot')} *",
                 style: kInputTextStyle,
               ),
 
               Obx(
                 () => ListTile(
-                  contentPadding: EdgeInsets.all(0),
-                  title: _userUpdateController?.dateOfBirth?.value?.isEmpty ??
-                          true
-                      ? Text(
+                  contentPadding: const EdgeInsets.all(0),
+                  title: _userUpdateController.dateOfBirth.value.isEmpty
+                      ? const Text(
                           "Tap to Select BirthDate",
                           style: hintStyle,
                         )
                       : Text(
                           DateFormat('EEEE, dd MMMM, yyyy').format(
-                            DateTime.parse(_userUpdateController
-                                    ?.dateOfBirth?.value) ??
-                                DateTime.now(),
+                            DateTime.parse(
+                                _userUpdateController.dateOfBirth.value),
                           ),
                           style: TextStyle(
                             fontSize: 20,
-                            color: Theme.of(context).textTheme.subtitle1.color,
+                            color:
+                                Theme.of(context).textTheme.titleMedium?.color,
                           ),
                         ),
                   onTap: () {
@@ -372,7 +366,7 @@ class _EditWidgetState extends State<EditWidget> {
                       firstDate: DateTime(1950),
                       lastDate: DateTime.now(),
                     ).then(
-                      (DateTime value) {
+                      (DateTime? value) {
                         if (value != null) {
                           _userUpdateController.onDateOfBirth(value.toString());
                         }
@@ -385,36 +379,34 @@ class _EditWidgetState extends State<EditWidget> {
                   width: Get.width,
                   color: _isDark ? Colors.white38 : Colors.black38,
                   height: 1),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('blood_group_dot')} (Optional)",
+                "${Translate.of(context)?.translate('blood_group_dot')} (Optional)",
                 style: kInputTextStyle,
               ),
               Obx(
                 () => DropdownButtonFormField(
                   style: TextStyle(
                     fontSize: 20,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                   ),
                   isExpanded: true,
-                  value: _userUpdateController
-                              ?.selectedBloodGroup?.value?.isEmpty ??
-                          true
+                  value: _userUpdateController.selectedBloodGroup.value.isEmpty
                       ? null
                       : _userUpdateController.selectedBloodGroup.value,
                   hint: Text(
-                    Translate.of(context).translate('add_blood_group'),
+                    Translate.of(context)!.translate('add_blood_group'),
                     style: hintStyle,
                   ),
                   onChanged: _userUpdateController.onChangeBloodGroup,
                   items: _userUpdateController.dropDownBlood,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(
-                "${Translate.of(context).translate('Allergies and Medication Allergies')} (Optional)",
+                "${Translate.of(context)?.translate('Allergies and Medication Allergies')} (Optional)",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -424,57 +416,56 @@ class _EditWidgetState extends State<EditWidget> {
                 hintText:
                     'Enter if you have any Allergies and Medication Allergies',
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('marital_status_dot')} (Optional)",
+                "${Translate.of(context)?.translate('marital_status_dot')} (Optional)",
                 style: kInputTextStyle,
               ),
               Obx(
                 () => DropdownButtonFormField(
                   style: TextStyle(
                     fontSize: 20,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                   ),
                   // validator: (value) =>
                   //     value == null ? 'Please Select Marital Status' : null,
                   isExpanded: true,
-                  value: _userUpdateController
-                              ?.selectedMaritalStatus?.value?.isEmpty ??
-                          true
-                      ? null
-                      : _userUpdateController.selectedMaritalStatus.value,
+                  value:
+                      _userUpdateController.selectedMaritalStatus.value.isEmpty
+                          ? null
+                          : _userUpdateController.selectedMaritalStatus.value,
                   hint: Text(
-                    Translate.of(context).translate('add_marital_status'),
+                    Translate.of(context)!.translate('add_marital_status'),
                     style: hintStyle,
                   ),
                   onChanged: _userUpdateController.onChangeMaritalStatus,
                   items: _userUpdateController.dropDownMarital,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('height_dot')} (Optional)",
+                "${Translate.of(context)?.translate('height_dot')} (Optional)",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.number,
                 controller: _userUpdateController.heightController,
-                hintText: Translate.of(context).translate('in_cm'),
+                hintText: Translate.of(context)!.translate('in_cm'),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('weight_dot')} (Optional)",
+                "${Translate.of(context)?.translate('weight_dot')} (Optional)",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.number,
                 controller: _userUpdateController.weightController,
-                hintText: Translate.of(context).translate('in_kg'),
+                hintText: Translate.of(context)!.translate('in_kg'),
               ),
-              SizedBox(height: 15),
-              Text(
+              const SizedBox(height: 15),
+              const Text(
                 'Emergency Contact (Optional)',
                 style: kInputTextStyle,
               ),
@@ -489,9 +480,9 @@ class _EditWidgetState extends State<EditWidget> {
                 hintText: '+1 5204454661',
                 // validator: validateMobile,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('Current Case Manger info')} (Optional)",
+                "${Translate.of(context)?.translate('Current Case Manger info')} (Optional)",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -500,9 +491,9 @@ class _EditWidgetState extends State<EditWidget> {
                 controller: _userUpdateController.currentCaseContactController,
                 hintText: '+1 5204454661',
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('Medical Insurance')} *",
+                "${Translate.of(context)?.translate('Medical Insurance')} *",
                 style: kInputTextStyle,
               ),
               Obx(
@@ -511,20 +502,19 @@ class _EditWidgetState extends State<EditWidget> {
                     DropdownButtonFormField(
                       style: TextStyle(
                         fontSize: 20,
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                       ),
                       validator: (value) => value == null
                           ? 'Please Select Insurance Eligibility'
                           : null,
                       isExpanded: true,
-                      value: _userUpdateController?.selectedInsuranceEligibility
-                                  ?.value?.isEmpty ??
-                              true
+                      value: _userUpdateController
+                              .selectedInsuranceEligibility.value.isEmpty
                           ? null
                           : _userUpdateController
                               .selectedInsuranceEligibility.value,
                       hint: Text(
-                        Translate.of(context)
+                        Translate.of(context)!
                             .translate('Please Select Medical Insurance'),
                         style: hintStyle,
                       ),
@@ -533,23 +523,24 @@ class _EditWidgetState extends State<EditWidget> {
                             .onChangeInsuranceEligibility(value);
 
                         if (_userUpdateController
-                                ?.selectedInsuranceEligibility?.value ==
-                            "No")
+                                .selectedInsuranceEligibility.value ==
+                            "No") {
                           _userUpdateController.insuranceCompanyName.clear();
+                        }
                       },
                       items: _userUpdateController.dropDownInsurance,
                     ),
                     if (_userUpdateController
-                            ?.selectedInsuranceEligibility?.value ==
+                            .selectedInsuranceEligibility.value ==
                         "Yes")
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Text(
-                            "${Translate.of(context).translate('State the name of your Medical Insurance')} *",
+                            "${Translate.of(context)?.translate('State the name of your Medical Insurance')} *",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -560,7 +551,7 @@ class _EditWidgetState extends State<EditWidget> {
                             hintText:
                                 'Enter State the name of your Medical Insurance',
                             validator: (text) {
-                              if (text.isEmpty) {
+                              if (text!.isEmpty) {
                                 return 'Enter State the name of your Medical Insurance';
                               }
                               return null;
@@ -571,9 +562,9 @@ class _EditWidgetState extends State<EditWidget> {
                   ],
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('Are you a US Veteran?')} *",
+                "${Translate.of(context)?.translate('Are you a US Veteran?')} *",
                 style: kInputTextStyle,
               ),
               Obx(
@@ -582,7 +573,7 @@ class _EditWidgetState extends State<EditWidget> {
                     DropdownButtonFormField(
                       style: TextStyle(
                         fontSize: 20,
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                       ),
                       focusNode: FocusNode(),
                       validator: (value) => value == null
@@ -594,7 +585,7 @@ class _EditWidgetState extends State<EditWidget> {
                               ? null
                               : _userUpdateController.areYouAUSVeteran.value,
                       hint: Text(
-                        Translate.of(context)
+                        Translate.of(context)!
                             .translate('Select US Veteran or not?'),
                         style: hintStyle,
                       ),
@@ -604,9 +595,9 @@ class _EditWidgetState extends State<EditWidget> {
                   ],
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Text(
-                "${Translate.of(context).translate('Tribal Status')} *",
+                "${Translate.of(context)?.translate('Tribal Status')} *",
                 style: kInputTextStyle,
               ),
               Obx(
@@ -616,15 +607,14 @@ class _EditWidgetState extends State<EditWidget> {
                   isExpanded: true,
                   style: TextStyle(
                     fontSize: 20,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                   ),
-                  value: _userUpdateController
-                              ?.selectedTribalStatus?.value?.isEmpty ??
-                          true
-                      ? null
-                      : _userUpdateController.selectedTribalStatus.value,
+                  value:
+                      _userUpdateController.selectedTribalStatus.value.isEmpty
+                          ? null
+                          : _userUpdateController.selectedTribalStatus.value,
                   hint: Text(
-                    Translate.of(context)
+                    Translate.of(context)!
                         .translate('Please Select Tribal Status'),
                     style: hintStyle,
                   ),
@@ -635,11 +625,11 @@ class _EditWidgetState extends State<EditWidget> {
 
               ///
 
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
-                "${Translate.of(context).translate('Are you enrolled in a Federally Recognized Tribe?')} *",
+                "${Translate.of(context)?.translate('Are you enrolled in a Federally Recognized Tribe?')} *",
                 style: kInputTextStyle,
               ),
               Obx(
@@ -648,7 +638,7 @@ class _EditWidgetState extends State<EditWidget> {
                     DropdownButtonFormField(
                       style: TextStyle(
                         fontSize: 20,
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                       ),
                       focusNode: FocusNode(),
                       validator: (value) => value == null
@@ -657,7 +647,7 @@ class _EditWidgetState extends State<EditWidget> {
                       isExpanded: true,
                       value: _userUpdateController.tribalFederallyMember.value,
                       hint: Text(
-                        Translate.of(context)
+                        Translate.of(context)!
                             .translate('Select enrolled or not'),
                         style: hintStyle,
                       ),
@@ -665,10 +655,10 @@ class _EditWidgetState extends State<EditWidget> {
                         _userUpdateController
                             .onChangeTribalFederallyStatus(value);
 
-                        if (_userUpdateController
-                                ?.tribalFederallyMember?.value ==
-                            "No")
+                        if (_userUpdateController.tribalFederallyMember.value ==
+                            "No") {
                           _userUpdateController.whatTribe1Controller.clear();
+                        }
                       },
                       items: _userUpdateController.dropDownTribal1,
                     ),
@@ -677,11 +667,11 @@ class _EditWidgetState extends State<EditWidget> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Text(
-                            "${Translate.of(context).translate('What tribe?')} *",
+                            "${Translate.of(context)?.translate('What tribe?')} *",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -691,7 +681,7 @@ class _EditWidgetState extends State<EditWidget> {
                                 _userUpdateController.whatTribe1Controller,
                             hintText: 'Enter state tribal affiliation',
                             validator: (text) {
-                              if (text.isEmpty) {
+                              if (text!.isEmpty) {
                                 return 'Please state tribal affiliation';
                               }
                               return null;
@@ -702,11 +692,11 @@ class _EditWidgetState extends State<EditWidget> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
-                "${Translate.of(context).translate('Are you enrolled in a State Recognized Tribe?')} *",
+                "${Translate.of(context)?.translate('Are you enrolled in a State Recognized Tribe?')} *",
                 style: kInputTextStyle,
               ),
               Obx(
@@ -715,7 +705,7 @@ class _EditWidgetState extends State<EditWidget> {
                     DropdownButtonFormField(
                       style: TextStyle(
                         fontSize: 20,
-                        color: Theme.of(context).textTheme.subtitle1.color,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
                       ),
                       focusNode: FocusNode(),
                       validator: (value) => value == null
@@ -724,15 +714,15 @@ class _EditWidgetState extends State<EditWidget> {
                       isExpanded: true,
                       value: _userUpdateController.tribalFederallyState.value,
                       hint: Text(
-                          Translate.of(context)
+                          Translate.of(context)!
                               .translate('Select Enrolled or not'),
                           style: hintStyle),
                       onChanged: (value) {
                         _userUpdateController.onChangeTribalStateStatus(value);
-                        if (_userUpdateController
-                                ?.tribalFederallyState?.value ==
-                            "No")
+                        if (_userUpdateController.tribalFederallyState.value ==
+                            "No") {
                           _userUpdateController.whatTribe2Controller.clear();
+                        }
                       },
                       items: _userUpdateController.dropDownTribal2,
                     ),
@@ -741,9 +731,9 @@ class _EditWidgetState extends State<EditWidget> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Text(
-                            "${Translate.of(context).translate('Please state tribal affiliation')} *",
+                            "${Translate.of(context)?.translate('Please state tribal affiliation')} *",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -753,7 +743,7 @@ class _EditWidgetState extends State<EditWidget> {
                                 _userUpdateController.whatTribe2Controller,
                             hintText: 'Enter state tribal affiliation',
                             validator: (text) {
-                              if (text.isEmpty) {
+                              if (text!.isEmpty) {
                                 return 'Please state tribal affiliation';
                               }
                               return null;
@@ -764,16 +754,16 @@ class _EditWidgetState extends State<EditWidget> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
-                "${Translate.of(context).translate('If you are not enrolled tribal member, please select racial/ethnic background')} *",
+                "${Translate.of(context)?.translate('If you are not enrolled tribal member, please select racial/ethnic background')} *",
                 style: kInputTextStyle,
               ),
               Obx(
                 () => DropdownButtonFormField(
                   style: TextStyle(
                     fontSize: 20,
-                    color: Theme.of(context).textTheme.subtitle1.color,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
                   ),
                   focusNode: FocusNode(),
                   validator: (value) => value == null
@@ -785,7 +775,7 @@ class _EditWidgetState extends State<EditWidget> {
                           ? null
                           : _userUpdateController.tribalBackgroundStatus.value,
                   hint: Text(
-                      Translate.of(context)
+                      Translate.of(context)!
                           .translate('Select racial/ethnic background'),
                       style: hintStyle),
                   onChanged:
@@ -796,16 +786,15 @@ class _EditWidgetState extends State<EditWidget> {
 
               ///
 
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Text(
-                "${Translate.of(context).translate('State')} *",
+                "${Translate.of(context)?.translate('State')} *",
                 style: kInputTextStyle,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               dropDownView(
                 state: true,
-                colorCon: categoryItemListState == null ||
-                    categoryItemListState.isEmpty,
+                colorCon: categoryItemListState.isEmpty,
                 textStyleCon: dropdownValuesState == null,
                 text: dropdownValuesState != null
                     ? '$dropdownValuesState'
@@ -818,16 +807,14 @@ class _EditWidgetState extends State<EditWidget> {
               ),
 
               Text(
-                "${Translate.of(context).translate('City')} *",
+                "${Translate.of(context)?.translate('City')} *",
                 style: kInputTextStyle,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               dropDownView(
                 state: false,
-                colorCon: categoryItemListCity == null ||
-                    categoryItemListCity.isEmpty,
-                textStyleCon: categoryItemListCity == null ||
-                    categoryItemListCity.isEmpty,
+                colorCon: categoryItemListCity.isEmpty,
+                textStyleCon: categoryItemListCity.isEmpty,
                 text: dropdownValuesCity != null
                     ? '$dropdownValuesCity'
                     : 'Select City',
@@ -837,9 +824,10 @@ class _EditWidgetState extends State<EditWidget> {
                   }
                 },
               ),
-              SizedBox(height: 35),
+              const SizedBox(height: 35),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 // child: CustomButton(
                 //   onPressed: () async {
                 //     await _userUpdateController.userProfileUpdate(
@@ -848,29 +836,21 @@ class _EditWidgetState extends State<EditWidget> {
                 //   },
                 //   text: 'update_info'.tr(),
                 // ),
-                child: RoundedLoadingButton(
+                child: LoadingBtn(
+                  height: 50,
+                  width: 150,
+                  disabledColor: Colors.white,
                   color: kColorBlue,
-                  valueColor: Colors.white,
-                  successColor: Colors.white,
-                  child: Text(
-                    'Update Profile',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  controller: _btnController,
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      _btnController.start();
+                  onTap: (startLoading, stopLoading, btnState) async {
+                    if (_formKey.currentState!.validate()) {
+                      startLoading();
                       await _userUpdateController.userProfileUpdate(
                           userProfilePic: _image, userType: "1");
-                      _btnController.reset();
+                      stopLoading();
                     } else {
-                      _btnController.reset();
+                      stopLoading();
 
-                      if (_userUpdateController.dateOfBirth.value == null ||
-                          _userUpdateController.dateOfBirth.value == "") {
+                      if (_userUpdateController.dateOfBirth.value == "") {
                         Utils.showSnackBar(
                             'Warning!', "Please select date of birth.");
                         return;
@@ -887,6 +867,13 @@ class _EditWidgetState extends State<EditWidget> {
                       }
                     }
                   },
+                  child: const Text(
+                    'Update Profile',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -899,7 +886,7 @@ class _EditWidgetState extends State<EditWidget> {
   _openBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),
@@ -910,13 +897,13 @@ class _EditWidgetState extends State<EditWidget> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.camera,
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('take_a_photo'),
-                  style: TextStyle(
+                  Translate.of(context)!.translate('take_a_photo'),
+                  style: const TextStyle(
                     color: Color(0xff4a4a4a),
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -930,13 +917,13 @@ class _EditWidgetState extends State<EditWidget> {
                 },
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.photo_library,
                   size: 20,
                 ),
                 title: Text(
-                  Translate.of(context).translate('choose_a_photo'),
-                  style: TextStyle(
+                  Translate.of(context)!.translate('choose_a_photo'),
+                  style: const TextStyle(
                     color: Color(0xff4a4a4a),
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -954,11 +941,11 @@ class _EditWidgetState extends State<EditWidget> {
   }
 
   Widget dropDownView({
-    void Function() onTap,
-    String text,
-    bool state,
-    bool textStyleCon,
-    bool colorCon,
+    void Function()? onTap,
+    String? text,
+    bool? state,
+    bool? textStyleCon,
+    bool? colorCon,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -969,19 +956,20 @@ class _EditWidgetState extends State<EditWidget> {
               children: [
                 Expanded(
                   child: Text(
-                    text,
+                    text!,
                     overflow: TextOverflow.ellipsis,
-                    style: textStyleCon
+                    style: textStyleCon!
                         ? hintStyle
                         : TextStyle(
                             fontSize: 20,
-                            color: Theme.of(context).textTheme.subtitle1.color,
+                            color:
+                                Theme.of(context).textTheme.titleMedium?.color,
                           ),
                   ),
                 ),
                 (state == true && stateLoader == true) ||
                         (state == false && cityLoader == true)
-                    ? Container(
+                    ? SizedBox(
                         height: 20,
                         width: 20,
                         child: Center(
@@ -990,16 +978,16 @@ class _EditWidgetState extends State<EditWidget> {
                     : Icon(
                         Icons.arrow_drop_down,
                         color: _isDark
-                            ? colorCon
+                            ? colorCon!
                                 ? Colors.grey.shade800
                                 : Colors.grey.shade100
-                            : colorCon
+                            : colorCon!
                                 ? Colors.grey
                                 : Colors.grey.shade800,
                       )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -1013,21 +1001,19 @@ class _EditWidgetState extends State<EditWidget> {
     );
   }
 
-  selectStateCity({double h, double w, bool state}) {
+  selectStateCity({double? h, double? w, bool? state}) {
     showDialog(
       context: context,
       builder: (context) {
-        return WillPopScope(
-          onWillPop: () async {
-            return false;
-          },
+        return PopScope(
+          canPop: false,
           child: StatefulBuilder(
             builder: (context, setState234) {
               return Dialog(
                 backgroundColor: Colors.transparent,
                 child: ConstrainedBox(
                   constraints:
-                      BoxConstraints(maxHeight: h * 0.6, maxWidth: 550),
+                      BoxConstraints(maxHeight: h! * 0.6, maxWidth: 550),
                   child: Container(
                     decoration: BoxDecoration(
                       color: _isDark ? Colors.grey.shade800 : Colors.white,
@@ -1063,7 +1049,7 @@ class _EditWidgetState extends State<EditWidget> {
                                       onChanged: (value) {
                                         setState234(() {});
                                       },
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                           contentPadding: EdgeInsets.only(
                                               top: 10, left: 16),
                                           suffixIcon: Icon(Icons.search),
@@ -1074,19 +1060,19 @@ class _EditWidgetState extends State<EditWidget> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               IconButton(
                                 onPressed: () {
-                                  if (state) {
+                                  if (state!) {
                                     Navigator.pop(context, dropdownValuesState);
                                   } else {
                                     Navigator.pop(context, dropdownValuesCity);
                                   }
                                   searchController.clear();
                                 },
-                                icon: Icon(Icons.clear,
+                                icon: const Icon(Icons.clear,
                                     color: Colors.black, size: 25),
                               )
                             ],
@@ -1097,7 +1083,7 @@ class _EditWidgetState extends State<EditWidget> {
                           Expanded(
                             child: Builder(
                               builder: (context) {
-                                int index = state
+                                int index = state!
                                     ? categoryItemListState.indexWhere(
                                         (element) => element['name']
                                             .toString()
@@ -1120,8 +1106,8 @@ class _EditWidgetState extends State<EditWidget> {
                                         fontSize: 16,
                                         color: Theme.of(context)
                                             .textTheme
-                                            .subtitle1
-                                            .color,
+                                            .titleMedium
+                                            ?.color,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -1156,14 +1142,18 @@ class _EditWidgetState extends State<EditWidget> {
                                             contentPadding: EdgeInsets.zero,
                                             title: Text(
                                               state
-                                                  ? "${categoryItemListState[index]['name'].toString()}"
-                                                  : "${categoryItemListCity[index]['name'].toString()}",
+                                                  ? categoryItemListState[index]
+                                                          ['name']
+                                                      .toString()
+                                                  : categoryItemListCity[index]
+                                                          ['name']
+                                                      .toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 color: Theme.of(context)
                                                     .textTheme
-                                                    .subtitle1
-                                                    .color,
+                                                    .titleMedium
+                                                    ?.color,
                                               ),
                                             ),
                                             onTap: () async {
@@ -1204,11 +1194,11 @@ class _EditWidgetState extends State<EditWidget> {
                                               }
                                             },
                                           ),
-                                          Divider(height: 0)
+                                          const Divider(height: 0)
                                         ],
                                       );
                                     } else {
-                                      return SizedBox();
+                                      return const SizedBox();
                                     }
                                   },
                                 );
@@ -1226,7 +1216,7 @@ class _EditWidgetState extends State<EditWidget> {
         );
       },
     ).then((value) {
-      if (state) {
+      if (state!) {
         dropdownValuesState = value;
         setState(() {});
       } else {
@@ -1236,7 +1226,7 @@ class _EditWidgetState extends State<EditWidget> {
     });
   }
 
-  static Widget commonContainer({Widget child}) {
+  static Widget commonContainer({required Widget child}) {
     return Container(
       height: 60,
       decoration: BoxDecoration(

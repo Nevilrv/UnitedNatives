@@ -15,7 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../model/health_response_model.dart';
 import '../../utils/utils.dart';
@@ -506,7 +506,7 @@ class _FoodState extends State<Food> {
                                         ),
                                       ),
                                     ),
-                                    if (data.isNotEmpty)
+                                    /*if (data.isNotEmpty)
                                       SfCartesianChart(
                                         // primaryXAxis: CategoryAxis(),
                                         enableAxisAnimation: true,
@@ -629,7 +629,7 @@ class _FoodState extends State<Food> {
                                             ),
                                           )
                                         ] as List<CartesianSeries>,
-                                      ),
+                                      ),*/
                                     if (data.isEmpty)
                                       Padding(
                                         padding: EdgeInsets.only(

@@ -1,5 +1,5 @@
-import 'package:doctor_appointment_booking/pages/reminder/models/Medicine.dart';
-import 'package:doctor_appointment_booking/pages/reminder/remainder_page.dart';
+import 'package:united_natives/pages/reminder/models/Medicine.dart';
+import 'package:united_natives/pages/reminder/remainder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -11,10 +11,10 @@ class MecicineCard extends StatefulWidget {
 
   final bool isDark;
 
-  MecicineCard(this.medicine, this.isDark);
+  const MecicineCard(this.medicine, this.isDark, {super.key});
 
   @override
-  _MecicineCardState createState() => _MecicineCardState();
+  State<MecicineCard> createState() => _MecicineCardState();
 }
 
 class _MecicineCardState extends State<MecicineCard> {
@@ -39,7 +39,7 @@ class _MecicineCardState extends State<MecicineCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             width: Get.width * 0.27,
             height: Get.height * 0.13,
             child: Hero(
@@ -58,7 +58,7 @@ class _MecicineCardState extends State<MecicineCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Align(
-                  child: Container(
+                  child: SizedBox(
                     width: Get.width * 0.5,
                     child: Text(
                       widget.medicine.name,
@@ -95,21 +95,19 @@ class _MecicineCardState extends State<MecicineCard> {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
           IconButton(
             onPressed: () {
               model.getDatabase().deleteMedicine(widget.medicine).then((value) {
-                Get.off(RemainderPage());
-                print('delete>>>>>>>>>>>>>?>?>??');
+                Get.off(const RemainderPage());
               });
               //remove the medicine notifcation
               model.notificationManager.removeReminder(widget.medicine.id);
               // for debugging
-              print("Reminder deleted" + widget.medicine.toString());
               // show delete snakbar
 
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
                   backgroundColor: Colors.red,
                   content: Text(
                     'Reminder deleted',
@@ -119,7 +117,7 @@ class _MecicineCardState extends State<MecicineCard> {
                 ),
               );
             },
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           )
         ],
       );

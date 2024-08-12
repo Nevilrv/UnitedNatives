@@ -1,44 +1,46 @@
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/get_all_patient_response_model.dart';
-import 'package:doctor_appointment_booking/pages/myPatientMessageList/my_patient_list.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/time.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_new_chat_message_view_model.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/get_all_patient_response_model.dart';
+import 'package:united_natives/pages/myPatientMessageList/my_patient_list.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/time.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 class MyPatientMessageList extends StatefulWidget {
+  const MyPatientMessageList({super.key});
+
   @override
-  _MyPatientMessageListState createState() => _MyPatientMessageListState();
+  State<MyPatientMessageList> createState() => _MyPatientMessageListState();
 }
 
 class _MyPatientMessageListState extends State<MyPatientMessageList> {
   final DoctorHomeScreenController patientHomeScreenController =
       Get.find<DoctorHomeScreenController>()..getAllPatients();
   AddNewChatMessageController addNewChatMessageController = Get.find();
-  UserController _userController = Get.find();
+  final UserController _userController = Get.find();
 
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // _patientHomeScreenController.getAllPatients();
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) async {
         await addNewChatMessageController.getSortedChatListDoctor(
             doctorId: _userController.user.value.id);
         TimerChange().docTimerChange();
-        return true;
       },
       child: Stack(
         children: [
           Scaffold(
               appBar: AppBar(
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios_sharp),
+                  icon: const Icon(Icons.arrow_back_ios_sharp),
                   onPressed: () async {
                     Navigator.pop(context);
                     TimerChange().docTimerChange();
@@ -48,18 +50,18 @@ class _MyPatientMessageListState extends State<MyPatientMessageList> {
                   },
                 ),
                 title: Text(
-                  Translate.of(context).translate('My Client List'),
+                  Translate.of(context)!.translate('My Client List'),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).textTheme.subtitle1.color,
+                      color: Theme.of(context).textTheme.titleMedium?.color,
                       fontSize: 24),
                 ),
               ),
               body: Column(
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
                       controller: searchController,
                       onChanged: (value) {
@@ -68,16 +70,17 @@ class _MyPatientMessageListState extends State<MyPatientMessageList> {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: kColorBlue, width: 0.5),
+                          borderSide:
+                              const BorderSide(color: kColorBlue, width: 0.5),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
                           borderSide:
-                              BorderSide(color: Colors.grey[300], width: 0.5),
+                              BorderSide(color: Colors.grey[300]!, width: 0.5),
                         ),
                         filled: true,
                         fillColor: Colors.grey[250],
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           vertical: 10,
                           horizontal: 15,
                         ),
@@ -86,7 +89,7 @@ class _MyPatientMessageListState extends State<MyPatientMessageList> {
                           color: Colors.grey[400],
                           size: 30,
                         ),
-                        hintText: Translate.of(context).translate('search'),
+                        hintText: Translate.of(context)?.translate('search'),
                         hintStyle:
                             TextStyle(color: Colors.grey[400], fontSize: 22),
                       ),
@@ -94,35 +97,36 @@ class _MyPatientMessageListState extends State<MyPatientMessageList> {
                       maxLines: 1,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Expanded(
                     child: GetBuilder<DoctorHomeScreenController>(
                       builder: (controller) {
                         if (controller.getAllPatient.apiState ==
                             APIState.COMPLETE) {
-                          int index1 = -1;
+                          int? index1 = -1;
 
-                          index1 = controller?.getAllPatient?.data?.indexWhere(
+                          index1 = controller.getAllPatient.data?.indexWhere(
                               (item) =>
                                   item.chatKey == "" &&
-                                  (item.firstName + item.firstName)
+                                  (item.firstName! + item.firstName!)
                                       .toLowerCase()
                                       .toString()
                                       .contains(searchController.text
                                           .toLowerCase()
                                           .toString()));
 
-                          if (index1 < 0) {
+                          if (index1! < 0) {
                             return Center(
                               child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 25)
-                                    .copyWith(bottom: 25),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 25)
+                                        .copyWith(bottom: 25),
                                 child: Text(
                                   'You can only start a conversation with clients with whom you currently have or have had appointments.',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline6
-                                      .copyWith(fontSize: 20),
+                                      .titleLarge
+                                      ?.copyWith(fontSize: 20),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -131,41 +135,43 @@ class _MyPatientMessageListState extends State<MyPatientMessageList> {
 
                           return ListView.builder(
                             itemCount:
-                                controller?.getAllPatient?.data?.length ?? 0,
-                            padding: EdgeInsets.symmetric(
+                                controller.getAllPatient.data?.length ?? 0,
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 10),
                             itemBuilder: (context, index) {
                               Patient item =
-                                  controller.getAllPatient.data[index];
+                                  controller.getAllPatient.data![index];
 
-                              return item.chatKey == "" &&
-                                      (item.firstName + item.firstName)
+                              if (item.chatKey == "" &&
+                                  (item.firstName! + item.firstName!)
+                                      .toLowerCase()
+                                      .toString()
+                                      .contains(searchController.text
                                           .toLowerCase()
-                                          .toString()
-                                          .contains(searchController.text
-                                              .toLowerCase()
-                                              .toString())
-                                  ? Column(
-                                      children: [
-                                        MyPatientLists(patient: item ?? ''),
-                                        SizedBox(height: 15)
-                                      ],
-                                    )
-                                  : SizedBox();
+                                          .toString())) {
+                                return Column(
+                                  children: [
+                                    MyPatientLists(patient: item),
+                                    const SizedBox(height: 15)
+                                  ],
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
                             },
                           );
                         } else if (controller.getAllPatient.apiState ==
                             APIState.COMPLETE_WITH_NO_DATA) {
                           return Center(
                             child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 25)
+                              margin: const EdgeInsets.symmetric(horizontal: 25)
                                   .copyWith(bottom: 25),
                               child: Text(
                                 'You can only start a conversation with clients with whom you currently have or have had appointments.',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
-                                    .copyWith(fontSize: 20),
+                                    .titleLarge
+                                    ?.copyWith(fontSize: 20),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -174,19 +180,15 @@ class _MyPatientMessageListState extends State<MyPatientMessageList> {
                             APIState.ERROR) {
                           return Container(
                             color: Colors.yellow,
-                            child: Text("Error"),
+                            child: const Text("Error"),
                           );
                         } else if (controller.getAllPatient.apiState ==
                             APIState.PROCESSING) {
-                          return Container(
-                              // child: Center(
-                              //   child: CircularProgressIndicator(),
-                              // ),
-                              child: Center(
-                            child: Utils.circular(),
-                          ));
-                        } else {
                           return Center(
+                            child: Utils.circular(),
+                          );
+                        } else {
+                          return const Center(
                             child: Text(""),
                           );
                         }

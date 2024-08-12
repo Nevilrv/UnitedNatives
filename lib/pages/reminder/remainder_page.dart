@@ -1,23 +1,21 @@
-import 'dart:math';
-
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/pages/splash_page.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:scoped_model/scoped_model.dart';
-
-import '../reminder/animations/fade_animation.dart';
-import '../reminder/widgets/AddMedicine.dart';
-import '../reminder/widgets/MedicineEmptyState.dart';
-import 'models/Medicine.dart';
-import 'widgets/MedicineGridView.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/pages/reminder/animations/fade_animation.dart';
+import 'package:united_natives/pages/reminder/models/Medicine.dart';
+import 'package:united_natives/pages/reminder/widgets/AddMedicine.dart';
+import 'package:united_natives/pages/reminder/widgets/MedicineEmptyState.dart';
+import 'package:united_natives/pages/reminder/widgets/MedicineGridView.dart';
+import 'package:united_natives/utils/constants.dart';
 
 class RemainderPage extends StatefulWidget {
+  const RemainderPage({super.key});
+
   // This widget is the root of your application.
   @override
   State<RemainderPage> createState() => _RemainderPageState();
@@ -44,14 +42,14 @@ class _RemainderPageState extends State<RemainderPage> {
           ),
           appBar: AppBar(
             title: Text(
-              Translate.of(context).translate('Reminder'),
+              Translate.of(context)!.translate('Reminder'),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
             ),
           ),
-          body: MyMedicineRemainder(),
+          body: const MyMedicineRemainder(),
         );
       }),
     );
@@ -59,19 +57,18 @@ class _RemainderPageState extends State<RemainderPage> {
 }
 
 class MyMedicineRemainder extends StatefulWidget {
-  MyMedicineRemainder();
+  const MyMedicineRemainder({super.key});
 
   @override
-  _MyMedicineReminder createState() => _MyMedicineReminder();
+  State<MyMedicineRemainder> createState() => _MyMedicineReminder();
 }
 
 class _MyMedicineReminder extends State<MyMedicineRemainder> {
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     MedicineModel model;
     return ScopedModel<MedicineModel>(
       model: model = MedicineModel(),
@@ -80,11 +77,11 @@ class _MyMedicineReminder extends State<MyMedicineRemainder> {
             onPressed: () {
               buildBottomSheet(deviceHeight, model);
             },
-            child: Icon(
+            backgroundColor: kColorBlue,
+            child: const Icon(
               Icons.add,
               color: Colors.white,
             ),
-            backgroundColor: kColorBlue,
           ),
           body: SafeArea(
             child: Column(
@@ -113,10 +110,9 @@ class _MyMedicineReminder extends State<MyMedicineRemainder> {
       future: model.getMedicineList(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          print(snapshot.data);
           if (snapshot.data.length == 0) {
             // No data
-            return Center(child: MedicineEmptyState());
+            return const Center(child: MedicineEmptyState());
           }
           return MedicineGridView(snapshot.data, isDark);
         }
@@ -127,7 +123,7 @@ class _MyMedicineReminder extends State<MyMedicineRemainder> {
 
   void buildBottomSheet(double height, MedicineModel model) async {
     var medicineId = await showModalBottomSheet(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(45), topRight: Radius.circular(45))),
         context: context,
@@ -145,7 +141,7 @@ class _MyMedicineReminder extends State<MyMedicineRemainder> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           // timeInSecForIos: 1,
-          backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           textColor: Colors.white,
           fontSize: 22.0);
 

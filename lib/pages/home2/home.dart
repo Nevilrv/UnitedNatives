@@ -1,24 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_update_contoller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/blocs/bloc.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/main.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/appointment/doctor_appointment.dart';
-import 'package:doctor_appointment_booking/pages/home/nav_transition/nav_slide_from_bottom.dart';
-import 'package:doctor_appointment_booking/pages/home2/drawer_controller.dart';
-import 'package:doctor_appointment_booking/utils/time.dart';
-import 'package:doctor_appointment_booking/viewModel/log_out_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/rate_and%20_contactus_viewModel.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
+import 'package:united_natives/medicle_center/lib/main.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/appointment/doctor_appointment.dart';
+import 'package:united_natives/pages/home/nav_transition/nav_slide_from_bottom.dart';
+import 'package:united_natives/pages/home2/drawer_controller.dart';
+import 'package:united_natives/utils/time.dart';
+import 'package:united_natives/viewModel/log_out_view_model.dart';
+import 'package:united_natives/viewModel/rate_and%20_contactus_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -35,8 +33,10 @@ import 'home_page.dart';
 import 'widgets/widgets.dart';
 
 class Home2 extends StatefulWidget {
+  const Home2({super.key});
+
   @override
-  _Home2State createState() => _Home2State();
+  State<Home2> createState() => _Home2State();
 }
 
 class _Home2State extends State<Home2> with WidgetsBindingObserver {
@@ -49,7 +49,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
   // int _selectedIndex = 0;
   //
   // PageController _pageController;
-  DoctorHomeScreenController doctorHomeScreenController;
+  DoctorHomeScreenController? doctorHomeScreenController;
   UserController userController = Get.put(UserController());
   final UserUpdateController _userUpdateController =
       Get.put<UserUpdateController>(UserUpdateController());
@@ -72,9 +72,9 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (userController.user.value.medicalCenterID.isEmpty ||
-          userController.user.value.state.isEmpty ||
-          userController.user.value.city.isEmpty) {
+      if (userController.user.value.medicalCenterID!.isEmpty ||
+          userController.user.value.state!.isEmpty ||
+          userController.user.value.city!.isEmpty) {
         editProfileDialog();
       }
     });
@@ -91,7 +91,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
 
     addChatOnlineStatus(type: true);
     doctorHomeScreenController = Get.put(DoctorHomeScreenController())
-      ..callDoctorHomeScreenApi();
+      ?..callDoctorHomeScreenApi();
 
     WidgetsBinding.instance.addObserver(this);
 
@@ -99,8 +99,8 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
   }
 
   Future<void> refresh() async {
-    doctorHomeScreenController.getDoctorHomePage();
-    doctorHomeScreenController.filterData();
+    doctorHomeScreenController?.getDoctorHomePage();
+    doctorHomeScreenController?.filterData();
   }
 
   editProfileDialog() async {
@@ -108,12 +108,12 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) => AlertDialog(
-        title: Text(
+        title: const Text(
           "Update Profile",
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
-        content: Column(
+        content: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -124,7 +124,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
         ),
         actions: [
           TextButton(
-            child: Text("Go to edit profile"),
+            child: const Text("Go to edit profile"),
             onPressed: () {
               _userUpdateController.editProfileFlag.value = true;
               Navigator.of(context).pop();
@@ -137,16 +137,16 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
     );
   }
 
-  Future<String> setTempPasswordDialog() async {
+  Future<String?> setTempPasswordDialog() async {
     return await showDialog<String>(
       context: context,
-      builder: (BuildContext context) => new AlertDialog(
-        title: Text(
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text(
           "Reset your temporary password",
           textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
-        content: Column(
+        content: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -166,13 +166,13 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                child: Text("Close"),
+                child: const Text("Close"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text("Go to setting"),
+                child: const Text("Go to setting"),
                 onPressed: () {
                   Navigator.of(context).pop();
                   // _selectPage(3);
@@ -186,16 +186,16 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> addChatOnlineStatus({bool type}) async {
+  Future<void> addChatOnlineStatus({required bool type}) async {
     AddChatOnlineStatusReqModel model = AddChatOnlineStatusReqModel();
     model.isOnline = type;
     model.lastSeen = DateTime.now().toUtc().toString();
     await logOutController.addChatStatus(model: model);
     if (logOutController.addChatStatusApiResponse.status == Status.COMPLETE) {
-      print('COMPLETE');
+      log('COMPLETE');
     } else if (logOutController.addChatStatusApiResponse.status ==
         Status.ERROR) {
-      print('ERROR');
+      log('ERROR');
     }
   }
 
@@ -218,22 +218,22 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
 
   final _pages = [
     Home2Page(),
-    DocProfilePage(),
-    DoctorMessagesPage(),
-    SettingsPage(),
+    const DocProfilePage(),
+    const DoctorMessagesPage(),
+    const SettingsPage(),
   ];
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      print('>>>>>> RESUMED<<<<<<<<');
+      log('>>>>>> RESUMED<<<<<<<<');
       addChatOnlineStatus(type: true);
     } else if (state == AppLifecycleState.detached) {
-      print('>>>>>> DETACHED<<<<<<<<');
+      log('>>>>>> DETACHED<<<<<<<<');
     } else if (state == AppLifecycleState.inactive) {
-      print('>>>>>> INACTIVE<<<<<<<<');
+      log('>>>>>> INACTIVE<<<<<<<<');
     } else if (state == AppLifecycleState.paused) {
-      print('>>>>>> PAUSED<<<<<<<<');
+      log('>>>>>> PAUSED<<<<<<<<');
       addChatOnlineStatus(type: false);
     }
   }
@@ -266,7 +266,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                 controller.xOffset, controller.yOffset, 0)
               ..scale(controller.scaleFactor)
               ..rotateY(controller.isDrawerOpen ? -0.5 : 0),
-            duration: Duration(milliseconds: 250),
+            duration: const Duration(milliseconds: 250),
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius:
@@ -279,7 +279,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                 appBar: AppBar(
                   leading: controller.isDrawerOpen
                       ? IconButton(
-                          icon: Icon(Icons.arrow_back_ios),
+                          icon: const Icon(Icons.arrow_back_ios),
                           onPressed: () {
                             // setState(
                             //   () {
@@ -295,7 +295,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                           },
                         )
                       : IconButton(
-                          icon: Icon(Icons.menu),
+                          icon: const Icon(Icons.menu),
                           onPressed: () {
                             // setState(() {
                             //   xOffset = size.width - size.width / 3;
@@ -307,16 +307,16 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                             controller.openDrawer(size);
                           },
                         ),
-                  title: AppBarTitleWidget(),
+                  title: const AppBarTitleWidget(),
                   actions: <Widget>[
                     controller.selectedIndex == 2
                         ? IconButton(
                             onPressed: () {
                               Navigator.of(context)
                                   .pushNamed(Routes.messagePatient);
-                              TimerChange.timer.cancel();
+                              TimerChange.timer?.cancel();
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.add,
                               size: 30,
                             ),
@@ -327,14 +327,14 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                                   .pushNamed(Routes.docnotification)
                                   .then((value) => refresh());
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.notifications_active_sharp,
                             ),
                           ),
                   ],
                 ),
                 body: PageView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   controller: controller.pageController,
                   onPageChanged: (index) {
                     // setState(() {
@@ -346,16 +346,16 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                 floatingActionButton:
                     KeyboardVisibilityBuilder(builder: (context, visible) {
                   return visible
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Container(
                           width: 80,
                           height: 80,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Color(0x202e83f8),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             child: GestureDetector(
                               onTap: () {
                                 FocusScope.of(context)
@@ -363,14 +363,14 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                                 Navigator.push(
                                     context,
                                     NavSlideFromBottom(
-                                        page: MyAppointmentsDoctor()));
+                                        page: const MyAppointmentsDoctor()));
                               },
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: kColorBlue,
                                 ),
-                                child: Icon(
+                                child: const Icon(
                                   Icons.perm_contact_calendar,
                                   color: Colors.white,
                                 ),
@@ -392,10 +392,10 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                         child: NavBarItemWidget(
                           onTap: () {
                             controller.selectPage(0);
-                            TimerChange.timer.cancel();
+                            TimerChange.timer?.cancel();
                           },
                           iconData: Icons.home,
-                          text: Translate.of(context).translate('home'),
+                          text: Translate.of(context)!.translate('home'),
                           color: controller.selectedIndex == 0
                               ? kColorBlue
                               : Colors.grey,
@@ -411,13 +411,13 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                             controller.selectPage(2);
                           },
                           iconData: Icons.message,
-                          text: Translate.of(context).translate('messages'),
+                          text: Translate.of(context)!.translate('messages'),
                           color: controller.selectedIndex == 2
                               ? kColorBlue
                               : Colors.grey,
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         flex: 1,
                         child: SizedBox(
                           height: 1,
@@ -456,7 +456,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                             // TimerChange.timer.cancel();
                           },
                           iconData: Icons.settings,
-                          text: Translate.of(context).translate('settings'),
+                          text: Translate.of(context)!.translate('settings'),
                           color: controller.selectedIndex == 3
                               ? kColorBlue
                               : Colors.grey,
@@ -472,12 +472,13 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                             //         'dR1Gt6haTXGyqZU76h7XAR:APA91bE6l1CM7I4-Cc6bt5riMZbkxyN00979ZFF1nrfSGxZ8HBXLk4P4chatthpgbQhGhlUkYSIihSO0TkpiIDuyDVe0EkiFl2ibHpUtMaP2h7SzXg5Db1cV-fHJW2XRy1GQM1lBDAfO3dps');
 
                             controller.selectPage(1);
-                            if (TimerChange.timer != null) {
-                              TimerChange.timer.cancel();
+                            final timer = TimerChange.timer;
+                            if (timer != null) {
+                              timer.cancel();
                             }
                           },
                           iconData: Icons.person,
-                          text: Translate.of(context).translate('profile'),
+                          text: Translate.of(context)!.translate('profile'),
                           color: controller.selectedIndex == 1
                               ? kColorBlue
                               : Colors.grey,
@@ -498,17 +499,17 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
 onAlertWithCustomContentPress(context) {
   Alert(
       context: context,
-      image: Image(
+      image: const Image(
         image: AssetImage('assets/images/Coming soon.gif'),
       ),
       title: "Coming Soon",
-      content: Column(
+      content: const Column(
         children: <Widget>[],
       ),
       buttons: [
         DialogButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(
+          child: const Text(
             "Okay",
             style: TextStyle(color: Colors.white, fontSize: 22),
           ),

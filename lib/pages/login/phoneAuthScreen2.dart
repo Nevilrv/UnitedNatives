@@ -1,6 +1,5 @@
 import 'dart:convert' show utf8;
 import 'package:crypto/crypto.dart' as crypto;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';
 import 'package:loading_btn/loading_btn.dart';
@@ -20,10 +19,9 @@ import 'package:united_natives/utils/utils.dart';
 import 'package:united_natives/viewModel/log_out_view_model.dart';
 
 class PhoneVerification2 extends StatefulWidget {
-  final bool? isShow;
-  const PhoneVerification2({super.key, this.isShow});
+  const PhoneVerification2({super.key});
   @override
-  _PhoneVerification2State createState() => _PhoneVerification2State();
+  State<PhoneVerification2> createState() => _PhoneVerification2State();
 }
 
 class _PhoneVerification2State extends State<PhoneVerification2> {
@@ -82,20 +80,20 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                   SizedBox(
                     height: appBarHeight,
                   ),
-                  widget.isShow == true
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            IconButton(
-                              icon: const Icon(Icons.arrow_back_ios,
-                                  color: Colors.white),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        )
-                      : const SizedBox(),
+                  /* widget.isShow == true
+                      ?*/
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios,
+                            color: Colors.white),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ) /*  : const SizedBox()*/,
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   Text(
@@ -272,16 +270,16 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                                     Config.getPassword());
 
                         pinStatusModelData = await _userController
-                            .statusPIN(loginVerificationData.id);
+                            .statusPIN(loginVerificationData.id!);
                         if (pinStatusModelData.toInitiate == "1") {
                           resetPINData = await _userController.resetPIN(
-                              loginVerificationData.id,
+                              loginVerificationData.id!,
                               context /* _userController.loginData.userType*/);
                           setState(() {
                             onPressed = false;
                           });
                         } else {
-                          if (pinStatusModelData.pinStatusData.requestStatus ==
+                          if (pinStatusModelData.pinStatusData?.requestStatus ==
                               "1") {
                             Utils.showSnackBar('Admin Verification Pending',
                                 'Please try again after some time');

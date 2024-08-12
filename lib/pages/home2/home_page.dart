@@ -1,18 +1,17 @@
 import 'dart:async';
-
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/visited_patient_list_item.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/widgets/app_placeholder.dart';
-import 'package:doctor_appointment_booking/model/visited_patient_model.dart';
-import 'package:doctor_appointment_booking/pages/appointment/doctor_appointment.dart';
-import 'package:doctor_appointment_booking/pages/home/nav_transition/nav_slide_from_bottom.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/visited_patient_list_item.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/widgets/app_placeholder.dart';
+import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/pages/appointment/doctor_appointment.dart';
+import 'package:united_natives/pages/home/nav_transition/nav_slide_from_bottom.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
@@ -20,6 +19,8 @@ import 'package:get/get.dart' hide Trans;
 import 'widgets/widgets.dart';
 
 class Home2Page extends StatefulWidget {
+  const Home2Page({super.key});
+
   @override
   State<Home2Page> createState() => _Home2PageState();
 }
@@ -54,7 +55,7 @@ class _Home2PageState extends State<Home2Page> {
         body: RefreshIndicator(
           onRefresh: refresh,
           child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
@@ -65,18 +66,18 @@ class _Home2PageState extends State<Home2Page> {
                     child: Row(
                       children: <Widget>[
                         Image.asset('assets/images/hand.png'),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              '${Translate.of(context).translate('hello')} ${_userController.user.value.firstName}',
+                              '${Translate.of(context)?.translate('hello')} ${_userController.user.value.firstName}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
-                                  .copyWith(
+                                  .titleLarge
+                                  ?.copyWith(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 22),
                             ),
@@ -103,7 +104,7 @@ class _Home2PageState extends State<Home2Page> {
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Column(
                               children: [
-                                SectionHeader2Widget(
+                                const SectionHeader2Widget(
                                   title: 'Availability',
                                 ),
                                 Text(
@@ -111,12 +112,12 @@ class _Home2PageState extends State<Home2Page> {
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline6
-                                      .copyWith(
+                                      .titleLarge
+                                      ?.copyWith(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 22),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Center(
                                   child: MaterialButton(
                                     onPressed: () {
@@ -126,19 +127,19 @@ class _Home2PageState extends State<Home2Page> {
                                           .pushNamed(Routes.availability)
                                           .then((value) => refresh());
                                     },
-                                    child: Text(
+                                    color: kColorBlue,
+                                    child: const Text(
                                       'UPDATE AVAILABILITY',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    color: kColorBlue,
                                   ),
                                 ),
                               ],
                             ),
                           )
-                        : SizedBox();
+                        : const SizedBox();
                   }),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +149,7 @@ class _Home2PageState extends State<Home2Page> {
                         child: Obx(
                           () => Column(
                             children: <Widget>[
-                              SectionHeader2Widget(
+                              const SectionHeader2Widget(
                                 title: 'Next Appointment',
                               ),
                               _doctorHomeScreenController.isLoading.value
@@ -160,7 +161,7 @@ class _Home2PageState extends State<Home2Page> {
                                   //     child: Utils.circular(),
                                   //   )
 
-                                  Container(
+                                  SizedBox(
                                       height: 205,
                                       child: AppPlaceholder(
                                         child: Center(
@@ -176,16 +177,16 @@ class _Home2PageState extends State<Home2Page> {
                                       ),
                                     )
                                   : _doctorHomeScreenController
-                                              ?.doctorHomePageModelData
-                                              ?.value
-                                              ?.data
+                                              .doctorHomePageModelData
+                                              .value
+                                              .data
                                               ?.upcomingAppointments
                                               ?.isEmpty ??
                                           true
                                       ? Center(
                                           child: Column(
                                             children: [
-                                              Text(
+                                              const Text(
                                                 'You have nothing yet!',
                                                 style: TextStyle(fontSize: 20),
                                               ),
@@ -198,25 +199,25 @@ class _Home2PageState extends State<Home2Page> {
                                                           context,
                                                           NavSlideFromBottom(
                                                               page:
-                                                                  MyAppointmentsDoctor()))
+                                                                  const MyAppointmentsDoctor()))
                                                       .then(
                                                           (value) => refresh());
                                                 },
-                                                child: Text(
+                                                color: kColorBlue,
+                                                child: const Text(
                                                   'MY APPOINTMENTS',
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                color: kColorBlue,
                                               )
                                             ],
                                           ),
                                         )
-                                      : NextAppointment2Widget(),
+                                      : const NextAppointment2Widget(),
                               SectionHeader2Widget(
-                                title: Translate.of(context)
+                                title: Translate.of(context)!
                                     .translate('Clients You have Visited'),
                                 onPressed: () => Navigator.of(context)
                                     .pushNamed(Routes.mypatient)
@@ -244,7 +245,7 @@ class _Home2PageState extends State<Home2Page> {
                                 height: 200,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   child: Row(
                                     children: List.generate(
                                         3,
@@ -252,7 +253,7 @@ class _Home2PageState extends State<Home2Page> {
                                               child: Center(
                                                 child: Container(
                                                   width: 140,
-                                                  margin: EdgeInsets.only(
+                                                  margin: const EdgeInsets.only(
                                                       right: 20),
                                                   height: 170,
                                                   decoration: BoxDecoration(
@@ -268,41 +269,41 @@ class _Home2PageState extends State<Home2Page> {
                                 ),
                               )
                             : _doctorHomeScreenController
-                                        ?.doctorHomePageModelData
-                                        ?.value
-                                        ?.data
+                                        .doctorHomePageModelData
+                                        .value
+                                        .data
                                         ?.pastAppointments
                                         ?.isEmpty ??
                                     true
-                                ? Container(
+                                ? SizedBox(
                                     height: h * 0.08,
-                                    child: Center(
+                                    child: const Center(
                                       child: Text(
                                         'You have nothing yet!',
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),
                                   )
-                                : Container(
+                                : SizedBox(
                                     height: h * 0.2,
                                     child: ListView.separated(
                                       separatorBuilder: (context, index) =>
-                                          SizedBox(width: 15),
+                                          const SizedBox(width: 15),
                                       itemCount: _doctorHomeScreenController
-                                              ?.doctorHomePageModelData
-                                              ?.value
-                                              ?.data
+                                              .doctorHomePageModelData
+                                              .value
+                                              .data
                                               ?.pastAppointments
                                               ?.length ??
                                           0,
                                       scrollDirection: Axis.horizontal,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 20),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
                                       itemBuilder: (context, index) {
                                         _doctorHomeScreenController
-                                            ?.doctorHomePageModelData
-                                            ?.value
-                                            ?.data
+                                            .doctorHomePageModelData
+                                            .value
+                                            .data
                                             ?.pastAppointments
                                             ?.sort(
                                           (a, b) {
@@ -318,11 +319,10 @@ class _Home2PageState extends State<Home2Page> {
 
                                         return VisitedPatientListItem(
                                           patient: _doctorHomeScreenController
-                                                  ?.doctorHomePageModelData
-                                                  ?.value
-                                                  ?.data
-                                                  ?.pastAppointments[index] ??
-                                              "",
+                                              .doctorHomePageModelData
+                                              .value
+                                              .data!
+                                              .pastAppointments?[index],
                                         );
                                       },
                                     ),
@@ -334,7 +334,7 @@ class _Home2PageState extends State<Home2Page> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SectionHeader2Widget(
-                              title: Translate.of(context)
+                              title: Translate.of(context)!
                                   .translate('Clients Prescriptions'),
                               onPressed: () => Navigator.of(context)
                                   .pushNamed(Routes.doctorprescriptionpage)
@@ -350,7 +350,7 @@ class _Home2PageState extends State<Home2Page> {
                                       child: Utils.circular(),
                                     ))*/
 
-                                  Container(
+                                  SizedBox(
                                       height: 125,
                                       child: AppPlaceholder(
                                         child: Center(
@@ -366,9 +366,9 @@ class _Home2PageState extends State<Home2Page> {
                                       ),
                                     )
                                   : _doctorHomeScreenController
-                                              ?.doctorHomePageModelData
-                                              ?.value
-                                              ?.data
+                                              .doctorHomePageModelData
+                                              .value
+                                              .data
                                               ?.prescriptions
                                               ?.isNotEmpty ??
                                           false
@@ -382,7 +382,7 @@ class _Home2PageState extends State<Home2Page> {
                                                         .data
                                                         ?.prescriptions
                                                         ?.first
-                                                        ?.appointmentId,
+                                                        .appointmentId,
                                                 patientId:
                                                     _doctorHomeScreenController
                                                         .doctorHomePageModelData
@@ -390,7 +390,7 @@ class _Home2PageState extends State<Home2Page> {
                                                         .data
                                                         ?.prescriptions
                                                         ?.first
-                                                        ?.patientId);
+                                                        .patientId);
                                             Navigator.of(context)
                                                 .pushNamed(
                                                     Routes
@@ -400,13 +400,13 @@ class _Home2PageState extends State<Home2Page> {
                                           },
                                           child: TestAndPrescriptionCardWidget(
                                             title:
-                                                '${_doctorHomeScreenController.doctorHomePageModelData.value.data?.prescriptions?.first?.medicineName ?? "Cipla X524"} ${'${_doctorHomeScreenController.doctorHomePageModelData.value.data?.prescriptions?.first?.additionalNotes ?? "Pain Killer"}'.tr()}',
+                                                '${_doctorHomeScreenController.doctorHomePageModelData.value.data?.prescriptions?.first.medicineName ?? "Cipla X524"} ${(_doctorHomeScreenController.doctorHomePageModelData.value.data?.prescriptions?.first.additionalNotes ?? "Pain Killer").tr()}',
                                             subTitle:
-                                                '${Translate.of(context).translate('given_by')} Dr. ${_userController.user.value.firstName ?? ""} on ${DateFormat('EEEE, d MMMM yyyy').format(Utils.formattedDate("${_doctorHomeScreenController.doctorHomePageModelData?.value?.data?.prescriptions?.first?.appointmentDate} ${_doctorHomeScreenController.doctorHomePageModelData?.value?.data?.prescriptions?.first?.appointmentTime}"))}',
+                                                '${Translate.of(context)?.translate('given_by')} Dr. ${_userController.user.value.firstName ?? ""} on ${DateFormat('EEEE, d MMMM yyyy').format(Utils.formattedDate("${_doctorHomeScreenController.doctorHomePageModelData.value.data?.prescriptions?.first.appointmentDate} ${_doctorHomeScreenController.doctorHomePageModelData.value.data?.prescriptions?.first.appointmentTime}"))}',
                                             image: 'icon_medical_recipe.png',
                                           ),
                                         )
-                                      : Center(
+                                      : const Center(
                                           child: Text(
                                             'You have nothing yet!',
                                             style: TextStyle(fontSize: 20),
@@ -444,7 +444,7 @@ class _Home2PageState extends State<Home2Page> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 30)
+                      const SizedBox(height: 30)
                     ],
                   ),
                 ],

@@ -1,28 +1,27 @@
 import 'dart:convert';
-
-import 'package:crypto/crypto.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:loading_btn/loading_btn.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/utils/constants.dart';
 
 class PhoneVerification extends StatefulWidget {
+  const PhoneVerification({super.key});
+
   @override
-  _PhoneVerificationState createState() => _PhoneVerificationState();
+  State<PhoneVerification> createState() => _PhoneVerificationState();
 }
 
 class _PhoneVerificationState extends State<PhoneVerification> {
   String userType1 = "1";
   var appBarHeight = 0.0;
-  var otpController = new TextEditingController();
+  var otpController = TextEditingController();
   bool _btnEnabled = false;
 
   // get userType => UserController().user.value.userType;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  UserController _userController = Get.find<UserController>();
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final UserController _userController = Get.find<UserController>();
   FocusNode focusNode = FocusNode();
   var currentFocus;
 
@@ -68,7 +67,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
                         ),
@@ -81,22 +80,22 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                   ),
                   Text(
                     'Set Your Secret PIN',
-                    style: Theme.of(context).textTheme.headline4.copyWith(
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6,
                   ),
                   Text(
                     'Enter your secret pin here',
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Padding(
@@ -115,8 +114,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.green,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10)),
                                     border: Border.all(
                                       color: Theme.of(context).dividerColor,
                                     ),
@@ -151,7 +150,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                                     .primaryColor,
                                                 fontSize: 18,
                                               ),
-                                              decoration: new InputDecoration(
+                                              decoration: InputDecoration(
                                                   // errorText: validatePassword(
                                                   //     otpController.text),
 
@@ -177,68 +176,57 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 32, left: 32),
-                    child: RoundedLoadingButton(
-                      color: Colors.white,
-                      valueColor: kColorBlue,
-                      successColor: Colors.white,
+                    child: LoadingBtn(
+                      height: 50,
+                      width: 150,
+                      disabledColor: Colors.white,
+                      color: kColorBlue,
+                      onTap: (startLoading, stopLoading, btnState) async {
+                        if (_btnEnabled == true) {
+                          unFocus();
+                          startLoading();
+                          final userPIN = otpController.text;
+
+                          final encryptedUtf = utf8.encode(userPIN);
+                          var md5 = crypto.md5;
+                          final encryptedPIN = md5.convert(encryptedUtf);
+                          if (_formKey.currentState!.validate()) {
+                            await _userController.userRegister(
+                              _userController.registerData!,
+                              _userController.registerData?.userType ?? "2",
+                              encryptedPIN.toString(),
+                            );
+                            if (_userController.registerData != null) {
+                              stopLoading();
+                            }
+                          }
+                        }
+                        stopLoading();
+                      },
                       child: _btnEnabled == true
-                          ? Text('PROCEED',
+                          ? const Text('PROCEED',
                               style: TextStyle(
                                   fontSize: 20,
                                   color: kColorBlue,
                                   fontWeight: FontWeight.bold))
-                          : Text('Set Secure PIN to Proceed',
+                          : const Text('Set Secure PIN to Proceed',
                               style: TextStyle(
                                   color: kColorBlue,
                                   fontWeight: FontWeight.bold)),
-                      controller: _btnController,
-                      onPressed: _btnEnabled == true
-                          ? () async {
-                              unFocus();
-                              final userPIN = '${otpController.text}';
-                              print('USERPIN:$userPIN');
-                              final encryptedUtf = utf8.encode(userPIN);
-                              print('UTF8:$encryptedUtf');
-                              final encryptedPIN = md5.convert(encryptedUtf);
-                              print('MD5PIN: $encryptedPIN');
-                              // final key = Key.fromLength(32);
-                              // final iv = IV.fromLength(16);
-                              // final encrypter = Encrypter(AES(key));
-                              //
-                              // final encrypted = encrypter.encrypt(userPIN, iv: iv);
-                              // final decrypted = encrypter.decrypt(encrypted, iv: iv);
-                              //
-                              // print("decrypted=>$decrypted");
-                              // print("encrypted.bytes=>${encrypted.bytes}");
-                              // print("encrypted.base16=>${encrypted.base16}");
-                              // print("encrypted.base64=>${encrypted.base64}");
-                              // print(
-                              //     "_userController.user.value.userType:${_userController.loginData.userType}");
-                              if (_formKey.currentState.validate()) {
-                                await _userController.userRegister(
-                                  _userController.registerData,
-                                  _userController.registerData.userType ?? "2",
-                                  encryptedPIN.toString(),
-                                );
-                                if (_userController.registerData != null) {
-                                  _btnController.reset();
-                                }
-                              }
-                            }
-                          : null,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 25, right: 10, left: 17),
-                      padding: EdgeInsets.all(8),
+                      margin:
+                          const EdgeInsets.only(top: 20, right: 10, left: 17),
+                      padding: const EdgeInsets.all(8),
                       // height: MediaQuery.of(context).size.height / 2.5,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -255,8 +243,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          SizedBox(
-                            height: 15,
+                          const SizedBox(
+                            height: 10,
                           ),
                           RichText(
                             textAlign: TextAlign.start,
@@ -266,8 +254,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                   text: "Note",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
-                                      .copyWith(
+                                      .titleSmall
+                                      ?.copyWith(
                                         color: Colors.black,
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
@@ -276,8 +264,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 15,
+                          const SizedBox(
+                            height: 10,
                           ),
                           RichText(
                             overflow: TextOverflow.visible,
@@ -287,8 +275,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                   text: "Choose a PIN that’s hard to guess: ",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
-                                      .copyWith(
+                                      .titleSmall
+                                      ?.copyWith(
                                         color: Colors.black,
                                         fontSize: 19.5,
                                         fontWeight: FontWeight.bold,
@@ -299,8 +287,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                       " This means that you  shouldn’t use “12345” as your PIN, nor should you use a birthday or another significant date that someone else can guess.",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
-                                      .copyWith(
+                                      .titleSmall
+                                      ?.copyWith(
                                         letterSpacing: 0.2,
                                         height: 1.5,
                                         color: Colors.black,
@@ -311,7 +299,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           RichText(
@@ -322,8 +310,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                   text: " Keep your PIN private: ",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
-                                      .copyWith(
+                                      .titleSmall
+                                      ?.copyWith(
                                         color: Colors.black,
                                         fontSize: 19.5,
                                         fontWeight: FontWeight.bold,
@@ -334,8 +322,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                       " TIt’s just good practice to keep your PIN to yourself and never share with anyone.",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
-                                      .copyWith(
+                                      .titleSmall
+                                      ?.copyWith(
                                         color: Colors.black,
                                         letterSpacing: 0.2,
                                         height: 1.5,
@@ -346,7 +334,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           RichText(
@@ -357,8 +345,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                   text: " Memorize your PIN: ",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
-                                      .copyWith(
+                                      .titleSmall
+                                      ?.copyWith(
                                         color: Colors.black,
                                         fontSize: 19.5,
                                         fontWeight: FontWeight.bold,
@@ -369,8 +357,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                       "  If you record this number anywhere, then someone might come across it and may be able to login into the app. That’s why it’s always a good idea to create a PIN you will know and then commit it to memory.",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .subtitle2
-                                      .copyWith(
+                                      .titleSmall
+                                      ?.copyWith(
                                         color: Colors.black,
                                         fontSize: 15.5,
                                         letterSpacing: 0.2,
@@ -396,14 +384,14 @@ class _PhoneVerificationState extends State<PhoneVerification> {
       return Expanded(
         child: Column(
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Text(
               otxt,
-              style: Theme.of(context).textTheme.headline5.copyWith(
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.headline6.color,
+                    color: Theme.of(context).textTheme.titleLarge?.color,
                   ),
             ),
             Padding(

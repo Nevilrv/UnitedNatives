@@ -7,10 +7,10 @@ class DrawerController2 extends GetxController {
   double scaleFactor = 1;
   bool isDrawerOpen = false;
   int selectedIndex = 0;
-  PageController pageController;
+  PageController? pageController;
 
   selectPage(int index) {
-    if (pageController.hasClients) pageController.jumpToPage(index);
+    if (pageController!.hasClients) pageController?.jumpToPage(index);
     selectedIndex = index;
     update();
   }
@@ -19,13 +19,13 @@ class DrawerController2 extends GetxController {
     pageController = PageController(
       initialPage: selectedIndex,
     );
-    pageController.addListener(() {
-      selectedIndex = pageController.page.toInt();
+    pageController?.addListener(() {
+      selectedIndex = pageController!.page!.toInt();
     });
   }
 
   disposePageController() {
-    pageController.dispose();
+    pageController?.dispose();
   }
 
   closeDrawer() {

@@ -1,18 +1,16 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/model/getSorted_patient_chatList_model.dart';
-import 'package:doctor_appointment_booking/utils/time.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/log_out_view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:get/instance_manager.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/model/getSorted_patient_chatList_model.dart';
+import 'package:united_natives/utils/time.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/log_out_view_model.dart';
 
 import '../../utils/constants.dart';
 
@@ -43,7 +41,7 @@ class _MessagesPageState extends State<MessagesPage> {
 
   @override
   void dispose() {
-    TimerChange.timer.cancel();
+    TimerChange.timer?.cancel();
 
     super.dispose();
   }
@@ -60,14 +58,13 @@ class _MessagesPageState extends State<MessagesPage> {
     if (value.isEmpty) {
       chatTimer();
     } else {
-      print("cancel");
-      TimerChange.timer.cancel();
+      TimerChange.timer?.cancel();
     }
     setState(() {
       patientHomeScreenController.newDataList = patientHomeScreenController
-          .getSortedPatientChatListModel.value.data
+          .getSortedPatientChatListModel.value.data!
           .where((SortedPatientChat sortedPatientChat) => sortedPatientChat
-              .doctorFirstName
+              .doctorFirstName!
               .toLowerCase()
               .contains(value.toLowerCase().trim()))
           .toList();
@@ -76,11 +73,12 @@ class _MessagesPageState extends State<MessagesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        TimerChange.timer.cancel();
-        return true;
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        TimerChange.timer?.cancel();
       },
+
       child: GetBuilder<AdsController>(builder: (ads) {
         return Scaffold(
           bottomNavigationBar: AdsBottomBar(
@@ -93,23 +91,23 @@ class _MessagesPageState extends State<MessagesPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(20).copyWith(bottom: 5),
+                  padding: const EdgeInsets.all(20).copyWith(bottom: 5),
                   child: TextField(
-                    autofillHints: [AutofillHints.name],
+                    autofillHints: const [AutofillHints.name],
                     onChanged: (value) {
                       if (value.isEmpty) {
                         chatTimer();
                       } else {
-                        TimerChange.timer.cancel();
+                        TimerChange.timer?.cancel();
                       }
 
                       setState(() {
                         patientHomeScreenController.newDataList =
                             patientHomeScreenController
-                                .getSortedPatientChatListModel.value.data
+                                .getSortedPatientChatListModel.value.data!
                                 .where(
                                   (SortedPatientChat sortedPatientChat) =>
-                                      "${sortedPatientChat.doctorFirstName.toLowerCase()}${sortedPatientChat.doctorLastName.toLowerCase()}"
+                                      "${sortedPatientChat.doctorFirstName?.toLowerCase()}${sortedPatientChat.doctorLastName?.toLowerCase()}"
                                           .toString()
                                           .toLowerCase()
                                           .replaceAll(" ", "")
@@ -126,16 +124,17 @@ class _MessagesPageState extends State<MessagesPage> {
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
-                        borderSide: BorderSide(color: kColorBlue, width: 0.5),
+                        borderSide:
+                            const BorderSide(color: kColorBlue, width: 0.5),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide:
-                            BorderSide(color: Colors.grey[300], width: 0.5),
+                            BorderSide(color: Colors.grey[300]!, width: 0.5),
                       ),
                       filled: true,
                       fillColor: Colors.grey[250],
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 15,
                       ),
@@ -145,7 +144,7 @@ class _MessagesPageState extends State<MessagesPage> {
                         size: 30,
                       ),
                       hintText:
-                          Translate.of(context).translate('search_messages'),
+                          Translate.of(context)?.translate('search_messages'),
                       hintStyle:
                           TextStyle(color: Colors.grey[400], fontSize: 22),
                     ),
@@ -172,8 +171,8 @@ class _MessagesPageState extends State<MessagesPage> {
                           'You Don\'t have any Messages',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontSize: 20),
+                              .titleLarge
+                              ?.copyWith(fontSize: 20),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -181,7 +180,7 @@ class _MessagesPageState extends State<MessagesPage> {
                   } else if (patientHomeScreenController
                           .getSortedPatientChatListModel.value.apiState ==
                       APIState.ERROR) {
-                    return Expanded(
+                    return const Expanded(
                       child: Center(
                         child: Text("Error"),
                       ),
@@ -206,33 +205,33 @@ class _MessagesPageState extends State<MessagesPage> {
                                 'You Don\'t have any Messages',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
-                                    .copyWith(fontSize: 20),
+                                    .titleLarge
+                                    ?.copyWith(fontSize: 20),
                                 textAlign: TextAlign.center,
                               ),
                             ),
                           )
                         : Expanded(
                             child: SingleChildScrollView(
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: patientHomeScreenController
-                                            ?.newDataList?.length ??
-                                        0,
+                                        .newDataList.length,
                                     itemBuilder: (context, int index) {
                                       SortedPatientChat chatListItem;
 
                                       chatListItem = patientHomeScreenController
-                                          ?.newDataList[index];
+                                          .newDataList[index];
 
                                       if (chatListItem.chatKey == null) {
-                                        return SizedBox();
+                                        return const SizedBox();
                                       }
 
                                       return MessageListItem(
@@ -241,12 +240,13 @@ class _MessagesPageState extends State<MessagesPage> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Text('Delete Chat'),
+                                                title:
+                                                    const Text('Delete Chat'),
                                                 content: Text(
-                                                    "Are you sure want to delete ${'Dr. ${chatListItem?.doctorFirstName ?? ""} ${chatListItem?.doctorLastName ?? ""}'}'s chat?"),
+                                                    "Are you sure want to delete ${'Dr. ${chatListItem.doctorFirstName ?? ""} ${chatListItem.doctorLastName ?? ""}'}'s chat?"),
                                                 actions: <Widget>[
                                                   TextButton(
-                                                    child: Text("YES"),
+                                                    child: const Text("YES"),
                                                     onPressed: () {
                                                       patientHomeScreenCtlr
                                                           .deleteChatUserPatient(
@@ -276,7 +276,7 @@ class _MessagesPageState extends State<MessagesPage> {
                                                     },
                                                   ),
                                                   TextButton(
-                                                    child: Text("NO"),
+                                                    child: const Text("NO"),
                                                     onPressed: () {
                                                       //Put your code here which you want to execute on No button click.
                                                       Navigator.of(context)
@@ -410,23 +410,24 @@ class _MessagesPageState extends State<MessagesPage> {
                                             );*/
                                         },
                                         onTap: () async {
-                                          TimerChange.timer.cancel();
+                                          TimerChange.timer?.cancel();
                                           await patientHomeScreenController
                                               .onPatientChatTap(
                                                   index, context, chatListItem);
                                         },
                                         imagePath:
-                                            '${chatListItem?.doctorProfilePic ?? ""}',
+                                            chatListItem.doctorProfilePic ?? "",
                                         name:
-                                            'Dr. ${chatListItem?.doctorFirstName ?? ""} ${chatListItem?.doctorLastName ?? ""}',
-                                        message:
-                                            '${chatListItem?.lastMessage ?? ""}',
+                                            'Dr. ${chatListItem.doctorFirstName ?? ""} ${chatListItem.doctorLastName ?? ""}',
+                                        message: chatListItem.lastMessage ?? "",
                                         date: chatListItem
-                                                .chatDatetime.isNotEmpty
-                                            ? '${DateFormat('dd/MM/yyyy').format(Utils.formattedDate("${chatListItem?.chatDatetime}"))}'
+                                                .chatDatetime!.isNotEmpty
+                                            ? DateFormat('dd/MM/yyyy').format(
+                                                Utils.formattedDate(
+                                                    "${chatListItem.chatDatetime}"))
                                             : '',
                                         unread:
-                                            chatListItem?.unreadMessagesCount,
+                                            chatListItem.unreadMessagesCount!,
                                         index: index,
                                         patientHomeScreenController:
                                             patientHomeScreenController,
@@ -657,30 +658,29 @@ class _MessagesPageState extends State<MessagesPage> {
 }
 
 class MessageListItem extends StatelessWidget {
-  final Function onTap;
-  final Function longPress;
+  final Function() onTap;
+  final Function()? longPress;
   final String imagePath;
   final String name;
   final String message;
   final String date;
-  final int unread;
+  final int? unread;
   final int index;
-  final bool online;
+  final bool? online;
   final PatientHomeScreenController patientHomeScreenController;
 
   const MessageListItem(
-      {Key key,
-      @required this.onTap,
-      @required this.imagePath,
-      @required this.name,
-      @required this.message,
-      @required this.date,
-      @required this.patientHomeScreenController,
-      @required this.index,
+      {super.key,
+      required this.onTap,
+      required this.imagePath,
+      required this.name,
+      required this.message,
+      required this.date,
+      required this.patientHomeScreenController,
+      required this.index,
       this.unread,
       this.online,
-      this.longPress})
-      : super(key: key);
+      this.longPress});
 
   @override
   Widget build(BuildContext context) {
@@ -688,10 +688,10 @@ class MessageListItem extends StatelessWidget {
       onLongPress: longPress,
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: <Widget>[
-            Container(
+            SizedBox(
               width: 60,
               height: 60,
               child: Stack(
@@ -707,7 +707,7 @@ class MessageListItem extends StatelessWidget {
                     },
                   ),*/
 
-                  Utils().patientProfile(imagePath ?? "", "", 25),
+                  Utils().patientProfile(imagePath, "", 25),
                   // CircleAvatar(
                   //   radius: 25,
                   //   child: ClipOval(
@@ -727,19 +727,19 @@ class MessageListItem extends StatelessWidget {
                   //   ),
                   // ),
                   Visibility(
-                    visible: online,
+                    visible: online!,
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: Container(
-                        margin: EdgeInsets.all(2),
-                        padding: EdgeInsets.all(1),
+                        margin: const EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(1),
                         width: 12,
                         height: 12,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
                         ),
-                        child: CircleAvatar(
+                        child: const CircleAvatar(
                           backgroundColor: Colors.green,
                         ),
                       ),
@@ -748,7 +748,7 @@ class MessageListItem extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Expanded(
@@ -757,14 +757,14 @@ class MessageListItem extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     name,
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 22,
                         ),
                   ),
                   Text(
                     message,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -775,15 +775,15 @@ class MessageListItem extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 patientHomeScreenController.getSortedPatientChatListModel.value
-                        .data[index].chatDatetime.isEmpty
-                    ? Text(
+                        .data![index].chatDatetime!.isEmpty
+                    ? const Text(
                         '',
                         style: TextStyle(
                           color: kColorPrimary,
@@ -793,7 +793,7 @@ class MessageListItem extends StatelessWidget {
                       )
                     : Text(
                         date,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: kColorPrimary,
                           fontSize: 17,
                           fontWeight: FontWeight.w400,
@@ -805,7 +805,7 @@ class MessageListItem extends StatelessWidget {
                   maintainAnimation: true,
                   maintainState: true,
                   child: Container(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 2,
                       horizontal: 7,
                     ),
@@ -815,7 +815,7 @@ class MessageListItem extends StatelessWidget {
                     ),
                     child: Text(
                       unread.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 17,
                         fontWeight: FontWeight.w300,

@@ -2,21 +2,21 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:doctor_appointment_booking/components/agora_video_call.dart';
-import 'package:doctor_appointment_booking/components/custom_button.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/model/doctor_get_doctor_Appointments_model.dart';
-import 'package:doctor_appointment_booking/model/visited_patient_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_agora_token_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/store_meeting_credantial_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/routes/routes.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/agora_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/patient_scheduled_class_viewmodel.dart';
+import 'package:united_natives/components/agora_video_call.dart';
+import 'package:united_natives/components/custom_button.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/model/doctor_get_doctor_Appointments_model.dart';
+import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_agora_token_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/store_meeting_credantial_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/agora_view_model.dart';
+import 'package:united_natives/viewModel/patient_scheduled_class_viewmodel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
@@ -27,6 +27,8 @@ import 'package:timer_builder/timer_builder.dart';
 import '../../../utils/constants.dart';
 
 class NextAppointment2Widget extends StatefulWidget {
+  const NextAppointment2Widget({super.key});
+
   @override
   State<NextAppointment2Widget> createState() => _NextAppointment2WidgetState();
 }
@@ -39,8 +41,8 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
   final UserController userController = Get.find();
   bool isLoadingMeet = false;
   bool isLoading = false;
-  String id;
-  String meetingID;
+  String? id;
+  String? meetingID;
   bool isLoadingMark = false;
   AgoraController agoraController = Get.put(AgoraController());
 
@@ -53,25 +55,25 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        List<VisitedPatient> dataList = _doctorHomeScreenController
-            .doctorHomePageModelData?.value?.data?.upcomingAppointments;
+        List<VisitedPatient>? dataList = _doctorHomeScreenController
+            .doctorHomePageModelData.value.data?.upcomingAppointments;
 
-        dataList.sort((b, a) {
+        dataList?.sort((b, a) {
           String dateA = "${b.appointmentDate} ${b.appointmentTime}";
           String dateB = "${a.appointmentDate} ${a.appointmentTime}";
           return DateTime.parse(dateA).compareTo(DateTime.parse(dateB));
         });
 
-        VisitedPatient data = dataList.first;
+        VisitedPatient? data = dataList?.first;
 
         final time = Utils.formattedDate(
-            '${DateTime.parse('${data.appointmentDate} ${data.appointmentTime}')}');
+            '${DateTime.parse('${data?.appointmentDate} ${data?.appointmentTime}')}');
 
-        bool rejoin = (data.meetingData.id.toString().isNotEmpty &&
-            data.meetingData.password.toString().isNotEmpty);
+        bool rejoin = (data!.meetingData!.id.toString().isNotEmpty &&
+            data.meetingData!.password.toString().isNotEmpty);
 
         return Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
             color: kColorBlue,
@@ -86,19 +88,19 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '${DateFormat('EEEE, d MMMM').format(time)}',
-                          style: TextStyle(
+                          DateFormat('EEEE, d MMMM').format(time),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 27,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text(
-                          '${DateFormat('hh:mm a').format(time)}',
-                          style: TextStyle(
+                          DateFormat('hh:mm a').format(time),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.w300,
@@ -107,7 +109,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Builder(
@@ -132,7 +134,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                               ? SizedBox()
                               :*/
                           isLoading
-                              ? CircularProgressIndicator(
+                              ? const CircularProgressIndicator(
                                   color: Colors.white,
                                   strokeWidth: 1,
                                 )
@@ -169,7 +171,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                     if (data.appointmentStatus == "0") {
                                       await _doctorHomeScreenController
                                           .startAppointmentPatient(
-                                              data.doctorId,
+                                              data.doctorId!,
                                               data.appointmentId);
                                       await _doctorHomeScreenController
                                           .getDoctorAppointmentsModel();
@@ -254,13 +256,13 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                                   patientAppoint: data1,
                                                   context: context,
                                                   channelsName:
-                                                      data.meetingData.id,
-                                                  tokens:
-                                                      data.meetingData.password)
+                                                      data.meetingData!.id!,
+                                                  tokens: data
+                                                      .meetingData!.password!)
                                               .then((value) => refresh());
 
                                           await Future.delayed(
-                                                  Duration(seconds: 5))
+                                                  const Duration(seconds: 5))
                                               .then((value) => setState(() {
                                                     isLoading = false;
                                                   }));
@@ -370,10 +372,10 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                                       patientAppoint: data1,
                                                       context: context,
                                                       channelsName:
-                                                          getAgoraToken
-                                                              .data.channelName,
+                                                          getAgoraToken.data!
+                                                              .channelName!,
                                                       tokens: getAgoraToken
-                                                          .data.token)
+                                                          .data!.token!)
                                                   .then((value) => refresh());
                                             } catch (e) {
                                               setState(() {
@@ -387,21 +389,20 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
 
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
-                                              SnackBar(
+                                              const SnackBar(
                                                 content: Text(
                                                     'Something Went to Wrong'),
                                               ),
                                             );
                                           }
-                                        } else {
-                                          print(response.reasonPhrase);
-                                        }
+                                        } else {}
                                       }
 
-                                      if (mounted)
+                                      if (mounted) {
                                         setState(() {
                                           isLoading = false;
                                         });
+                                      }
                                     } else {
                                       setState(() {
                                         isLoading = false;
@@ -425,7 +426,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                   ),
                 ],
               ),
-              Divider(
+              const Divider(
                 color: Colors.grey,
                 height: 40,
                 thickness: 0.5,
@@ -435,8 +436,8 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                   Container(
                     width: 56,
                     height: 56,
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
@@ -446,26 +447,26 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                             (_doctorHomeScreenController
                                         .doctorHomePageModelData
                                         .value
-                                        .data
-                                        .upcomingAppointments
-                                        ?.last
-                                        ?.patientProfilePic
+                                        .data!
+                                        .upcomingAppointments!
+                                        .last
+                                        .patientProfilePic
                                         .toString()
                                         .isEmpty
                                     ? _doctorHomeScreenController
                                         .doctorHomePageModelData
                                         .value
-                                        .data
+                                        .data!
                                         .upcomingAppointments
                                         ?.last
-                                        ?.patientSocialPic
+                                        .patientSocialPic
                                     : _doctorHomeScreenController
                                         .doctorHomePageModelData
                                         .value
-                                        .data
+                                        .data!
                                         .upcomingAppointments
                                         ?.last
-                                        ?.patientProfilePic) ??
+                                        .patientProfilePic) ??
                                 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png'),
                         // placeholderBuilder: OctoPlaceholder.blurHash(
                         //   'LEHV6nWB2yk8pyo0adR*.7kCMdnj',
@@ -492,7 +493,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                           backgroundColor: Colors.white,
                           text: Image.network(
                             'https://cdn-icons-png.flaticon.com/128/666/666201.png',
-                            color: Color(0xFF7E7D7D),
+                            color: const Color(0xFF7E7D7D),
                             // 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png',
                           ),
                         ),
@@ -507,28 +508,28 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                     backgroundImage: NetworkImage('${_doctorHomeScreenController.doctorHomePageModelData.value.data.upcomingAppointments?.last?.patientProfilePic}'),
                   ),*/
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 0.65,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           '${data.patientFirstName} ${data.patientLastName}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
                         Text(
                           '${data.purposeOfVisit}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.w300,
@@ -553,7 +554,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                 //     .add(Duration(hours: 1));
 
                 DateTime showMarkAssCompletedTime =
-                    time.add(Duration(minutes: 5));
+                    time.add(const Duration(minutes: 5));
 
                 // DateTime.parse(
                 //     '${DateFormat("yyyy-MM-dd").format(time)} ${time.hour}:${time.minute + 5}:00.000');
@@ -562,7 +563,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                 //     '${data.appointmentDate} ${data.appointmentTime}');
 
                 DateTime endTime =
-                    showMarkAssCompletedTime.add(Duration(minutes: 40));
+                    showMarkAssCompletedTime.add(const Duration(minutes: 40));
 
                 // log('showMarkAssCompletedTime==========>>>>>$showMarkAssCompletedTime');
                 // log('endTime==========>>>>>$endTime');
@@ -581,14 +582,14 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                     log('data.appo===>>>>>${data.appointmentStatus == '1' && !started}');
 
                     return data.appointmentStatus == '1' && !started && !rejoin
-                        ? SizedBox()
+                        ? const SizedBox()
                         : data.appointmentStatus == '2' || started || rejoin
                             ? /*ended
                             ?*/
                             Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: isLoadingMark == true
-                                    ? Center(
+                                    ? const Center(
                                         child: CircularProgressIndicator(
                                           color: Colors.white,
                                           strokeWidth: 1,
@@ -609,14 +610,15 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
 
                                           changeMeetingStatus(
                                               docId:
-                                                  userController.user.value.id,
-                                              s2: data.meetingData.id);
+                                                  userController.user.value.id!,
+                                              s2: data.meetingData!.id!);
 
-                                          String url1 =
-                                              '${Constants.baseUrl + Constants.doctorCompleteAppointment}';
-                                          String meetingDuration;
-                                          DateTime start;
-                                          DateTime end;
+                                          String url1 = Constants.baseUrl +
+                                              Constants
+                                                  .doctorCompleteAppointment;
+                                          String? meetingDuration;
+                                          DateTime? start;
+                                          DateTime? end;
 
                                           if (Prefs.getString(
                                                       Prefs.vcStartTime) !=
@@ -626,24 +628,24 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                                   null) {
                                             start = DateTime.parse(
                                                 Prefs.getString(
-                                                    Prefs.vcStartTime));
+                                                        Prefs.vcStartTime) ??
+                                                    "");
 
                                             end = DateTime.parse(
                                                 Prefs.getString(
-                                                    Prefs.vcEndTime));
+                                                        Prefs.vcEndTime) ??
+                                                    "");
 
-                                            if (start != null && end != null) {
-                                              meetingDuration = end
-                                                          .difference(start)
-                                                          .inMinutes
-                                                          .toString() ==
-                                                      "0"
-                                                  ? "1"
-                                                  : end
-                                                      .difference(start)
-                                                      .inMinutes
-                                                      .toString();
-                                            }
+                                            meetingDuration = end
+                                                        .difference(start)
+                                                        .inMinutes
+                                                        .toString() ==
+                                                    "0"
+                                                ? "1"
+                                                : end
+                                                    .difference(start)
+                                                    .inMinutes
+                                                    .toString();
                                           }
                                           Map<String, dynamic> body1 = {
                                             "doctor_id":
@@ -652,7 +654,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                                 data.appointmentId,
                                             "vc_start_time": "$start",
                                             "vc_end_time": "$end",
-                                            "vc_duration": "$meetingDuration"
+                                            "vc_duration": meetingDuration
                                           };
                                           Map<String, String> header1 = {
                                             "Content-Type": "application/json",
@@ -692,13 +694,13 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                                 await patientScheduledClassController
                                                     .getClassListPatient(
                                                         id: userController
-                                                            .user.value.id,
+                                                            .user.value.id!,
                                                         date: '');
                                               } else {
                                                 await patientScheduledClassController
                                                     .getClassListPatient(
                                                         id: userController
-                                                            .user.value.id,
+                                                            .user.value.id!,
                                                         date: '');
                                               }
                                             }
@@ -712,12 +714,12 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
 
                                           refresh();
                                         },
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
                                       ).paddingOnly(top: 10),
                               )
                             // : SizedBox()
-                            : SizedBox();
+                            : const SizedBox();
                   },
                 );
               }),
@@ -732,7 +734,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
     PermissionStatus cameraStatus = await Permission.camera.request();
 
     if (cameraStatus == PermissionStatus.denied) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You need to provide a Camera Permission'),
       ));
     }
@@ -742,7 +744,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
 
     PermissionStatus microPhoneStatus = await Permission.microphone.request();
     if (microPhoneStatus == PermissionStatus.denied) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You need to provide a MicroPhone Permission'),
       ));
     }
@@ -752,21 +754,21 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
   }
 
   Future startMeeting({
-    BuildContext context,
-    @required String channelsName,
-    @required String tokens,
-    @required PatientAppoint patientAppoint,
+    BuildContext? context,
+    required String channelsName,
+    required String tokens,
+    required PatientAppoint patientAppoint,
   }) async {
     ///start meeting ///
-    String url = '${Constants.baseUrl + Constants.doctorZoomMeeting}';
+    String url = Constants.baseUrl + Constants.doctorZoomMeeting;
     Map<String, dynamic> body = {
       "doctor_id": userController.user.value.id,
       "patient_id": patientAppoint.patientId,
       // "meeting_id": meetingDetailsResult[0],
       //"meeting_password": meetingDetailsResult[1],
       "appointment_id": patientAppoint.appointmentId,
-      "meeting_id": '$channelsName',
-      "meeting_password": '$tokens',
+      "meeting_id": channelsName,
+      "meeting_password": tokens,
     };
     Map<String, String> header = {
       "Authorization": 'Bearer ${Prefs.getString(Prefs.BEARER)}',
@@ -783,15 +785,15 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
       await cameraPermission();
 
       if (model.status == 'Success') {
-        id = model.data.id;
-        meetingID = model.data.meetingId;
+        id = model.data?.id;
+        meetingID = model.data?.meetingId;
 
         /// update status
-        String url1 = '${Constants.baseUrl + Constants.doctorZoomAction}';
+        String url1 = Constants.baseUrl + Constants.doctorZoomAction;
         Map<String, dynamic> body1 = {
           "doctor_id": userController.user.value.id,
           // "id": '${model.data.id.toString()}',
-          "meeting_id": '${model.data.meetingId.toString()}',
+          "meeting_id": model.data?.meetingId.toString(),
           "meeting_status": 'started'
         };
         log('RESPONSE MEET UPDATE$body1');
@@ -810,14 +812,14 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
       isLoadingMeet = false;
     });
     await Navigator.push(
-      context,
+      context!,
       MaterialPageRoute(
         builder: (context) => MyVideoCall(
           docId: userController.user.value.id,
-          s1: '${model.data.id.toString()}',
-          s2: '${model.data.meetingId.toString()}',
-          token: '$tokens',
-          channelName: '$channelsName',
+          s1: model.data?.id.toString(),
+          s2: model.data?.meetingId.toString(),
+          token: tokens,
+          channelName: channelsName,
         ),
       ),
     ).then(
@@ -826,18 +828,18 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
 
         /// /// /// /// /// /// ///
 
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
 
         await showDialog<String>(
           context: context,
           barrierDismissible: false,
-          builder: (BuildContext c1) => new AlertDialog(
-            title: Text(
+          builder: (BuildContext c1) => AlertDialog(
+            title: const Text(
               "Appointment Completed",
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
-            content: Column(
+            content: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -850,14 +852,14 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    child: Text("Cancel"),
+                    child: const Text("Cancel"),
                     onPressed: () {
                       Navigator.pop(context);
                       refresh();
                     },
                   ),
                   TextButton(
-                    child: Text("Add Prescription"),
+                    child: const Text("Add Prescription"),
                     onPressed: () {
                       WidgetsBinding.instance.addPostFrameCallback(
                         (_) async {
@@ -899,8 +901,8 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
     return result;
   }
 
-  changeMeetingStatus({String docId, String s2}) async {
-    String url1 = '${Constants.baseUrl + Constants.doctorZoomAction}';
+  changeMeetingStatus({required String docId, required String s2}) async {
+    String url1 = Constants.baseUrl + Constants.doctorZoomAction;
 
     Map<String, dynamic> body1 = {
       "doctor_id": docId,
@@ -916,10 +918,12 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
     http.Response response1 = await http.post(Uri.parse(url1),
         body: jsonEncode(body1), headers: header1);
     log('RESPONSE MEET ENDED AGORA CALL${response1.body}');
-    print("[Meeting Status] :- Ended");
   }
 
-  messageDialog({BuildContext context, String message, String title}) async {
+  messageDialog(
+      {required BuildContext context,
+      required String message,
+      required String title}) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -936,7 +940,8 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                       Navigator.pop(context);
                       refresh();
                     },
-                    child: Icon(Icons.clear, color: Colors.black, size: 28),
+                    child:
+                        const Icon(Icons.clear, color: Colors.black, size: 28),
                   ),
                 ),
                 Padding(
@@ -944,15 +949,15 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(height: 45),
+                      const SizedBox(height: 45),
                       Align(
                         alignment: Alignment.topCenter,
                         child: Text(
                           title,
                           style: Theme.of(context)
                               .textTheme
-                              .headline6
-                              .copyWith(fontWeight: FontWeight.w700),
+                              .titleLarge
+                              ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                       ),
                       Padding(
@@ -964,14 +969,14 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
-                                .copyWith(fontWeight: FontWeight.w400),
+                                .titleLarge
+                                ?.copyWith(fontWeight: FontWeight.w400),
                           ),
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 20),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.of(context).pop();
@@ -980,7 +985,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                           style: ElevatedButton.styleFrom(
                             fixedSize: Size(Get.width, 40),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Okay",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),

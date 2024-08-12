@@ -154,9 +154,11 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                 notificationListController
                                     .deleteAllNotificationApiResponse.data;
                             if (model.status == 'Success') {
-                              CommonSnackBar.snackBar(message: model.message);
+                              CommonSnackBar.snackBar(
+                                  message: model.message ?? "");
                             } else {
-                              CommonSnackBar.snackBar(message: model.message);
+                              CommonSnackBar.snackBar(
+                                  message: model.message ?? "");
                             }
                           },
                         );
@@ -214,36 +216,37 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                     children: [
                       ListView.separated(
                         separatorBuilder: (context, index) {
-                          return responseModel.data[index].type == '11'
+                          return responseModel.data?[index].type == '11'
                               ? const SizedBox()
                               : const Divider(
                                   indent: 0, endIndent: 0, height: 0);
                         },
-                        itemCount: responseModel.data.length,
+                        itemCount: responseModel.data!.length,
                         padding: EdgeInsets.zero,
                         itemBuilder: (context, index) {
-                          return responseModel.data[index].type == '11'
+                          return responseModel.data?[index].type == '11'
                               ? const SizedBox()
                               : Stack(
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
                                         if (responseModel
-                                                .data[index].relationType ==
+                                                .data?[index].relationType ==
                                             '2') {
-                                          Get.to(() => MyAppointmentsPage());
+                                          Get.to(
+                                              () => const MyAppointmentsPage());
                                         } else if (responseModel
-                                                .data[index].relationType ==
+                                                .data?[index].relationType ==
                                             '4') {
                                           Get.to(
                                             () => PrescriptionPage(
                                                 appointmentId: responseModel
-                                                    .data[index]
+                                                    .data?[index]
                                                     .relationData
-                                                    .appointmentId),
+                                                    ?.appointmentId),
                                           );
                                         } else if (responseModel
-                                                .data[index].type ==
+                                                .data?[index].type ==
                                             '11') {
                                           List<SortedPatientChat> patientChat =
                                               <SortedPatientChat>[];
@@ -258,7 +261,7 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                                 in patientHomeScreenController
                                                     .newDataList) {
                                               if (responseModel
-                                                      .data[index].fromUserId
+                                                      .data?[index].fromUserId
                                                       .toString() ==
                                                   element.fromId) {
                                                 patientChat.add(element);
@@ -268,37 +271,39 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                               return messageDialog(
                                                   title: "Chat deleted",
                                                   message:
-                                                      "This chat is deleted by the ${responseModel.data[index].fromUserData.firstName}",
+                                                      "This chat is deleted by the ${responseModel.data![index].fromUserData?.firstName}",
                                                   context: context);
                                             }
 
-                                            patientHomeScreenController.chatKey
-                                                .value = patientChat[0].chatKey;
+                                            patientHomeScreenController
+                                                    .chatKey.value =
+                                                patientChat[0].chatKey!;
                                             patientHomeScreenController
                                                     .doctorName.value =
-                                                patientChat[0].doctorFirstName;
+                                                patientChat[0].doctorFirstName!;
                                             patientHomeScreenController
                                                     .doctorLastName.value =
-                                                patientChat[0].doctorLastName;
+                                                patientChat[0].doctorLastName!;
                                             patientHomeScreenController
                                                     .doctorId.value =
-                                                patientChat[0].doctorId;
+                                                patientChat[0].doctorId!;
                                             patientHomeScreenController
                                                     .toId.value =
-                                                patientChat[0].doctorId;
+                                                patientChat[0].doctorId!;
 
                                             patientHomeScreenController
                                                     .doctorProfile =
-                                                patientChat[0].doctorProfilePic;
+                                                patientChat[0]
+                                                    .doctorProfilePic!;
                                             patientHomeScreenController
                                                     .doctorSocialProfile =
                                                 patientChat[0]
-                                                    .doctorSocialProfilePic;
+                                                    .doctorSocialProfilePic!;
 
                                             patientHomeScreenController
                                                 .getAllPatientChatMessages
                                                 .value
-                                                ?.patientChatList
+                                                .patientChatList
                                                 ?.clear();
 
                                             await patientHomeScreenController
@@ -335,9 +340,9 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                                     image:
                                                         CachedNetworkImageProvider(
                                                             responseModel
-                                                                .data[index]
-                                                                .fromUserData
-                                                                .profilePic),
+                                                                .data![index]
+                                                                .fromUserData!
+                                                                .profilePic!),
                                                     // placeholderBuilder:
                                                     //     OctoPlaceholder.blurHash(
                                                     //         'LEHV6nWB2yk8pyo0adR*.7kCMdnj'),
@@ -383,7 +388,7 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                                 children: <Widget>[
                                                   Text(
                                                     responseModel
-                                                        .data[index].subject,
+                                                        .data![index].subject!,
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .titleMedium
@@ -394,7 +399,7 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                                   ),
                                                   Text(
                                                     responseModel
-                                                        .data[index].body,
+                                                        .data![index].body!,
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .titleMedium
@@ -406,13 +411,13 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                                   ),
                                                   const SizedBox(height: 4),
 
-                                                  responseModel.data[index]
+                                                  responseModel.data![index]
                                                               .relationData ==
                                                           null
                                                       ? const SizedBox()
                                                       : responseModel
-                                                                  .data[index]
-                                                                  .relationData
+                                                                  .data![index]
+                                                                  .relationData!
                                                                   .meetingStatus ==
                                                               'started'
                                                           ? SizedBox(
@@ -436,25 +441,25 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                                                           (context) =>
                                                                               MyVideoCall(
                                                                         docId: responseModel
-                                                                            .data[index]
+                                                                            .data?[index]
                                                                             .fromUserData
-                                                                            .id,
+                                                                            ?.id,
                                                                         s1: responseModel
-                                                                            .data[index]
+                                                                            .data?[index]
                                                                             .relationData
-                                                                            .id,
+                                                                            ?.id,
                                                                         s2: responseModel
-                                                                            .data[index]
+                                                                            .data?[index]
                                                                             .relationData
-                                                                            .meetingId,
+                                                                            ?.meetingId,
                                                                         channelName: responseModel
-                                                                            .data[index]
+                                                                            .data?[index]
                                                                             .relationData
-                                                                            .meetingId,
+                                                                            ?.meetingId,
                                                                         token: responseModel
-                                                                            .data[index]
+                                                                            .data?[index]
                                                                             .relationData
-                                                                            .meetingPassword,
+                                                                            ?.meetingPassword,
                                                                       ),
                                                                     ),
                                                                   ).then(
@@ -607,7 +612,7 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                             ),
                                             const SizedBox(width: 10),
                                             Text(
-                                              "${timeAgo(Utils.formattedDate(responseModel.data[index].created))} ",
+                                              "${timeAgo(Utils.formattedDate(responseModel.data![index].created!))} ",
                                               style: TextStyle(
                                                   color: isDark
                                                       ? Colors.white
@@ -630,7 +635,7 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                           await notificationListController
                                               .deletNotification(
                                                   id: responseModel
-                                                      .data[index].id)
+                                                      .data![index].id!)
                                               .then((value) async =>
                                                   getNotification());
                                           MessageStatusResponseModel model =
@@ -639,10 +644,10 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
                                                   .data;
                                           if (model.status == 'Success') {
                                             CommonSnackBar.snackBar(
-                                                message: model.message);
+                                                message: model.message ?? "");
                                           } else {
                                             CommonSnackBar.snackBar(
-                                                message: model.message);
+                                                message: model.message ?? "");
                                           }
                                         },
                                         icon: Image.asset(

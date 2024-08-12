@@ -1,10 +1,12 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/pages/prescription/widget/patient_presciption_card.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/pages/prescription/widget/patient_presciption_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PatientHomeAllPrescriptionPage extends StatefulWidget {
+  const PatientHomeAllPrescriptionPage({super.key});
+
   @override
   State<PatientHomeAllPrescriptionPage> createState() =>
       _PatientHomeAllPrescriptionPageState();
@@ -12,7 +14,7 @@ class PatientHomeAllPrescriptionPage extends StatefulWidget {
 
 class _PatientHomeAllPrescriptionPageState
     extends State<PatientHomeAllPrescriptionPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   AdsController adsController = Get.find();
 
@@ -26,18 +28,18 @@ class _PatientHomeAllPrescriptionPageState
         ),
         key: scaffoldKey,
         appBar: AppBar(
-          actions: <Widget>[],
+          actions: const <Widget>[],
           title: Text('My Prescriptions',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24,
               ),
               textAlign: TextAlign.center),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
+        body: const Padding(
+          padding: EdgeInsets.all(20.0),
           child: PatientPrescriptionCard(),
         ),
       );

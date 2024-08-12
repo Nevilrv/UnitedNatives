@@ -1,14 +1,15 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/get_all_personal_medication_notes_response_model.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/get_all_personal_medication_notes_response_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class PersonalMedicationItem extends StatelessWidget {
-  final PersonalMedicationNotesItemData item;
-  final Function onDeletePress;
-  final Function onEditPress;
+  final PersonalMedicationNotesItemData? item;
+  final Function()? onDeletePress;
+  final Function()? onEditPress;
 
-  PersonalMedicationItem({this.item, this.onDeletePress, this.onEditPress});
+  const PersonalMedicationItem(
+      {super.key, this.item, this.onDeletePress, this.onEditPress});
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +25,14 @@ class PersonalMedicationItem extends StatelessWidget {
                 child: Padding(
                   padding:
                       const EdgeInsets.all(15).copyWith(bottom: 0, right: 0),
-                  child: Icon(Icons.edit),
+                  child: const Icon(Icons.edit),
                 ),
               ),
               GestureDetector(
                 onTap: onDeletePress,
                 child: Padding(
                   padding: const EdgeInsets.all(15).copyWith(bottom: 0),
-                  child: Icon(Icons.delete),
+                  child: const Icon(Icons.delete),
                 ),
               ),
             ],
@@ -46,31 +47,32 @@ class PersonalMedicationItem extends StatelessWidget {
                 Expanded(
                   child: _buildColumn(
                     context: context,
-                    title: Translate.of(context).translate('date'),
-                    subtitle: item.datetime == null
+                    title: Translate.of(context)!.translate('date'),
+                    subtitle: item?.datetime == null
                         ? ''
-                        : '${DateFormat('EEEE, dd MMM yyyy').format(item.datetime)}',
+                        : DateFormat('EEEE, dd MMM yyyy')
+                            .format(item!.datetime!),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                   child: _buildColumn(
                     context: context,
-                    title: Translate.of(context).translate('time'),
-                    subtitle: item.datetime == null
+                    title: Translate.of(context)!.translate('time'),
+                    subtitle: item?.datetime == null
                         ? ''
-                        : '${DateFormat('hh:mm a').format(item.datetime)}',
+                        : DateFormat('hh:mm a').format(item!.datetime!),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          Divider(
+          const Divider(
             height: 1,
             thickness: 1,
             indent: 10,
@@ -81,7 +83,7 @@ class PersonalMedicationItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
+                const SizedBox(
                   width: 50,
                   child: Text(
                     'Title : ',
@@ -96,17 +98,17 @@ class PersonalMedicationItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    item.title,
+                    item!.title!,
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle1
-                        .copyWith(fontWeight: FontWeight.w500),
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w500),
                   ),
                 ),
               ],
             ),
           ),
-          Divider(
+          const Divider(
             height: 1,
             thickness: 1,
             indent: 10,
@@ -117,7 +119,7 @@ class PersonalMedicationItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
+                const SizedBox(
                   width: 50,
                   child: Text(
                     'Notes : ',
@@ -132,11 +134,11 @@ class PersonalMedicationItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    item.notes,
+                    item!.notes!,
                     style: Theme.of(context)
                         .textTheme
-                        .subtitle1
-                        .copyWith(fontWeight: FontWeight.w500),
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w500),
                   ),
                 ),
               ],
@@ -148,9 +150,9 @@ class PersonalMedicationItem extends StatelessWidget {
   }
 
   Column _buildColumn({
-    @required BuildContext context,
-    @required String title,
-    @required subtitle,
+    required BuildContext context,
+    required String title,
+    required subtitle,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,7 +161,7 @@ class PersonalMedicationItem extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.grey,
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -172,8 +174,8 @@ class PersonalMedicationItem extends StatelessWidget {
           textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
-              .subtitle1
-              .copyWith(fontWeight: FontWeight.w500),
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.w500),
         ),
       ],
     );

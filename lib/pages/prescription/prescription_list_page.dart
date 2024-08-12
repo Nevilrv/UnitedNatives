@@ -41,7 +41,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
         appBar: AppBar(
           actions: const <Widget>[],
           title: Text(
-            Translate.of(context).translate('prescription_detail'),
+            Translate.of(context)!.translate('prescription_detail'),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).textTheme.titleMedium?.color,
@@ -71,13 +71,12 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                         children: [
                           CustomRecipeItem(
                             purpose: prescriptionsDoctor.purposeOfVisit ?? "",
-                            title: "${prescriptionsDoctor.medicineName ?? ""}",
-                            subTitle:
-                                "${prescriptionsDoctor.additionalNotes ?? ""}",
+                            title: prescriptionsDoctor.medicineName ?? "",
+                            subTitle: prescriptionsDoctor.additionalNotes ?? "",
                             days:
-                                '${prescriptionsDoctor.treatmentDays ?? ""} ${Translate.of(context).translate('days')}',
+                                '${prescriptionsDoctor.treatmentDays ?? ""} ${Translate.of(context)?.translate('days')}',
                             pills:
-                                '${prescriptionsDoctor.pillsPerDay ?? ""} ${Translate.of(context).translate('pills')}',
+                                '${prescriptionsDoctor.pillsPerDay ?? ""} ${Translate.of(context)?.translate('pills')}',
                           ),
                           const SizedBox(height: 10),
                         ],

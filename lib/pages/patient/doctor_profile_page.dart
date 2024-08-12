@@ -1,4 +1,4 @@
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -7,6 +7,8 @@ import '../../components/round_icon_button.dart';
 import '../../utils/constants.dart';
 
 class DoctorProfilePage extends StatelessWidget {
+  const DoctorProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,7 @@ class DoctorProfilePage extends StatelessWidget {
         },
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -41,10 +43,10 @@ class DoctorProfilePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            Translate.of(context)
+                            Translate.of(context)!
                                 .translate('available_now')
                                 .toUpperCase(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xff40E58C),
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
@@ -52,12 +54,14 @@ class DoctorProfilePage extends StatelessWidget {
                           ),
                           Text(
                             'Tawfiq Bahri',
-                            style:
-                                Theme.of(context).textTheme.subtitle1.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                           ),
-                          Text(
+                          const Text(
                             'Family Provider. Cardiologist',
                             style: TextStyle(
                               color: Colors.grey,
@@ -68,7 +72,7 @@ class DoctorProfilePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     RatingBar.builder(
@@ -77,24 +81,22 @@ class DoctorProfilePage extends StatelessWidget {
                       allowHalfRating: true,
                       itemCount: 5,
                       ignoreGestures: true,
-                      itemBuilder: (context, _) => Icon(
+                      itemBuilder: (context, _) => const Icon(
                         Icons.star,
                         color: Colors.amber,
                       ),
-                      onRatingUpdate: (rating) {
-                        print(rating);
-                      },
+                      onRatingUpdate: (rating) {},
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Divider(
                   height: 1,
                   color: Colors.grey[350],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -105,9 +107,9 @@ class DoctorProfilePage extends StatelessWidget {
                       percent: 0.85,
                       lineWidth: 5,
                       line1Width: 2,
-                      footer: Translate.of(context).translate('good_reviews'),
+                      footer: Translate.of(context)?.translate('good_reviews'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     CustomCircularIndicator(
@@ -115,9 +117,9 @@ class DoctorProfilePage extends StatelessWidget {
                       percent: 0.95,
                       lineWidth: 5,
                       line1Width: 2,
-                      footer: Translate.of(context).translate('total_score'),
+                      footer: Translate.of(context)?.translate('total_score'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     CustomCircularIndicator(
@@ -125,30 +127,30 @@ class DoctorProfilePage extends StatelessWidget {
                       percent: 0.9,
                       lineWidth: 5,
                       line1Width: 2,
-                      footer: Translate.of(context).translate('satisfaction'),
+                      footer: Translate.of(context)?.translate('satisfaction'),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Divider(
                   height: 1,
                   color: Colors.grey[350],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Text(
-                  Translate.of(context).translate('about'),
-                  style: Theme.of(context).textTheme.headline6.copyWith(
+                  Translate.of(context)!.translate('about'),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Text(
+                const Text(
                   'Provider Tawfiq Bahri, is a Provider primarily located in New York, with another office in Atlantic City, New Jersey. He has 16 years of experience. His specialities include Family Medicine and Cardiology.',
                   style: TextStyle(
                     color: Colors.grey,
@@ -156,7 +158,7 @@ class DoctorProfilePage extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -166,7 +168,7 @@ class DoctorProfilePage extends StatelessWidget {
                       icon: Icons.message,
                       elevation: 1,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     RoundIconButton(
@@ -174,7 +176,7 @@ class DoctorProfilePage extends StatelessWidget {
                       icon: Icons.phone,
                       elevation: 1,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(
@@ -184,14 +186,14 @@ class DoctorProfilePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         fillColor: kColorBlue,
-                        child: Container(
+                        child: SizedBox(
                           height: 48,
                           child: Center(
                             child: Text(
-                              Translate.of(context)
+                              Translate.of(context)!
                                   .translate('book_an_appointment')
                                   .toUpperCase(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                               ),

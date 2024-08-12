@@ -2,28 +2,26 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:doctor_appointment_booking/controller/book_appointment_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/doctor_by_specialities.dart';
-import 'package:doctor_appointment_booking/model/getSorted_patient_chatList_model.dart';
-import 'package:doctor_appointment_booking/model/get_all_doctor.dart';
-import 'package:doctor_appointment_booking/model/get_all_patient_messagelist_model.dart';
-import 'package:doctor_appointment_booking/model/get_new_message_doctor_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/doctormessages/msg_show_screen.dart';
-import 'package:doctor_appointment_booking/pages/myPatientMessageList/upload_screen.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_new_chat_message_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/log_out_view_model.dart';
+import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/model/getSorted_patient_chatList_model.dart';
+import 'package:united_natives/model/get_all_doctor.dart';
+import 'package:united_natives/model/get_all_patient_messagelist_model.dart';
+import 'package:united_natives/model/get_new_message_doctor_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/doctormessages/msg_show_screen.dart';
+import 'package:united_natives/pages/myPatientMessageList/upload_screen.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
+import 'package:united_natives/viewModel/log_out_view_model.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -31,29 +29,29 @@ import '../../routes/routes.dart';
 import '../../utils/constants.dart';
 
 class MessagesDetailPage extends StatefulWidget {
-  final Doctor doctor;
-  final SortedPatientChat sortedPatientChat;
+  final Doctor? doctor;
+  final SortedPatientChat? sortedPatientChat;
   final UserController _userController = Get.find<UserController>();
   MessagesDetailPage({super.key, this.doctor, this.sortedPatientChat}) {
     final PatientHomeScreenController patientHomeScreenController =
         Get.find<PatientHomeScreenController>();
-    log('doctor.chatKey==========>>>>>${doctor.chatKey ?? ""}');
-    if (doctor.chatKey != null &&
-        doctor.chatKey != "" &&
-        doctor.chatKey.isNotEmpty) {
+    log('doctor.chatKey==========>>>>>${doctor?.chatKey ?? ""}');
+    if (doctor?.chatKey != null &&
+        doctor?.chatKey != "" &&
+        doctor!.chatKey!.isNotEmpty) {
       patientHomeScreenController.getAllChatMessages(
-          doctor.chatKey ?? "", _userController.user.value.id);
+          doctor?.chatKey ?? "", _userController.user.value.id!);
     }
   }
 
   @override
-  _MessagesDetailPageState createState() => _MessagesDetailPageState();
+  State<MessagesDetailPage> createState() => _MessagesDetailPageState();
 }
 
 class _MessagesDetailPageState extends State<MessagesDetailPage> {
-  DoctorSpecialities doctorDetails;
+  DoctorSpecialities? doctorDetails;
 
-  BookAppointmentController _bookAppointmentController =
+  final BookAppointmentController _bookAppointmentController =
       Get.put(BookAppointmentController());
 
   final PatientHomeScreenController patientHomeScreenController =
@@ -63,21 +61,21 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
 
   final TextEditingController messageController = TextEditingController();
 
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
 
-  RxBool _isLoading = false.obs;
+  final RxBool _isLoading = false.obs;
 
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   LogOutController logOutController = Get.put(LogOutController());
   GetAllPatientChatMessages responseModel = GetAllPatientChatMessages();
-  ImagePicker _picker = ImagePicker();
-  FilePickerResult result;
-  File imageW;
-  File pdf;
-  String chatKey;
+  final ImagePicker _picker = ImagePicker();
+  FilePickerResult? result;
+  File? imageW;
+  File? pdf;
+  String? chatKey;
   AddNewChatMessageController addNewChatMessageController = Get.find();
 
-  Future getImage({ImageSource imgSource}) async {
+  Future getImage({required ImageSource imgSource}) async {
     final pickedFile = await _picker.pickImage(source: imgSource);
 
     setState(() {
@@ -89,14 +87,14 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                 type: 'image',
                 loginType: 'patient',
               ))
-            : print('imageW  $imageW');
+            : log('imageW  $imageW');
       } else {
-        print('=====>>>>> No image selected.');
+        log('=====>>>>> No image selected.');
       }
     });
   }
 
-  GetAllPatientChatMessages getAllPatientChatMessages;
+  GetAllPatientChatMessages? getAllPatientChatMessages;
   // void _showPicker(context) {
   //   showModalBottomSheet(
   //     context: context,
@@ -129,8 +127,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
   @override
   void initState() {
     // _controller.jumpTo(_controller.position.maxScrollExtent);
-    chatKey = widget.doctor.chatKey;
-    print('ChatKeyChatKeyChatKey  $chatKey');
+    chatKey = widget.doctor?.chatKey;
     addNewChatMessageController.allNewMessagePatientApiResponse.data = null;
     // changeScroll();
     // FirstMessage();
@@ -151,19 +148,19 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
     addNewChatMessageController.allNewMessagePatientApiResponse.data = null;
     patientHomeScreenController.endTimer();
 
-    widget.doctor.chatKey != null &&
-            widget.doctor.chatKey != "" &&
-            widget.doctor.chatKey.isNotEmpty
-        ? patientHomeScreenController.timer.cancel()
-        : SizedBox();
+    widget.doctor?.chatKey != null &&
+            widget.doctor?.chatKey != "" &&
+            widget.doctor!.chatKey!.isNotEmpty
+        ? patientHomeScreenController.timer?.cancel()
+        : const SizedBox();
     Prefs.clearFilter();
     super.dispose();
   }
 
   firstMessage() async {
-    if (widget.doctor.chatKey != null &&
-        widget.doctor.chatKey != "" &&
-        widget.doctor.chatKey.isNotEmpty) {
+    if (widget.doctor?.chatKey != null &&
+        widget.doctor?.chatKey != "" &&
+        widget.doctor!.chatKey!.isNotEmpty) {
       addNewChatMessageController.allNewMessagePatientApiResponse.data = null;
     } else {
       // responseModel.patientChatList.clear();
@@ -183,13 +180,9 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
     };
     final response = await http.get(
         Uri.parse(
-            '${Constants.baseUrl + Constants.chatStatus}${patientHomeScreenController.doctorId.isNotEmpty ? patientHomeScreenController.doctorId.string : widget.doctor.id}'),
+            '${Constants.baseUrl + Constants.chatStatus}${patientHomeScreenController.doctorId.isNotEmpty ? patientHomeScreenController.doctorId.string : widget.doctor?.id}'),
         headers: header);
-    print(
-        'response1?:>>>> ${"${Constants.baseUrl + Constants.chatStatus}${patientHomeScreenController.doctorId.isNotEmpty ? patientHomeScreenController.doctorId.string : widget.doctor.id}"}');
     if (response.statusCode == 200) {
-      print('response1?:>>>> ${response.body}');
-
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load post');
@@ -215,28 +208,28 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () async {
             Prefs.clearFilter();
             Get.back();
             await patientHomeScreenController.endTimer();
-            widget.doctor.chatKey != null &&
-                    widget.doctor.chatKey != "" &&
-                    widget.doctor.chatKey.isNotEmpty
-                ? patientHomeScreenController.timer.cancel()
-                : SizedBox();
+            widget.doctor?.chatKey != null &&
+                    widget.doctor?.chatKey != "" &&
+                    widget.doctor!.chatKey!.isNotEmpty
+                ? patientHomeScreenController.timer?.cancel()
+                : const SizedBox();
           },
         ),
         title: Row(
           children: <Widget>[
-            Container(
+            SizedBox(
               width: 50,
               height: 50,
               child: Stack(
                 children: <Widget>[
                   Utils().patientProfile(
-                      patientHomeScreenController?.doctorProfile ?? "",
-                      patientHomeScreenController?.doctorSocialProfile ?? "",
+                      patientHomeScreenController.doctorProfile,
+                      patientHomeScreenController.doctorSocialProfile,
                       25),
 
                   /*CircleAvatar(
@@ -293,42 +286,42 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData.isBlank) {
-                          return SizedBox();
+                        if (snapshot.hasData.isBlank!) {
+                          return const SizedBox();
                         }
                         if (snapshot.hasData) {
                           return snapshot.data['status'] == 'Success'
                               ? snapshot.data['data']['is_online'] == false
-                                  ? SizedBox()
+                                  ? const SizedBox()
                                   : Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
-                                        margin: EdgeInsets.all(2),
-                                        padding: EdgeInsets.all(1),
+                                        margin: const EdgeInsets.all(2),
+                                        padding: const EdgeInsets.all(1),
                                         width: 12,
                                         height: 12,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.white,
                                         ),
-                                        child: CircleAvatar(
+                                        child: const CircleAvatar(
                                             backgroundColor: Colors.green),
                                       ),
                                     )
-                              : SizedBox();
+                              : const SizedBox();
                         }
-                        return SizedBox();
+                        return const SizedBox();
                       } else if (snapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return SizedBox();
+                        return const SizedBox();
                       }
-                      return SizedBox();
+                      return const SizedBox();
                     },
                   )
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Column(
@@ -337,33 +330,30 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                 Text(
                   patientHomeScreenController.doctorName.isNotEmpty &&
                           patientHomeScreenController.doctorLastName.isNotEmpty
-                      ? 'Dr. ${patientHomeScreenController?.doctorName?.value ?? ""} ${patientHomeScreenController?.doctorLastName?.value ?? ""}'
-                      : (widget.doctor?.firstName ?? '') +
-                          ' ' +
-                          (widget.doctor?.lastName ?? ''),
+                      ? 'Dr. ${patientHomeScreenController.doctorName.value} ${patientHomeScreenController.doctorLastName.value}'
+                      : '${widget.doctor?.firstName ?? ''} ${widget.doctor?.lastName ?? ''}',
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2
-                      .copyWith(fontWeight: FontWeight.w700, fontSize: 22),
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
                 ),
                 FutureBuilder(
                   future: getChatStatus(),
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData.isBlank) {
-                        return SizedBox();
+                      if (snapshot.hasData.isBlank!) {
+                        return const SizedBox();
                       }
                       if (snapshot.hasData) {
                         if (snapshot.data['status'] != 'Success' ||
                             snapshot.data['data']['last_seen'] == null) {
-                          return SizedBox();
+                          return const SizedBox();
                         } else {
-                          print(
-                              'snapshot.dadaist_online ${snapshot.data['data']['is_online']}');
-                          String lastSeen = snapshot.data['data']['last_seen'];
+                          String lastSeen =
+                              snapshot.data['data']['last_seen'] ?? "";
 
-                          if (lastSeen != null) {
+                          if (lastSeen.isNotEmpty) {
                             // String date =
                             //     "${lastSeen.split(" ")[0].split("-")[2]}-${lastSeen.split(" ")[0].split("-")[1]}-${lastSeen.split(" ")[0].split("-")[0]}";
                             // String time = lastSeen.split(" ")[1];
@@ -375,7 +365,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                             //     "DIFFERENCE ${diff == 1 ? 'today' : '$diff days'}");
 
                             var data1 =
-                                "${Utils.timeAgo(Utils.formattedDate(lastSeen))}";
+                                Utils.timeAgo(Utils.formattedDate(lastSeen));
 
                             return Text(
                               snapshot.data['data']['is_online'] == true
@@ -386,20 +376,20 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2
-                                  .copyWith(fontSize: 18),
+                                  .titleSmall
+                                  ?.copyWith(fontSize: 18),
                             );
                           } else {
-                            return SizedBox();
+                            return const SizedBox();
                           }
                         }
                       }
-                      return SizedBox();
+                      return const SizedBox();
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return SizedBox();
+                      return const SizedBox();
                     }
-                    return SizedBox();
+                    return const SizedBox();
                   },
                 )
               ],
@@ -411,11 +401,9 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
             onPressed: () async {
               await patientHomeScreenController.endTimer();
 
-              print(_bookAppointmentController
-                  .doctorBySpecialitiesModelData.value.doctorSpecialities);
               _bookAppointmentController
                   .doctorBySpecialitiesModelData.value.doctorSpecialities
-                  .forEach((element) {
+                  ?.forEach((element) {
                 if (element.firstName ==
                     patientHomeScreenController.doctorName.value) {
                   doctorDetails = element;
@@ -424,21 +412,21 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
 
               Get.toNamed(Routes.doctorProfile, arguments: doctorDetails);
             },
-            icon: Icon(Icons.info, size: 30),
+            icon: const Icon(Icons.info, size: 30),
           )
         ],
       ),
-      body: WillPopScope(
-        onWillPop: () async {
+      body: PopScope(
+        canPop: true,
+        onPopInvokedWithResult: (didPop, result) async {
           await patientHomeScreenController.endTimer();
           Prefs.clearFilter();
-          return true;
         },
         child: Column(
           children: <Widget>[
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: GetBuilder<AddNewChatMessageController>(
                   builder: (controller) {
                     if (controller.allNewMessagePatientApiResponse.status ==
@@ -450,7 +438,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                     } else if (controller
                             .allNewMessagePatientApiResponse.status ==
                         Status.ERROR) {
-                      return Center(child: Text('Server error'));
+                      return const Center(child: Text('Server error'));
                     } else
                     // if (controller
                     //       .allNewMessagePatientApiResponse.status ==
@@ -464,16 +452,16 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
 
                       return ListView.separated(
                         reverse: true,
-                        separatorBuilder: (context, index) => SizedBox(
+                        separatorBuilder: (context, index) => const SizedBox(
                           height: 15,
                         ),
-                        itemCount: responseModel?.patientChatList?.length ?? 0,
-                        padding: EdgeInsets.only(bottom: 10),
+                        itemCount: responseModel.patientChatList?.length ?? 0,
+                        padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
                           patientData =
-                              responseModel.patientChatList.reversed.toList();
+                              responseModel.patientChatList!.reversed.toList();
 
-                          PatientChat _patientChat = patientData[index];
+                          PatientChat patientChat = patientData[index];
 
                           return Padding(
                             padding: const EdgeInsets.only(top: 6.0),
@@ -486,7 +474,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                                         .deleteChatMessagePatient(
                                             patientId:
                                                 _userController.user.value.id,
-                                            id: _patientChat?.id.toString())
+                                            id: patientChat.id.toString())
                                         .then(
                                       (value) {
                                         Fluttertoast.showToast(
@@ -505,16 +493,16 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                                   },
                                 );
                               },
-                              send: _patientChat?.fromType == "patient"
+                              send: patientChat.fromType == "patient"
                                   ? true.obs
                                   : false.obs,
-                              message:
-                                  _patientChat?.message.toString().obs ?? "",
-                              time:
-                                  '${DateFormat('hh:mm a').format(Utils.formattedDate("${_patientChat?.created.toString()}"))}',
+                              message: patientChat.message.toString().obs,
+                              time: DateFormat('hh:mm a').format(
+                                  Utils.formattedDate(
+                                      patientChat.created.toString())),
                               networkImage:
-                                  _userController.user.value.profilePic,
-                              attachment: _patientChat.attachment,
+                                  _userController.user.value.profilePic!,
+                              attachment: patientChat.attachment!,
                             ),
                           );
                         },
@@ -640,10 +628,10 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                 // height: 70,
                 decoration: BoxDecoration(
                   border: Border(
-                    top: BorderSide(color: Colors.grey[200], width: 0.5),
+                    top: BorderSide(color: Colors.grey[200]!, width: 0.5),
                   ),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -656,7 +644,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                             maxLines: 4,
                             textInputAction: TextInputAction.done,
                             validator: (text) {
-                              if (text.isEmpty) {
+                              if (text!.isEmpty) {
                                 patientHomeScreenController.isLoading.value =
                                     false;
                                 return 'Enter Message';
@@ -667,17 +655,17 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                             decoration: InputDecoration(
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                     color: Colors.transparent, width: 0),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                     color: Colors.transparent, width: 0),
                               ),
                               filled: true,
                               fillColor: Colors.grey[250],
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10,
                                 horizontal: 10,
                               ),
@@ -717,12 +705,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                     //     }),
                     IconButton(
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          print(
-                              '_userController.user.value.id  ${_userController.user.value.id}');
-                          print(
-                              'patientHomeScreenController?.toId?.value  ${patientHomeScreenController?.toId?.value}');
-
+                        if (_formKey.currentState!.validate()) {
                           PatientChat value = PatientChat(
                               message: messageController.text.trim(),
                               fromType: "patient",
@@ -742,7 +725,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                           messageController.text = "";
 
                           if (chatKey == '') {
-                            CreateNewMessage _createNewMessage =
+                            CreateNewMessage createNewMessage =
                                 await patientHomeScreenController
                                     .createNewMessagePatient(
                                         message: msg,
@@ -750,23 +733,21 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                                         fromId: _userController.user.value.id,
                                         fromType: "patient",
                                         toId: (patientHomeScreenController
-                                                    ?.toId?.isNotEmpty ??
-                                                false)
+                                                .toId.isNotEmpty)
                                             ? patientHomeScreenController
-                                                ?.toId?.value
+                                                .toId.value
                                             : widget.doctor?.id ?? '',
                                         toType: "doctor",
                                         attachment: imageW ?? pdf);
-                            widget.doctor?.chatKey = _createNewMessage.chatKey;
+                            widget.doctor?.chatKey = createNewMessage.chatKey;
                             patientHomeScreenController.chatKey.value =
-                                _createNewMessage.chatKey;
-                            chatKey = _createNewMessage.chatKey;
-                            print('_createNewMessage.chatKey  $chatKey');
+                                createNewMessage.chatKey!;
+                            chatKey = createNewMessage.chatKey;
                             patientHomeScreenController.getAllChatMessages(
                                 chatKey ?? "",
                                 _userController.user.value.id ?? "");
                           } else {
-                            CreateNewMessage _createNewMessage =
+                            CreateNewMessage createNewMessage0 =
                                 await patientHomeScreenController
                                     .createNewMessagePatient(
                                         message: msg,
@@ -775,16 +756,15 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                                         fromId: _userController.user.value.id,
                                         fromType: "patient",
                                         toId: (patientHomeScreenController
-                                                    ?.toId?.isNotEmpty ??
-                                                false)
+                                                .toId.isNotEmpty)
                                             ? patientHomeScreenController
-                                                ?.toId?.value
+                                                .toId.value
                                             : widget.doctor?.id ?? '',
                                         toType: "doctor",
                                         attachment: imageW ?? pdf);
-                            widget.doctor?.chatKey = _createNewMessage.chatKey;
+                            widget.doctor?.chatKey = createNewMessage0.chatKey;
                             patientHomeScreenController.chatKey.value =
-                                _createNewMessage.chatKey;
+                                createNewMessage0.chatKey!;
                           }
 
                           msg = "";
@@ -806,7 +786,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                             //   )
                             ? CircularProgressIndicator()
                             :*/
-                          Icon(
+                          const Icon(
                         Icons.send,
                         size: 30,
                       ),
@@ -816,7 +796,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             )
           ],
@@ -828,7 +808,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
   _openBottomSheet(BuildContext context, Function() onTap) {
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
           topRight: Radius.circular(12),
@@ -839,14 +819,14 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.delete,
                 size: 20,
                 color: Colors.red,
               ),
               title: Text(
-                Translate.of(context).translate('Delete Message'),
-                style: TextStyle(
+                Translate.of(context)!.translate('Delete Message'),
+                style: const TextStyle(
                   color: Colors.red,
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -856,14 +836,14 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
               onTap: onTap,
             ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.cancel,
                 size: 20,
               ),
               title: Text(
-                Translate.of(context).translate('cancel'),
+                Translate.of(context)!.translate('cancel'),
                 style: TextStyle(
-                    color: _isDark ? Colors.blue : Color(0xff4a4a4a),
+                    color: _isDark ? Colors.blue : const Color(0xff4a4a4a),
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal),
@@ -884,33 +864,31 @@ class MessageItem extends StatelessWidget {
   final RxString message;
   final String time;
   final String networkImage;
-  final String attachment;
-  final Function onLongPress;
+  final String? attachment;
+  final Function()? onLongPress;
 
   final PatientHomeScreenController patientHomeScreenController =
       Get.find<PatientHomeScreenController>();
 
   MessageItem(
-      {Key key,
+      {super.key,
       this.attachment,
-      @required this.send,
-      @required this.message,
-      @required this.time,
-      @required this.networkImage,
-      this.onLongPress})
-      : super(key: key);
+      required this.send,
+      required this.message,
+      required this.time,
+      required this.networkImage,
+      this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
-    String attach = attachment.split('.').last;
-    print('ATTACHMENT  $attach');
+    String? attach = attachment?.split('.').last;
 
     return InkWell(
       onLongPress: send.value ? onLongPress : null,
       child: Builder(
         builder: (context) {
           if (message.value == "" && attachment == "") {
-            return SizedBox();
+            return const SizedBox();
           } else {
             return message.value != "" && attachment != ""
                 ? Row(
@@ -925,11 +903,7 @@ class MessageItem extends StatelessWidget {
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(
-                              "${patientHomeScreenController?.doctorProfile ?? ''}"),
-                          onBackgroundImageError: (context, error) {
-                            print("ERROR=====>>>>$error");
-                            return Container();
-                          },
+                              patientHomeScreenController.doctorProfile),
                         ),
                       ),
                       Flexible(
@@ -943,19 +917,20 @@ class MessageItem extends StatelessWidget {
                                   ? 5
                                   : (MediaQuery.of(context).size.width / 2) -
                                       80),
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 15),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
+                                topLeft: const Radius.circular(20),
+                                topRight: const Radius.circular(20),
                                 bottomLeft:
                                     Radius.circular(send.value ? 20 : 0),
                                 bottomRight:
                                     Radius.circular(send.value ? 0 : 20),
                               ),
-                              color:
-                                  send.value ? Color(0xffeaf2fe) : kColorBlue),
+                              color: send.value
+                                  ? const Color(0xffeaf2fe)
+                                  : kColorBlue),
                           child: attach != 'pdf'
                               ? Column(
                                   crossAxisAlignment: !send.value
@@ -966,7 +941,7 @@ class MessageItem extends StatelessWidget {
                                       onTap: () {
                                         Get.to(MessageShowScreen(
                                           file:
-                                              'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                              'https://unhbackend.com/uploads/chat/$attachment',
                                           type: 'image',
                                         ));
                                       },
@@ -976,8 +951,10 @@ class MessageItem extends StatelessWidget {
                                         decoration: BoxDecoration(
                                             color: Colors.grey,
                                             borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
+                                              topLeft:
+                                                  const Radius.circular(20),
+                                              topRight:
+                                                  const Radius.circular(20),
                                               bottomLeft: Radius.circular(
                                                   send.value ? 20 : 0),
                                               bottomRight: Radius.circular(
@@ -985,11 +962,11 @@ class MessageItem extends StatelessWidget {
                                             ),
                                             image: DecorationImage(
                                                 image: NetworkImage(
-                                                    'https:\/\/unhbackend.com\/uploads\/chat\/$attachment'),
+                                                    'https://unhbackend.com/uploads/chat/$attachment'),
                                                 fit: BoxFit.fill)),
                                       ),
                                     ),
-                                    SizedBox(height: 2),
+                                    const SizedBox(height: 2),
                                     SelectableText(
                                       message.value,
                                       style: TextStyle(
@@ -1000,7 +977,7 @@ class MessageItem extends StatelessWidget {
                                           fontWeight: FontWeight.w500),
                                       // textAlign: TextAlign.start,
                                     ),
-                                    SizedBox(height: 2),
+                                    const SizedBox(height: 2),
                                     SelectableText(time,
                                         style: TextStyle(
                                           color: send.value
@@ -1019,7 +996,7 @@ class MessageItem extends StatelessWidget {
                                       onTap: () {
                                         Get.to(MessageShowScreen(
                                           file:
-                                              'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                              'https://unhbackend.com/uploads/chat/$attachment',
                                           type: 'pdf',
                                         ));
                                       },
@@ -1029,8 +1006,10 @@ class MessageItem extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
+                                              topLeft:
+                                                  const Radius.circular(20),
+                                              topRight:
+                                                  const Radius.circular(20),
                                               bottomLeft: Radius.circular(
                                                   send.value ? 20 : 0),
                                               bottomRight: Radius.circular(
@@ -1044,7 +1023,7 @@ class MessageItem extends StatelessWidget {
                                                 width: 50),
                                           )),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 2,
                                     ),
                                     SelectableText(
@@ -1057,7 +1036,7 @@ class MessageItem extends StatelessWidget {
                                           fontWeight: FontWeight.w500),
                                       // textAlign: TextAlign.start,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 2,
                                     ),
                                     SelectableText(time,
@@ -1079,9 +1058,6 @@ class MessageItem extends StatelessWidget {
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(networkImage),
-                          onBackgroundImageError: (context, error) {
-                            return Container();
-                          },
                         ),
                       ),
                     ],
@@ -1098,11 +1074,7 @@ class MessageItem extends StatelessWidget {
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(
-                              "${patientHomeScreenController?.doctorProfile ?? ''}"),
-                          onBackgroundImageError: (context, error) {
-                            print("ERROR=====>>>>> $error");
-                            return Container();
-                          },
+                              patientHomeScreenController.doctorProfile),
                         ),
                       ),
                       Flexible(
@@ -1116,18 +1088,20 @@ class MessageItem extends StatelessWidget {
                                   ? 5
                                   : (MediaQuery.of(context).size.width / 2) -
                                       80),
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             vertical: 10,
                             horizontal: 15,
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
+                              topLeft: const Radius.circular(20),
+                              topRight: const Radius.circular(20),
                               bottomLeft: Radius.circular(send.value ? 20 : 0),
                               bottomRight: Radius.circular(send.value ? 0 : 20),
                             ),
-                            color: send.value ? Color(0xffeaf2fe) : kColorBlue,
+                            color: send.value
+                                ? const Color(0xffeaf2fe)
+                                : kColorBlue,
                           ),
                           child: message.value == ""
                               ? attach != 'pdf'
@@ -1138,10 +1112,9 @@ class MessageItem extends StatelessWidget {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            print('pdf..... 1');
                                             Get.to(MessageShowScreen(
                                               file:
-                                                  'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                                  'https://unhbackend.com/uploads/chat/$attachment',
                                               type: 'image',
                                             ));
                                           },
@@ -1151,8 +1124,10 @@ class MessageItem extends StatelessWidget {
                                             decoration: BoxDecoration(
                                                 color: Colors.grey,
                                                 borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(20),
-                                                  topRight: Radius.circular(20),
+                                                  topLeft:
+                                                      const Radius.circular(20),
+                                                  topRight:
+                                                      const Radius.circular(20),
                                                   bottomLeft: Radius.circular(
                                                       send.value ? 20 : 0),
                                                   bottomRight: Radius.circular(
@@ -1160,11 +1135,11 @@ class MessageItem extends StatelessWidget {
                                                 ),
                                                 image: DecorationImage(
                                                     image: NetworkImage(
-                                                        'https:\/\/unhbackend.com\/uploads\/chat\/$attachment'),
+                                                        'https://unhbackend.com/uploads/chat/$attachment'),
                                                     fit: BoxFit.fill)),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 2,
                                         ),
                                         SelectableText(time,
@@ -1188,8 +1163,10 @@ class MessageItem extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
+                                              topLeft:
+                                                  const Radius.circular(20),
+                                              topRight:
+                                                  const Radius.circular(20),
                                               bottomLeft: Radius.circular(
                                                   send.value ? 20 : 0),
                                               bottomRight: Radius.circular(
@@ -1198,10 +1175,9 @@ class MessageItem extends StatelessWidget {
                                           ),
                                           child: GestureDetector(
                                             onTap: () {
-                                              print('pdf.....');
                                               Get.to(MessageShowScreen(
                                                 file:
-                                                    'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                                    'https://unhbackend.com/uploads/chat/$attachment',
                                                 type: 'pdf',
                                               ));
                                             },
@@ -1214,7 +1190,7 @@ class MessageItem extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 2,
                                         ),
                                         SelectableText(
@@ -1269,10 +1245,7 @@ class MessageItem extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 10,
                           backgroundColor: Colors.transparent,
-                          backgroundImage: NetworkImage(networkImage ?? ""),
-                          onBackgroundImageError: (context, error) {
-                            return Container();
-                          },
+                          backgroundImage: NetworkImage(networkImage),
                         ),
                       ),
                     ],

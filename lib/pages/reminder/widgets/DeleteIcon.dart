@@ -6,12 +6,14 @@ import '../models/Medicine.dart';
 
 class DeleteIcon extends StatefulWidget {
   final Color color = Colors.grey;
+
+  const DeleteIcon({super.key});
   @override
-  _DeleteIconState createState() => _DeleteIconState();
+  State<DeleteIcon> createState() => _DeleteIconState();
 }
 
 class _DeleteIconState extends State<DeleteIcon> {
-  Color color;
+  Color? color;
 
   @override
   initState() {
@@ -46,8 +48,7 @@ class _DeleteIconState extends State<DeleteIcon> {
                 ),
               );
             },
-            onWillAccept: (medicine) {
-              print('onWillAccept was called');
+            onWillAcceptWithDetails: (medicine) {
               setState(() {
                 color = Colors.red;
               });
@@ -57,26 +58,25 @@ class _DeleteIconState extends State<DeleteIcon> {
               setState(() {
                 color = Colors.grey;
               });
-              print('onLeave');
             },
-            onAccept: (medicine) {
+            onAcceptWithDetails: (medicine) {
               // remove it from the database
-              model.getDatabase().deleteMedicine(medicine);
+              model
+                  .getDatabase()
+                  .deleteMedicine(medicine as MedicinesTableData);
               //remove the medicine notifcation
 
               // for debugging
-              print("Reminder deleted" + medicine.toString());
               // show delete snakbar
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.red,
-                  content: Text(
-                    'Reminder deleted',
-                    style: TextStyle(fontSize: 22),
-                  ),
-                  duration: Duration(seconds: 1),
+
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(
+                  'Reminder deleted',
+                  style: TextStyle(fontSize: 22),
                 ),
-              );
+                duration: Duration(seconds: 1),
+              ));
             },
           );
         }));

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget {
   const MyAppBar({
-    Key key,
-    @required this.greenColor,
-  }) : super(key: key);
+    super.key,
+    required this.greenColor,
+  });
 
   final Color greenColor;
 
@@ -15,10 +15,10 @@ class MyAppBar extends StatelessWidget {
     return Container(
       color: greenColor,
       width: double.infinity,
-      padding: EdgeInsets.all(25),
+      padding: const EdgeInsets.all(25),
       child: Column(
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           Text(
@@ -30,7 +30,7 @@ class MyAppBar extends StatelessWidget {
             ),
             textAlign: TextAlign.start,
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           )
         ],

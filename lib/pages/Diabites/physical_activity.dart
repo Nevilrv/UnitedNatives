@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
 
 void enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
@@ -786,7 +786,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                     ),
                                   ),
                                 ),
-                                if (data.isNotEmpty)
+                                /*if (data.isNotEmpty)
                                   SfCartesianChart(
                                     // primaryXAxis: CategoryAxis(),
                                     enableAxisAnimation: true,
@@ -820,7 +820,7 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                         ),
                                       )
                                     ] as List<CartesianSeries>,
-                                  ),
+                                  ),*/
                                 if (data.isEmpty)
                                   Padding(
                                     padding:

@@ -30,7 +30,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
   String? accessToken;
   PaypalServices services = PaypalServices();
   String? doctorFee;
-
+  final controller = WebViewController();
   Map<dynamic, dynamic> defaultCurrency = {
     "symbol": "USD",
     "decimalDigits": 2,
@@ -71,6 +71,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
             },
           ),
         );
+
+        if (!mounted) return;
 
         ScaffoldMessenger.of(_scaffoldKey.currentState!.context)
             .showSnackBar(snackBar);
@@ -162,60 +164,66 @@ class PaypalPaymentState extends State<PaypalPayment> {
             onTap: () => Navigator.pop(context),
           ),
         ),
-        body: WebView(
-          initialUrl: checkoutUrl,
-          javascriptMode: JavascriptMode.unrestricted,
-          navigationDelegate: (NavigationRequest request) async {
-            if (request.url.contains(returnURL)) {
-              final uri = Uri.parse(request.url);
-              final payerID = uri.queryParameters['PayerID'];
-              final token = uri.queryParameters['token'];
-              final paymentID = uri.queryParameters['paymentId'];
-              if (payerID != null) {
-                services
-                    .executePayment(executeUrl, payerID, accessToken)
-                    .then((id) {
-                  widget.onFinish(id);
-                });
-                AppointmentBookedModel _appointmentBookedModel =
-                    await _patientHomeScreenController.addPatientAppointment(
-                  patientId: widget.paypalPaymentModel.patientId ?? "",
-                  appointmentDate:
-                      widget?.paypalPaymentModel?.appointmentDate ?? "",
-                  appointmentTime:
-                      widget.paypalPaymentModel.appointmentTime ?? "",
-                  doctorId: widget.paypalPaymentModel.doctorId ?? "",
-                  fullName: widget.paypalPaymentModel.fullName ?? "",
-                  mobile: widget.paypalPaymentModel.mobile ?? "",
-                  appointmentFor:
-                      widget.paypalPaymentModel.appointmentFor ?? "",
-                  email: widget.paypalPaymentModel.email ?? "",
-                  patientMobile: widget.paypalPaymentModel.patientMobile ?? "",
-                  purposeOfVisit:
-                      widget?.paypalPaymentModel?.purposeOfVisit ?? "",
-                );
+        body: WebViewWidget(
+            controller: controller
+              ..setJavaScriptMode(JavaScriptMode.unrestricted)
+              ..setNavigationDelegate(NavigationDelegate(
+                onNavigationRequest: (progress) async {
+                  {
+                    if (progress.url.contains(returnURL)) {
+                      final uri = Uri.parse(progress.url);
+                      final payerID = uri.queryParameters['PayerID'];
+                      final token = uri.queryParameters['token'];
+                      final paymentID = uri.queryParameters['paymentId'];
+                      if (payerID != null) {
+                        services
+                            .executePayment(executeUrl, payerID, accessToken)
+                            .then((id) {
+                          widget.onFinish!();
+                        });
+                        AppointmentBookedModel? appointmentBookedModel =
+                            await _patientHomeScreenController
+                                .addPatientAppointment(
+                          patientId: widget.paypalPaymentModel?.patientId ?? "",
+                          appointmentDate:
+                              widget.paypalPaymentModel?.appointmentDate ?? "",
+                          appointmentTime:
+                              widget.paypalPaymentModel?.appointmentTime ?? "",
+                          doctorId: widget.paypalPaymentModel?.doctorId ?? "",
+                          fullName: widget.paypalPaymentModel?.fullName ?? "",
+                          mobile: widget.paypalPaymentModel?.mobile ?? "",
+                          appointmentFor:
+                              widget.paypalPaymentModel?.appointmentFor ?? "",
+                          email: widget.paypalPaymentModel?.email ?? "",
+                          patientMobile:
+                              widget.paypalPaymentModel?.patientMobile ?? "",
+                          purposeOfVisit:
+                              widget.paypalPaymentModel?.purposeOfVisit ?? "",
+                        );
 
-                PatientHomeScreenService().getPaypalPayment(
-                    appointmentId: _appointmentBookedModel.data,
-                    payAmount: doctorFee,
-                    paypalPayerId: payerID,
-                    paypalpaymentId: paymentID,
-                    paypalToken: accessToken,
-                    payType: "paypal",
-                    userId: widget.paypalPaymentModel?.patientId);
+                        PatientHomeScreenService().getPaypalPayment(
+                            appointmentId: appointmentBookedModel?.data,
+                            payAmount: doctorFee,
+                            paypalPayerId: payerID,
+                            paypalpaymentId: paymentID,
+                            paypalToken: accessToken,
+                            payType: "paypal",
+                            userId: widget.paypalPaymentModel?.patientId);
 
-                await Get.offNamed(Routes.bookingStep5);
-              } else {
-                Navigator.of(context).pop();
-              }
-              Navigator.of(context).pop();
-            }
-            if (request.url.contains(cancelURL)) {
-              Navigator.of(context).pop();
-            }
-            return NavigationDecision.navigate;
-          },
-        ),
+                        await Get.offNamed(Routes.bookingStep5);
+                      } else {
+                        Navigator.of(context).pop();
+                      }
+                      Navigator.of(context).pop();
+                    }
+                    if (progress.url.contains(cancelURL)) {
+                      Navigator.of(context).pop();
+                    }
+                    return NavigationDecision.navigate;
+                  }
+                },
+              ))
+              ..loadRequest(Uri.parse(checkoutUrl.toString()))),
       );
     } else {
       return Scaffold(

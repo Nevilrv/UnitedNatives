@@ -2,22 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as d;
 import 'dart:io';
-
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/model/get_all_chat_messeage_doctor.dart';
-import 'package:doctor_appointment_booking/model/get_sorted_chat_list_doctor_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/pages/doctormessages/msg_show_screen.dart';
-import 'package:doctor_appointment_booking/pages/myPatientMessageList/patient_information_screen.dart';
-import 'package:doctor_appointment_booking/pages/myPatientMessageList/upload_screen.dart';
-import 'package:doctor_appointment_booking/sevices/doctor_home_screen_service.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/add_new_chat_message_view_model.dart';
-import 'package:doctor_appointment_booking/viewModel/log_out_view_model.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/model/get_all_chat_messeage_doctor.dart';
+import 'package:united_natives/model/get_sorted_chat_list_doctor_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/pages/doctormessages/msg_show_screen.dart';
+import 'package:united_natives/pages/myPatientMessageList/patient_information_screen.dart';
+import 'package:united_natives/pages/myPatientMessageList/upload_screen.dart';
+import 'package:united_natives/sevices/doctor_home_screen_service.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
+import 'package:united_natives/viewModel/log_out_view_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,24 +28,25 @@ import '../../utils/constants.dart';
 import 'my_patient_message_list.dart';
 
 class DoctorMessagesDetailPage2 extends StatefulWidget {
-  String chatKey;
-  final String profilePic;
-  final String fullName;
-  final String lastName;
-  final String email;
-  final String bloodGroup;
-  final String gender;
-  final String insuranceStatus;
-  final String tribalStatus;
-  final String patientId;
-  final String attachment;
+  String? chatKey;
+  final String? profilePic;
+  final String? fullName;
+  final String? lastName;
+  final String? email;
+  final String? bloodGroup;
+  final String? gender;
+  final String? insuranceStatus;
+  final String? tribalStatus;
+  final String? patientId;
+  final String? attachment;
 //   @override
 //   _DoctorMessagesDetailPage createState() => _DoctorMessagesDetailPage();
 // }
 //
 // class _DoctorMessagesDetailPage extends State<DoctorMessagesDetailPage> {
   DoctorMessagesDetailPage2(
-      {this.chatKey,
+      {super.key,
+      this.chatKey,
       this.profilePic,
       this.fullName,
       this.lastName,
@@ -59,7 +59,7 @@ class DoctorMessagesDetailPage2 extends StatefulWidget {
       this.attachment});
 
   @override
-  _DoctorMessagesDetailPage2State createState() =>
+  State<DoctorMessagesDetailPage2> createState() =>
       _DoctorMessagesDetailPage2State();
 }
 
@@ -71,18 +71,18 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
 
   final TextEditingController messageController = TextEditingController();
   LogOutController logOutController = Get.find();
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
   AddNewChatMessageController addNewChatMessageController =
       Get.put(AddNewChatMessageController());
   final _formKey = GlobalKey<FormState>();
 
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
 
-  ImagePicker _picker = ImagePicker();
-  FilePickerResult result;
-  File imageW;
-  File pdf;
-  Future getImage({ImageSource imgSource}) async {
+  final ImagePicker _picker = ImagePicker();
+  FilePickerResult? result;
+  File? imageW;
+  File? pdf;
+  Future getImage({required ImageSource imgSource}) async {
     final pickedFile = await _picker.pickImage(source: imgSource);
 
     setState(() {
@@ -90,14 +90,14 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
         imageW = File(pickedFile.path);
         imageW != null
             ? Get.to(ChatUploadScreen(
-                image: imageW,
+                image: imageW!,
                 type: 'image',
                 loginType: 'doctor',
               ))
-            : print('imageW  $imageW');
-        print('imageW  $imageW');
+            : d.log('imageW  $imageW');
+        d.log('imageW  $imageW');
       } else {
-        print('No image selected.');
+        d.log('No image selected.');
       }
     });
   }
@@ -174,11 +174,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
         Uri.parse(
             '${Constants.baseUrl + Constants.chatStatus}${widget.patientId}'),
         headers: header);
-    print(
-        'response1?:>>>> ${"${Constants.baseUrl + Constants.chatStatus}${widget.patientId}"}');
     if (response.statusCode == 200) {
-      print('response1?:>>>> ${response.body}');
-
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load post');
@@ -204,12 +200,12 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
           leading: GestureDetector(
               onTap: () {
                 Get.back();
-                Get.off(MyPatientMessageList());
+                Get.off(const MyPatientMessageList());
               },
-              child: Icon(Icons.arrow_back_ios_new_rounded)),
+              child: const Icon(Icons.arrow_back_ios_new_rounded)),
           title: Row(
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: 50,
                 height: 50,
                 child: Stack(
@@ -252,8 +248,8 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                       builder: (BuildContext context,
                           AsyncSnapshot<dynamic> snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
-                          if (snapshot.hasData.isBlank) {
-                            return SizedBox();
+                          if (snapshot.hasData.isBlank!) {
+                            return const SizedBox();
                           }
                           if (snapshot.hasData) {
                             return snapshot.data['status'] == 'Success'
@@ -261,114 +257,111 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                                     ? Align(
                                         alignment: Alignment.bottomRight,
                                         child: Container(
-                                          margin: EdgeInsets.all(2),
-                                          padding: EdgeInsets.all(1),
+                                          margin: const EdgeInsets.all(2),
+                                          padding: const EdgeInsets.all(1),
                                           width: 12,
                                           height: 12,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: Colors.white,
                                           ),
-                                          child: CircleAvatar(
+                                          child: const CircleAvatar(
                                             backgroundColor: Colors.green,
                                           ),
                                         ),
                                       )
-                                    : SizedBox()
-                                : SizedBox();
+                                    : const SizedBox()
+                                : const SizedBox();
                           }
-                          return SizedBox();
+                          return const SizedBox();
                         } else if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return SizedBox();
+                          return const SizedBox();
                         }
-                        return SizedBox();
+                        return const SizedBox();
                       },
                     )
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${widget.fullName ?? ""} ${widget.lastName ?? ""}',
-                      style: Theme.of(context).textTheme.subtitle2.copyWith(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 22,
-                          ),
-                    ),
-                    FutureBuilder(
-                      future: getChatStatus(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          if (snapshot.hasData.isBlank) {
-                            return SizedBox();
-                          }
-                          if (snapshot.hasData) {
-                            if (snapshot.data['status'] == 'Fail') {
-                              return SizedBox();
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${widget.fullName ?? ""} ${widget.lastName ?? ""}',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 22,
+                        ),
+                  ),
+                  FutureBuilder(
+                    future: getChatStatus(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData.isBlank!) {
+                          return const SizedBox();
+                        }
+                        if (snapshot.hasData) {
+                          if (snapshot.data['status'] == 'Fail') {
+                            return const SizedBox();
+                          } else {
+                            String? lastSeen =
+                                snapshot.data['data']['last_seen'];
+
+                            // dynamic diff;
+                            // DateTime endTime;
+                            // DateTime currentTime = DateTime.now();
+                            // String date;
+                            // if (lastSeen == null) {
+                            //   lastSeen = "";
+                            // } else {
+                            //   print("lastSeen===>$lastSeen");
+                            //
+                            //   date = lastSeen == null
+                            //       ? ""
+                            //       : "${lastSeen.split(" ")[0].split("-")[2]}-${lastSeen.split(" ")[0].split("-")[1]}-${lastSeen.split(" ")[0].split("-")[0]}";
+                            //   String time = lastSeen.split(" ")[1];
+                            //
+                            //   endTime = DateTime.parse("$date $time.00000");
+                            //   diff = currentTime.difference(endTime).inDays;
+                            //   print(
+                            //       "DIFFERENCE ${diff == 1 ? 'today' : '$diff days'}");
+                            // }
+
+                            var data1 =
+                                Utils.timeAgo(Utils.formattedDate(lastSeen!));
+                            if (lastSeen.isNotEmpty) {
+                              return Text(
+                                lastSeen == ""
+                                    ? ""
+                                    : snapshot.data['data']['is_online'] == true
+                                        ? 'Active now'
+                                        // : 'Last seen at ${diff < 1 ? ' ${currentTime.difference(endTime).inMinutes < 60 ? '${currentTime.difference(endTime).inMinutes} min ago' : '${currentTime.difference(endTime).inHours} hours ago'}' : '$date'}',
+                                        : data1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(fontSize: 18),
+                              );
                             } else {
-                              String lastSeen =
-                                  snapshot.data['data']['last_seen'];
-
-                              // dynamic diff;
-                              // DateTime endTime;
-                              // DateTime currentTime = DateTime.now();
-                              // String date;
-                              // if (lastSeen == null) {
-                              //   lastSeen = "";
-                              // } else {
-                              //   print("lastSeen===>$lastSeen");
-                              //
-                              //   date = lastSeen == null
-                              //       ? ""
-                              //       : "${lastSeen.split(" ")[0].split("-")[2]}-${lastSeen.split(" ")[0].split("-")[1]}-${lastSeen.split(" ")[0].split("-")[0]}";
-                              //   String time = lastSeen.split(" ")[1];
-                              //
-                              //   endTime = DateTime.parse("$date $time.00000");
-                              //   diff = currentTime.difference(endTime).inDays;
-                              //   print(
-                              //       "DIFFERENCE ${diff == 1 ? 'today' : '$diff days'}");
-                              // }
-
-                              var data1 =
-                                  "${Utils.timeAgo(Utils.formattedDate(lastSeen))}";
-                              if (lastSeen != null) {
-                                return Text(
-                                  lastSeen == ""
-                                      ? ""
-                                      : snapshot.data['data']['is_online'] ==
-                                              true
-                                          ? 'Active now'
-                                          // : 'Last seen at ${diff < 1 ? ' ${currentTime.difference(endTime).inMinutes < 60 ? '${currentTime.difference(endTime).inMinutes} min ago' : '${currentTime.difference(endTime).inHours} hours ago'}' : '$date'}',
-                                          : data1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2
-                                      .copyWith(fontSize: 18),
-                                );
-                              } else {
-                                return SizedBox();
-                              }
+                              return const SizedBox();
                             }
                           }
-                          return SizedBox();
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return SizedBox();
                         }
-                        return SizedBox();
-                      },
-                    )
-                  ],
-                ),
+                        return const SizedBox();
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const SizedBox();
+                      }
+                      return const SizedBox();
+                    },
+                  )
+                ],
               ),
             ],
           ),
@@ -392,26 +385,26 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                   bloodGroup: widget.bloodGroup,
                 ));
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.info,
                 size: 30,
               ),
             ),
           ],
         ),
-        body: WillPopScope(
-          onWillPop: () async {
+        body: PopScope(
+          canPop: true,
+          onPopInvokedWithResult: (didPop, result) {
             if (_doctorHomeScreenController.isClick == true) {
-              return _doctorHomeScreenController.endTimer();
+              _doctorHomeScreenController.endTimer();
             }
             _doctorHomeScreenController.isClick = false;
             Get.back();
-            Get.off(MyPatientMessageList());
-            return true;
+            Get.off(const MyPatientMessageList());
           },
           child: Column(
             children: <Widget>[
-              widget.chatKey.toString() != null
+              widget.chatKey.toString().isNotEmpty
                   ? Expanded(
                       child: GetBuilder<AddNewChatMessageController>(
                         builder: (controller) {
@@ -424,7 +417,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                           }
                           if (controller.allNewMessageApiResponse.status ==
                               Status.ERROR) {
-                            return Center(child: Text('Server error'));
+                            return const Center(child: Text('Server error'));
                           }
                           GetAllChatMessagesDoctor responseModel =
                               controller.allNewMessageApiResponse.data;
@@ -435,8 +428,8 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                               'You Don\'t have any Messages',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6
-                                  .copyWith(fontSize: 20),
+                                  .titleLarge
+                                  ?.copyWith(fontSize: 20),
                               textAlign: TextAlign.center,
                             ));
                           }
@@ -446,28 +439,30 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                               shrinkWrap: true,
                               reverse: true,
                               controller: _controller,
-                              physics: AlwaysScrollableScrollPhysics(),
-                              separatorBuilder: (context, index) => SizedBox(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
                                 height: 15,
                               ),
                               itemCount:
-                                  responseModel?.doctorChatList?.length ?? 0,
+                                  responseModel.doctorChatList?.length ?? 0,
                               itemBuilder: (context, index) {
                                 List<DoctorChat> doctorChat = responseModel
-                                    .doctorChatList.reversed
+                                    .doctorChatList!.reversed
                                     .toList();
-                                DoctorChat _doctorChat = doctorChat[index];
+                                DoctorChat doctorChat0 = doctorChat[index];
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 6.0),
                                   child: MessageItem(
-                                    attachment: _doctorChat?.attachment,
-                                    send: _doctorChat?.fromType == "doctor",
-                                    message:
-                                        _doctorChat?.message.toString() ?? "",
-                                    time:
-                                        '${DateFormat('hh:mm a').format(DateTime.parse(_doctorChat?.created.toString()))}',
+                                    attachment: doctorChat0.attachment!,
+                                    send: doctorChat0.fromType == "doctor",
+                                    message: doctorChat0.message.toString(),
+                                    time: DateFormat('hh:mm a').format(
+                                        DateTime.parse(
+                                            doctorChat0.created.toString())),
                                     networkImage:
-                                        '${_userController?.user?.value?.profilePic ?? ""}',
+                                        _userController.user.value.profilePic ??
+                                            "",
                                   ),
                                 );
                               },
@@ -481,8 +476,8 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                       'You Don\'t have any Messages',
                       style: Theme.of(context)
                           .textTheme
-                          .headline6
-                          .copyWith(fontSize: 20),
+                          .titleLarge
+                          ?.copyWith(fontSize: 20),
                       textAlign: TextAlign.center,
                     )),
               // Expanded(
@@ -559,10 +554,11 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                   // height: 70,
                   decoration: BoxDecoration(
                     border: Border(
-                      top: BorderSide(color: Colors.grey[200], width: 0.5),
+                      top: BorderSide(color: Colors.grey[200]!, width: 0.5),
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: Row(
                     children: <Widget>[
                       // IconButton(
@@ -588,7 +584,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                             minLines: 1,
                             maxLines: 4,
                             validator: (text) {
-                              if (text.isEmpty) {
+                              if (text!.isEmpty) {
                                 _doctorHomeScreenController.isLoading.value =
                                     false;
                                 return 'Enter Message';
@@ -605,17 +601,17 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                             decoration: InputDecoration(
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                     color: Colors.transparent, width: 0),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                     color: Colors.transparent, width: 0),
                               ),
                               filled: true,
                               fillColor: Colors.grey[250],
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10,
                                 horizontal: 10,
                               ),
@@ -656,7 +652,6 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                       //     }),
                       IconButton(
                         onPressed: () async {
-                          print('+++++++++done++++++');
                           if (messageController.text.isNotEmpty ||
                               imageW != null ||
                               pdf != null) {
@@ -694,16 +689,13 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                                   await DoctorHomeScreenService()
                                       .getSortedChatListDoctor(
                                           doctorId:
-                                              _userController.user.value.id);
-                              data.doctorChatList.forEach((element) {
+                                              _userController.user.value.id!);
+                              data.doctorChatList?.forEach((element) {
                                 d.log(
                                     "element.patientId----->${element.patientId}");
                                 if (element.patientId.toString() ==
                                     widget.patientId.toString()) {
                                   setState(() {
-                                    print(
-                                        "element.chatKey----------->${element.chatKey}");
-
                                     widget.chatKey = element.chatKey.toString();
                                   });
                                 }
@@ -742,7 +734,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                               //     child: Utils.circular(),
                               //   )
                               :*/
-                            Icon(
+                            const Icon(
                           Icons.send,
                           size: 25,
                         ),
@@ -752,7 +744,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               )
             ],
@@ -768,29 +760,28 @@ class MessageItem extends StatelessWidget {
   final String message;
   final String time;
   final String networkImage;
-  final String recieverImage;
-  final String attachment;
+  final String? recieverImage;
+  final String? attachment;
 
   final DoctorHomeScreenController _doctorHomeScreenController =
       Get.find<DoctorHomeScreenController>();
 
   MessageItem(
-      {Key key,
+      {super.key,
       this.attachment,
-      @required this.send,
-      @required this.message,
-      @required this.time,
-      @required this.networkImage,
-      this.recieverImage})
-      : super(key: key);
+      required this.send,
+      required this.message,
+      required this.time,
+      required this.networkImage,
+      this.recieverImage});
 
   @override
   Widget build(BuildContext context) {
-    String attach = attachment.split('.').last;
+    String? attach = attachment?.split('.').last;
     // print('ATTACHMENT  ${attach}');
     // print('ATTACHMENT  ${attachment}');
     if (message == "" && attachment == "") {
-      return SizedBox();
+      return const SizedBox();
     } else {
       return message != "" && attachment != ""
           ? Row(
@@ -803,11 +794,9 @@ class MessageItem extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 10,
                     backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(
-                        "${_doctorHomeScreenController?.doctorChat?.value?.patientProfilePic ?? ''}"),
-                    onBackgroundImageError: (context, error) {
-                      return Container();
-                    },
+                    backgroundImage: NetworkImage(_doctorHomeScreenController
+                            .doctorChat.value.patientProfilePic ??
+                        ''),
                   ),
                 ),
                 Flexible(
@@ -820,18 +809,18 @@ class MessageItem extends StatelessWidget {
                             ? 5
                             : (MediaQuery.of(context).size.width / 2) - 80,
                       ),
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 15,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
+                          topLeft: const Radius.circular(20),
+                          topRight: const Radius.circular(20),
                           bottomLeft: Radius.circular(send ? 20 : 0),
                           bottomRight: Radius.circular(send ? 0 : 20),
                         ),
-                        color: send ? Color(0xffeaf2fe) : kColorBlue,
+                        color: send ? const Color(0xffeaf2fe) : kColorBlue,
                       ),
                       child: attach != 'pdf'
                           ? Column(
@@ -843,7 +832,7 @@ class MessageItem extends StatelessWidget {
                                   onTap: () {
                                     Get.to(MessageShowScreen(
                                       file:
-                                          'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                          'https://unhbackend.com/uploads/chat/$attachment',
                                       type: 'image',
                                     ));
                                   },
@@ -853,8 +842,8 @@ class MessageItem extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         color: Colors.grey,
                                         borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
+                                          topLeft: const Radius.circular(20),
+                                          topRight: const Radius.circular(20),
                                           bottomLeft:
                                               Radius.circular(send ? 20 : 0),
                                           bottomRight:
@@ -862,11 +851,11 @@ class MessageItem extends StatelessWidget {
                                         ),
                                         image: DecorationImage(
                                             image: NetworkImage(
-                                                'https:\/\/unhbackend.com\/uploads\/chat\/$attachment'),
+                                                'https://unhbackend.com/uploads/chat/$attachment'),
                                             fit: BoxFit.fill)),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 2,
                                 ),
                                 SelectableText(
@@ -878,7 +867,7 @@ class MessageItem extends StatelessWidget {
                                   ),
                                   // textAlign: TextAlign.start,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 2,
                                 ),
                                 SelectableText(
@@ -899,7 +888,7 @@ class MessageItem extends StatelessWidget {
                                   onTap: () {
                                     Get.to(MessageShowScreen(
                                       file:
-                                          'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                          "https://unhbackend.com/uploads/chat/$attachment",
                                       type: 'pdf',
                                     ));
                                   },
@@ -909,8 +898,8 @@ class MessageItem extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
+                                          topLeft: const Radius.circular(20),
+                                          topRight: const Radius.circular(20),
                                           bottomLeft:
                                               Radius.circular(send ? 20 : 0),
                                           bottomRight:
@@ -925,7 +914,7 @@ class MessageItem extends StatelessWidget {
                                         ),
                                       )),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 2,
                                 ),
                                 SelectableText(
@@ -937,7 +926,7 @@ class MessageItem extends StatelessWidget {
                                   ),
                                   // textAlign: TextAlign.start,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 2,
                                 ),
                                 SelectableText(
@@ -958,9 +947,6 @@ class MessageItem extends StatelessWidget {
                     radius: 10,
                     backgroundColor: Colors.transparent,
                     backgroundImage: NetworkImage(networkImage),
-                    onBackgroundImageError: (context, error) {
-                      return Container();
-                    },
                   ),
                 ),
               ],
@@ -975,11 +961,9 @@ class MessageItem extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 10,
                     backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(
-                        "${_doctorHomeScreenController?.doctorChat?.value?.patientProfilePic ?? ''}"),
-                    onBackgroundImageError: (context, error) {
-                      return Container();
-                    },
+                    backgroundImage: NetworkImage(_doctorHomeScreenController
+                            .doctorChat.value.patientProfilePic ??
+                        ''),
                   ),
                 ),
                 Flexible(
@@ -992,18 +976,18 @@ class MessageItem extends StatelessWidget {
                           ? 5
                           : (MediaQuery.of(context).size.width / 2) - 80,
                     ),
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 15,
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+                        topLeft: const Radius.circular(20),
+                        topRight: const Radius.circular(20),
                         bottomLeft: Radius.circular(send ? 20 : 0),
                         bottomRight: Radius.circular(send ? 0 : 20),
                       ),
-                      color: send ? Color(0xffeaf2fe) : kColorBlue,
+                      color: send ? const Color(0xffeaf2fe) : kColorBlue,
                     ),
                     child: message == ""
                         ? attach != 'pdf'
@@ -1016,7 +1000,7 @@ class MessageItem extends StatelessWidget {
                                     onTap: () {
                                       Get.to(MessageShowScreen(
                                         file:
-                                            'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                            'https://unhbackend.com/uploads/chat/$attachment',
                                         type: 'image',
                                       ));
                                     },
@@ -1026,8 +1010,8 @@ class MessageItem extends StatelessWidget {
                                       decoration: BoxDecoration(
                                           color: Colors.grey,
                                           borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20),
+                                            topLeft: const Radius.circular(20),
+                                            topRight: const Radius.circular(20),
                                             bottomLeft:
                                                 Radius.circular(send ? 20 : 0),
                                             bottomRight:
@@ -1035,11 +1019,11 @@ class MessageItem extends StatelessWidget {
                                           ),
                                           image: DecorationImage(
                                               image: NetworkImage(
-                                                  'https:\/\/unhbackend.com\/uploads\/chat\/$attachment'),
+                                                  'https://unhbackend.com/uploads/chat/$attachment'),
                                               fit: BoxFit.fill)),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 2,
                                   ),
                                   SelectableText(
@@ -1063,8 +1047,8 @@ class MessageItem extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
+                                        topLeft: const Radius.circular(20),
+                                        topRight: const Radius.circular(20),
                                         bottomLeft:
                                             Radius.circular(send ? 20 : 0),
                                         bottomRight:
@@ -1075,7 +1059,7 @@ class MessageItem extends StatelessWidget {
                                       onTap: () {
                                         Get.to(MessageShowScreen(
                                           file:
-                                              'https:\/\/unhbackend.com\/uploads\/chat\/$attachment',
+                                              'https://unhbackend.com/uploads/chat\/$attachment',
                                           type: 'pdf',
                                         ));
                                       },
@@ -1088,7 +1072,7 @@ class MessageItem extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 2,
                                   ),
                                   SelectableText(
@@ -1138,9 +1122,6 @@ class MessageItem extends StatelessWidget {
                     radius: 10,
                     backgroundColor: Colors.transparent,
                     backgroundImage: NetworkImage(networkImage),
-                    onBackgroundImageError: (context, error) {
-                      return Container();
-                    },
                   ),
                 ),
               ],

@@ -1,73 +1,117 @@
-import 'package:doctor_appointment_booking/pages/reminder/notifications/NotificationManager.dart';
+import 'package:united_natives/pages/reminder/notifications/NotificationManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import '../../reminder/database/moor_database.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class AddMedicine extends StatefulWidget {
   final double height;
   final AppDatabase _database;
   final NotificationManager manager;
 
-  AddMedicine(this.height, this._database, this.manager);
+  const AddMedicine(this.height, this._database, this.manager, {super.key});
 
   @override
-  _AddMedicineState createState() => _AddMedicineState();
+  State<AddMedicine> createState() => _AddMedicineState();
 }
 
 class _AddMedicineState extends State<AddMedicine> {
-  static final _formKey = new GlobalKey<FormState>();
-  String _name;
-  String _dose;
+  static final _formKey = GlobalKey<FormState>();
+  String? _name;
+  String? _dose;
   bool isEveryday = false;
   int _selectedIndex = 0;
-  List<String> _icons = ['drug.png'];
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  final List<String> _icons = ['drug.png'];
+  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
   @override
   initState() {
     super.initState();
     var initializationSettingsAndroid =
-        new AndroidInitializationSettings('@drawable/ic_launcher');
-    var initializationSettingsIOS = new IOSInitializationSettings();
-    var initializationSettings = new InitializationSettings(
+        const AndroidInitializationSettings('@drawable/ic_launcher');
+    var initializationSettingsIOS = const DarwinInitializationSettings();
+    var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin?.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) {
+        onSelectNotification(details.payload!);
+      },
+    );
   }
+
+  // void showNotification(
+  //     int id, String title, String body, int hour, int minute) async {
+  //   var time = new Time(hour, minute, 0);
+  //   await flutterLocalNotificationsPlugin.showDailyAtTime(
+  //     id,
+  //     title,
+  //     body,
+  //     time,
+  //     getPlatformChannelSpecfics(),
+  //   );
+  // }
 
   void showNotification(
       int id, String title, String body, int hour, int minute) async {
-    var time = new Time(hour, minute, 0);
-    await flutterLocalNotificationsPlugin.showDailyAtTime(
+    final DateTime now = DateTime.now();
+    final DateTime scheduledDate = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+    );
+    final tz.TZDateTime tzScheduledDate = tz.TZDateTime.from(
+      scheduledDate,
+      tz.local,
+    );
+    await flutterLocalNotificationsPlugin?.zonedSchedule(
       id,
       title,
       body,
-      time,
+      tzScheduledDate,
       getPlatformChannelSpecfics(),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+      matchDateTimeComponents: DateTimeComponents.time,
     );
-    print('Notification Succesfully Scheduled at ${time.toString()}');
   }
+
+  // void showOnceNotification(
+  //     int id, String title, String body, int hour, int minute) async {
+  //   DateTime now1 = DateTime.now();
+  //   DateTime now =
+  //       DateTime(now1.year, now1.month, now1.day, hour, minute, 00, 00);
+  //
+  //   await flutterLocalNotificationsPlugin.schedule(
+  //       id, title, body, now, getPlatformChannelSpecfics());
+  // }
 
   void showOnceNotification(
       int id, String title, String body, int hour, int minute) async {
-    DateTime now1 = DateTime.now();
-    DateTime now =
-        DateTime(now1.year, now1.month, now1.day, hour, minute, 00, 00);
+    DateTime now = DateTime.now();
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
 
-    await flutterLocalNotificationsPlugin.schedule(
-        id, title, body, now, getPlatformChannelSpecfics());
-
-    print('Notification Succesfully Scheduled at ${now.toString()}');
+    await flutterLocalNotificationsPlugin?.zonedSchedule(
+      id,
+      title,
+      body,
+      scheduledDate,
+      getPlatformChannelSpecfics(),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
   }
 
   getPlatformChannelSpecfics() {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         'your channel id', 'your channel name',
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'Medicine Reminder');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
@@ -76,7 +120,7 @@ class _AddMedicineState extends State<AddMedicine> {
   }
 
   void removeReminder(int notificationId) {
-    flutterLocalNotificationsPlugin.cancel(notificationId);
+    flutterLocalNotificationsPlugin?.cancel(notificationId);
   }
   /* Future _showNotification() async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
@@ -115,8 +159,8 @@ class _AddMedicineState extends State<AddMedicine> {
     showDialog(
       context: context,
       builder: (_) {
-        return new AlertDialog(
-          title: Text("Your Notification Detail"),
+        return AlertDialog(
+          title: const Text("Your Notification Detail"),
           content: Text("Payload : $payload"),
         );
       },
@@ -126,7 +170,7 @@ class _AddMedicineState extends State<AddMedicine> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.fromLTRB(25, 20, 25, 0),
+        padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
         height: widget.height * .8,
         child: Padding(
           padding:
@@ -137,7 +181,7 @@ class _AddMedicineState extends State<AddMedicine> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Add Reminder',
                     style: TextStyle(
                       fontSize: 27,
@@ -158,10 +202,10 @@ class _AddMedicineState extends State<AddMedicine> {
                 ],
               ),
               _buildForm(),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Row(
@@ -174,28 +218,29 @@ class _AddMedicineState extends State<AddMedicine> {
                       });
                     },
                   ),
-                  Text('Remind me everyday')
+                  const Text('Remind me everyday')
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              Container(
+              SizedBox(
                 width: double.infinity,
-                child: RaisedButton(
-                  padding: EdgeInsets.all(15),
+                child: MaterialButton(
+                  padding: const EdgeInsets.all(15),
                   shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
                   onPressed: () {
                     _submit(widget.manager);
                   },
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   textColor: Colors.white,
                   highlightColor: Theme.of(context).primaryColor,
                   child: Text(
                     'Add Reminder'.toUpperCase(),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -206,28 +251,28 @@ class _AddMedicineState extends State<AddMedicine> {
 
   Form _buildForm() {
     TextStyle labelsStyle =
-        TextStyle(fontWeight: FontWeight.w400, fontSize: 27);
+        const TextStyle(fontWeight: FontWeight.w400, fontSize: 27);
     return Form(
       key: _formKey,
       child: Column(
         children: <Widget>[
           TextFormField(
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
             decoration: InputDecoration(
               labelText: 'Name',
               labelStyle: labelsStyle,
             ),
-            validator: (input) => (input.length < 5) ? 'Name is short' : null,
+            validator: (input) => (input!.length < 5) ? 'Name is short' : null,
             onSaved: (input) => _name = input,
           ),
           TextFormField(
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
             decoration: InputDecoration(
               labelText: 'Remarks',
               labelStyle: labelsStyle,
             ),
             validator: (input) =>
-                (input.length > 50) ? 'Remarks is long' : null,
+                (input!.length > 50) ? 'Remarks is long' : null,
             onSaved: (input) => _dose = input,
           )
         ],
@@ -236,22 +281,19 @@ class _AddMedicineState extends State<AddMedicine> {
   }
 
   void _submit(NotificationManager manager) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       // form is validated
-      _formKey.currentState.save();
-      print(_name);
-      print(_dose);
+      _formKey.currentState?.save();
       //show the time picker dialog
       showTimePicker(
         initialTime: TimeOfDay.now(),
         context: context,
       ).then((selectedTime) async {
-        int hour = selectedTime.hour;
-        int minute = selectedTime.minute;
-        String type = selectedTime.period.toString();
+        int? hour = selectedTime?.hour;
+        int? minute = selectedTime?.minute;
+        String? type = selectedTime?.period.toString();
         // DateTime now=DateTime.
-        var newString = type.substring(type.length - 2).toUpperCase();
-        print('TYPE   >>>${newString.toUpperCase()}');
+        var newString = type?.substring(type.length - 2).toUpperCase();
 
         // _time = DateTime.parse(selectedTime.format(context));
         // print('TIME$_time');
@@ -259,18 +301,18 @@ class _AddMedicineState extends State<AddMedicine> {
 
         var medicineId = await widget._database.insertMedicine(
             MedicinesTableData(
-                name: _name,
-                dose: _dose,
+                name: _name!,
+                dose: _dose!,
                 time: isEveryday == true
                     ? 'Set for Everyday ,$hour:$minute $newString'
                     : '$hour:$minute $newString',
-                image: 'assets/images/' + _icons[_selectedIndex],
-                id: null));
+                image: 'assets/images/${_icons[_selectedIndex]}',
+                id: 0));
         // sehdule the notification
 
         isEveryday == true
-            ? showNotification(medicineId, _name, _dose, hour, minute)
-            : showOnceNotification(medicineId, _name, _dose, hour, minute);
+            ? showNotification(medicineId, _name!, _dose!, hour!, minute!)
+            : showOnceNotification(medicineId, _name!, _dose!, hour!, minute!);
 
         // isEveryday == true
         //     ? manager.showNotification(medicineId, _name, _dose, hour, minute)
@@ -280,7 +322,6 @@ class _AddMedicineState extends State<AddMedicine> {
         // NotificationApi()
         //     .showOnceNotification(medicineId, _name, _dose, hour, minute);
         // // // The medicine Id and Notitfaciton Id are the same
-        print('New Med id' + medicineId.toString());
         // go back
         Navigator.pop(context, medicineId);
       });
@@ -295,16 +336,16 @@ class _AddMedicineState extends State<AddMedicine> {
         });
       },
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         height: 70,
         width: 70,
         decoration: BoxDecoration(
           color: (index == _selectedIndex)
-              ? Theme.of(context).accentColor.withOpacity(.4)
+              ? Theme.of(context).colorScheme.secondary.withOpacity(.4)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(40),
         ),
-        child: Image.asset('assets/images/' + _icons[index]),
+        child: Image.asset('assets/images/${_icons[index]}'),
       ),
     );
   }

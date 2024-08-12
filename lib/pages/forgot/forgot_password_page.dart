@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:loading_btn/loading_btn.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/custom_button.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
@@ -11,6 +12,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:http/http.dart' as http;
+import 'package:united_natives/utils/utils.dart';
+import '../../components/text_form_field.dart';
 import '../../utils/constants.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -109,7 +112,6 @@ class WidgetForgot extends StatefulWidget {
 
 class _WidgetForgotState extends State<WidgetForgot> {
   final _emailController = TextEditingController();
-  bool _btnEnabled = false;
   final _formKey = GlobalKey<FormState>();
   final UserController _userController = Get.find();
 
@@ -130,6 +132,8 @@ class _WidgetForgotState extends State<WidgetForgot> {
     }
   }
 
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -141,59 +145,54 @@ class _WidgetForgotState extends State<WidgetForgot> {
             Translate.of(context)!.translate('email_dot'),
             style: kInputTextStyle,
           ),
-          TextFormField(
+          CustomTextFormField(
             validator: (value) => EmailValidator.validate(value!)
                 ? null
                 : "Please Enter a Valid E-mail.",
             controller: _emailController,
-            onChanged: (String txt) {
-              if (txt.isEmpty) {
-                setState(() {
-                  _btnEnabled = false;
-                });
-              } else {
-                setState(() {
-                  _btnEnabled = true;
-                });
-              }
+            onChanged: (value) {
+              setState(() {});
             },
-            onTap: () {},
+            hintText: '',
           ),
           const SizedBox(
             height: 35,
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 25, left: 25),
-            child: LoadingBtn(
-              height: 50,
-              width: 150,
-              disabledColor: Colors.white,
-              color: kColorBlue,
-              onTap: (startLoading, stopLoading, btnState) async {
-                startLoading();
-                if (_btnEnabled == true) {
-                  User userData = User(email: _emailController.text);
-                  if (_formKey.currentState!.validate()) {
-                    await _userController.forgotPassword(userData);
-                  }
-                  stopLoading();
-                }
-              },
-              child: _btnEnabled == true
-                  ? const Text(
-                      'Reset Password',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )
-                  : const Text('Enter Email to Reset Password',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold)),
-            ),
-          ),
+          loading
+              ? SizedBox(
+                  height: 60,
+                  child: Center(
+                    child: Utils.circular(height: 60),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: CustomButton(
+                    textSize: 20,
+                    // onPressed: () async {
+                    //   await _userController.userLogin(LogInType.NORMAL,1,
+                    //       _emailController.text,
+                    //       _passwordController.text,"");
+                    // },
+                    onPressed: () async {
+                      User userData = User(email: _emailController.text);
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          loading = true;
+                        });
+
+                        await _userController.forgotPassword(userData);
+                      }
+                      setState(() {
+                        loading = false;
+                      });
+                    },
+                    text: _emailController.text.isNotEmpty
+                        ? Translate.of(context)!.translate('Reset Password')
+                        : Translate.of(context)!
+                            .translate('Enter Email to Reset Password'),
+                  ),
+                ),
         ],
       ),
     );

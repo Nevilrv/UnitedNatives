@@ -1,17 +1,19 @@
 import 'dart:async';
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/components/my_patient_list_item.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/components/my_patient_list_item.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 class MyPatientListPage extends StatefulWidget {
+  const MyPatientListPage({super.key});
+
   @override
-  _MyPatientListPageState createState() => _MyPatientListPageState();
+  State<MyPatientListPage> createState() => _MyPatientListPageState();
 }
 
 class _MyPatientListPageState extends State<MyPatientListPage> {
@@ -23,7 +25,7 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
     super.initState();
   }
 
-  Timer _debounce;
+  Timer? _debounce;
   TextEditingController searchController = TextEditingController();
 
   AdsController adsController = Get.find();
@@ -37,10 +39,10 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
           ),
           appBar: AppBar(
             title: Text(
-              Translate.of(context).translate('My Client list'),
+              Translate.of(context)!.translate('My Client list'),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24,
               ),
               textAlign: TextAlign.center,
@@ -50,9 +52,9 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
             builder: (controller) {
               if (controller.patientDetailsResponseModel.apiState ==
                   APIState.COMPLETE) {
-                int indexFind = controller
+                int? indexFind = controller
                     .patientDetailsResponseModel.patientData
-                    .indexWhere((element) =>
+                    ?.indexWhere((element) =>
                         ('${element.patientFirstName}${element.patientLastName}')
                             .toLowerCase()
                             .contains(searchController.text
@@ -77,11 +79,12 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText:
-                                  Translate.of(context).translate('search'),
+                                  Translate.of(context)?.translate('search'),
                             ),
                             onChanged: (value) {
-                              if (_debounce?.isActive ?? false)
-                                _debounce.cancel();
+                              if (_debounce?.isActive ?? false) {
+                                _debounce?.cancel();
+                              }
                               _debounce =
                                   Timer(const Duration(milliseconds: 100), () {
                                 setState(() {});
@@ -91,15 +94,15 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
                         ),
                       ),
                     ),
-                    if (indexFind < 0)
+                    if (indexFind! < 0)
                       Expanded(
                         child: Center(
                           child: Text(
                             'No Patient Data',
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
-                                .copyWith(fontSize: 20),
+                                .titleLarge
+                                ?.copyWith(fontSize: 20),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -108,37 +111,37 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
                       Expanded(
                         child: ListView.separated(
                           separatorBuilder: (context, index) {
-                            if (!('${controller.patientDetailsResponseModel.patientData[index].patientFirstName} ${controller.patientDetailsResponseModel.patientData[index].patientLastName}')
+                            if (!('${controller.patientDetailsResponseModel.patientData?[index].patientFirstName} ${controller.patientDetailsResponseModel.patientData?[index].patientLastName}')
                                 .toLowerCase()
                                 .contains(
                                   searchController.text
                                       .toLowerCase()
                                       .replaceAll(" ", ""),
                                 )) {
-                              return SizedBox();
+                              return const SizedBox();
                             }
 
-                            return SizedBox(
+                            return const SizedBox(
                               height: 15,
                             );
                           },
                           itemCount: controller.patientDetailsResponseModel
-                                  .patientData.length ??
+                                  .patientData?.length ??
                               0,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 25),
                           itemBuilder: (context, index) {
-                            if (!('${controller.patientDetailsResponseModel.patientData[index].patientFirstName} ${controller.patientDetailsResponseModel.patientData[index].patientLastName}')
+                            if (!('${controller.patientDetailsResponseModel.patientData?[index].patientFirstName} ${controller.patientDetailsResponseModel.patientData?[index].patientLastName}')
                                 .toLowerCase()
                                 .contains(searchController.text
                                     .toLowerCase()
                                     .replaceAll(" ", ""))) {
-                              return SizedBox();
+                              return const SizedBox();
                             }
 
                             return MyPatientListItem(
                               patient: controller.patientDetailsResponseModel
-                                  .patientData[index],
+                                  .patientData?[index],
                             );
                           },
                         ),
@@ -152,14 +155,14 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
                     "No data!",
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
-                        .copyWith(fontSize: 20),
+                        .titleLarge
+                        ?.copyWith(fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
                 );
               } else if (controller.patientDetailsResponseModel.apiState ==
                   APIState.ERROR) {
-                return Center(
+                return const Center(
                   child: Text("Error"),
                 );
               } else if (controller.patientDetailsResponseModel.apiState ==
@@ -171,7 +174,7 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
                   child: Utils.circular(),
                 );
               } else {
-                return Center(
+                return const Center(
                   child: Text(""),
                 );
               }

@@ -2,10 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class MyNotiScreen extends StatefulWidget {
+  const MyNotiScreen({super.key});
+
   @override
-  _MyNotiScreenState createState() => _MyNotiScreenState();
+  State<MyNotiScreen> createState() => _MyNotiScreenState();
 }
 
 class _MyNotiScreenState extends State<MyNotiScreen> {
@@ -16,8 +19,8 @@ class _MyNotiScreenState extends State<MyNotiScreen> {
   initState() {
     super.initState();
     var initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
-    var initializationSettingsIOS = IOSInitializationSettings();
+        const AndroidInitializationSettings('app_icon');
+    var initializationSettingsIOS = const DarwinInitializationSettings();
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -34,7 +37,7 @@ class _MyNotiScreenState extends State<MyNotiScreen> {
           title: Text('Plugin example app',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.subtitle1.color,
+                  color: Theme.of(context).textTheme.titleMedium?.color,
                   fontSize: 24),
               textAlign: TextAlign.center),
         ),
@@ -43,9 +46,9 @@ class _MyNotiScreenState extends State<MyNotiScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              RaisedButton(
+              MaterialButton(
                 onPressed: _showSchedulaeedNotification,
-                child: Text('Show Notification'),
+                child: const Text('Show Notification'),
               ),
             ],
           ),
@@ -55,10 +58,10 @@ class _MyNotiScreenState extends State<MyNotiScreen> {
   }
 
   Future _showNotification() async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         'your channel id', 'your channel name',
         importance: Importance.max, priority: Priority.high);
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
@@ -67,17 +70,36 @@ class _MyNotiScreenState extends State<MyNotiScreen> {
         payload: 'This is notification detail Text...');
   }
 
-  Future _showSchedulaeedNotification() async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your channel id', 'your channel name',
-        importance: Importance.max, priority: Priority.high);
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  Future<void> _showSchedulaeedNotification() async {
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
+
     var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.showDailyAtTime(0, 'New Notification',
-        'Flutter is awesome', Time(14, 38, 00), platformChannelSpecifics,
-        payload: 'This is notification detail Text...');
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    final now = tz.TZDateTime.now(tz.local);
+    final scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 14, 38);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'New Notification',
+      'Flutter is awesome',
+      scheduledDate,
+      platformChannelSpecifics,
+      payload: 'This is notification detail Text...',
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time, // To trigger daily
+    );
   }
 
   Future onSelectNotification(String payload) async {
@@ -85,7 +107,7 @@ class _MyNotiScreenState extends State<MyNotiScreen> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text("Your Notification Detail"),
+          title: const Text("Your Notification Detail"),
           content: Text("Payload : $payload"),
         );
       },

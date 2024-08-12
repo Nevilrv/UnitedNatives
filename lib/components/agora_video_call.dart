@@ -31,6 +31,7 @@ class _MyAppsState extends State<MyVideoCall> {
   bool isCamera = false;
   bool isLoadingMeet = false;
   final _remoteUsers = <int>[];
+  RtcEngine? rtcEngine;
 
   @override
   void initState() {
@@ -41,8 +42,12 @@ class _MyAppsState extends State<MyVideoCall> {
   }
 
   joinChannel() async {
-    await AgoraRtcEngine.startPreview();
-    await AgoraRtcEngine.joinChannel(widget.token, widget.channelName, null, 0);
+    await rtcEngine?.startPreview();
+    await rtcEngine?.joinChannel(
+        token: widget.token!,
+        channelId: widget.channelName!,
+        options: const ChannelMediaOptions(),
+        uid: 0);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {});
@@ -53,8 +58,8 @@ class _MyAppsState extends State<MyVideoCall> {
     if (Prefs.getString(Prefs.USERTYPE) == "2") {
       changeMeetingStatus();
     }
-    await AgoraRtcEngine.leaveChannel();
-    await AgoraRtcEngine.stopPreview();
+    await rtcEngine?.leaveChannel();
+    await rtcEngine?.stopPreview();
     Prefs.setString(Prefs.vcEndTime, DateTime.now().toUtc().toString());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (mounted) {
@@ -77,17 +82,19 @@ class _MyAppsState extends State<MyVideoCall> {
     };
     http.Response response1 = await http.post(Uri.parse(url1),
         body: jsonEncode(body1), headers: header1);
+
+    log('response1==========>>>>>$response1');
   }
 
   void muteAudio() {
     setState(() {
       muted = !muted;
     });
-    AgoraRtcEngine.muteLocalAudioStream(muted);
+    rtcEngine?.muteLocalAudioStream(muted);
   }
 
   switchCamera() {
-    AgoraRtcEngine.switchCamera();
+    rtcEngine?.switchCamera();
   }
 
   @override
@@ -170,17 +177,21 @@ class _MyAppsState extends State<MyVideoCall> {
   }
 
   Future<void> _initAgoraRtcEngine() async {
-    AgoraRtcEngine.create('bd787ed657934da982d199ffb09a7f35');
+    await rtcEngine?.initialize(const RtcEngineContext(
+      appId: "bd787ed657934da982d199ffb09a7f35",
+      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+    ));
 
     /// APP ID ///
 
-    AgoraRtcEngine.enableVideo();
-    AgoraRtcEngine.enableAudio();
-    AgoraRtcEngine.setChannelProfile(ChannelProfile.Communication);
+    rtcEngine?.enableVideo();
+    rtcEngine?.enableAudio();
+    rtcEngine
+        ?.setChannelProfile(ChannelProfileType.channelProfileCommunication);
 
-    VideoEncoderConfiguration config = const VideoEncoderConfiguration();
-    config.orientationMode = VideoOutputOrientationMode.FixedPortrait;
-    AgoraRtcEngine.setVideoEncoderConfiguration(config);
+    VideoEncoderConfiguration config = const VideoEncoderConfiguration(
+        orientationMode: OrientationMode.orientationModeFixedPortrait);
+    rtcEngine?.setVideoEncoderConfiguration(config);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {});
@@ -188,69 +199,64 @@ class _MyAppsState extends State<MyVideoCall> {
   }
 
   void _addAgoraEventHandlers(context) {
-    AgoraRtcEngine.onJoinChannelSuccess =
-        (String channel, int uid, int elapsed) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    rtcEngine?.registerEventHandler(RtcEngineEventHandler(
+      onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          if (mounted) {
+            setState(() {
+              String info =
+                  'onJoinChannel: ${connection.channelId}, uid: ${connection.localUid}';
+              uidOfUser = connection.localUid?.toInt();
+              _infoStrings.add(info);
+            });
+          }
+        });
+      },
+      onLeaveChannel: (connection, stats) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          if (mounted) {
+            setState(() {
+              _infoStrings.add('onLeaveChannel');
+              _remoteUsers.clear();
+              Navigator.pop(context);
+            });
+          }
+        });
+        leaveChannel();
+        // Get.back();
+      },
+      onUserJoined: (connection, remoteUid, elapsed) {
         if (mounted) {
           setState(() {
-            String info = 'onJoinChannel: $channel, uid: $uid';
-            uidOfUser = uid.toInt();
+            String info = 'userJoined: $remoteUid';
+            _infoStrings.add(info);
+            _remoteUsers.add(remoteUid);
+          });
+        }
+      },
+      onUserOffline: (connection, remoteUid, reason) {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          if (mounted) {
+            setState(() {
+              String info = 'userOffline: $remoteUid';
+              _infoStrings.add(info);
+              _remoteUsers.remove(remoteUid);
+            });
+          }
+        });
+        Navigator.pop(context);
+        leaveChannel();
+        // Get.back();
+      },
+      onFirstRemoteVideoFrame: (connection, remoteUid, width, height, elapsed) {
+        if (mounted) {
+          setState(() {
+            String info = 'firstRemoteVideo: $remoteUid ${width}x$height';
             _infoStrings.add(info);
           });
         }
-      });
-    };
-
-    AgoraRtcEngine.onLeaveChannel = () {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if (mounted) {
-          setState(() {
-            _infoStrings.add('onLeaveChannel');
-            _remoteUsers.clear();
-            Navigator.pop(context);
-          });
-        }
-      });
-      leaveChannel();
-
-      // Get.back();
-    };
-
-    AgoraRtcEngine.onUserJoined = (int uid, int elapsed) {
-      if (mounted) {
-        setState(() {
-          String info = 'userJoined: $uid';
-          _infoStrings.add(info);
-          _remoteUsers.add(uid);
-        });
-      }
-    };
-
-    AgoraRtcEngine.onUserOffline = (int uid, int reason) {
-      log("--------user offline");
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if (mounted) {
-          setState(() {
-            String info = 'userOffline: $uid';
-            _infoStrings.add(info);
-            _remoteUsers.remove(uid);
-          });
-        }
-      });
-      Navigator.pop(context);
-      leaveChannel();
-      // Get.back();
-    };
-
-    AgoraRtcEngine.onFirstRemoteVideoFrame =
-        (int uid, int width, int height, int elapsed) {
-      if (mounted) {
-        setState(() {
-          String info = 'firstRemoteVideo: $uid ${width}x$height';
-          _infoStrings.add(info);
-        });
-      }
-    };
+      },
+    ));
     if (mounted) {
       setState(() {});
     }
@@ -271,10 +277,21 @@ class _MyAppsState extends State<MyVideoCall> {
   }
 
   Iterable<Widget> get _renderWidget sync* {
-    yield AgoraRenderWidget(0, local: true, preview: false);
+    yield AgoraVideoView(
+      controller: VideoViewController(
+        rtcEngine: rtcEngine!,
+        canvas: const VideoCanvas(
+            uid: 0, renderMode: RenderModeType.renderModeHidden),
+      ),
+    );
 
     for (final uid in _remoteUsers) {
-      yield AgoraRenderWidget(uid);
+      yield AgoraVideoView(
+        controller: VideoViewController(
+          rtcEngine: rtcEngine!,
+          canvas: VideoCanvas(uid: uid),
+        ),
+      );
     }
   }
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 class TestAndPrescriptionCardWidget extends StatelessWidget {
-  final String image;
+  final String? image;
   final String title;
   final String subTitle;
 
   const TestAndPrescriptionCardWidget(
-      {Key key, this.image, @required this.title, @required this.subTitle})
-      : super(key: key);
+      {super.key, this.image, required this.title, required this.subTitle});
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -32,7 +31,7 @@ class TestAndPrescriptionCardWidget extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             SizedBox(
@@ -44,22 +43,22 @@ class TestAndPrescriptionCardWidget extends StatelessWidget {
                   Text(
                     title,
                     maxLines: 2,
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontSize: 22,
                           overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w700,
                           color: Colors.red.shade700,
                         ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Container(
+                  SizedBox(
                     width: 250,
                     child: Text(
                       subTitle,
                       maxLines: 2,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontFamily: 'NunitoSans',
                         fontWeight: FontWeight.w600,

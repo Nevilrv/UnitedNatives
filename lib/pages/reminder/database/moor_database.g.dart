@@ -1,12 +1,110 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'moor_database.dart';
 
-// **************************************************************************
-// MoorGenerator
-// **************************************************************************
+class $MedicinesTableTable extends MedicinesTable
+    with TableInfo<$MedicinesTableTable, MedicinesTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicinesTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 5, maxTextLength: 50),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _imageMeta = VerificationMeta('image');
+  @override
+  late final GeneratedColumn<String> image = GeneratedColumn<String>(
+      'image', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _doseMeta = VerificationMeta('dose');
+  @override
+  late final GeneratedColumn<String> dose = GeneratedColumn<String>(
+      'dose', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _timeMeta = VerificationMeta('time');
+  @override
+  late final GeneratedColumn<String> time = GeneratedColumn<String>(
+      'time', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, name, image, dose, time];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medicines_table';
+  @override
+  VerificationContext validateIntegrity(Insertable<MedicinesTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('image')) {
+      context.handle(
+          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    } else if (isInserting) {
+      context.missing(_imageMeta);
+    }
+    if (data.containsKey('dose')) {
+      context.handle(
+          _doseMeta, dose.isAcceptableOrUnknown(data['dose']!, _doseMeta));
+    } else if (isInserting) {
+      context.missing(_doseMeta);
+    }
+    if (data.containsKey('time')) {
+      context.handle(
+          _timeMeta, time.isAcceptableOrUnknown(data['time']!, _timeMeta));
+    } else if (isInserting) {
+      context.missing(_timeMeta);
+    }
+    return context;
+  }
 
-// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MedicinesTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicinesTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      image: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}image'])!,
+      dose: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}dose'])!,
+      time: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}time'])!,
+    );
+  }
+
+  @override
+  $MedicinesTableTable createAlias(String alias) {
+    return $MedicinesTableTable(attachedDatabase, alias);
+  }
+}
+
 class MedicinesTableData extends DataClass
     implements Insertable<MedicinesTableData> {
   final int id;
@@ -14,63 +112,36 @@ class MedicinesTableData extends DataClass
   final String image;
   final String dose;
   final String time;
-  MedicinesTableData(
-      {@required this.id,
-      @required this.name,
-      @required this.image,
-      @required this.dose,
-      @required this.time});
-  factory MedicinesTableData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return MedicinesTableData(
-      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      image: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}image']),
-      dose: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}dose']),
-      time: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}time']),
-    );
-  }
+  const MedicinesTableData(
+      {required this.id,
+      required this.name,
+      required this.image,
+      required this.dose,
+      required this.time});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String>(name);
-    }
-    if (!nullToAbsent || image != null) {
-      map['image'] = Variable<String>(image);
-    }
-    if (!nullToAbsent || dose != null) {
-      map['dose'] = Variable<String>(dose);
-    }
-    if (!nullToAbsent || time != null) {
-      map['time'] = Variable<String>(time);
-    }
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['image'] = Variable<String>(image);
+    map['dose'] = Variable<String>(dose);
+    map['time'] = Variable<String>(time);
     return map;
   }
 
   MedicinesTableCompanion toCompanion(bool nullToAbsent) {
     return MedicinesTableCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      image:
-          image == null && nullToAbsent ? const Value.absent() : Value(image),
-      dose: dose == null && nullToAbsent ? const Value.absent() : Value(dose),
-      time: time == null && nullToAbsent ? const Value.absent() : Value(time),
+      id: Value(id),
+      name: Value(name),
+      image: Value(image),
+      dose: Value(dose),
+      time: Value(time),
     );
   }
 
   factory MedicinesTableData.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return MedicinesTableData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
@@ -80,8 +151,8 @@ class MedicinesTableData extends DataClass
     );
   }
   @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
-    serializer ??= moorRuntimeOptions.defaultSerializer;
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
@@ -92,7 +163,7 @@ class MedicinesTableData extends DataClass
   }
 
   MedicinesTableData copyWith(
-          {int id, String name, String image, String dose, String time}) =>
+          {int? id, String? name, String? image, String? dose, String? time}) =>
       MedicinesTableData(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -100,6 +171,16 @@ class MedicinesTableData extends DataClass
         dose: dose ?? this.dose,
         time: time ?? this.time,
       );
+  MedicinesTableData copyWithCompanion(MedicinesTableCompanion data) {
+    return MedicinesTableData(
+      id: data.id.present ? data.id.value : id,
+      name: data.name.present ? data.name.value : name,
+      image: data.image.present ? data.image.value : image,
+      dose: data.dose.present ? data.dose.value : dose,
+      time: data.time.present ? data.time.value : time,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('MedicinesTableData(')
@@ -118,11 +199,11 @@ class MedicinesTableData extends DataClass
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MedicinesTableData &&
-          other.id == this.id &&
-          other.name == this.name &&
-          other.image == this.image &&
-          other.dose == this.dose &&
-          other.time == this.time);
+          other.id == id &&
+          other.name == name &&
+          other.image == image &&
+          other.dose == dose &&
+          other.time == time);
 }
 
 class MedicinesTableCompanion extends UpdateCompanion<MedicinesTableData> {
@@ -140,20 +221,20 @@ class MedicinesTableCompanion extends UpdateCompanion<MedicinesTableData> {
   });
   MedicinesTableCompanion.insert({
     this.id = const Value.absent(),
-    @required String name,
-    @required String image,
-    @required String dose,
-    @required String time,
+    required String name,
+    required String image,
+    required String dose,
+    required String time,
   })  : name = Value(name),
         image = Value(image),
         dose = Value(dose),
         time = Value(time);
   static Insertable<MedicinesTableData> custom({
-    Expression<int> id,
-    Expression<String> name,
-    Expression<String> image,
-    Expression<String> dose,
-    Expression<String> time,
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? image,
+    Expression<String>? dose,
+    Expression<String>? time,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -165,17 +246,18 @@ class MedicinesTableCompanion extends UpdateCompanion<MedicinesTableData> {
   }
 
   MedicinesTableCompanion copyWith(
-      {Value<int> id,
-      Value<String> name,
-      Value<String> image,
-      Value<String> dose,
-      Value<String> time}) {
+      {Value<int>? id,
+      Value<String>? name,
+      Value<String>? image,
+      Value<String>? dose,
+      Value<String>? time}) {
     return MedicinesTableCompanion(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        image: image ?? this.image,
-        dose: dose ?? this.dose,
-        time: time ?? this.time);
+      id: id ?? this.id,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      dose: dose ?? this.dose,
+      time: time ?? this.time,
+    );
   }
 
   @override
@@ -212,108 +294,143 @@ class MedicinesTableCompanion extends UpdateCompanion<MedicinesTableData> {
   }
 }
 
-class $MedicinesTableTable extends MedicinesTable
-    with TableInfo<$MedicinesTableTable, MedicinesTableData> {
-  final GeneratedDatabase _db;
-  final String _alias;
-  $MedicinesTableTable(this._db, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedColumn<int> _id;
-  @override
-  GeneratedColumn<int> get id =>
-      _id ??= GeneratedColumn<int>('id', aliasedName, false,
-          typeName: 'INTEGER',
-          requiredDuringInsert: false,
-          defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedColumn<String> _name;
-  @override
-  GeneratedColumn<String> get name => _name ??= GeneratedColumn<String>(
-      'name', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 5, maxTextLength: 50),
-      typeName: 'TEXT',
-      requiredDuringInsert: true);
-  final VerificationMeta _imageMeta = const VerificationMeta('image');
-  GeneratedColumn<String> _image;
-  @override
-  GeneratedColumn<String> get image =>
-      _image ??= GeneratedColumn<String>('image', aliasedName, false,
-          typeName: 'TEXT', requiredDuringInsert: true);
-  final VerificationMeta _doseMeta = const VerificationMeta('dose');
-  GeneratedColumn<String> _dose;
-  @override
-  GeneratedColumn<String> get dose =>
-      _dose ??= GeneratedColumn<String>('dose', aliasedName, false,
-          typeName: 'TEXT', requiredDuringInsert: true);
-  final VerificationMeta _timeMeta = const VerificationMeta('time');
-  GeneratedColumn<String> _time;
-  @override
-  GeneratedColumn<String> get time =>
-      _time ??= GeneratedColumn<String>('time', aliasedName, false,
-          typeName: 'TEXT', requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns => [id, name, image, dose, time];
-  @override
-  String get aliasedName => _alias ?? 'medicines_table';
-  @override
-  String get actualTableName => 'medicines_table';
-  @override
-  VerificationContext validateIntegrity(Insertable<MedicinesTableData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
-    } else if (isInserting) {
-      context.missing(_nameMeta);
-    }
-    if (data.containsKey('image')) {
-      context.handle(
-          _imageMeta, image.isAcceptableOrUnknown(data['image'], _imageMeta));
-    } else if (isInserting) {
-      context.missing(_imageMeta);
-    }
-    if (data.containsKey('dose')) {
-      context.handle(
-          _doseMeta, dose.isAcceptableOrUnknown(data['dose'], _doseMeta));
-    } else if (isInserting) {
-      context.missing(_doseMeta);
-    }
-    if (data.containsKey('time')) {
-      context.handle(
-          _timeMeta, time.isAcceptableOrUnknown(data['time'], _timeMeta));
-    } else if (isInserting) {
-      context.missing(_timeMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  MedicinesTableData map(Map<String, dynamic> data, {String tablePrefix}) {
-    return MedicinesTableData.fromData(data, _db,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $MedicinesTableTable createAlias(String alias) {
-    return $MedicinesTableTable(_db, alias);
-  }
-}
-
 abstract class _$AppDatabase extends GeneratedDatabase {
-  _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  $MedicinesTableTable _medicinesTable;
-  $MedicinesTableTable get medicinesTable =>
-      _medicinesTable ??= $MedicinesTableTable(this);
+  _$AppDatabase(QueryExecutor e) : super(e);
+  $AppDatabaseManager get managers => $AppDatabaseManager(this);
+  late final $MedicinesTableTable medicinesTable = $MedicinesTableTable(this);
   @override
-  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [medicinesTable];
+}
+
+typedef $$MedicinesTableTableCreateCompanionBuilder = MedicinesTableCompanion
+    Function({
+  Value<int> id,
+  required String name,
+  required String image,
+  required String dose,
+  required String time,
+});
+typedef $$MedicinesTableTableUpdateCompanionBuilder = MedicinesTableCompanion
+    Function({
+  Value<int> id,
+  Value<String> name,
+  Value<String> image,
+  Value<String> dose,
+  Value<String> time,
+});
+
+class $$MedicinesTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $MedicinesTableTable,
+    MedicinesTableData,
+    $$MedicinesTableTableFilterComposer,
+    $$MedicinesTableTableOrderingComposer,
+    $$MedicinesTableTableCreateCompanionBuilder,
+    $$MedicinesTableTableUpdateCompanionBuilder> {
+  $$MedicinesTableTableTableManager(
+      _$AppDatabase db, $MedicinesTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$MedicinesTableTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$MedicinesTableTableOrderingComposer(ComposerState(db, table)),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> image = const Value.absent(),
+            Value<String> dose = const Value.absent(),
+            Value<String> time = const Value.absent(),
+          }) =>
+              MedicinesTableCompanion(
+            id: id,
+            name: name,
+            image: image,
+            dose: dose,
+            time: time,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            required String image,
+            required String dose,
+            required String time,
+          }) =>
+              MedicinesTableCompanion.insert(
+            id: id,
+            name: name,
+            image: image,
+            dose: dose,
+            time: time,
+          ),
+        ));
+}
+
+class $$MedicinesTableTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $MedicinesTableTable> {
+  $$MedicinesTableTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get image => $state.composableBuilder(
+      column: $state.table.image,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get dose => $state.composableBuilder(
+      column: $state.table.dose,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get time => $state.composableBuilder(
+      column: $state.table.time,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$MedicinesTableTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $MedicinesTableTable> {
+  $$MedicinesTableTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get image => $state.composableBuilder(
+      column: $state.table.image,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get dose => $state.composableBuilder(
+      column: $state.table.dose,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get time => $state.composableBuilder(
+      column: $state.table.time,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class $AppDatabaseManager {
+  final _$AppDatabase _db;
+  $AppDatabaseManager(this._db);
+  $$MedicinesTableTableTableManager get medicinesTable =>
+      $$MedicinesTableTableTableManager(_db, _db.medicinesTable);
 }

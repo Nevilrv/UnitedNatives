@@ -54,12 +54,20 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyCA_Tt5erwNZeaH34FQLS8kb2XBhEH60HE",
+      appId: "1:1007237012704:android:d6cf3d5245212288178485",
+      messagingSenderId: "1007237012704",
+      projectId: "unh-app-58bd8",
+    ),
+  );
   await EasyLocalization.ensureInitialized();
   initializeDateFormatting('', null);
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   // FirebaseCrashlytics.instance.crash();
   await WakelockPlus.enable();
+
   Prefs.load();
   Preferences.setPreferences();
   // PatientHomeScreenController().aboutUsPrivacyPolicy();
@@ -178,11 +186,11 @@ class _MyAppState extends State<MyApp> {
                     builder: (context, widget) {
                       return MediaQuery(
                         data: MediaQuery.of(context)
-                            .copyWith(textScaler: const TextScaler.linear(1.0)),
+                            .copyWith(textScaler: const TextScaler.linear(0.9)),
                         child: ResponsiveBreakpoints.builder(
                           child: widget!,
                           breakpoints: [
-                            const Breakpoint(start: 0, end: 450, name: MOBILE),
+                            const Breakpoint(start: 0, end: 400, name: MOBILE),
                             const Breakpoint(
                                 start: 451, end: 1921, name: TABLET),
                           ],
@@ -191,7 +199,7 @@ class _MyAppState extends State<MyApp> {
                     },
                     title: 'United Natives',
                     home: const SplashPage(),
-                    initialBinding: AppBidding(),
+                    initialBinding: BaseBindings(),
                     onGenerateRoute: RouteGenerator.generateRoute,
                     // localizationsDelegates: [
                     //   Translate(lang).delegate,
@@ -218,44 +226,22 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class AppBidding extends Bindings {
+class BaseBindings extends Bindings {
   @override
-  Future<void> dependencies() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
-    await Firebase.initializeApp();
-    Get.put<UserController>(UserController(), permanent: true);
-    Get.put<BookAppointmentController>(BookAppointmentController(),
-        permanent: true);
-
-    Get.put<SelfMonitoringController>(SelfMonitoringController(),
-        permanent: true);
-
+  void dependencies() {
     Get.lazyPut(() => UserController(), fenix: true);
+    Get.lazyPut(() => SelfMonitoringController(), fenix: true);
+    Get.lazyPut(() => ScheduledClassController(), fenix: true);
+    Get.lazyPut(() => DoctorHomeScreenController(), fenix: true);
+    Get.lazyPut(() => PatientHomeScreenController(), fenix: true);
+    Get.lazyPut(() => ServicesDataController(), fenix: true);
+    Get.lazyPut(() => RequestController(), fenix: true);
+    Get.lazyPut(() => RoomController(), fenix: true);
+    Get.lazyPut(() => DirectDoctorController(), fenix: true);
+    Get.lazyPut(() => PatientScheduledClassController(), fenix: true);
+    Get.lazyPut(() => AdsController(), fenix: true);
+    Get.lazyPut(() => BookAppointmentController(), fenix: true);
+    Get.lazyPut(() => LogOutController(), fenix: true);
+    Get.lazyPut(() => ChangeState(), fenix: true);
   }
-
-  ///controller initialize..
-  UserController userController = Get.put(UserController());
-  ScheduledClassController scheduledClassController =
-      Get.put(ScheduledClassController());
-  DoctorHomeScreenController doctorHomeScreenController =
-      Get.put(DoctorHomeScreenController());
-  PatientHomeScreenController patientHomeScreenController =
-      Get.put(PatientHomeScreenController());
-
-  ServicesDataController servicesController = Get.put(ServicesDataController());
-  RequestController requestController = Get.put(RequestController());
-  RoomController roomController = Get.put(RoomController());
-  DirectDoctorController directDoctorController =
-      Get.put(DirectDoctorController());
-
-  PatientScheduledClassController patientScheduledClassController =
-      Get.put(PatientScheduledClassController());
-
-  AdsController adsController = Get.put(AdsController());
-
-  BookAppointmentController bookAppointmentController =
-      Get.put(BookAppointmentController());
-  LogOutController logOutController = Get.put(LogOutController());
-  ChangeState changeState = Get.put(ChangeState());
 }

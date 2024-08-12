@@ -17,7 +17,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../model/health_response_model.dart';
 import '../../utils/utils.dart';
@@ -514,7 +514,7 @@ class _BloodPressureState extends State<BloodPressure> {
                                         ),
                                       ),
                                     ),
-                                    if (data.isNotEmpty)
+                                    /*if (data.isNotEmpty)
                                       SfCartesianChart(
                                         // primaryXAxis: CategoryAxis(),
                                         enableAxisAnimation: true,
@@ -583,7 +583,7 @@ class _BloodPressureState extends State<BloodPressure> {
                                                     isVisible: true),
                                           ),
                                         ] as List<CartesianSeries>,
-                                      ),
+                                      ),*/
                                     if (data.isEmpty)
                                       Padding(
                                         padding: EdgeInsets.only(

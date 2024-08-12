@@ -1,13 +1,14 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../model/notification.dart';
 import 'widgets/docnotification_list_item.dart';
 
 class NotificationsPage extends StatefulWidget {
+  const NotificationsPage({super.key});
+
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
 }
@@ -24,24 +25,24 @@ class _NotificationsPageState extends State<NotificationsPage> {
         ),
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
                 color: Colors.black,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               }),
-          title: Text(Translate.of(context).translate('Notifications'),
+          title: Text(Translate.of(context)!.translate('Notifications'),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24,
               ),
               textAlign: TextAlign.center),
         ),
         body: ListView.separated(
           separatorBuilder: (context, index) =>
-              Divider(indent: 0, endIndent: 0),
+              const Divider(indent: 0, endIndent: 0),
           itemCount: notifications.length,
           itemBuilder: (context, index) {
             return NotificationListItem(

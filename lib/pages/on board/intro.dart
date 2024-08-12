@@ -1,14 +1,14 @@
-import 'dart:developer';
-
-import 'package:doctor_appointment_booking/pages/login/login_page_auth.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:united_natives/pages/login/login_page_auth.dart';
+import 'package:united_natives/utils/constants.dart';
 
 class OnBoardingPage extends StatefulWidget {
+  const OnBoardingPage({super.key});
+
   @override
-  _OnBoardingPageState createState() => _OnBoardingPageState();
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
@@ -22,15 +22,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   Widget _buildImage(String assetName) {
     return Align(
-      child: Image.asset('assets/images/$assetName', width: 350.0),
       alignment: Alignment.bottomCenter,
+      child: Image.asset('assets/images/$assetName', width: 350.0),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 21.0);
-    const pageDecoration = const PageDecoration(
+    const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -75,18 +75,18 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             'Skip',
             style: Theme.of(context)
                 .textTheme
-                .headline6
-                .copyWith(color: kColorBlue),
+                .titleLarge
+                ?.copyWith(color: kColorBlue),
           ),
           next: Icon(
             Icons.arrow_forward,
-            size: Theme.of(context).textTheme.headline5.fontSize,
+            size: Theme.of(context).textTheme.headlineSmall?.fontSize,
           ),
           done: Text('Done',
               style: Theme.of(context)
                   .textTheme
-                  .headline6
-                  .copyWith(color: kColorBlue)),
+                  .titleLarge
+                  ?.copyWith(color: kColorBlue)),
           dotsDecorator: const DotsDecorator(
             size: Size(10.0, 10.0),
             color: Color(0xFFBDBDBD),

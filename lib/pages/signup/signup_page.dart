@@ -99,6 +99,7 @@ class _SignupPageState extends State<SignupPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -126,7 +127,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 38),
+                        padding: const EdgeInsets.symmetric(horizontal: 28),
                         child: Text(
                           Translate.of(context)!.translate('sign_up'),
                           style: const TextStyle(
@@ -195,9 +196,9 @@ class _SignupPageState extends State<SignupPage> {
 }
 
 class WidgetSignUp extends StatefulWidget {
-  final GlobalKey<ScaffoldState>? scaffoldKey;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const WidgetSignUp({super.key, this.scaffoldKey});
+  const WidgetSignUp({super.key, required this.scaffoldKey});
 
   @override
   State<WidgetSignUp> createState() => _WidgetSignUpState();
@@ -379,7 +380,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 38),
+            padding: const EdgeInsets.symmetric(horizontal: 28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -453,7 +454,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
             height: 20,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 38),
+            padding: const EdgeInsets.symmetric(horizontal: 28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -1000,9 +1001,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   text: dropdownValuesState != null
                       ? '$dropdownValuesState'
                       : 'Select State',
-                  onTap: () {
+                  onTap: () async {
                     if (categoryItemListState.isNotEmpty) {
-                      selectStateCity(state: true, h: h, w: w);
+                      await selectStateCity(state: true, h: h, w: w);
                     }
                   },
                 ),
@@ -1022,9 +1023,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   text: dropdownValuesCity != null
                       ? '$dropdownValuesCity'
                       : 'Select City',
-                  onTap: () {
+                  onTap: () async {
                     if (categoryItemListCity.isNotEmpty) {
-                      selectStateCity(state: false, h: h, w: w);
+                      await selectStateCity(state: false, h: h, w: w);
                     }
                   },
                 ),
@@ -1460,7 +1461,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
     required bool textStyleCon,
     required bool colorCon,
     required bool state,
-  }) async {
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: commonContainer(
@@ -1519,9 +1520,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
     );
   }
 
-  selectStateCity(
+  Future selectStateCity(
       {required double h, required double w, required bool state}) async {
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return PopScope(
@@ -1715,8 +1716,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                               ),
                                             ),
                                           ),
-                                          const Divider(
+                                          Divider(
                                             height: 0,
+                                            color: Colors.grey.shade400,
                                           )
                                         ],
                                       );

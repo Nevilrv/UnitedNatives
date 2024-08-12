@@ -1,15 +1,15 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:date_format/date_format.dart';
-import 'package:doctor_appointment_booking/utils/common_snackbar.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_maintenance_req_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/requestModel/add_room_data_req_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/message_status_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apiModel/responseModel/room_detail_response_model.dart';
-import 'package:doctor_appointment_booking/newModel/apis/api_response.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
-import 'package:doctor_appointment_booking/viewModel/room_view_model.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_maintenance_req_model.dart';
+import 'package:united_natives/newModel/apiModel/requestModel/add_room_data_req_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
+import 'package:united_natives/newModel/apiModel/responseModel/room_detail_response_model.dart';
+import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/room_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart' as g;
@@ -20,8 +20,10 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 class HospitalStructureScreen extends StatefulWidget {
+  const HospitalStructureScreen({super.key});
+
   @override
-  _HospitalStructureScreenState createState() =>
+  State<HospitalStructureScreen> createState() =>
       _HospitalStructureScreenState();
 }
 
@@ -32,20 +34,20 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
   TextEditingController reasonController = TextEditingController();
   TextEditingController staffInChargeNameController = TextEditingController();
   DateTime selectedDate = DateTime.now();
-  String mySelectDate, selectedStartTime;
-  File imageW;
-  String _hour, _minute, _time;
-  String _setTime;
-  String roomId;
-  int status;
-  String time;
+  String? mySelectDate, selectedStartTime;
+  File? imageW;
+  String? _hour, _minute, _time;
+  String? _setTime;
+  String? roomId;
+  int? status;
+  String? time;
 
-  String exstingImage;
-  File imageURL;
-  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
-  ImagePicker _picker = ImagePicker();
-  TabController _tabController;
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  String? exstingImage;
+  File? imageURL;
+  TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
+  final ImagePicker _picker = ImagePicker();
+  TabController? _tabController;
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   @override
   void initState() {
     getData();
@@ -98,13 +100,12 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                     Status.ERROR) {
                   return Center(child: Text("Server error"));
                 }*/
-                  RoomeDetailResponseModel responseModel =
+                  RoomDetailResponseModel responseModel =
                       controller.getRoomDetailApiResponse.data;
-                  print(responseModel.data[0].name);
                   return SafeArea(
                     child: Stack(
                       children: [
-                        Container(
+                        SizedBox(
                           height: Get.height,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
@@ -120,16 +121,16 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                         Container(
                                           height: Get.height * 0.03,
                                           width: Get.width * 0.03,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: Colors.red,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
-                                        Text("Under Maintenance"),
-                                        SizedBox(
+                                        const Text("Under Maintenance"),
+                                        const SizedBox(
                                           width: 5,
                                         ),
                                         Container(
@@ -142,25 +143,25 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                                 Border.all(color: Colors.black),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
-                                        Text("Available"),
-                                        SizedBox(
+                                        const Text("Available"),
+                                        const SizedBox(
                                           width: 5,
                                         ),
                                         Container(
                                           height: Get.height * 0.03,
                                           width: Get.width * 0.03,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: Colors.blue,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
-                                        Text("Occupied"),
+                                        const Text("Occupied"),
                                       ],
                                     ),
                                   ),
@@ -172,13 +173,13 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: Get.width,
                                         child: Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Spacer(),
+                                            const Spacer(),
                                             Column(
                                               children: [
                                                 Row(
@@ -315,7 +316,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                                     commonContainer(
                                                         no: '101',
                                                         status: responseModel
-                                                            .data[0].status)
+                                                            .data?[0].status)
                                                   ],
                                                 ),
                                               ],
@@ -496,13 +497,13 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
             ),
           );
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       },
     );
   }
 
-  Future<File> _fileFromImageUrl({String image}) async {
+  Future<File> _fileFromImageUrl({required String image}) async {
     final response = await http.get(Uri.parse(image));
     final documentDirectory = await getApplicationDocumentsDirectory();
     final file = File(p.join(
@@ -513,57 +514,54 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
       imageURL = file;
     });
     // Uint8List uint8List = await compressFile(File(file.path));
-    print('ImageURL>>>>>>>>>${imageURL.path}.jpg');
     return file;
   }
 
-  Widget commonContainer({String no, status}) {
+  Widget commonContainer({required String no, status}) {
     ///101
     return GetBuilder<RoomController>(
       builder: (controller) {
-        if (controller.getRoomDetailApiResponse.status == Status.LOADING) {
-          print('Waiting.>>>>>>>');
-        }
+        if (controller.getRoomDetailApiResponse.status == Status.LOADING) {}
         List<String> availableList = [];
         List<String> occupiedList = [];
         List<String> maintenanceList = [];
 
-        RoomeDetailResponseModel responseModel =
+        RoomDetailResponseModel responseModel =
             controller.getRoomDetailApiResponse.data;
-        responseModel.data.forEach((element) {
+        responseModel.data?.forEach((element) {
           if (element.status == 1) {
-            maintenanceList.add(element.name);
+            maintenanceList.add(element.name!);
           } else if (element.status == 2) {
             // availableIdList.add(element.id);
-            availableList.add(element.name);
+            availableList.add(element.name!);
           } else if (element.status == 3) {
-            occupiedList.add(element.name);
+            occupiedList.add(element.name!);
           }
         });
         return GestureDetector(
           onTap: () {
-            responseModel.data.forEach((element) {
+            responseModel.data?.forEach((element) {
               if (element.name == no) {
                 roomId = element.id;
                 status = element.status;
-                nameController.text = element.patientName;
-                staffInChargeNameController.text = element.staffInChargeName;
+                nameController.text = element.patientName!;
+                staffInChargeNameController.text = element.staffInChargeName!;
                 mySelectDate = element.patientAdmissiondate;
-                reasonController.text = element.patientReason;
+                reasonController.text = element.patientReason!;
                 time = element.patientAdmissiontime;
                 selectedStartTime = time;
                 exstingImage = element.patientProfilepicture;
                 element.patientProfilepicture == null ||
                         element.patientProfilepicture == ''
-                    ? SizedBox()
-                    : _fileFromImageUrl(image: element.patientProfilepicture);
+                    ? const SizedBox()
+                    : _fileFromImageUrl(image: element.patientProfilepicture!);
               }
             });
             maintenanceList.contains(no)
-                ? commonDialogRemoveMaintenance(controller, roomId)
+                ? commonDialogRemoveMaintenance(controller, roomId!)
                 : availableList.contains(no)
-                    ? commonDialog(controller, roomId)
-                    : commonDialogGetDetail(controller, roomId);
+                    ? commonDialog(controller, roomId!)
+                    : commonDialogGetDetail(controller, roomId!);
             roomId = null;
 
             // no == null || no == '' ? SizedBox() : commonDialog(controller);
@@ -606,55 +604,50 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
     );
   }
 
-  Widget commonContainer2({String no}) {
+  Widget commonContainer2({required String no}) {
     return GetBuilder<RoomController>(
       builder: (controller) {
-        if (controller.getRoomDetailApiResponse.status == Status.LOADING) {
-          print('Waiting.>>>>>>>');
-        }
+        if (controller.getRoomDetailApiResponse.status == Status.LOADING) {}
         List<String> availableList = [];
         List<String> occupiedList = [];
         List<String> maintenanceList = [];
 
-        RoomeDetailResponseModel responseModel =
+        RoomDetailResponseModel responseModel =
             controller.getRoomDetailApiResponse.data;
-        responseModel.data.forEach((element) {
+        responseModel.data?.forEach((element) {
           if (element.status == 1) {
-            maintenanceList.add(element.name);
+            maintenanceList.add(element.name!);
           } else if (element.status == 2) {
-            availableList.add(element.name);
+            availableList.add(element.name!);
           } else if (element.status == 3) {
-            occupiedList.add(element.name);
+            occupiedList.add(element.name!);
           }
         });
         return GestureDetector(
           onTap: () {
-            responseModel.data.forEach((element) {
+            responseModel.data?.forEach((element) {
               if (element.name == no) {
                 roomId = element.id;
-                print('IDDD$roomId');
                 status = element.status;
-                nameController.text = element.patientName;
-                staffInChargeNameController.text = element.staffInChargeName;
+                nameController.text = element.patientName!;
+                staffInChargeNameController.text = element.staffInChargeName!;
                 mySelectDate = element.patientAdmissiondate;
                 time = element.patientAdmissiontime;
                 selectedStartTime = time;
-                reasonController.text = element.patientReason;
+                reasonController.text = element.patientReason!;
                 exstingImage = element.patientProfilepicture;
                 element.patientProfilepicture == null ||
                         element.patientProfilepicture == ''
-                    ? SizedBox()
-                    : _fileFromImageUrl(image: element.patientProfilepicture);
-
-                print('IDDD$roomId');
+                    ? const SizedBox()
+                    : _fileFromImageUrl(image: element.patientProfilepicture!);
               }
             });
 
             maintenanceList.contains(no)
                 ? commonDialogRemoveMaintenance(controller, no)
                 : availableList.contains(no)
-                    ? commonDialog(controller, roomId)
-                    : commonDialogGetDetail(controller, roomId);
+                    ? commonDialog(controller, roomId!)
+                    : commonDialogGetDetail(controller, roomId!);
             roomId = null;
             // no == null || no == '' ? SizedBox() : commonDialog(controller);
           },
@@ -684,7 +677,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
     );
   }
 
-  Container commonContainer3({String no}) {
+  Container commonContainer3({required String no}) {
     return Container(
       height: Get.height * 0.11,
       width: Get.height * 0.11,
@@ -704,7 +697,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
     );
   }
 
-  Widget commonContainer4({String no}) {
+  Widget commonContainer4({String? no}) {
     return Column(
       children: List.generate(6, (index) {
         return Container(
@@ -744,7 +737,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                     children: [
                       Container(
                         width: Get.width,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(15),
                             topRight: Radius.circular(15),
@@ -774,7 +767,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: Get.height * 0.07,
                         child: TabBar(
                           controller: _tabController,
@@ -799,301 +792,394 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                           children: <Widget>[
                             Stack(
                               children: [
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Get.dialog(
-                                              Center(
-                                                child: Container(
-                                                  height: Get.height * 0.4,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                      border: Border.all(
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.dialog(
+                                            Center(
+                                              child: Container(
+                                                height: Get.height * 0.4,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    border: Border.all(
+                                                        color:
+                                                            Colors.blueAccent,
+                                                        width: 3)),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 20),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      MaterialButton(
                                                           color:
                                                               Colors.blueAccent,
-                                                          width: 3)),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 20,
-                                                        vertical: 20),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        MaterialButton(
-                                                            color: Colors
-                                                                .blueAccent,
-                                                            onPressed:
-                                                                () async {
-                                                              final pickedFile =
-                                                                  await _picker
-                                                                      .pickImage(
-                                                                          source:
-                                                                              ImageSource.camera);
+                                                          onPressed: () async {
+                                                            final pickedFile =
+                                                                await _picker.pickImage(
+                                                                    source: ImageSource
+                                                                        .camera);
 
-                                                              onChange(() {
-                                                                if (pickedFile !=
-                                                                    null) {
-                                                                  imageW = File(
-                                                                      pickedFile
-                                                                          .path);
-                                                                  print(imageW);
-                                                                } else {
-                                                                  print(
-                                                                      'No image selected.');
-                                                                }
-                                                              });
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text(
-                                                              "Camera",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            )),
-                                                        MaterialButton(
-                                                            color: Colors
-                                                                .blueAccent,
-                                                            onPressed:
-                                                                () async {
-                                                              final pickedFile =
-                                                                  await _picker
-                                                                      .pickImage(
-                                                                          source:
-                                                                              ImageSource.gallery);
+                                                            onChange(() {
+                                                              if (pickedFile !=
+                                                                  null) {
+                                                                imageW = File(
+                                                                    pickedFile
+                                                                        .path);
+                                                              } else {}
+                                                            });
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                            "Camera",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          )),
+                                                      MaterialButton(
+                                                          color:
+                                                              Colors.blueAccent,
+                                                          onPressed: () async {
+                                                            final pickedFile =
+                                                                await _picker.pickImage(
+                                                                    source: ImageSource
+                                                                        .gallery);
 
-                                                              onChange(() {
-                                                                if (pickedFile !=
-                                                                    null) {
-                                                                  imageW = File(
-                                                                      pickedFile
-                                                                          .path);
-                                                                  print(
-                                                                      'ImageURl$imageW');
-                                                                } else {
-                                                                  print(
-                                                                      'No image selected.');
-                                                                }
-                                                              });
+                                                            onChange(() {
+                                                              if (pickedFile !=
+                                                                  null) {
+                                                                imageW = File(
+                                                                    pickedFile
+                                                                        .path);
+                                                              } else {}
+                                                            });
 
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text(
-                                                              "Gallery",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            ))
-                                                      ],
-                                                    ),
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                            "Gallery",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ))
+                                                    ],
                                                   ),
                                                 ),
                                               ),
-                                              barrierDismissible: true,
-                                            );
-                                          },
-                                          child: Container(
-                                            height: Get.height,
-                                            width: Get.width * 0.25,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  Colors.grey.withOpacity(0.3),
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              border: Border.all(
-                                                color: Colors.black,
-                                              ),
                                             ),
-                                            child: imageW == null
-                                                ? Center(
-                                                    child: CircleAvatar(
-                                                      radius: 30,
-                                                      backgroundColor:
-                                                          Colors.black,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          color: Colors.white,
-                                                        ),
+                                            barrierDismissible: true,
+                                          );
+                                        },
+                                        child: Container(
+                                          height: Get.height,
+                                          width: Get.width * 0.25,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border: Border.all(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          child: imageW == null
+                                              ? const Center(
+                                                  child: CircleAvatar(
+                                                    radius: 30,
+                                                    backgroundColor:
+                                                        Colors.black,
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  child: Image.file(
+                                                    imageW!,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Client Name :',
+                                                style: TextStyle(
+                                                  fontSize: Get.width * 0.04,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: Get.height * 0.03,
+                                              ),
+                                              TextField(
+                                                controller: nameController,
+                                                decoration: InputDecoration(
+                                                  hintText: 'Enter Client name',
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 0,
+                                                          horizontal: 10),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: Get.height * 0.03,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Admission date : ',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize:
+                                                          Get.width * 0.04,
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        final DateTime picked =
+                                                            await showDatePicker(
+                                                          context: context,
+                                                          initialDate:
+                                                              DateTime.now(),
+                                                          firstDate:
+                                                              DateTime.now(),
+                                                          lastDate:
+                                                              DateTime(2500),
+                                                        ).then((value) {
+                                                          if (value != null &&
+                                                              value !=
+                                                                  selectedDate) {
+                                                            onChange(() {
+                                                              selectedDate =
+                                                                  value;
+                                                              mySelectDate =
+                                                                  "${value.toLocal()}"
+                                                                      .split(
+                                                                          ' ')[0];
+                                                            });
+                                                          }
+
+                                                          return selectedDate;
+                                                        });
+
+                                                        log('picked==========>>>>>$picked');
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color: _isDark
+                                                                    ? Colors
+                                                                        .transparent
+                                                                    : Colors
+                                                                        .white,
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                        child: mySelectDate !=
+                                                                    null &&
+                                                                mySelectDate !=
+                                                                    ""
+                                                            ? Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    "${selectedDate.toLocal()}"
+                                                                        .split(
+                                                                            ' ')[0],
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          Get.width *
+                                                                              0.04,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    "Choose date",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          Get.width *
+                                                                              0.05,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
                                                       ),
                                                     ),
                                                   )
-                                                : ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    child: Image.file(
-                                                      imageW,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: Get.height * 0.02,
+                                              ),
+                                              Row(
                                                 children: [
                                                   Text(
-                                                    'Client Name :',
+                                                    'Admission Time : ',
                                                     style: TextStyle(
-                                                      fontSize:
-                                                          Get.width * 0.04,
                                                       fontWeight:
-                                                          FontWeight.w700,
+                                                          FontWeight.bold,
+                                                      fontSize:
+                                                          Get.width * 0.05,
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    height: Get.height * 0.03,
-                                                  ),
-                                                  TextField(
-                                                    controller: nameController,
-                                                    decoration: InputDecoration(
-                                                      hintText:
-                                                          'Enter Client name',
-                                                      contentPadding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 0,
-                                                              horizontal: 10),
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.black),
-                                                      ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.black),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: Get.height * 0.03,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        'Admission date : ',
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize:
-                                                              Get.width * 0.04,
+                                                  Expanded(
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        final TimeOfDay?
+                                                            picked =
+                                                            await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                              selectedTime,
+                                                        );
+                                                        if (picked != null) {
+                                                          onChange(() {
+                                                            selectedTime =
+                                                                picked;
+                                                            _hour = selectedTime
+                                                                .hour
+                                                                .toString();
+                                                            _minute =
+                                                                selectedTime
+                                                                    .minute
+                                                                    .toString();
+                                                            _time =
+                                                                '$_hour : $_minute';
+                                                            _setTime = _time;
+                                                            _setTime = formatDate(
+                                                                DateTime(
+                                                                    2019,
+                                                                    08,
+                                                                    1,
+                                                                    selectedTime
+                                                                        .hour,
+                                                                    selectedTime
+                                                                        .minute),
+                                                                [
+                                                                  hh,
+                                                                  ':',
+                                                                  nn,
+                                                                  ":",
+                                                                  ss
+                                                                ]).toString();
+                                                            selectedStartTime =
+                                                                _setTime;
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: _isDark
+                                                              ? Colors
+                                                                  .transparent
+                                                              : Colors.white,
+                                                          border: Border.all(
+                                                            color: Colors.black,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
                                                         ),
-                                                      ),
-                                                      Expanded(
-                                                        child: InkWell(
-                                                          onTap: () async {
-                                                            final DateTime
-                                                                picked =
-                                                                await showDatePicker(
-                                                              context: context,
-                                                              initialDate:
-                                                                  DateTime
-                                                                      .now(),
-                                                              firstDate:
-                                                                  DateTime
-                                                                      .now(),
-                                                              lastDate:
-                                                                  DateTime(
-                                                                      2500),
-                                                            ).then((value) {
-                                                              if (value !=
-                                                                      null &&
-                                                                  value !=
-                                                                      selectedDate)
-                                                                onChange(() {
-                                                                  selectedDate =
-                                                                      value;
-                                                                  mySelectDate =
-                                                                      "${value.toLocal()}"
-                                                                          .split(
-                                                                              ' ')[0];
-                                                                });
-
-                                                              print(
-                                                                  mySelectDate);
-
-                                                              return;
-                                                            });
-
-                                                            log('picked==========>>>>>$picked');
-                                                          },
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    color: _isDark
-                                                                        ? Colors
-                                                                            .transparent
-                                                                        : Colors
-                                                                            .white,
-                                                                    border:
-                                                                        Border
-                                                                            .all(
-                                                                      color: Colors
-                                                                          .black,
-                                                                    ),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10)),
-                                                            child: mySelectDate !=
-                                                                        null &&
-                                                                    mySelectDate !=
-                                                                        ""
+                                                        child:
+                                                            selectedStartTime !=
+                                                                    null
                                                                 ? Padding(
                                                                     padding:
-                                                                        const EdgeInsets.all(
+                                                                        const EdgeInsets
+                                                                            .all(
                                                                             8.0),
                                                                     child:
                                                                         Center(
                                                                       child:
                                                                           Text(
-                                                                        "${selectedDate.toLocal()}"
-                                                                            .split(' ')[0],
+                                                                        "$selectedStartTime",
                                                                         style:
                                                                             TextStyle(
                                                                           fontSize:
-                                                                              Get.width * 0.04,
+                                                                              Get.width * 0.05,
                                                                         ),
                                                                       ),
                                                                     ),
                                                                   )
                                                                 : Padding(
                                                                     padding:
-                                                                        const EdgeInsets.all(
+                                                                        const EdgeInsets
+                                                                            .all(
                                                                             8.0),
                                                                     child:
                                                                         Center(
                                                                       child:
                                                                           Text(
-                                                                        "Choose date",
+                                                                        "Choose time",
                                                                         style:
                                                                             TextStyle(
                                                                           fontSize:
@@ -1102,349 +1188,219 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                                                       ),
                                                                     ),
                                                                   ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: Get.height * 0.02,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        'Admission Time : ',
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize:
-                                                              Get.width * 0.05,
-                                                        ),
                                                       ),
-                                                      Expanded(
-                                                        child: InkWell(
-                                                          onTap: () async {
-                                                            final TimeOfDay
-                                                                picked =
-                                                                await showTimePicker(
-                                                              context: context,
-                                                              initialTime:
-                                                                  selectedTime,
-                                                            );
-                                                            if (picked != null)
-                                                              onChange(() {
-                                                                selectedTime =
-                                                                    picked;
-                                                                _hour = selectedTime
-                                                                    .hour
-                                                                    .toString();
-                                                                _minute =
-                                                                    selectedTime
-                                                                        .minute
-                                                                        .toString();
-                                                                _time = _hour +
-                                                                    ' : ' +
-                                                                    _minute;
-                                                                _setTime =
-                                                                    _time;
-                                                                _setTime = formatDate(
-                                                                    DateTime(
-                                                                        2019,
-                                                                        08,
-                                                                        1,
-                                                                        selectedTime
-                                                                            .hour,
-                                                                        selectedTime.minute),
-                                                                    [
-                                                                      hh,
-                                                                      ':',
-                                                                      nn,
-                                                                      ":",
-                                                                      ss
-                                                                    ]).toString();
-                                                                selectedStartTime =
-                                                                    _setTime;
-                                                                print(
-                                                                    selectedStartTime);
-                                                              });
-                                                          },
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: _isDark
-                                                                  ? Colors
-                                                                      .transparent
-                                                                  : Colors
-                                                                      .white,
-                                                              border:
-                                                                  Border.all(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                            ),
-                                                            child:
-                                                                selectedStartTime !=
-                                                                        null
-                                                                    ? Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(8.0),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            "$selectedStartTime",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: Get.width * 0.05,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      )
-                                                                    : Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(8.0),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            "Choose time",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: Get.width * 0.05,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: Get.height * 0.02,
-                                                  ),
-                                                  Text(
-                                                    'Client Reason :',
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          Get.width * 0.05,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: Get.height * 0.03,
-                                                  ),
-                                                  TextField(
-                                                    controller:
-                                                        reasonController,
-                                                    decoration: InputDecoration(
-                                                      hintText:
-                                                          'Enter Client reason',
-                                                      contentPadding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 0,
-                                                              horizontal: 10),
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.black),
-                                                      ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.black),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: Get.height * 0.02,
-                                                  ),
-                                                  Text(
-                                                    'Staff Incharge Name:',
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          Get.width * 0.05,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: Get.height * 0.03,
-                                                  ),
-                                                  TextField(
-                                                    controller:
-                                                        staffInChargeNameController,
-                                                    decoration: InputDecoration(
-                                                      hintText:
-                                                          'Enter staff incharge name',
-                                                      contentPadding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 0,
-                                                              horizontal: 10),
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.black),
-                                                      ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.black),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: Get.height * 0.03,
-                                                  ),
-                                                  Center(
-                                                    child: ElevatedButton(
-                                                      onPressed: () async {
-                                                        if (nameController
-                                                                    .text ==
-                                                                null ||
-                                                            nameController
-                                                                .text.isEmpty) {
-                                                          CommonSnackBar.snackBar(
-                                                              message:
-                                                                  "Please enter Client name");
-                                                          return;
-                                                        }
-                                                        if (imageW == null ||
-                                                            imageW.path == '') {
-                                                          CommonSnackBar.snackBar(
-                                                              message:
-                                                                  "Please select image");
-                                                          return;
-                                                        }
-                                                        if (mySelectDate ==
-                                                                null ||
-                                                            mySelectDate ==
-                                                                '') {
-                                                          CommonSnackBar.snackBar(
-                                                              message:
-                                                                  "Please select date");
-                                                          return;
-                                                        }
-                                                        if (selectedStartTime ==
-                                                                null ||
-                                                            selectedStartTime ==
-                                                                '') {
-                                                          CommonSnackBar.snackBar(
-                                                              message:
-                                                                  "Please select time");
-                                                          return;
-                                                        }
-                                                        if (reasonController
-                                                                    .text ==
-                                                                null ||
-                                                            reasonController
-                                                                .text.isEmpty) {
-                                                          CommonSnackBar.snackBar(
-                                                              message:
-                                                                  "Please enter Client reason");
-                                                          return;
-                                                        }
-
-                                                        AddRoomDetailsReqModel
-                                                            model =
-                                                            AddRoomDetailsReqModel();
-                                                        model.staffInChargeName =
-                                                            staffInChargeNameController
-                                                                .text;
-                                                        model.name =
-                                                            nameController.text;
-                                                        model.reason =
-                                                            reasonController
-                                                                .text;
-                                                        model.date =
-                                                            mySelectDate;
-                                                        model.time =
-                                                            selectedStartTime;
-                                                        model.image =
-                                                            imageW.path;
-                                                        await roomController
-                                                            .addRoomDetail(
-                                                                model: model,
-                                                                id: no);
-                                                        if (roomController
-                                                                .addRoomDetailApiResponse
-                                                                .status ==
-                                                            Status.COMPLETE) {
-                                                          MessageStatusResponseModel
-                                                              response =
-                                                              roomController
-                                                                  .addRoomDetailApiResponse
-                                                                  .data;
-                                                          if (response.status ==
-                                                              'Success') {
-                                                            CommonSnackBar.snackBar(
-                                                                message: response
-                                                                    .message);
-                                                            Future.delayed(
-                                                                Duration(
-                                                                    seconds: 2),
-                                                                () {
-                                                              getData();
-                                                              Navigator.pop(
-                                                                  context);
-                                                              imageW = null;
-                                                              staffInChargeNameController
-                                                                  .clear();
-                                                              nameController
-                                                                  .clear();
-                                                              mySelectDate =
-                                                                  null;
-                                                              selectedStartTime =
-                                                                  null;
-                                                              reasonController
-                                                                  .clear();
-                                                            });
-                                                          } else {
-                                                            CommonSnackBar.snackBar(
-                                                                message: response
-                                                                    .message);
-                                                          }
-                                                        } else {
-                                                          CommonSnackBar.snackBar(
-                                                              message:
-                                                                  "Server error");
-                                                        }
-
-                                                        roomId = null;
-                                                        // model.name=?
-                                                      },
-                                                      child: Text("Submit"),
                                                     ),
                                                   )
                                                 ],
                                               ),
-                                            ),
+                                              SizedBox(
+                                                height: Get.height * 0.02,
+                                              ),
+                                              Text(
+                                                'Client Reason :',
+                                                style: TextStyle(
+                                                  fontSize: Get.width * 0.05,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: Get.height * 0.03,
+                                              ),
+                                              TextField(
+                                                controller: reasonController,
+                                                decoration: InputDecoration(
+                                                  hintText:
+                                                      'Enter Client reason',
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 0,
+                                                          horizontal: 10),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: Get.height * 0.02,
+                                              ),
+                                              Text(
+                                                'Staff Incharge Name:',
+                                                style: TextStyle(
+                                                  fontSize: Get.width * 0.05,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: Get.height * 0.03,
+                                              ),
+                                              TextField(
+                                                controller:
+                                                    staffInChargeNameController,
+                                                decoration: InputDecoration(
+                                                  hintText:
+                                                      'Enter staff incharge name',
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 0,
+                                                          horizontal: 10),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: Get.height * 0.03,
+                                              ),
+                                              Center(
+                                                child: ElevatedButton(
+                                                  onPressed: () async {
+                                                    if (nameController
+                                                        .text.isEmpty) {
+                                                      CommonSnackBar.snackBar(
+                                                          message:
+                                                              "Please enter Client name");
+                                                      return;
+                                                    }
+                                                    if (imageW == null ||
+                                                        imageW?.path == '') {
+                                                      CommonSnackBar.snackBar(
+                                                          message:
+                                                              "Please select image");
+                                                      return;
+                                                    }
+                                                    if (mySelectDate == null ||
+                                                        mySelectDate == '') {
+                                                      CommonSnackBar.snackBar(
+                                                          message:
+                                                              "Please select date");
+                                                      return;
+                                                    }
+                                                    if (selectedStartTime ==
+                                                            null ||
+                                                        selectedStartTime ==
+                                                            '') {
+                                                      CommonSnackBar.snackBar(
+                                                          message:
+                                                              "Please select time");
+                                                      return;
+                                                    }
+                                                    if (reasonController
+                                                        .text.isEmpty) {
+                                                      CommonSnackBar.snackBar(
+                                                          message:
+                                                              "Please enter Client reason");
+                                                      return;
+                                                    }
+
+                                                    AddRoomDetailsReqModel
+                                                        model =
+                                                        AddRoomDetailsReqModel();
+                                                    model.staffInChargeName =
+                                                        staffInChargeNameController
+                                                            .text;
+                                                    model.name =
+                                                        nameController.text;
+                                                    model.reason =
+                                                        reasonController.text;
+                                                    model.date = mySelectDate;
+                                                    model.time =
+                                                        selectedStartTime;
+                                                    model.image = imageW?.path;
+                                                    await roomController
+                                                        .addRoomDetail(
+                                                            model: model,
+                                                            id: no);
+                                                    if (roomController
+                                                            .addRoomDetailApiResponse
+                                                            .status ==
+                                                        Status.COMPLETE) {
+                                                      MessageStatusResponseModel
+                                                          response =
+                                                          roomController
+                                                              .addRoomDetailApiResponse
+                                                              .data;
+                                                      if (response.status ==
+                                                          'Success') {
+                                                        CommonSnackBar.snackBar(
+                                                            message: response
+                                                                .message!);
+                                                        Future.delayed(
+                                                            const Duration(
+                                                                seconds: 2),
+                                                            () {
+                                                          getData();
+                                                          Navigator.pop(
+                                                              context);
+                                                          imageW = null;
+                                                          staffInChargeNameController
+                                                              .clear();
+                                                          nameController
+                                                              .clear();
+                                                          mySelectDate = null;
+                                                          selectedStartTime =
+                                                              null;
+                                                          reasonController
+                                                              .clear();
+                                                        });
+                                                      } else {
+                                                        CommonSnackBar.snackBar(
+                                                            message: response
+                                                                .message!);
+                                                      }
+                                                    } else {
+                                                      CommonSnackBar.snackBar(
+                                                          message:
+                                                              "Server error");
+                                                    }
+
+                                                    roomId = null;
+                                                    // model.name=?
+                                                  },
+                                                  child: const Text("Submit"),
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                                 GetBuilder<RoomController>(
                                   builder: (controller) {
@@ -1455,7 +1411,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                         child: Utils.circular(),
                                       );
                                     }
-                                    return SizedBox();
+                                    return const SizedBox();
                                   },
                                 )
                               ],
@@ -1486,22 +1442,22 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                                 .addMaintenanceApiResponse.data;
                                         if (response.status == 'Success') {
                                           CommonSnackBar.snackBar(
-                                              message: response.message);
-                                          Future.delayed(Duration(seconds: 2),
-                                              () {
+                                              message: response.message!);
+                                          Future.delayed(
+                                              const Duration(seconds: 2), () {
                                             getData();
                                             Navigator.pop(context);
                                           });
                                         } else {
                                           CommonSnackBar.snackBar(
-                                              message: response.message);
+                                              message: response.message!);
                                         }
                                       } else {
                                         CommonSnackBar.snackBar(
                                             message: "Server error");
                                       }
                                     },
-                                    child: Text('Add Maintenance'),
+                                    child: const Text('Add Maintenance'),
                                   ),
                                 );
                               },
@@ -1579,15 +1535,11 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                                       if (pickedFile != null) {
                                                         imageW = File(
                                                             pickedFile.path);
-                                                        print(imageW);
-                                                      } else {
-                                                        print(
-                                                            'No image selected.');
-                                                      }
+                                                      } else {}
                                                     });
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text(
+                                                  child: const Text(
                                                     "Camera",
                                                     style: TextStyle(
                                                       color: Colors.white,
@@ -1605,16 +1557,12 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                                     if (pickedFile != null) {
                                                       imageW =
                                                           File(pickedFile.path);
-                                                      print('ImageURl$imageW');
-                                                    } else {
-                                                      print(
-                                                          'No image selected.');
-                                                    }
+                                                    } else {}
                                                   });
 
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text(
+                                                child: const Text(
                                                   "Gallery",
                                                   style: TextStyle(
                                                     color: Colors.white,
@@ -1639,13 +1587,12 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                     )),
                                 child: imageW == null
                                     ? exstingImage == null || exstingImage == ''
-                                        ? Center(
+                                        ? const Center(
                                             child: CircleAvatar(
                                               radius: 30,
                                               backgroundColor: Colors.black,
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
+                                                padding: EdgeInsets.all(8.0),
                                                 child: Icon(
                                                   Icons.add,
                                                   color: Colors.white,
@@ -1657,14 +1604,14 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             child: Image.network(
-                                              exstingImage,
+                                              exstingImage!,
                                               fit: BoxFit.fill,
                                             ),
                                           )
                                     : ClipRRect(
                                         borderRadius: BorderRadius.circular(15),
                                         child: Image.file(
-                                          imageW,
+                                          imageW!,
                                           fit: BoxFit.fill,
                                         ),
                                       ),
@@ -1672,212 +1619,110 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                             ),
                           ),
                           Expanded(
-                            child: Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Room Detail',
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Spacer(),
-                                          IconButton(
-                                              icon: Icon(
-                                                Icons.cancel_rounded,
-                                                color: Colors.blue,
-                                                size: Get.width * 0.03,
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                imageW = null;
-                                                staffInChargeNameController
-                                                    .clear();
-                                                nameController.clear();
-                                                mySelectDate = null;
-                                                selectedStartTime = null;
-                                                reasonController.clear();
-                                              }),
-                                        ],
-                                      ),
-                                      Text(
-                                        'Client Name :',
-                                        style: TextStyle(
-                                            fontSize: Get.width * 0.05,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      SizedBox(
-                                        height: Get.height * 0.03,
-                                      ),
-                                      TextField(
-                                        controller: nameController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Enter Client name',
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 10),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          'Room Detail',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const Spacer(),
+                                        IconButton(
+                                            icon: Icon(
+                                              Icons.cancel_rounded,
+                                              color: Colors.blue,
+                                              size: Get.width * 0.03,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              imageW = null;
+                                              staffInChargeNameController
+                                                  .clear();
+                                              nameController.clear();
+                                              mySelectDate = null;
+                                              selectedStartTime = null;
+                                              reasonController.clear();
+                                            }),
+                                      ],
+                                    ),
+                                    Text(
+                                      'Client Name :',
+                                      style: TextStyle(
+                                          fontSize: Get.width * 0.05,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.03,
+                                    ),
+                                    TextField(
+                                      controller: nameController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Client name',
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 0, horizontal: 10),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: Get.height * 0.03,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Admission date : ',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Get.width * 0.05,
-                                            ),
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.03,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Admission date : ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Get.width * 0.05,
                                           ),
-                                          Expanded(
-                                            child: InkWell(
-                                              onTap: () async {
-                                                final DateTime picked =
-                                                    await showDatePicker(
-                                                            context: context,
-                                                            initialDate:
-                                                                DateTime.now(),
-                                                            firstDate:
-                                                                DateTime.now(),
-                                                            lastDate:
-                                                                DateTime(2500))
-                                                        .then((value) {
-                                                  if (value != null &&
-                                                      value != selectedDate)
-                                                    onChange(() {
-                                                      selectedDate = value;
-                                                      mySelectDate =
-                                                          "${value.toLocal()}"
-                                                              .split(' ')[0];
-                                                    });
-
-                                                  print(mySelectDate);
-
-                                                  return;
-                                                });
-                                                log('picked==========>>>>>$picked');
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: _isDark
-                                                        ? Colors.transparent
-                                                        : Colors.white,
-                                                    border: Border.all(
-                                                      color: Colors.black,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: mySelectDate != null &&
-                                                        mySelectDate != ""
-                                                    ? Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "${selectedDate.toLocal()}"
-                                                                .split(' ')[0],
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.05,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "Choose date",
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.05,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: Get.height * 0.02,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Admission Time : ',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Get.width * 0.05,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: InkWell(
-                                              onTap: () async {
-                                                final TimeOfDay picked =
-                                                    await showTimePicker(
-                                                  context: context,
-                                                  initialTime: selectedTime,
-                                                );
-                                                if (picked != null)
+                                        ),
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              final DateTime picked =
+                                                  await showDatePicker(
+                                                          context: context,
+                                                          initialDate:
+                                                              DateTime.now(),
+                                                          firstDate:
+                                                              DateTime.now(),
+                                                          lastDate:
+                                                              DateTime(2500))
+                                                      .then((value) {
+                                                if (value != null &&
+                                                    value != selectedDate) {
                                                   onChange(() {
-                                                    selectedTime = picked;
-                                                    _hour = selectedTime.hour
-                                                        .toString();
-                                                    _minute = selectedTime
-                                                        .minute
-                                                        .toString();
-                                                    _time =
-                                                        _hour + ' : ' + _minute;
-                                                    _setTime = _time;
-                                                    _setTime = formatDate(
-                                                        DateTime(
-                                                            2019,
-                                                            08,
-                                                            1,
-                                                            selectedTime.hour,
-                                                            selectedTime
-                                                                .minute),
-                                                        [
-                                                          hh,
-                                                          ':',
-                                                          nn,
-                                                          ":",
-                                                          ss
-                                                        ]).toString();
-                                                    selectedStartTime =
-                                                        _setTime;
-                                                    print(selectedStartTime);
+                                                    selectedDate = value;
+                                                    mySelectDate =
+                                                        "${value.toLocal()}"
+                                                            .split(' ')[0];
                                                   });
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
+                                                }
+
+                                                return selectedDate;
+                                              });
+                                              log('picked==========>>>>>$picked');
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
                                                   color: _isDark
                                                       ? Colors.transparent
                                                       : Colors.white,
@@ -1885,284 +1730,372 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                                     color: Colors.black,
                                                   ),
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: selectedStartTime != null
-                                                    ? Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "$selectedStartTime",
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.05,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "Choose time",
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  Get.width *
-                                                                      0.05,
-                                                            ),
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: mySelectDate != null &&
+                                                      mySelectDate != ""
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "${selectedDate.toLocal()}"
+                                                              .split(' ')[0],
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                Get.width *
+                                                                    0.05,
                                                           ),
                                                         ),
                                                       ),
-                                              ),
+                                                    )
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "Choose date",
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                Get.width *
+                                                                    0.05,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
                                             ),
-                                          )
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.02,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Admission Time : ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Get.width * 0.05,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              final TimeOfDay? picked =
+                                                  await showTimePicker(
+                                                context: context,
+                                                initialTime: selectedTime,
+                                              );
+                                              if (picked != null) {
+                                                onChange(() {
+                                                  selectedTime = picked;
+                                                  _hour = selectedTime.hour
+                                                      .toString();
+                                                  _minute = selectedTime.minute
+                                                      .toString();
+                                                  _time = '$_hour : $_minute';
+                                                  _setTime = _time;
+                                                  _setTime = formatDate(
+                                                      DateTime(
+                                                          2019,
+                                                          08,
+                                                          1,
+                                                          selectedTime.hour,
+                                                          selectedTime.minute),
+                                                      [
+                                                        hh,
+                                                        ':',
+                                                        nn,
+                                                        ":",
+                                                        ss
+                                                      ]).toString();
+                                                  selectedStartTime = _setTime;
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: _isDark
+                                                    ? Colors.transparent
+                                                    : Colors.white,
+                                                border: Border.all(
+                                                  color: Colors.black,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: selectedStartTime != null
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "$selectedStartTime",
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                Get.width *
+                                                                    0.05,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "Choose time",
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                Get.width *
+                                                                    0.05,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.02,
+                                    ),
+                                    Text(
+                                      'Client Reason :',
+                                      style: TextStyle(
+                                        fontSize: Get.width * 0.05,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.03,
+                                    ),
+                                    TextField(
+                                      controller: reasonController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter Client reason',
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 0, horizontal: 10),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.02,
+                                    ),
+                                    Text(
+                                      'Staff In Charge :',
+                                      style: TextStyle(
+                                        fontSize: Get.width * 0.05,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.03,
+                                    ),
+                                    TextField(
+                                      controller: staffInChargeNameController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter staff in charge',
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 0, horizontal: 10),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Colors.black)),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.03,
+                                    ),
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.blue),
+                                            onPressed: () async {
+                                              if (nameController.text.isEmpty) {
+                                                CommonSnackBar.snackBar(
+                                                    message:
+                                                        "Please enter Client name");
+                                                return;
+                                              }
+
+                                              if (mySelectDate == null ||
+                                                  mySelectDate == '') {
+                                                CommonSnackBar.snackBar(
+                                                    message:
+                                                        "Please select date");
+                                                return;
+                                              }
+                                              if (selectedStartTime == null ||
+                                                  selectedStartTime == '') {
+                                                CommonSnackBar.snackBar(
+                                                    message:
+                                                        "Please select time");
+                                                return;
+                                              }
+                                              if (reasonController
+                                                  .text.isEmpty) {
+                                                CommonSnackBar.snackBar(
+                                                    message:
+                                                        "Please enter Client reason");
+                                                return;
+                                              }
+
+                                              UpdateRoomDetailsReqModel model =
+                                                  UpdateRoomDetailsReqModel();
+                                              model.action = 'update';
+                                              model.staffInChargeName =
+                                                  staffInChargeNameController
+                                                      .text;
+                                              model.name = nameController.text;
+                                              model.reason =
+                                                  reasonController.text;
+                                              model.date = mySelectDate;
+                                              model.time = selectedStartTime;
+                                              model.image = imageW == null ||
+                                                      imageW?.path == ''
+                                                  ? ''
+                                                  : imageW?.path;
+
+                                              UpdateRoomWithoutImgReqModel
+                                                  reqModel =
+                                                  UpdateRoomWithoutImgReqModel();
+                                              reqModel.action = 'update';
+                                              reqModel.staffInChargeName =
+                                                  staffInChargeNameController
+                                                      .text;
+                                              reqModel.name =
+                                                  nameController.text;
+                                              reqModel.reason =
+                                                  reasonController.text;
+                                              reqModel.date = mySelectDate;
+                                              reqModel.time = selectedStartTime;
+                                              imageW == null ||
+                                                      imageW?.path == ''
+                                                  ? await roomController
+                                                      .updateRoomDetailWithoutImg(
+                                                          id: no,
+                                                          model: reqModel)
+                                                  : await roomController
+                                                      .updateRoomDetail(
+                                                          model: model, id: no);
+                                              if (roomController
+                                                      .updateRoomDetailApiResponse
+                                                      .status ==
+                                                  Status.COMPLETE) {
+                                                MessageStatusResponseModel
+                                                    response = roomController
+                                                        .updateRoomDetailApiResponse
+                                                        .data;
+                                                if (response.status ==
+                                                    'Success') {
+                                                  CommonSnackBar.snackBar(
+                                                      message:
+                                                          response.message!);
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          seconds: 2), () {
+                                                    getData();
+                                                    Navigator.pop(context);
+                                                    imageW = null;
+                                                    staffInChargeNameController
+                                                        .clear();
+                                                    nameController.clear();
+                                                    mySelectDate = null;
+                                                    selectedStartTime = null;
+                                                    reasonController.clear();
+                                                  });
+                                                } else {
+                                                  CommonSnackBar.snackBar(
+                                                      message:
+                                                          response.message!);
+                                                }
+                                              } else {
+                                                CommonSnackBar.snackBar(
+                                                    message: "Server error");
+                                              }
+                                            },
+                                            child: const Text("Update"),
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.red),
+                                            onPressed: () async {
+                                              await roomController
+                                                  .deletRoomDetail(id: no);
+                                              if (roomController
+                                                      .deleteRoomApiResponse
+                                                      .status ==
+                                                  Status.COMPLETE) {
+                                                MessageStatusResponseModel
+                                                    response = roomController
+                                                        .deleteRoomApiResponse
+                                                        .data;
+                                                if (response.status ==
+                                                    'Success') {
+                                                  CommonSnackBar.snackBar(
+                                                      message:
+                                                          response.message!);
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          seconds: 2), () {
+                                                    getData();
+                                                    Navigator.pop(context);
+                                                    imageW = null;
+                                                    staffInChargeNameController
+                                                        .clear();
+                                                    nameController.clear();
+                                                    mySelectDate = null;
+                                                    selectedStartTime = null;
+                                                    reasonController.clear();
+                                                  });
+                                                } else {
+                                                  CommonSnackBar.snackBar(
+                                                      message:
+                                                          response.message!);
+                                                }
+                                              } else {
+                                                CommonSnackBar.snackBar(
+                                                    message: "Server error");
+                                              }
+                                            },
+                                            child: const Text("Discharge"),
+                                          ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: Get.height * 0.02,
-                                      ),
-                                      Text(
-                                        'Client Reason :',
-                                        style: TextStyle(
-                                          fontSize: Get.width * 0.05,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: Get.height * 0.03,
-                                      ),
-                                      TextField(
-                                        controller: reasonController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Enter Client reason',
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 10),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: Get.height * 0.02,
-                                      ),
-                                      Text(
-                                        'Staff In Charge :',
-                                        style: TextStyle(
-                                          fontSize: Get.width * 0.05,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: Get.height * 0.03,
-                                      ),
-                                      TextField(
-                                        controller: staffInChargeNameController,
-                                        decoration: InputDecoration(
-                                          hintText: 'Enter staff in charge',
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 10),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide(
-                                                  color: Colors.black)),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide:
-                                                BorderSide(color: Colors.black),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: Get.height * 0.03,
-                                      ),
-                                      Center(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.blue),
-                                              onPressed: () async {
-                                                if (nameController.text ==
-                                                        null ||
-                                                    nameController
-                                                        .text.isEmpty) {
-                                                  CommonSnackBar.snackBar(
-                                                      message:
-                                                          "Please enter Client name");
-                                                  return;
-                                                }
-
-                                                if (mySelectDate == null ||
-                                                    mySelectDate == '') {
-                                                  CommonSnackBar.snackBar(
-                                                      message:
-                                                          "Please select date");
-                                                  return;
-                                                }
-                                                if (selectedStartTime == null ||
-                                                    selectedStartTime == '') {
-                                                  CommonSnackBar.snackBar(
-                                                      message:
-                                                          "Please select time");
-                                                  return;
-                                                }
-                                                if (reasonController.text ==
-                                                        null ||
-                                                    reasonController
-                                                        .text.isEmpty) {
-                                                  CommonSnackBar.snackBar(
-                                                      message:
-                                                          "Please enter Client reason");
-                                                  return;
-                                                }
-
-                                                UpdateRoomDetailsReqModel
-                                                    model =
-                                                    UpdateRoomDetailsReqModel();
-                                                model.action = 'update';
-                                                model.staffInChargeName =
-                                                    staffInChargeNameController
-                                                        .text;
-                                                model.name =
-                                                    nameController.text;
-                                                model.reason =
-                                                    reasonController.text;
-                                                model.date = mySelectDate;
-                                                model.time = selectedStartTime;
-                                                model.image = imageW == null ||
-                                                        imageW.path == ''
-                                                    ? ''
-                                                    : imageW.path;
-
-                                                UpdateRoomWithoutImgReqModel
-                                                    reqModel =
-                                                    UpdateRoomWithoutImgReqModel();
-                                                reqModel.action = 'update';
-                                                reqModel.staffInChargeName =
-                                                    staffInChargeNameController
-                                                        .text;
-                                                reqModel.name =
-                                                    nameController.text;
-                                                reqModel.reason =
-                                                    reasonController.text;
-                                                reqModel.date = mySelectDate;
-                                                reqModel.time =
-                                                    selectedStartTime;
-                                                imageW == null ||
-                                                        imageW.path == ''
-                                                    ? await roomController
-                                                        .updateRoomDetailWithoutImg(
-                                                            id: no,
-                                                            model: reqModel)
-                                                    : await roomController
-                                                        .updateRoomDetail(
-                                                            model: model,
-                                                            id: no);
-                                                if (roomController
-                                                        .updateRoomDetailApiResponse
-                                                        .status ==
-                                                    Status.COMPLETE) {
-                                                  MessageStatusResponseModel
-                                                      response = roomController
-                                                          .updateRoomDetailApiResponse
-                                                          .data;
-                                                  if (response.status ==
-                                                      'Success') {
-                                                    CommonSnackBar.snackBar(
-                                                        message:
-                                                            response.message);
-                                                    Future.delayed(
-                                                        Duration(seconds: 2),
-                                                        () {
-                                                      getData();
-                                                      Navigator.pop(context);
-                                                      imageW = null;
-                                                      staffInChargeNameController
-                                                          .clear();
-                                                      nameController.clear();
-                                                      mySelectDate = null;
-                                                      selectedStartTime = null;
-                                                      reasonController.clear();
-                                                    });
-                                                  } else {
-                                                    CommonSnackBar.snackBar(
-                                                        message:
-                                                            response.message);
-                                                  }
-                                                } else {
-                                                  CommonSnackBar.snackBar(
-                                                      message: "Server error");
-                                                }
-                                              },
-                                              child: Text("Update"),
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: Colors.red),
-                                              onPressed: () async {
-                                                await roomController
-                                                    .deletRoomDetail(id: no);
-                                                if (roomController
-                                                        .deleteRoomApiResponse
-                                                        .status ==
-                                                    Status.COMPLETE) {
-                                                  MessageStatusResponseModel
-                                                      response = roomController
-                                                          .deleteRoomApiResponse
-                                                          .data;
-                                                  if (response.status ==
-                                                      'Success') {
-                                                    CommonSnackBar.snackBar(
-                                                        message:
-                                                            response.message);
-                                                    Future.delayed(
-                                                        Duration(seconds: 2),
-                                                        () {
-                                                      getData();
-                                                      Navigator.pop(context);
-                                                      imageW = null;
-                                                      staffInChargeNameController
-                                                          .clear();
-                                                      nameController.clear();
-                                                      mySelectDate = null;
-                                                      selectedStartTime = null;
-                                                      reasonController.clear();
-                                                    });
-                                                  } else {
-                                                    CommonSnackBar.snackBar(
-                                                        message:
-                                                            response.message);
-                                                  }
-                                                } else {
-                                                  CommonSnackBar.snackBar(
-                                                      message: "Server error");
-                                                }
-                                              },
-                                              child: Text("Discharge"),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -2180,7 +2113,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                               child: Utils.circular(),
                             );
                           }
-                          return SizedBox();
+                          return const SizedBox();
                         },
                       )
                     ],
@@ -2250,7 +2183,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                         children: [
                           MaterialButton(
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(
+                              side: const BorderSide(
                                   color: Colors.blueAccent, width: 2),
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -2258,7 +2191,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                             onPressed: () async {
                               Navigator.pop(context);
                             },
-                            child: Text(
+                            child: const Text(
                               "No",
                               style: TextStyle(
                                 color: Colors.blue,
@@ -2284,21 +2217,22 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                                         .addMaintenanceApiResponse.data;
                                 if (response.status == 'Success') {
                                   CommonSnackBar.snackBar(
-                                      message: response.message);
-                                  Future.delayed(Duration(seconds: 2), () {
+                                      message: response.message!);
+                                  Future.delayed(const Duration(seconds: 2),
+                                      () {
                                     getData();
                                     Navigator.pop(context);
                                   });
                                 } else {
                                   CommonSnackBar.snackBar(
-                                      message: response.message);
+                                      message: response.message!);
                                 }
                               } else {
                                 CommonSnackBar.snackBar(
                                     message: "Server error");
                               }
                             },
-                            child: Text(
+                            child: const Text(
                               "Yes",
                               style: TextStyle(
                                 color: Colors.white,
@@ -2319,7 +2253,7 @@ class _HospitalStructureScreenState extends State<HospitalStructureScreen>
                         );
                         // return Center(child: CircularProgressIndicator());
                       }
-                      return SizedBox();
+                      return const SizedBox();
                     },
                   ),
                 ],

@@ -1,13 +1,13 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_update_contoller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
-
 import 'widgets/edit_widget.dart';
 
 class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({super.key});
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
@@ -34,16 +34,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           appBar: AppBar(
             title: Text(
-              Translate.of(context).translate('edit_profile'),
+              Translate.of(context)!.translate('edit_profile'),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.subtitle1.color,
+                color: Theme.of(context).textTheme.titleMedium?.color,
                 fontSize: 24,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-          body: EditWidget(),
+          body: const EditWidget(),
         );
       },
     );
@@ -54,10 +54,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
 /*import 'dart:math';
 
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_update_contoller.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 

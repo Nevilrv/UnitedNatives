@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../model/health_response_model.dart';
 import '../../utils/utils.dart';
 
@@ -474,7 +474,7 @@ class _WeightlossState extends State<Weightloss> {
                                         ),
                                       ),
                                     ),
-                                    if (data.isNotEmpty)
+                                    /*if (data.isNotEmpty)
                                       SfCartesianChart(
                                         // primaryXAxis: CategoryAxis(),
                                         enableAxisAnimation: true,
@@ -507,7 +507,7 @@ class _WeightlossState extends State<Weightloss> {
                                             ),
                                           )
                                         ] as List<CartesianSeries>,
-                                      ),
+                                      ),*/
                                     if (data.isEmpty)
                                       Padding(
                                         padding: EdgeInsets.only(

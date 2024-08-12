@@ -1,28 +1,28 @@
-import 'package:doctor_appointment_booking/components/custom_button.dart';
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/data/pref_manager.dart';
-import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-import 'package:doctor_appointment_booking/model/get_all_patient_response_model.dart';
-import 'package:doctor_appointment_booking/pages/myPatientMessageList/patient_message_detail_page.dart';
-import 'package:doctor_appointment_booking/utils/constants.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/custom_button.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/model/get_all_patient_response_model.dart';
+import 'package:united_natives/pages/myPatientMessageList/patient_message_detail_page.dart';
+import 'package:united_natives/utils/constants.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 
 class MyPatientLists extends StatefulWidget {
   final Patient patient;
 
-  MyPatientLists({
-    Key key,
-    @required this.patient,
-  }) : super(key: key);
+  const MyPatientLists({
+    super.key,
+    required this.patient,
+  });
 
   @override
-  _MyPatientListsState createState() => _MyPatientListsState();
+  State<MyPatientLists> createState() => _MyPatientListsState();
 }
 
 class _MyPatientListsState extends State<MyPatientLists> {
-  bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
+  final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   @override
   void initState() {
     // TODO: implement initState
@@ -35,10 +35,10 @@ class _MyPatientListsState extends State<MyPatientLists> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: _isDark ? Colors.grey.withOpacity(0.2) : Color(0xffEBF2F5),
+        color: _isDark ? Colors.grey.withOpacity(0.2) : const Color(0xffEBF2F5),
       ),
       child: Row(
         children: <Widget>[
@@ -82,15 +82,13 @@ class _MyPatientListsState extends State<MyPatientLists> {
           //     },
           //   ),
           // ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  (widget.patient?.firstName ?? "") +
-                      " " +
-                      (widget.patient?.lastName ?? ""),
+                  "${widget.patient.firstName ?? ""} ${widget.patient.lastName ?? ""}",
                   style: TextStyle(
                       color: _isDark ? Colors.white : kColorPrimaryDark,
                       fontSize: 18,
@@ -123,11 +121,11 @@ class _MyPatientListsState extends State<MyPatientLists> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           CustomButton(
-            text: Translate.of(context).translate('Message'),
+            text: Translate.of(context)!.translate('Message'),
             textSize: 16,
             onPressed: () async {
               // _doctorHomeScreenController.doctorChat.value = shortedDoctorChat;
@@ -135,7 +133,6 @@ class _MyPatientListsState extends State<MyPatientLists> {
 
               // _doctorHomeScreenController.onPatientTapFromDoctorList(
               //     context, patient);
-              print('ChatKey ${widget.patient.chatKey}');
               // _doctorHomeScreenController.getAllChatMessagesDoctor(
               //     isAll: true, chatKey: widget.patient.chatKey);
               Get.to(
@@ -143,9 +140,8 @@ class _MyPatientListsState extends State<MyPatientLists> {
                   chatKey: widget.patient.chatKey,
                   fullName: widget.patient.firstName,
                   lastName: widget.patient.lastName,
-                  profilePic: widget.patient.socialProfilePic != null
-                      ? widget.patient.socialProfilePic
-                      : widget.patient.profilePic,
+                  profilePic: widget.patient.socialProfilePic ??
+                      widget.patient.profilePic,
                   bloodGroup: widget.patient.bloodGroup,
                   email: widget.patient.email,
                   gender: widget.patient.gender,
@@ -164,7 +160,7 @@ class _MyPatientListsState extends State<MyPatientLists> {
               // Get.toNamed(Routes.chatDetail, arguments: doctor);
               // Navigator.of(context).pushNamed(Routes.chatDetail);
             },
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           )
         ],
       ),

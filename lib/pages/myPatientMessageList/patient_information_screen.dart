@@ -1,21 +1,21 @@
-import 'package:doctor_appointment_booking/components/ads_bottom_bar.dart';
-import 'package:doctor_appointment_booking/controller/ads_controller.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/components/ads_bottom_bar.dart';
+import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PatientDetailSCreen extends StatefulWidget {
-  final String profilePic;
-  final String fullName;
-  final String lastName;
-  final String email;
-  final String bloodGroup;
-  final String gender;
-  final String insuranceStatus;
-  final String tribalStatus;
+  final String? profilePic;
+  final String? fullName;
+  final String? lastName;
+  final String? email;
+  final String? bloodGroup;
+  final String? gender;
+  final String? insuranceStatus;
+  final String? tribalStatus;
 
   const PatientDetailSCreen(
-      {Key key,
+      {super.key,
       this.profilePic,
       this.fullName,
       this.lastName,
@@ -23,8 +23,7 @@ class PatientDetailSCreen extends StatefulWidget {
       this.bloodGroup,
       this.gender,
       this.insuranceStatus,
-      this.tribalStatus})
-      : super(key: key);
+      this.tribalStatus});
 
   @override
   State<PatientDetailSCreen> createState() => _PatientDetailSCreenState();
@@ -46,13 +45,13 @@ class _PatientDetailSCreenState extends State<PatientDetailSCreen> {
             'Client Detail',
             style: Theme.of(context)
                 .textTheme
-                .subtitle2
-                .copyWith(fontWeight: FontWeight.w700, fontSize: 22),
+                .titleSmall
+                ?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
           ),
         ),
         body: Column(
           children: [
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
 
             Utils().patientProfile(widget.profilePic ?? "", "", 70),
 
@@ -74,22 +73,22 @@ class _PatientDetailSCreenState extends State<PatientDetailSCreen> {
             //     },
             //   ),
             // ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               '${widget.fullName} ${widget.lastName}',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
-              '${widget.email}' ?? '',
+              '${widget.email}',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
                   color: Colors.grey.shade500),
             ),
-            SizedBox(height: 5),
-            Divider(thickness: 1),
-            Container(
+            const SizedBox(height: 5),
+            const Divider(thickness: 1),
+            SizedBox(
               height: 90,
               child: Row(
                 children: [
@@ -99,10 +98,10 @@ class _PatientDetailSCreenState extends State<PatientDetailSCreen> {
                       children: [
                         Image.asset('assets/images/gender.png',
                             height: 30, width: 30),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(
                           widget.gender ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 22),
                         ),
                       ],
@@ -119,9 +118,9 @@ class _PatientDetailSCreenState extends State<PatientDetailSCreen> {
                       children: [
                         Image.asset('assets/images/blood.png',
                             height: 30, width: 30),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(widget.bloodGroup ?? 'A+',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 22)),
                       ],
                     ),
@@ -129,20 +128,21 @@ class _PatientDetailSCreenState extends State<PatientDetailSCreen> {
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               thickness: 1,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Text(
+                  const Text(
                     'Insurance Eligibility :',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   Text(
-                    ' ${widget.insuranceStatus.capitalize ?? ""}',
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+                    ' ${widget.insuranceStatus?.capitalize ?? ""}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, fontSize: 22),
                   ),
                 ],
               ),
@@ -151,13 +151,14 @@ class _PatientDetailSCreenState extends State<PatientDetailSCreen> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Text(
+                  const Text(
                     'Tribal Status :',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   Text(
-                    ' ${widget.tribalStatus.capitalize ?? ""}',
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+                    ' ${widget.tribalStatus?.capitalize ?? ""}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, fontSize: 22),
                   ),
                 ],
               ),

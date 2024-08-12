@@ -228,25 +228,22 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                             text: Translate.of(context)!
                                 .translate('I am a Client')),
                         const SizedBox(height: 10),
-                        ElevatedButton(
+
+                        CustomButton(
+                          textSize: 24,
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
                                 builder: (BuildContext context) {
-                              return const ShowAllScreen();
-                            }));
+                                  return const ShowAllScreen();
+                                },
+                              ),
+                            );
                           },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff2e83f8),
-                              fixedSize:
-                                  Size(MediaQuery.of(context).size.width, 45)),
-                          child: const Text(
-                            'Resources',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 24),
-                          ),
+                          text: Translate.of(context)!.translate('Resources'),
                         ),
+
                         SafeArea(
                           child: Center(
                             child: Wrap(

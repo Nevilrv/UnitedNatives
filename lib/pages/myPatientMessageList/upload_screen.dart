@@ -1,25 +1,23 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:doctor_appointment_booking/controller/doctor_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/patient_homescreen_controller.dart';
-import 'package:doctor_appointment_booking/controller/user_controller.dart';
-import 'package:doctor_appointment_booking/utils/utils.dart';
+import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ChatUploadScreen extends StatefulWidget {
-  final File image;
-  final String type;
-  final File pdf;
-  final String loginType;
+  final File? image;
+  final String? type;
+  final File? pdf;
+  final String? loginType;
 
   const ChatUploadScreen(
-      {Key key, this.image, this.type, this.pdf, this.loginType})
-      : super(key: key);
+      {super.key, this.image, this.type, this.pdf, this.loginType});
   @override
-  _ChatUploadScreenState createState() => _ChatUploadScreenState();
+  State<ChatUploadScreen> createState() => _ChatUploadScreenState();
 }
 
 class _ChatUploadScreenState extends State<ChatUploadScreen> {
@@ -28,7 +26,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
       Get.put<DoctorHomeScreenController>(DoctorHomeScreenController());
   final PatientHomeScreenController patientHomeScreenController =
       Get.put<PatientHomeScreenController>(PatientHomeScreenController());
-  ScrollController _controller = ScrollController();
+  final ScrollController _controller = ScrollController();
   final TextEditingController messageController = TextEditingController();
 
   final UserController _userController = Get.find<UserController>();
@@ -47,7 +45,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
               height: Get.height * 0.05,
             ),
             widget.type == 'image'
-                ? widget.image == null || widget.image.path == ''
+                ? widget.image == null || widget.image?.path == ''
                     ? Expanded(
                         child: Container(color: Colors.black12),
                       )
@@ -56,7 +54,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
                           padding: const EdgeInsets.all(10.0),
                           child: Container(
                             color: Colors.black12,
-                            child: Image.file(widget.image, fit: BoxFit.fill),
+                            child: Image.file(widget.image!, fit: BoxFit.fill),
                           ),
                         ),
                       )
@@ -65,7 +63,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
                         color: Colors.red,
-                        child: SfPdfViewer.file(widget.pdf, pageSpacing: 1.0),
+                        child: SfPdfViewer.file(widget.pdf!, pageSpacing: 1.0),
                       ),
                     ),
                   ),
@@ -83,7 +81,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
                         padding: const EdgeInsets.all(2.0),
                         child: TextFormField(
                             validator: (text) {
-                              if (text.isEmpty) {
+                              if (text!.isEmpty) {
                                 _doctorHomeScreenController.isLoading.value =
                                     false;
                                 return 'Enter Message';
@@ -92,7 +90,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
                             },
                             onTap: () {
                               Timer(
-                                  Duration(milliseconds: 100),
+                                  const Duration(milliseconds: 100),
                                   () => _controller.jumpTo(
                                       _controller.position.maxScrollExtent));
                             },
@@ -100,24 +98,24 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
                             decoration: InputDecoration(
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                     color: Colors.transparent, width: 0),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(4),
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                     color: Colors.transparent, width: 0),
                               ),
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.2),
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 10),
                               hintText: 'Enter message',
                               hintStyle: TextStyle(
                                   color: Colors.grey[400], fontSize: 22),
                             ),
                             autofocus: false,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                             cursorWidth: 1),
                       ),
                     ),
@@ -136,9 +134,9 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
                               ? "patient"
                               : "doctor",
                           toId: widget.loginType == 'patient'
-                              ? patientHomeScreenController?.toId?.value
+                              ? patientHomeScreenController.toId.value
                               : _doctorHomeScreenController
-                                      .doctorChat.value?.toId ??
+                                      .doctorChat.value.toId ??
                                   "",
                           toType: widget.loginType == 'patient'
                               ? 'doctor'
@@ -153,7 +151,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
                     icon: Obx(
                       () => _doctorHomeScreenController.isLoading.value
                           ? Utils.circular()
-                          : Icon(Icons.send, size: 25),
+                          : const Icon(Icons.send, size: 25),
                     ),
                   ),
                 ],
