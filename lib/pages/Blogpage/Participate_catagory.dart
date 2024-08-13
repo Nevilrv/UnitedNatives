@@ -17,6 +17,7 @@ class PCategoryView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title: Text(Translate.of(context)!.translate('Survey List'),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -181,16 +182,19 @@ class WebViewLoad extends StatefulWidget {
 
 class WebViewLoadUI extends State<WebViewLoad> {
   AdsController adsController = Get.find();
+  WebViewController controller = WebViewController();
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
+        resizeToAvoidBottomInset: false,
         bottomNavigationBar: AdsBottomBar(
           ads: ads,
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             'Survey',
             style: TextStyle(
@@ -207,7 +211,7 @@ class WebViewLoadUI extends State<WebViewLoad> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: WebViewWidget(
-              controller: WebViewController()
+              controller: controller
                 ..setJavaScriptMode(JavaScriptMode.unrestricted)
                 ..loadRequest(
                   Uri.parse(

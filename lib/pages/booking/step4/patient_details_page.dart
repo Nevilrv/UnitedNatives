@@ -407,15 +407,13 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
                         (state == false &&
                             getCitiesViewModel.getCitiesApiResponse.status ==
                                 Status.LOADING)
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        // child:  CircularProgressIndicator(
-                        //   strokeWidth: 1,
-                        // ),
-                        child: Center(
-                          child: Utils.circular(),
-                        ))
+                    ? const SizedBox(
+                        height: 10,
+                        width: 10,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 5,
+                        ),
+                      ).paddingOnly(right: 5)
                     : Icon(Icons.arrow_drop_down,
                         color: _isDark
                             ? colorCon
@@ -667,6 +665,7 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
       children: [
         Scaffold(
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(Translate.of(context)!.translate('patient_details'),
                 style: TextStyle(

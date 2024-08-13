@@ -25,6 +25,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             'Meet with doctor',
             style: TextStyle(

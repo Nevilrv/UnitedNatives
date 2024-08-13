@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:loading_btn/loading_btn.dart';
+
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart' hide Trans;
+import 'package:http/http.dart' as http;
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/components/custom_button.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/model/user.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart' hide Trans;
-import 'package:http/http.dart' as http;
-import 'package:united_natives/utils/utils.dart';
+
 import '../../components/text_form_field.dart';
 import '../../utils/constants.dart';
 
@@ -37,6 +37,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
         appBar: AppBar(
           elevation: 0,
+          surfaceTintColor: Colors.transparent,
           backgroundColor: Colors.transparent,
           leading: IconButton(
             onPressed: () {
@@ -114,7 +115,8 @@ class _WidgetForgotState extends State<WidgetForgot> {
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final UserController _userController = Get.find();
-
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
   Future forGotPassWord({var body}) async {
     Map<String, String> headers = {
       "Authorization": 'Bearer Bearer 81dc9bdb52d04dc20036dbd8313ed055',
@@ -132,7 +134,7 @@ class _WidgetForgotState extends State<WidgetForgot> {
     }
   }
 
-  bool loading = false;
+  bool btnEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -151,48 +153,52 @@ class _WidgetForgotState extends State<WidgetForgot> {
                 : "Please Enter a Valid E-mail.",
             controller: _emailController,
             onChanged: (value) {
-              setState(() {});
+              if (value.isEmpty) {
+                setState(() {
+                  btnEnabled = false;
+                });
+              } else {
+                setState(() {
+                  btnEnabled = true;
+                });
+              }
             },
             hintText: '',
           ),
           const SizedBox(
             height: 35,
           ),
-          loading
-              ? SizedBox(
-                  height: 60,
-                  child: Center(
-                    child: Utils.circular(height: 60),
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: CustomButton(
-                    textSize: 20,
-                    // onPressed: () async {
-                    //   await _userController.userLogin(LogInType.NORMAL,1,
-                    //       _emailController.text,
-                    //       _passwordController.text,"");
-                    // },
-                    onPressed: () async {
+          Padding(
+            padding: const EdgeInsets.only(right: 25, left: 25),
+            child: RoundedLoadingButton(
+              color: kColorBlue,
+              valueColor: Colors.white,
+              successColor: Colors.white,
+              controller: _btnController,
+              onPressed: btnEnabled == true
+                  ? () async {
                       User userData = User(email: _emailController.text);
                       if (_formKey.currentState!.validate()) {
-                        setState(() {
-                          loading = true;
-                        });
-
                         await _userController.forgotPassword(userData);
                       }
-                      setState(() {
-                        loading = false;
-                      });
-                    },
-                    text: _emailController.text.isNotEmpty
-                        ? Translate.of(context)!.translate('Reset Password')
-                        : Translate.of(context)!
-                            .translate('Enter Email to Reset Password'),
-                  ),
-                ),
+                      _btnController.reset();
+                    }
+                  : null,
+              child: btnEnabled == true
+                  ? const Text(
+                      'Reset Password',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    )
+                  : const Text('Enter Email to Reset Password',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)),
+            ),
+          ),
         ],
       ),
     );

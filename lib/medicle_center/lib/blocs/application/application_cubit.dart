@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:united_natives/medicle_center/lib/api/api.dart';
 import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
@@ -72,14 +73,14 @@ class ApplicationCubit extends Cubit<ApplicationState> {
       }
     }
 
-    /// NEW CODE COMMENT
-
     ///Setup application & setting
     final results = await Future.wait({
-      // PackageInfo.fromPlatform(),
+      PackageInfo.fromPlatform(),
       UtilsMedicalCenter.getDeviceInfo(),
       Firebase.initializeApp(),
     });
+
+    log('results==========>>>>>${results}');
 
     Application.packageInfo = results[0] as PackageInfo;
     Application.device = results[1] as DeviceModel;

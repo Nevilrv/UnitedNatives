@@ -700,22 +700,20 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                           ),
                         ),
                         SizedBox(height: Get.height * 0.015),
-
-                        /// NEW CODE COMMENT
-
-                        // SmoothStarRating(
-                        //   allowHalfRating: false,
-                        //   starCount: 5,
-                        //   rating: appointment.ratingByPatient ?? 0.0,
-                        //   size: Get.height * 0.05,
-                        //   isReadOnly: true,
-                        //   color: Colors.blue,
-                        //   borderColor: Colors.blue,
-                        //   filledIconData: Icons.star,
-                        //   halfFilledIconData: Icons.star_half,
-                        //   defaultIconData: Icons.star_border,
-                        //   spacing: .5,
-                        // ),
+                        RatingBarIndicator(
+                          rating: appointment.ratingByPatient ?? 0.0,
+                          itemCount: 5,
+                          itemSize: Get.height * 0.05,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Colors.blue,
+                          ),
+                          unratedColor: Colors.blue.withOpacity(0.3),
+                          direction: Axis.horizontal,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 0.25),
+                        ),
                         SizedBox(height: Get.height * 0.045),
                       ],
                     ),

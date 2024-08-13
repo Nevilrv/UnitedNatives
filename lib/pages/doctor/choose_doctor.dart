@@ -35,7 +35,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(
+//       appBar: AppBar(surfaceTintColor: Colors.transparent,
 //         centerTitle: true,
 //         title: Text(
 //           'doctor'.tr(),

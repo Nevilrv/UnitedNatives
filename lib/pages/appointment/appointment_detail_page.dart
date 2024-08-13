@@ -228,6 +228,7 @@ class _AppointmentDetailPageState extends State<AppointmentDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         centerTitle: true,
         title: Text(
           Translate.of(context)!.translate('appointment_details'),

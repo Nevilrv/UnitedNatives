@@ -36,6 +36,7 @@ class _CategoryPickerState extends State<CategoryPicker> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         centerTitle: true,
         title: Text("${widget.picker?.title}"),
         actions: <Widget>[

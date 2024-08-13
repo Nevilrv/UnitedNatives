@@ -2,7 +2,7 @@ import 'dart:convert' show utf8;
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';
-import 'package:loading_btn/loading_btn.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
@@ -36,7 +36,8 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
   LoginVerificationData loginVerificationData = LoginVerificationData();
   PINStatusModel pinStatusModelData = PINStatusModel();
   ResetPIN resetPINData = ResetPIN();
-
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
   FocusNode focusNode = FocusNode();
   var currentFocus;
   unFocus() {
@@ -46,7 +47,7 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
     }
   }
 
-  LogOutController logOutController = Get.put(LogOutController());
+  LogOutController logOutController = Get.find();
 
   Future<void> addChatOnlineStatus({required bool type}) async {
     AddChatOnlineStatusReqModel model = AddChatOnlineStatusReqModel();
@@ -141,6 +142,11 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                                         children: <Widget>[
                                           Expanded(
                                             child: TextFormField(
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  fontSize: 18,
+                                                ),
                                                 focusNode: focusNode,
                                                 textInputAction:
                                                     TextInputAction.go,
@@ -167,16 +173,7 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                                                     });
                                                   }
                                                 },
-                                                onTap: () {},
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontSize: 18,
-                                                ),
                                                 decoration: InputDecoration(
-                                                    // errorText: validatePassword(
-                                                    //     otpController.text),
-
                                                     border: InputBorder.none,
                                                     labelStyle: TextStyle(
                                                       color: Theme.of(context)
@@ -205,38 +202,40 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                     builder: (controller) {
                       return Padding(
                         padding: const EdgeInsets.only(right: 32, left: 32),
-                        child: LoadingBtn(
-                          height: 50,
-                          width: 150,
-                          disabledColor: Colors.white,
-                          color: kColorBlue,
-                          onTap: (startLoading, stopLoading, btnState) async {
-                            startLoading();
+                        child: RoundedLoadingButton(
+                          color: Colors.white,
+                          valueColor: kColorBlue,
+                          successColor: Colors.white,
+                          controller: _btnController,
+                          onPressed: controller.isCheck == true
+                              ? () async {
+                                  unFocus();
+                                  final userPIN = otpController.text;
 
-                            unFocus();
-                            final userPIN = otpController.text;
-                            final encryptedUtf = utf8.encode(userPIN);
-                            var md5 = crypto.md5;
-                            final encryptedPIN = md5.convert(encryptedUtf);
-                            if (_formKey.currentState!.validate()) {
-                              await _userController.userLogin(
-                                  LogInType.NORMAL,
-                                  _userController.loginData?.userType ??
-                                      Config.getUserType(),
-                                  _userController.loginData?.email ??
-                                      Config.getEmail(),
-                                  _userController.loginData?.password ??
-                                      Config.getPassword(),
-                                  encryptedPIN.toString(),
-                                  userPIN,
-                                  context);
-                              stopLoading();
-                              controller.isCheck = false;
-                              if (_userController.user.value != null) {
-                                stopLoading();
-                              }
-                            }
-                          },
+                                  final encryptedUtf = utf8.encode(userPIN);
+                                  var md5 = crypto.md5;
+                                  final encryptedPIN =
+                                      md5.convert(encryptedUtf);
+                                  if (_formKey.currentState!.validate()) {
+                                    await _userController.userLogin(
+                                        LogInType.NORMAL,
+                                        _userController.loginData?.userType ??
+                                            Config.getUserType(),
+                                        _userController.loginData?.email ??
+                                            Config.getEmail(),
+                                        _userController.loginData?.password ??
+                                            Config.getPassword(),
+                                        encryptedPIN.toString(),
+                                        userPIN,
+                                        context);
+                                    _btnController.stop();
+                                    controller.isCheck = false;
+                                    if (_userController.user.value != null) {
+                                      _btnController.reset();
+                                    }
+                                  }
+                                }
+                              : null,
                           child: controller.isCheck == true
                               ? const Text('PROCEED',
                                   style: TextStyle(
@@ -245,6 +244,7 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                                       fontWeight: FontWeight.bold))
                               : const Text('Enter Secure PIN to Proceed',
                                   style: TextStyle(
+                                      fontSize: 20,
                                       color: kColorBlue,
                                       fontWeight: FontWeight.bold)),
                         ),
@@ -480,7 +480,7 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
               otxt,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.titleLarge?.color,
+                    color: _isDark ? Colors.white : Colors.black,
                   ),
             ),
             Padding(

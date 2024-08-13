@@ -41,6 +41,7 @@ class _RequestListScreenState extends State<RequestListScreen> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             'Request List',
             style: TextStyle(

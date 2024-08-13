@@ -441,7 +441,7 @@
 //                   context: context,
 //
 //                 ),
-//                 appBar: AppBar(
+//                 appBar: AppBar(surfaceTintColor: Colors.transparent,
 //                   centerTitle: true,
 //                   title: Text(
 //                     Translate.of(context).translate('book_an_appointment'),

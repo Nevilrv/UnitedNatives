@@ -21,7 +21,7 @@
 //   Widget build(BuildContext context) {
 //     super.build(context);
 //     return Scaffold(
-//       appBar: AppBar(
+//       appBar: AppBar(surfaceTintColor: Colors.transparent,
 //         title: Text(
 //           Translate.of(context).translate('Provider Prescriptions'),
 //         ),

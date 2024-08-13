@@ -38,8 +38,8 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
   String? chooseStateId;
   final BookAppointmentController _bookAppointmentController =
       Get.put(BookAppointmentController());
-  PatientHomeScreenController patientHomeScreenController =
-      Get.put(PatientHomeScreenController());
+  final PatientHomeScreenController patientHomeScreenController =
+      Get.find<PatientHomeScreenController>();
   int selected = 0;
 
   final searchController = TextEditingController();
@@ -71,6 +71,7 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(Translate.of(context)!.translate('my_appointments'),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,

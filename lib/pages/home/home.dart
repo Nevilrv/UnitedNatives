@@ -40,14 +40,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   final UserController userController = Get.find();
   PatientScheduledClassController patientScheduledClassController =
       Get.put(PatientScheduledClassController());
-  PatientHomeScreenController patientHomeScreenController =
-      Get.put(PatientHomeScreenController());
+  static final PatientHomeScreenController patientHomeScreenController =
+      Get.find();
   RateContactUsController rateContactUsController =
       Get.put(RateContactUsController());
   LogOutController logOutController = Get.put(LogOutController());
   final _pages = [
-    HomePage(),
-    ProfilePage(),
+    const HomePage(),
+    const ProfilePage(),
     const MessagesPage(),
     const SettingsPage(),
   ];
@@ -60,7 +60,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       password: Prefs.getString(Prefs.PASSWORD),
     );
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // getStates();
       _bookAppointmentController.getMedicalCenter();
     });
     WidgetsBinding.instance.addObserver(this);
@@ -281,6 +280,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     BorderRadius.circular(controller.isDrawerOpen ? 40 : 0.0),
                 child: Scaffold(
                   appBar: AppBar(
+                    surfaceTintColor: Colors.transparent,
                     leading: controller.isDrawerOpen
                         ? IconButton(
                             icon: const Icon(Icons.arrow_back_ios),

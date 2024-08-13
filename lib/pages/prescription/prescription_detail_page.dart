@@ -27,6 +27,7 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           actions: const <Widget>[],
           title: Text(
             Translate.of(context)!.translate('prescription_detail'),

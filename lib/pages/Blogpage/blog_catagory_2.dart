@@ -10,9 +10,7 @@ import 'package:get/get.dart' hide Trans;
 import '../../routes/routes.dart';
 
 class CategoryViewDoctor extends StatelessWidget {
-  final ResearchDocument ?data;
-
-
+  final ResearchDocument? data;
 
   CategoryViewDoctor({super.key, this.data});
 
@@ -27,6 +25,7 @@ class CategoryViewDoctor extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title: Text(
           Translate.of(context)!.translate('Project List'),
         ),
@@ -192,8 +191,8 @@ class CategoryViewDoctor extends StatelessWidget {
                   .doctorResearchDocumentModelData.value.apiState ==
               APIState.PROCESSING) {
             return Center(
-                            child: Utils.circular(),
-                          );
+              child: Utils.circular(),
+            );
           } else {
             return const Center(
               child: Text(

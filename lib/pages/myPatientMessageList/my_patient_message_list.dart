@@ -39,6 +39,7 @@ class _MyPatientMessageListState extends State<MyPatientMessageList> {
         children: [
           Scaffold(
               appBar: AppBar(
+                surfaceTintColor: Colors.transparent,
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back_ios_sharp),
                   onPressed: () async {

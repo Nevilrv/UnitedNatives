@@ -240,13 +240,28 @@ class _MessagesPageState extends State<MessagesPage> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title:
-                                                    const Text('Delete Chat'),
+                                                title: const Text('Delete Chat',
+                                                    style: TextStyle(
+                                                        fontSize: 22)),
                                                 content: Text(
-                                                    "Are you sure want to delete ${'Dr. ${chatListItem.doctorFirstName ?? ""} ${chatListItem.doctorLastName ?? ""}'}'s chat?"),
+                                                    "Are you sure want to delete ${'Dr. ${chatListItem.doctorFirstName ?? ""} ${chatListItem.doctorLastName ?? ""}'}'s chat?",
+                                                    style: const TextStyle(
+                                                        fontSize: 22)),
                                                 actions: <Widget>[
                                                   TextButton(
-                                                    child: const Text("YES"),
+                                                    child: const Text("No",
+                                                        style: TextStyle(
+                                                            fontSize: 22)),
+                                                    onPressed: () {
+                                                      //Put your code here which you want to execute on No button click.
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: const Text("Yes",
+                                                        style: TextStyle(
+                                                            fontSize: 22)),
                                                     onPressed: () {
                                                       patientHomeScreenCtlr
                                                           .deleteChatUserPatient(
@@ -273,14 +288,6 @@ class _MessagesPageState extends State<MessagesPage> {
                                                             'Chat Delete Failed',
                                                             'Please try again later');
                                                       }
-                                                    },
-                                                  ),
-                                                  TextButton(
-                                                    child: const Text("NO"),
-                                                    onPressed: () {
-                                                      //Put your code here which you want to execute on No button click.
-                                                      Navigator.of(context)
-                                                          .pop();
                                                     },
                                                   ),
                                                 ],

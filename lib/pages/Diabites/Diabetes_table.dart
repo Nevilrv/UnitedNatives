@@ -106,7 +106,7 @@ class _DiabetesState extends State<Diabetes> {
   Future<HealthResponseModel?> getDiabetesData() async {
     rows.clear();
     idList.clear();
-    final String url = Constants.getRoutineHealthReport;
+    const String url = Constants.getRoutineHealthReport;
     var body = {
       "patient_id": "${_userController.user.value.id}",
       "report_type_id": "7",
@@ -152,7 +152,7 @@ class _DiabetesState extends State<Diabetes> {
   Future addDiabetesData(reportTableData) async {
     isLoading.value = true;
 
-    final String url = Constants.addRoutineHealthReport;
+    const String url = Constants.addRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -189,7 +189,7 @@ class _DiabetesState extends State<Diabetes> {
   Future deleteDiabetesData(String id) async {
     isLoading.value = true;
 
-    final String url = Constants.deleteRoutineHealthReport;
+    const String url = Constants.deleteRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -219,7 +219,7 @@ class _DiabetesState extends State<Diabetes> {
       {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
-    final String url = Constants.updateRoutineHealthReport;
+    const String url = Constants.updateRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -294,6 +294,7 @@ class _DiabetesState extends State<Diabetes> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               "Blood Sugar Tracker",
               style: TextStyle(

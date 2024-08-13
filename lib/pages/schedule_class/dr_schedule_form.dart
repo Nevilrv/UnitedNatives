@@ -107,6 +107,7 @@ class _ScheduleFormState extends State<ScheduleForm> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             "Add schedule class ",
             style: TextStyle(

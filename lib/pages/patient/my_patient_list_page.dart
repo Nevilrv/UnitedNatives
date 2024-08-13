@@ -38,6 +38,7 @@ class _MyPatientListPageState extends State<MyPatientListPage> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               Translate.of(context)!.translate('My Client list'),
               style: TextStyle(

@@ -1666,22 +1666,17 @@ class _HomeState extends State<Home> {
           List<CategoryModel>? category;
           List<CategoryModel>? location;
           List<ProductModel>? recent;
-          List<ProductModel>? nativeAmericanData;
-          List<ProductModel>? americanNativeData;
+          List<ProductModel> nativeAmericanData = [];
+          List<ProductModel> americanNativeData = [];
 
           if (state is HomeSuccess) {
             banner = state.banner;
             category = state.category;
             location = state.location;
             recent = state.recent;
-            nativeAmericanData = state.nativeAmericanData;
-            americanNativeData = state.americanNativeData;
+            nativeAmericanData = state.nativeAmericanData!;
+            americanNativeData = state.americanNativeData!;
           }
-
-          log('category==========>>>>>$category');
-          log('location==========>>>>>$location');
-          log('recent==========>>>>>$recent');
-          log('americanNativeData==========>>>>>$americanNativeData');
 
           return CustomScrollView(
             physics: const BouncingScrollPhysics(
@@ -1691,7 +1686,7 @@ class _HomeState extends State<Home> {
               SliverPersistentHeader(
                 delegate: AppBarHomeSliver(
                   expandedHeight: h * 0.3,
-                  banners: banner!,
+                  banners: banner,
                   onSearch: state is HomeSuccess ? _onSearch : () {},
                   onScan: _onScan,
                   onFilter: onFilter,
@@ -1712,7 +1707,7 @@ class _HomeState extends State<Home> {
                         // _buildLocation(location),
                         // _buildRecent(recent),
 
-                        _buildNativeAmericanData(nativeAmericanData!),
+                        _buildNativeAmericanData(nativeAmericanData),
                         _buildNavajoNationServicesData(nativeAmericanData),
                         _buildAmericanNativeData(nativeAmericanData),
                         const SizedBox(height: 28),

@@ -27,6 +27,7 @@ class _DoctorPrescriptionPageState extends State<DoctorPrescriptionPage> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             Translate.of(context)!.translate('Client Prescriptions'),
             style: TextStyle(

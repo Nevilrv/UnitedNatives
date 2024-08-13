@@ -75,6 +75,7 @@ class _MyDoctorNotesScreenState extends State<MyDoctorNotesScreen> {
       canPop: true,
       child: Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           centerTitle: true,
           leading: GestureDetector(
               onTap: () {

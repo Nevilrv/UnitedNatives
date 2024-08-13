@@ -71,6 +71,7 @@ class _AddIHNotesScreenState extends State<AddIHNotesScreen> {
         },
         child: Scaffold(
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             centerTitle: true,
             leading: GestureDetector(
               onTap: () {

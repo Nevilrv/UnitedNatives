@@ -33,6 +33,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               Translate.of(context)!.translate('edit_profile'),
               style: TextStyle(
@@ -94,7 +95,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           context: context,
 
         ),
-        appBar: AppBar(
+        appBar: AppBar(surfaceTintColor: Colors.transparent,
           title: Text(
             Translate.of(context).translate('edit_profile'),
             style: TextStyle(

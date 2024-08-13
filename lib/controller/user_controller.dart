@@ -755,7 +755,7 @@ class UserController extends GetxController {
         if (isPinScreen.value == true) {
           if (isScreenName.value == 'patientAppointment') {
             Get.offAllNamed(Routes.home);
-            await Get.to(MyAppointmentsPage());
+            await Get.to(const MyAppointmentsPage());
             isPinScreen.value = false;
           } else if (isScreenName.value == 'patientAppointmentPrescription') {
             Get.offAllNamed(Routes.home);
@@ -829,7 +829,7 @@ class UserController extends GetxController {
               Routes.home2,
             );
             await Get.to(
-              MyAppointmentsDoctor(),
+              const MyAppointmentsDoctor(),
             );
             isPinScreen.value = false;
           } else if (isScreenName.value == 'patientChat') {
@@ -858,7 +858,7 @@ class UserController extends GetxController {
                 Get.offAllNamed(
                   Routes.home2,
                 );
-                await Get.to(DoctorMessagesDetailPage());
+                await Get.to(const DoctorMessagesDetailPage());
                 isPinScreen.value = false;
               },
             );

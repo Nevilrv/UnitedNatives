@@ -24,6 +24,7 @@ class CategoryView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title: Text(
           Translate.of(context)!.translate('Project List'),
         ),

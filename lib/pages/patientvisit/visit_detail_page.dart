@@ -35,6 +35,7 @@ class _PatientVisitDetailPageState extends State<PatientVisitDetailPage> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             Translate.of(context)!.translate('visit_detail'),
             style: TextStyle(

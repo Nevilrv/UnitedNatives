@@ -41,6 +41,7 @@ class _PatientDetailSCreenState extends State<PatientDetailSCreen> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             'Client Detail',
             style: Theme.of(context)

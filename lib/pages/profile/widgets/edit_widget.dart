@@ -8,7 +8,7 @@ import 'package:get/get.dart' hide Trans;
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loading_btn/loading_btn.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/controller/user_update_contoller.dart';
 import 'package:united_natives/data/pref_manager.dart';
@@ -30,7 +30,8 @@ class _EditWidgetState extends State<EditWidget> {
   final UserController _userController = Get.find();
   bool stateLoader = false;
   bool cityLoader = false;
-
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
   String? dropdownValuesState;
   List categoryItemListState = [];
   String? dropdownValuesCity;
@@ -836,21 +837,22 @@ class _EditWidgetState extends State<EditWidget> {
                 //   },
                 //   text: 'update_info'.tr(),
                 // ),
-                child: LoadingBtn(
-                  height: 50,
-                  width: 150,
-                  disabledColor: Colors.white,
+                child: RoundedLoadingButton(
                   color: kColorBlue,
-                  onTap: (startLoading, stopLoading, btnState) async {
+                  valueColor: Colors.white,
+                  successColor: Colors.white,
+                  controller: _btnController,
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      startLoading();
+                      _btnController.start();
                       await _userUpdateController.userProfileUpdate(
                           userProfilePic: _image, userType: "1");
-                      stopLoading();
+                      _btnController.reset();
                     } else {
-                      stopLoading();
+                      _btnController.reset();
 
-                      if (_userUpdateController.dateOfBirth.value == "") {
+                      if (_userUpdateController.dateOfBirth.value == null ||
+                          _userUpdateController.dateOfBirth.value == "") {
                         Utils.showSnackBar(
                             'Warning!', "Please select date of birth.");
                         return;
@@ -969,12 +971,13 @@ class _EditWidgetState extends State<EditWidget> {
                 ),
                 (state == true && stateLoader == true) ||
                         (state == false && cityLoader == true)
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Center(
-                          child: Utils.circular(),
-                        ))
+                    ? const SizedBox(
+                        height: 10,
+                        width: 10,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 5,
+                        ),
+                      ).paddingOnly(right: 5)
                     : Icon(
                         Icons.arrow_drop_down,
                         color: _isDark

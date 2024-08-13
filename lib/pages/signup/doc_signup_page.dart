@@ -110,6 +110,7 @@ class _DocSignupPageState extends State<DocSignupPage> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: IconButton(
@@ -139,7 +140,7 @@ class _DocSignupPageState extends State<DocSignupPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 38),
+                        padding: const EdgeInsets.symmetric(horizontal: 28),
                         child: Text(
                           Translate.of(context)!.translate('sign_up'),
                           style: const TextStyle(
@@ -155,7 +156,7 @@ class _DocSignupPageState extends State<DocSignupPage> {
                       ),
                       SafeArea(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 38),
+                          padding: const EdgeInsets.symmetric(horizontal: 28),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -501,7 +502,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 38),
+            padding: const EdgeInsets.symmetric(horizontal: 28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -575,7 +576,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
             height: 20,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 38),
+            padding: const EdgeInsets.symmetric(horizontal: 28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -1199,7 +1200,12 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
   }) {
     return GestureDetector(
       onTap: onTap,
-      child: commonContainer(
+      child: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: Colors.transparent,
+        ),
         child: Column(
           children: [
             Row(
@@ -1224,15 +1230,13 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                 (category == 'm' && medicalCenterLoader == true) ||
                         (category == 'c' && cityLoader == true) ||
                         (category == 's' && stateLoader == true)
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        // child: CircularProgressIndicator(
-                        //   strokeWidth: 1,
-                        // ),
-                        child: Center(
-                          child: Utils.circular(),
-                        ))
+                    ? const SizedBox(
+                        height: 10,
+                        width: 10,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 5,
+                        ),
+                      ).paddingOnly(right: 5)
                     : Icon(
                         Icons.arrow_drop_down,
                         color: _isDark
@@ -1509,9 +1513,10 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                               sController.clear();
                                             },
                                           ),
-                                          const Divider(
+                                          Divider(
                                             height: 0,
-                                          )
+                                            color: Colors.grey.shade400,
+                                          ).paddingOnly(right: 6)
                                         ],
                                       );
                                     } else {
@@ -1545,16 +1550,5 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
         setState(() {});
       }
     });
-  }
-
-  static Container commonContainer({required Widget child}) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Colors.transparent,
-      ),
-      child: child,
-    );
   }
 }

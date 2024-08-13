@@ -107,6 +107,8 @@ class UserBackendAuthService {
       'device_token': Prefs.getString(Prefs.FcmToken)
     });
 
+    log('body=====1111111=====>>>>>${body}');
+
     Map<String, String> loginHeaders = {
       "Authorization": 'Bearer $bearerToken',
       "Content-Type": 'application/x-www-form-urlencoded',
@@ -116,6 +118,9 @@ class UserBackendAuthService {
       if (userType == "1") {
         var result = await _networkAPICall.post(Constants.patientLogin, body,
             header: loginHeaders);
+
+        log('result==========>>>>>${result}');
+
         if (result['status'] == 'Success') {
           userData = User.fromJson(result['data']);
         } else {

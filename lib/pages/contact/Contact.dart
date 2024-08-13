@@ -149,6 +149,7 @@ class _ContactState extends State<Contact> {
         ),
         key: _scafoldKey,
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           centerTitle: true,
           leading: GestureDetector(
             onTap: () {
@@ -164,7 +165,7 @@ class _ContactState extends State<Contact> {
                   fontSize: 24),
               textAlign: TextAlign.center),
         ),
-        // new AppBar(
+        // new AppBar(surfaceTintColor: Colors.transparent,
         //   backgroundColor: Theme.of(context).hintColor,
         //   title: const Text(
         //     'Contact Us',

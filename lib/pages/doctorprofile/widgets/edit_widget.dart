@@ -9,8 +9,8 @@ import 'package:get/get.dart' hide Trans;
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loading_btn/loading_btn.dart';
 import 'package:octo_image/octo_image.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/controller/user_update_contoller.dart';
 import 'package:united_natives/data/pref_manager.dart';
@@ -30,8 +30,8 @@ class DocEditWidget extends StatefulWidget {
 class _DocEditWidgetState extends State<DocEditWidget> {
   final UserUpdateController _userUpdateController = Get.find();
   final UserController _userController = Get.find();
-  // final RoundedLoadingButtonController _btnController =
-  //     new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
   final _formKey = GlobalKey<FormState>();
   final sController = TextEditingController();
   File? _image;
@@ -596,18 +596,18 @@ class _DocEditWidgetState extends State<DocEditWidget> {
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: LoadingBtn(
-                  height: 50,
-                  width: 150,
-                  disabledColor: Colors.white,
+                child: RoundedLoadingButton(
                   color: kColorBlue,
-                  onTap: (startLoading, stopLoading, btnState) async {
+                  valueColor: Colors.white,
+                  successColor: Colors.white,
+                  controller: _btnController,
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       if ((_userUpdateController.dateOfBirth.value.isEmpty) &&
                           categoryOfMedicalCenterDropDown == null &&
                           dropdownValuesCity == null &&
                           dropdownValuesState == null) {
-                        stopLoading();
+                        _btnController.reset();
                         Utils.showSnackBar(
                             'Warning', "Please fill doctor all details");
                       } else if ((_userUpdateController
@@ -622,23 +622,18 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                         Utils.showSnackBar(
                             'Warning', "Please select medical center");
                       } else {
-                        startLoading();
+                        _btnController.start();
                         await _userUpdateController.userProfileUpdate(
                             userProfilePic: _image, userType: "2");
 
                         _userUpdateController.editProfile();
-                        stopLoading();
+                        _btnController.reset();
                       }
                     } else {
                       _userUpdateController.dScrollController.jumpTo(0);
                     }
-                    stopLoading();
+                    _btnController.reset();
                   },
-
-                  // valueColor: Colors.white,
-                  // successColor: Colors.white,
-                  // controller: _btnController,
-
                   child: const Text('Update Profile',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold)),
@@ -1003,15 +998,13 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 (category == 'm' && medicalCenterLoader == true) ||
                         (category == 'c' && cityLoader == true) ||
                         (category == 's' && stateLoader == true)
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        // child: CircularProgressIndicator(
-                        //   strokeWidth: 1,
-                        // ),
-                        child: Center(
-                          child: Utils.circular(),
-                        ))
+                    ? const SizedBox(
+                        height: 10,
+                        width: 10,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 5,
+                        ),
+                      ).paddingOnly(right: 5)
                     : Icon(
                         Icons.arrow_drop_down,
                         color: _isDark

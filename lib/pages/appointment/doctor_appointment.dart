@@ -83,6 +83,7 @@ class _MyAppointmentsDoctorState extends State<MyAppointmentsDoctor> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             Translate.of(context)!.translate('my_appointments'),
             style: TextStyle(

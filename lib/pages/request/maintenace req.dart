@@ -102,6 +102,7 @@ class _MaintenanceRequestScreenState extends State<MaintenanceRequestScreen> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
               'Request',

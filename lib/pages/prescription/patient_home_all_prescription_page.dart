@@ -28,6 +28,7 @@ class _PatientHomeAllPrescriptionPageState
         ),
         key: scaffoldKey,
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           actions: const <Widget>[],
           title: Text('My Prescriptions',
               style: TextStyle(

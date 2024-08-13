@@ -97,9 +97,9 @@ class _SignupPageState extends State<SignupPage> {
         ),
         key: _scaffoldKey,
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           elevation: 0,
           backgroundColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -147,7 +147,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       SafeArea(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 38),
+                          padding: const EdgeInsets.symmetric(horizontal: 28),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -1001,9 +1001,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   text: dropdownValuesState != null
                       ? '$dropdownValuesState'
                       : 'Select State',
-                  onTap: () async {
+                  onTap: () {
                     if (categoryItemListState.isNotEmpty) {
-                      await selectStateCity(state: true, h: h, w: w);
+                      selectStateCity(state: true, h: h, w: w);
                     }
                   },
                 ),
@@ -1023,9 +1023,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   text: dropdownValuesCity != null
                       ? '$dropdownValuesCity'
                       : 'Select City',
-                  onTap: () async {
+                  onTap: () {
                     if (categoryItemListCity.isNotEmpty) {
-                      await selectStateCity(state: false, h: h, w: w);
+                      selectStateCity(state: false, h: h, w: w);
                     }
                   },
                 ),
@@ -1464,8 +1464,12 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
   }) {
     return GestureDetector(
       onTap: onTap,
-      child: commonContainer(
+      child: Container(
+        height: 60,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4), color: Colors.transparent),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -1488,12 +1492,13 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 ),
                 (state == true && stateLoader == true) ||
                         (state == false && cityLoader == true)
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Center(
-                          child: Utils.circular(),
-                        ))
+                    ? const SizedBox(
+                        height: 10,
+                        width: 10,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 5,
+                        ),
+                      ).paddingOnly(right: 5)
                     : Icon(
                         Icons.arrow_drop_down,
                         color: _isDark
@@ -1510,10 +1515,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
               height: 10,
             ),
             Container(
-              height: 1,
-              width: double.infinity,
-              color: Colors.grey.shade500,
-            )
+                height: 1, width: double.infinity, color: Colors.grey.shade500)
           ],
         ),
       ),
@@ -1719,7 +1721,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                           Divider(
                                             height: 0,
                                             color: Colors.grey.shade400,
-                                          )
+                                          ).paddingOnly(right: 6)
                                         ],
                                       );
                                     } else {
@@ -1749,15 +1751,6 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
         setState(() {});
       }
     });
-  }
-
-  static Container commonContainer({required Widget child}) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4), color: Colors.transparent),
-      child: child,
-    );
   }
 }
 

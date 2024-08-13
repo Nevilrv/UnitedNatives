@@ -39,6 +39,7 @@ class _AddMyDoctorScreenState extends State<AddMyDoctorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           centerTitle: true,
           title: Text(
             Translate.of(context)!.translate('Add Provider'),

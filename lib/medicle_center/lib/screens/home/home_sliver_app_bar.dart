@@ -25,17 +25,17 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
       alignment: Alignment.bottomCenter,
       children: [
         HomeSwipe(
-          images: banners!,
-          height: expandedHeight!,
+          images: banners,
+          height: expandedHeight,
         ),
         Container(
           height: 32,
           color: Theme.of(context).colorScheme.surface,
         ),
         s.SearchBar(
-          onSearch: onSearch!,
-          onScan: onScan!,
-          onFilter: onFilter!,
+          onSearch: onSearch,
+          onScan: onScan,
+          onFilter: onFilter,
         ),
       ],
     );

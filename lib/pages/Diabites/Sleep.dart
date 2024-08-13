@@ -324,6 +324,7 @@ class _SleepState extends State<Sleep> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               "Sleep",
               style: TextStyle(

@@ -22,7 +22,7 @@ import 'package:united_natives/pages/prescription/prescription_list_page.dart';
 import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
 
 class AppNotificationHandler {
-  static PatientHomeScreenController patientHomeScreenController =
+  static final PatientHomeScreenController patientHomeScreenController =
       Get.find<PatientHomeScreenController>();
 
   static final DoctorHomeScreenController _doctorHomeScreenController =

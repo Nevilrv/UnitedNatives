@@ -302,6 +302,7 @@ class _MedicationCheckListState extends State<MedicationCheckList> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               "Medication Checklist",
               style: TextStyle(

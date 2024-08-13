@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:share_plus/share_plus.dart';
 import 'package:united_natives/controller/patient_homescreen_controller.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
@@ -126,8 +127,8 @@ class _DrawerPageState extends State<DrawerPage> {
                         controller.closeDrawer();
                         controller.selectPage(0);
                         patientHomeScreenController =
-                            Get.put(PatientHomeScreenController())
-                              ?..getPatientHomePage();
+                            Get.find<PatientHomeScreenController>()
+                              ..getPatientHomePage();
                       },
                     ),
 
@@ -252,12 +253,13 @@ class _DrawerPageState extends State<DrawerPage> {
                       image: 'group',
                       text: 'Invite Friends',
                       onTap: () {
-                        /// NEW CODE COMMENT
-                        // final RenderBox box = context.findRenderObject();
-                        // Share.share(text,
-                        //     subject: subject,
-                        //     sharePositionOrigin:
-                        //         box.localToGlobal(Offset.zero) & box.size);
+                        final box = context.findRenderObject() as RenderBox?;
+                        Share.share(
+                          text.toString(),
+                          subject: subject,
+                          sharePositionOrigin:
+                              box!.localToGlobal(Offset.zero) & box.size,
+                        );
                       },
                     ),
                     _drawerItem(

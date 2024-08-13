@@ -124,6 +124,7 @@ class _PatientNotificationPageState extends State<PatientNotificationPage> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text('Notifications',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,

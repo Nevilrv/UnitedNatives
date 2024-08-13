@@ -39,6 +39,7 @@ class _AboutNativeAmericanScreenState extends State<AboutNativeAmericanScreen> {
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             backgroundColor: Colors.white,
             elevation: 0,
             title: const Text(

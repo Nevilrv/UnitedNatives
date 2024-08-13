@@ -39,6 +39,7 @@ class _DoctorServicesState extends State<DoctorServices> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text('Services',
               style: TextStyle(
                   fontWeight: FontWeight.bold,

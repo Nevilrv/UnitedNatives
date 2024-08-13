@@ -5,6 +5,8 @@
 
 library editable;
 
+import 'dart:developer';
+
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/helpers.dart';
 import 'package:united_natives/pages/Diabites/custom_package/row_builder.dart';
@@ -423,11 +425,14 @@ class EditableState extends State<Editable> {
                     tdStyle: TextStyle(
                         fontWeight: widget.thWeight, fontSize: widget.thSize),
                     tdEditableMaxLines: widget.tdEditableMaxLines,
-                    onSubmitted: widget.onSubmitted!,
+                    onSubmitted: widget.onSubmitted ??
+                        (String val) {
+                          log(val);
+                        },
                     widthRatio: rowIndex == 0 ? cwidths[index] : 0.40,
                     isEditable: ceditable[rowIndex],
                     zebraStripe: widget.zebraStripe,
-                    focusedBorder: widget.focusedBorder!,
+                    focusedBorder: widget.focusedBorder ?? InputBorder.none,
                     stripeColor1: widget.stripeColor1,
                     stripeColor2: widget.stripeColor2,
                     onChanged: (value) {
@@ -502,14 +507,17 @@ class EditableState extends State<Editable> {
                       tdPaddingBottom: widget.tdPaddingBottom,
                       tdPaddingRight: widget.tdPaddingRight,
                       tdAlignment: widget.tdAlignment,
-                      tdStyle: widget.tdStyle!,
+                      tdStyle: widget.tdStyle ?? const TextStyle(),
                       tdEditableMaxLines: widget.tdEditableMaxLines,
-                      onSubmitted: widget.onSubmitted!,
+                      onSubmitted: widget.onSubmitted ??
+                          (String val) {
+                            log(val);
+                          },
                       widthRatio: 0.30,
                       // widthRatio: cwidths[rowIndex].toDouble(),
                       isEditable: false,
                       zebraStripe: widget.zebraStripe,
-                      focusedBorder: widget.focusedBorder!,
+                      focusedBorder: widget.focusedBorder ?? InputBorder.none,
                       stripeColor1: widget.stripeColor1,
                       stripeColor2: widget.stripeColor2,
                       onChanged: (value) {

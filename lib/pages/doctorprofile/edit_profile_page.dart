@@ -35,6 +35,7 @@ class _DocEditProfilePageState extends State<DocEditProfilePage> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               Translate.of(context)!.translate('edit_profile'),
               style: TextStyle(
@@ -98,7 +99,7 @@ class _DocEditProfilePageState extends State<DocEditProfilePage> {
           context: context,
 
         ),
-        appBar: AppBar(
+        appBar: AppBar(surfaceTintColor: Colors.transparent,
           title: Text(
             Translate.of(context).translate('edit_profile'),
             style: TextStyle(

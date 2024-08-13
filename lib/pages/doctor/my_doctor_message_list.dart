@@ -34,6 +34,7 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
         children: [
           Scaffold(
             appBar: AppBar(
+              surfaceTintColor: Colors.transparent,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_sharp),
                 onPressed: () {

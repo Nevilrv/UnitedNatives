@@ -22,12 +22,12 @@ class Constants {
 
   /// DEVELOPMENT /////////////////////////////////////////////////////////////////////////////////
 
-  static final String baseUrl = 'https://unhbackend.sataware.dev/AppServices/';
-  static final String baseUrl1 = 'https://unhbackend.sataware.dev/AppServices/';
-  static final String webUrl =
+  static const String baseUrl = 'https://unhbackend.sataware.dev/AppServices/';
+  static const String baseUrl1 = 'https://unhbackend.sataware.dev/AppServices/';
+  static const String webUrl =
       'https://unhbackend.sataware.dev/Website/aunthenticate-secure-mobile-login';
 
-  static final String medicalCenterURL =
+  static const String medicalCenterURL =
       'https://unhbackend.sataware.dev/wordpress/index.php/wp-json/';
   static String domain = 'https://unhbackend.sataware.dev/wordpress';
 
@@ -35,161 +35,161 @@ class Constants {
 
   /// -------------------- Patient API -------------------- ///
 
-  static final String patientHomePage = 'Patient/userHomepage';
-  static final String patientSignUp = 'Patient/signup';
-  static final String patientLogin = 'Patient/login';
-  static final String deletePatientAccount = 'Patient/deletePatientAcoount';
-  static final String patientUpdateProfile = 'Patient/updateProfile';
-  static final String getVisitedDoctors = 'Patient/getVisitedDoctors';
-  static final String viewResearchDocuments = 'Patient/viewResearchDocuments';
-  static final String getSortedPatientChatList = 'Patient/getSortedChatList';
-  static final String deleteChatPatient =
+  static const String patientHomePage = 'Patient/userHomepage';
+  static const String patientSignUp = 'Patient/signup';
+  static const String patientLogin = 'Patient/login';
+  static const String deletePatientAccount = 'Patient/deletePatientAcoount';
+  static const String patientUpdateProfile = 'Patient/updateProfile';
+  static const String getVisitedDoctors = 'Patient/getVisitedDoctors';
+  static const String viewResearchDocuments = 'Patient/viewResearchDocuments';
+  static const String getSortedPatientChatList = 'Patient/getSortedChatList';
+  static const String deleteChatPatient =
       'Patient/delete_all_chat_with_chat_key';
-  static final String deleteChatMessagePatient = 'Patient/delete_chat';
-  static final String deleteChatDoctor = 'Doctor/delete_all_chat_with_chat_key';
-  static final String getAllDoctor = 'Patient/getAllDoctors';
-  static final String getAllPatient = 'Doctor/getAllPatients';
-  static final String makePayment = 'Patient/appointmentPayment';
-  static final String getAllPatientChatList = 'Patient/getAllChatMessages';
-  static final String viewResearchDocumentDetails =
+  static const String deleteChatMessagePatient = 'Patient/delete_chat';
+  static const String deleteChatDoctor = 'Doctor/delete_all_chat_with_chat_key';
+  static const String getAllDoctor = 'Patient/getAllDoctors';
+  static const String getAllPatient = 'Doctor/getAllPatients';
+  static const String makePayment = 'Patient/appointmentPayment';
+  static const String getAllPatientChatList = 'Patient/getAllChatMessages';
+  static const String viewResearchDocumentDetails =
       'Patient/viewResearchDocumentDetails';
-  static final String getSpecialities = 'Patient/getSpecialities';
-  static final String getAppSettingsPatient =
+  static const String getSpecialities = 'Patient/getSpecialities';
+  static const String getAppSettingsPatient =
       'Patient/getAppSettingsPagesContent';
-  static final String getDoctorBySpecialities =
+  static const String getDoctorBySpecialities =
       'Patient/getDoctorsBySpeciality';
 
-  static final String getDoctorSpecialitiesFilter =
+  static const String getDoctorSpecialitiesFilter =
       'Patient/doctorBySpecialityFilter';
 
-  static final String patientContactForm = 'Patient/contactForm';
-  static final String patientPinReset = 'Patient/ih_patient_pin';
+  static const String patientContactForm = 'Patient/contactForm';
+  static const String patientPinReset = 'Patient/ih_patient_pin';
 
   /// Appointment
-  static final String getPatientAppointment = 'Patient/getDoctorAvailability';
-  static final String addPatientAppointment = 'Patient/addPatientAppointment';
-  static final String addAppointmentRating = 'Patient/addAppointmentRating';
-  static final String getAppointmentRating = 'Patient/getAppointmentRating';
-  static final String getSpecificAppointmentDetails =
+  static const String getPatientAppointment = 'Patient/getDoctorAvailability';
+  static const String addPatientAppointment = 'Patient/addPatientAppointment';
+  static const String addAppointmentRating = 'Patient/addAppointmentRating';
+  static const String getAppointmentRating = 'Patient/getAppointmentRating';
+  static const String getSpecificAppointmentDetails =
       'Patient/getSpecificAppointmentDetails';
-  static final String cancelAppointmentPatient =
+  static const String cancelAppointmentPatient =
       'Patient/cancelPatientAppointment';
-  static final String getPatientPrescriptions =
+  static const String getPatientPrescriptions =
       'Patient/getPatientPrescriptions';
 
   /// Notes
-  static final String patientNotes = 'Patient/notes';
-  static final String getAllPatientNotes = 'Patient/getAllNotes';
-  static final String updateDoctorByPatient =
+  static const String patientNotes = 'Patient/notes';
+  static const String getAllPatientNotes = 'Patient/getAllNotes';
+  static const String updateDoctorByPatient =
       'Patient/update_doctors_detail_by_patient';
-  static final String addDoctorByPatient =
+  static const String addDoctorByPatient =
       'Patient/add_doctors_detail_by_patient';
-  static final String socialLogin = 'Patient/socialLogin';
-  static final String getAllDoctorByLocation =
+  static const String socialLogin = 'Patient/socialLogin';
+  static const String getAllDoctorByLocation =
       'Patient/get_doctors_by_location';
-  static final String patientRating = 'Patient/rating';
-  static final String createNewMessage = 'Patient/createNewMessage';
+  static const String patientRating = 'Patient/rating';
+  static const String createNewMessage = 'Patient/createNewMessage';
 
   /// --------------------- Doctor API --------------------- ///
 
-  static final String doctorHomePage = 'Doctor/userHomepage';
-  static final String doctorSignUp = 'Doctor/signup';
-  static final String doctorLogIn = 'Doctor/login';
-  static final String doctorUpdateProfile = 'Doctor/updateProfile';
-  static final String getVisitedPatient = 'Doctor/getVisitedPatients';
-  static final String getDoctorPrescriptions = 'Doctor/getDoctorPrescriptions';
-  static final String getAppSettingsDoctor =
+  static const String doctorHomePage = 'Doctor/userHomepage';
+  static const String doctorSignUp = 'Doctor/signup';
+  static const String doctorLogIn = 'Doctor/login';
+  static const String doctorUpdateProfile = 'Doctor/updateProfile';
+  static const String getVisitedPatient = 'Doctor/getVisitedPatients';
+  static const String getDoctorPrescriptions = 'Doctor/getDoctorPrescriptions';
+  static const String getAppSettingsDoctor =
       'Doctor/getAppSettingsPagesContent';
 
   /// Research Documents
-  static final String getResearchDocuments = 'Doctor/viewResearchDocuments';
-  static final String getResearchDocumentDetails =
+  static const String getResearchDocuments = 'Doctor/viewResearchDocuments';
+  static const String getResearchDocumentDetails =
       'Doctor/viewResearchDocumentDetails';
 
   /// Appointment
-  static final String getDoctorAppointments = 'Doctor/getDoctorAppointments';
-  static final String getDoctorNextAppointment = 'Doctor/getDoctorAppointments';
-  static final String cancelAppointmentDoctor =
+  static const String getDoctorAppointments = 'Doctor/getDoctorAppointments';
+  static const String getDoctorNextAppointment = 'Doctor/getDoctorAppointments';
+  static const String cancelAppointmentDoctor =
       'Doctor/cancelPatientAppointment';
-  static final String startAppointmentDoctor = 'Doctor/startAppointment';
-  static final String doctorCompleteAppointment =
+  static const String startAppointmentDoctor = 'Doctor/startAppointment';
+  static const String doctorCompleteAppointment =
       'Doctor/completePatientAppointment';
-  static final String getAppointmentPrescriptions =
+  static const String getAppointmentPrescriptions =
       'Doctor/getAppointmentPrescriptions';
 
   /// Doctor Availability
-  static final String getDoctorAvailability = 'Doctor/updateDoctorAvailability';
-  static final String multipleDoctorAvailability =
+  static const String getDoctorAvailability = 'Doctor/updateDoctorAvailability';
+  static const String multipleDoctorAvailability =
       'Doctor/updateDoctorAvailabilityByRange';
-  static final String getDoctorAvailabilityDisplay =
+  static const String getDoctorAvailabilityDisplay =
       'Doctor/getDoctorAvailability';
-  static final String addPrescription = 'Doctor/addPrescription';
+  static const String addPrescription = 'Doctor/addPrescription';
 
   /// Meeting
-  static final String doctorZoomMeeting = 'Doctor/zoom_meeting';
-  static final String doctorZoomAction = 'Doctor/zoom_action';
-  static final String doctorZoomMeetStatus = 'Doctor/getzoomaction';
+  static const String doctorZoomMeeting = 'Doctor/zoom_meeting';
+  static const String doctorZoomAction = 'Doctor/zoom_action';
+  static const String doctorZoomMeetStatus = 'Doctor/getzoomaction';
 
-  static final String doctorContactForm = 'Doctor/contactForm';
-  static final String ihDocPin = 'Doctor/ih_doctor_pin';
-  static final String doctorSocialLogin = 'Doctor/socialLogin';
-  static final String doctorRating = 'Doctor/rating';
+  static const String doctorContactForm = 'Doctor/contactForm';
+  static const String ihDocPin = 'Doctor/ih_doctor_pin';
+  static const String doctorSocialLogin = 'Doctor/socialLogin';
+  static const String doctorRating = 'Doctor/rating';
 
   /// CHAT
 
-  static final String getAllChatMessagesDoctor = 'Doctor/getAllChatMessages';
-  static final String getSortedChatListDoctor = 'Doctor/getSortedChatList';
-  static final String deleteDoctorMsg = 'Doctor/delete_chat';
-  static final String createNewMessageDoctor = 'Doctor/createNewMessage';
+  static const String getAllChatMessagesDoctor = 'Doctor/getAllChatMessages';
+  static const String getSortedChatListDoctor = 'Doctor/getSortedChatList';
+  static const String deleteDoctorMsg = 'Doctor/delete_chat';
+  static const String createNewMessageDoctor = 'Doctor/createNewMessage';
 
   /// --------------------- Common API --------------------- ///
 
   /// Password Recovery
-  static final String forgotPassword = 'PasswordRecovery/intitiateResetRequest';
-  static final String initiatePINReset = 'SecurityPINReset/initiatePINReset';
+  static const String forgotPassword = 'PasswordRecovery/intitiateResetRequest';
+  static const String initiatePINReset = 'SecurityPINReset/initiatePINReset';
 
   /// PIN Recovery & Status
-  static final String resetPIN = 'SecurityPINReset/initiatePINReset';
-  static final String changePIN = 'SecurityPINReset/changeSecurityPIN';
-  static final String statusPIN =
+  static const String resetPIN = 'SecurityPINReset/initiatePINReset';
+  static const String changePIN = 'SecurityPINReset/changeSecurityPIN';
+  static const String statusPIN =
       'SecurityPINReset/getUserPINResetRequestStatus';
 
   /// Login Verification
-  static final String loginVerification =
+  static const String loginVerification =
       'SecurityPINReset/userLoginVerification';
-  static final String socialLoginVerificationGoogle =
+  static const String socialLoginVerificationGoogle =
       'SecurityPINReset/userSocialLoginVerification';
 
   /// Location
-  static final String getAllCityByState = 'Location/get_cities_by_state_id';
-  static final String getAllStates = 'Location/get_all_states';
+  static const String getAllCityByState = 'Location/get_cities_by_state_id';
+  static const String getAllStates = 'Location/get_all_states';
 
   /// Resources
-  static final String upcomingEvent = 'Resources/upcoming_event';
-  static final String thanksSponser = 'Resources/thank_you_sponser';
-  static final String allNewsLetter = 'Resources/all_news_letter';
-  static final String healthRecommendation = 'Resources/health_recommendation';
-  static final String guidelineOfWho = 'Resources/guideline_of_who';
-  static final String allAnnouncement = 'Resources/all_announcement';
-  static final String aboutIHApp = 'Resources/about_the_IH_app';
-  static final String aboutTheApp = 'Resources/about_the_app';
-  static final String aboutAmericanNatives = 'Resources/about_native_american';
-  static final String getAllAdvertisement = 'sponser/get_all_advertisement';
+  static const String upcomingEvent = 'Resources/upcoming_event';
+  static const String thanksSponser = 'Resources/thank_you_sponser';
+  static const String allNewsLetter = 'Resources/all_news_letter';
+  static const String healthRecommendation = 'Resources/health_recommendation';
+  static const String guidelineOfWho = 'Resources/guideline_of_who';
+  static const String allAnnouncement = 'Resources/all_announcement';
+  static const String aboutIHApp = 'Resources/about_the_IH_app';
+  static const String aboutTheApp = 'Resources/about_the_app';
+  static const String aboutAmericanNatives = 'Resources/about_native_american';
+  static const String getAllAdvertisement = 'sponser/get_all_advertisement';
 
   /// Chat
-  static final String chatStatus = 'common/chatStatus/';
+  static const String chatStatus = 'common/chatStatus/';
 
   /// NET API
 
-  static final String getRoutineHealthReport =
+  static const String getRoutineHealthReport =
       '${baseUrl1}Patient/getRoutineHealthReport';
-  static final String addRoutineHealthReport =
+  static const String addRoutineHealthReport =
       '${baseUrl1}Patient/addRoutineHealthReport';
-  static final String deleteRoutineHealthReport =
+  static const String deleteRoutineHealthReport =
       '${baseUrl1}Patient/deleteRoutineHealthReport';
-  static final String updateRoutineHealthReport =
+  static const String updateRoutineHealthReport =
       '${baseUrl1}Patient/updateRoutineHealthReport';
-  static final String forgotPassword1 = '${baseUrl1}Patient/forgotPassword';
+  static const String forgotPassword1 = '${baseUrl1}Patient/forgotPassword';
 }
 
 const kColorBlue = Color(0xff2e83f8);

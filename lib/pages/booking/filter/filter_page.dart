@@ -54,6 +54,7 @@ class _FilterPageState extends State<FilterPage> {
     final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: kColorBlue,
         elevation: 0,
         leading: IconButton(

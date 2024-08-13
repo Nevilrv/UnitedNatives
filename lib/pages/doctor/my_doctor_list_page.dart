@@ -48,6 +48,7 @@ class _MyDoctorListPageState extends State<MyDoctorListPage> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             Translate.of(context)!.translate('My Providers'),
             style: TextStyle(

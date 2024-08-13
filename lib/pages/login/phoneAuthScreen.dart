@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';
-import 'package:loading_btn/loading_btn.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/utils/constants.dart';
 
@@ -18,7 +18,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
   var appBarHeight = 0.0;
   var otpController = TextEditingController();
   bool _btnEnabled = false;
-
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
   // get userType => UserController().user.value.userType;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserController _userController = Get.find<UserController>();
@@ -181,33 +182,31 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 32, left: 32),
-                    child: LoadingBtn(
-                      height: 50,
-                      width: 150,
-                      disabledColor: Colors.white,
-                      color: kColorBlue,
-                      onTap: (startLoading, stopLoading, btnState) async {
-                        if (_btnEnabled == true) {
-                          unFocus();
-                          startLoading();
-                          final userPIN = otpController.text;
+                    child: RoundedLoadingButton(
+                      color: Colors.white,
+                      valueColor: kColorBlue,
+                      successColor: Colors.white,
+                      controller: _btnController,
+                      onPressed: _btnEnabled == true
+                          ? () async {
+                              unFocus();
+                              final userPIN = otpController.text;
 
-                          final encryptedUtf = utf8.encode(userPIN);
-                          var md5 = crypto.md5;
-                          final encryptedPIN = md5.convert(encryptedUtf);
-                          if (_formKey.currentState!.validate()) {
-                            await _userController.userRegister(
-                              _userController.registerData!,
-                              _userController.registerData?.userType ?? "2",
-                              encryptedPIN.toString(),
-                            );
-                            if (_userController.registerData != null) {
-                              stopLoading();
+                              final encryptedUtf = utf8.encode(userPIN);
+                              var md5 = crypto.md5;
+                              final encryptedPIN = md5.convert(encryptedUtf);
+                              if (_formKey.currentState!.validate()) {
+                                await _userController.userRegister(
+                                  _userController.registerData!,
+                                  _userController.registerData?.userType ?? "2",
+                                  encryptedPIN.toString(),
+                                );
+                                if (_userController.registerData != null) {
+                                  _btnController.reset();
+                                }
+                              }
                             }
-                          }
-                        }
-                        stopLoading();
-                      },
+                          : null,
                       child: _btnEnabled == true
                           ? const Text('PROCEED',
                               style: TextStyle(

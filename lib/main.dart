@@ -107,30 +107,26 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(
       AppNotificationHandler.firebaseMessagingBackgroundHandler);
 
-  /// NEW CODE COMMENT
-  // IOSInitializationSettings initializationSettings = IOSInitializationSettings(
-  //     requestAlertPermission: true,
-  //     requestSoundPermission: true,
-  //     requestBadgePermission: true);
+  DarwinInitializationSettings initializationSettings =
+      const DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestSoundPermission: true,
+          requestBadgePermission: true);
 
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(AppNotificationHandler.channel);
 
-  /// NEW CODE COMMENT
-  // await flutterLocalNotificationsPlugin
-  //     .resolvePlatformSpecificImplementation<
-  //         IOSFlutterLocalNotificationsPlugin>()
-  //     ?.initialize(initializationSettings);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+      ?.initialize(initializationSettings);
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           IOSFlutterLocalNotificationsPlugin>()
       ?.requestPermissions(alert: true, badge: true, sound: true);
 
-  // AppNotificationHandler.initialize();
-  // Update the iOS foreground notification presentation options to allow
-  // heads up notifications.
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: false,
     badge: false,
@@ -185,8 +181,10 @@ class _MyAppState extends State<MyApp> {
                   return GetMaterialApp(
                     builder: (context, widget) {
                       return MediaQuery(
-                        data: MediaQuery.of(context)
-                            .copyWith(textScaler: const TextScaler.linear(0.9)),
+                        data: MediaQuery.of(context).copyWith(
+                          textScaler: const TextScaler.linear(0.88),
+                          boldText: false,
+                        ),
                         child: ResponsiveBreakpoints.builder(
                           child: widget!,
                           breakpoints: [
@@ -201,14 +199,7 @@ class _MyAppState extends State<MyApp> {
                     home: const SplashPage(),
                     initialBinding: BaseBindings(),
                     onGenerateRoute: RouteGenerator.generateRoute,
-                    // localizationsDelegates: [
-                    //   Translate(lang).delegate,
-                    //   /*  GlobalMaterialLocalizations.delegate,
-                    //   GlobalWidgetsLocalizations.delegate,
-                    //   GlobalCupertinoLocalizations.delegate,*/
-                    // ],
                     supportedLocales: AppLanguage.supportLanguage,
-                    // locale: lang,
                     localizationsDelegates: [Translate(lang).delegate],
                     locale: lang,
                     themeMode: ThemeMode.system,
@@ -229,19 +220,32 @@ class _MyAppState extends State<MyApp> {
 class BaseBindings extends Bindings {
   @override
   void dependencies() {
+    Get.put<UserController>(UserController(), permanent: true);
+    Get.put<BookAppointmentController>(BookAppointmentController(),
+        permanent: true);
+    Get.put<SelfMonitoringController>(SelfMonitoringController(),
+        permanent: true);
     Get.lazyPut(() => UserController(), fenix: true);
-    Get.lazyPut(() => SelfMonitoringController(), fenix: true);
-    Get.lazyPut(() => ScheduledClassController(), fenix: true);
-    Get.lazyPut(() => DoctorHomeScreenController(), fenix: true);
-    Get.lazyPut(() => PatientHomeScreenController(), fenix: true);
-    Get.lazyPut(() => ServicesDataController(), fenix: true);
-    Get.lazyPut(() => RequestController(), fenix: true);
-    Get.lazyPut(() => RoomController(), fenix: true);
-    Get.lazyPut(() => DirectDoctorController(), fenix: true);
-    Get.lazyPut(() => PatientScheduledClassController(), fenix: true);
-    Get.lazyPut(() => AdsController(), fenix: true);
-    Get.lazyPut(() => BookAppointmentController(), fenix: true);
-    Get.lazyPut(() => LogOutController(), fenix: true);
-    Get.lazyPut(() => ChangeState(), fenix: true);
   }
+
+  UserController userController = Get.put(UserController());
+  BookAppointmentController bookAppointmentController =
+      Get.put(BookAppointmentController());
+  ScheduledClassController scheduledClassController =
+      Get.put(ScheduledClassController());
+  DoctorHomeScreenController doctorHomeScreenController =
+      Get.put(DoctorHomeScreenController());
+  static final PatientHomeScreenController patientHomeScreenController =
+      Get.put(PatientHomeScreenController());
+  ServicesDataController servicesDataController =
+      Get.put(ServicesDataController());
+  RequestController requestController = Get.put(RequestController());
+  RoomController roomController = Get.put(RoomController());
+  DirectDoctorController directDoctorController =
+      Get.put(DirectDoctorController());
+  PatientScheduledClassController patientScheduledClassController =
+      Get.put(PatientScheduledClassController());
+  AdsController adsController = Get.put(AdsController());
+  LogOutController logOutController = Get.put(LogOutController());
+  ChangeState changeState = Get.put(ChangeState());
 }

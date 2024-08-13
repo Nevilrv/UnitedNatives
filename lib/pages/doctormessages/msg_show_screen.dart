@@ -21,6 +21,7 @@ class _MessageShowScreenState extends State<MessageShowScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.black,
       ),
       body: SafeArea(

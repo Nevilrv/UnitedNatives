@@ -41,6 +41,7 @@ class _RemainderPageState extends State<RemainderPage> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               Translate.of(context)!.translate('Reminder'),
               style: TextStyle(

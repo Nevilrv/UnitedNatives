@@ -73,6 +73,7 @@ class _AddMyDocNotesScreenState extends State<AddMyDocNotesScreen> {
         },
         child: Scaffold(
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
               Translate.of(context)!.translate('Add Notes'),

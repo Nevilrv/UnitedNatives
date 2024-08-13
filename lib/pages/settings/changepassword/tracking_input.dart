@@ -36,16 +36,13 @@ class _TrackingTextInputState extends State<TrackingTextInput> {
       _debounceTimer = Timer(const Duration(milliseconds: 100), () {
         if (_fieldKey.currentContext != null) {
           // Find the render editable in the field.
-
-          /// NEW CODE COMMENT
-
-          /*final RenderObject fieldBox =
-              _fieldKey.currentContext.findRenderObject();
-          Offset caretPosition = getCaretPosition(fieldBox);
+          final RenderBox fieldBox =
+              _fieldKey.currentContext?.findRenderObject() as RenderBox;
+          Offset? caretPosition = getCaretPosition(fieldBox);
 
           if (widget.onCaretMoved != null) {
             widget.onCaretMoved!(caretPosition!);
-          }*/
+          }
         }
       });
       if (widget.onTextChanged != null) {

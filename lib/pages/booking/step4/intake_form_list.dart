@@ -74,6 +74,7 @@ class _IntakeFormListState extends State<IntakeFormList> {
                     context: context,
                   ),
                   appBar: AppBar(
+                    surfaceTintColor: Colors.transparent,
                     title: Text(
                       'Intake Forms',
                       style: TextStyle(

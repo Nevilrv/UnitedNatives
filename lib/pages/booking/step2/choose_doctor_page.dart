@@ -68,6 +68,7 @@ class _ChooseDoctorPageState extends State<ChooseDoctorPage> {
               context: context,
             ),
             appBar: AppBar(
+              surfaceTintColor: Colors.transparent,
               centerTitle: true,
               title: Text(
                 Translate.of(context)!.translate('doctor'),

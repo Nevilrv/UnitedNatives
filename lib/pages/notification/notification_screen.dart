@@ -34,6 +34,7 @@ class _MyNotiScreenState extends State<MyNotiScreen> {
     return GetMaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text('Plugin example app',
               style: TextStyle(
                   fontWeight: FontWeight.bold,

@@ -50,6 +50,7 @@ class _AboutUNHState extends State<AboutUNH> {
           context: context,
         ),
         appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text('About Us',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,

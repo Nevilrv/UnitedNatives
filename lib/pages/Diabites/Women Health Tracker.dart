@@ -211,6 +211,7 @@ class _WomenHealthState extends State<WomenHealth> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               "Women Health Tracker",
               style: TextStyle(

@@ -67,7 +67,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
 
   final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   LogOutController logOutController = Get.put(LogOutController());
-  GetAllPatientChatMessages responseModel = GetAllPatientChatMessages();
+  GetAllPatientChatMessages? responseModel;
   final ImagePicker _picker = ImagePicker();
   FilePickerResult? result;
   File? imageW;
@@ -207,6 +207,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () async {
@@ -455,11 +456,11 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                         separatorBuilder: (context, index) => const SizedBox(
                           height: 15,
                         ),
-                        itemCount: responseModel.patientChatList?.length ?? 0,
+                        itemCount: responseModel?.patientChatList?.length ?? 0,
                         padding: const EdgeInsets.only(bottom: 10),
                         itemBuilder: (context, index) {
                           patientData =
-                              responseModel.patientChatList!.reversed.toList();
+                              responseModel!.patientChatList!.reversed.toList();
 
                           PatientChat patientChat = patientData[index];
 

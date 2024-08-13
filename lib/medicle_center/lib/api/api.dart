@@ -52,11 +52,9 @@ class Api {
   ///Login api
   static Future<ResultApiModel> requestLogin(params) async {
     final result = await httpManager.post(url: login, data: params);
-
     ResultApiModel resultApiModel = ResultApiModel.fromJson(result);
 
     if (!resultApiModel.success!) {
-      log('para==========>>>>>${params['password']}');
       final Map<String, dynamic> registerParams = {
         "username": params['username'].toString().split('@')[0],
         "password": params['password'].toString() == "null"
@@ -64,16 +62,13 @@ class Api {
             : params['password'].toString(),
         "email": params['username'],
       };
-      log('registerParams==========>>>>>$registerParams');
 
       final response = await Api.requestRegister(registerParams);
-
       if (response.success!) {
         final result = await httpManager.post(url: login, data: params);
         return ResultApiModel.fromJson(result);
       }
     }
-    //
 
     return ResultApiModel.fromJson(result);
   }
@@ -105,10 +100,6 @@ class Api {
       data: params,
       loading: true,
     );
-
-    log('register==========>>>>>$register');
-
-    log('result========11111==>>>>>$result');
 
     final convertResponse = {
       "success": result['code'] == 200,

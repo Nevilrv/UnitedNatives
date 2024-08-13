@@ -25,7 +25,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
   final DoctorHomeScreenController _doctorHomeScreenController =
       Get.put<DoctorHomeScreenController>(DoctorHomeScreenController());
   final PatientHomeScreenController patientHomeScreenController =
-      Get.put<PatientHomeScreenController>(PatientHomeScreenController());
+      Get.find<PatientHomeScreenController>();
   final ScrollController _controller = ScrollController();
   final TextEditingController messageController = TextEditingController();
 
@@ -36,6 +36,7 @@ class _ChatUploadScreenState extends State<ChatUploadScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.black,
       ),
       body: SafeArea(

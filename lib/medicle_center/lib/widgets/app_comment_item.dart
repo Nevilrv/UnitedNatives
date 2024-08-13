@@ -200,9 +200,6 @@ class AppCommentItem extends StatelessWidget {
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
-
-                          /// NEW CODE COMMENT
-                          // item.createDate.dateView,
                           Text(
                             "${item?.createDate}",
                             style: Theme.of(context).textTheme.bodySmall,

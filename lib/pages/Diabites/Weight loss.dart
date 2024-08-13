@@ -13,9 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-// import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../model/health_response_model.dart';
 import '../../utils/utils.dart';
 
@@ -93,13 +91,13 @@ class _WeightlossState extends State<Weightloss> {
   List<String> idList = [];
 
   final _editableKey = GlobalKey<EditableState>();
-  List<_WeightLossData> data = [];
+  static List<_WeightLossData> data = [];
 
   Future<HealthResponseModel?> getWeightLossData() async {
     rows.clear();
     data.clear();
     idList.clear();
-    final String url = Constants.getRoutineHealthReport;
+    const String url = Constants.getRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -158,7 +156,7 @@ class _WeightlossState extends State<Weightloss> {
   Future addWeightLossData(reportTableData) async {
     isLoading.value = true;
 
-    final String url = Constants.addRoutineHealthReport;
+    const String url = Constants.addRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -193,7 +191,7 @@ class _WeightlossState extends State<Weightloss> {
   Future deleteWeightLossData(String id) async {
     isLoading.value = true;
 
-    final String url = Constants.deleteRoutineHealthReport;
+    const String url = Constants.deleteRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -221,7 +219,7 @@ class _WeightlossState extends State<Weightloss> {
       {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
-    final String url = Constants.updateRoutineHealthReport;
+    const String url = Constants.updateRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -291,6 +289,7 @@ class _WeightlossState extends State<Weightloss> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               "Weight Loss",
               style: TextStyle(
@@ -474,54 +473,41 @@ class _WeightlossState extends State<Weightloss> {
                                         ),
                                       ),
                                     ),
-                                    /*if (data.isNotEmpty)
-                                      SfCartesianChart(
-                                        // primaryXAxis: CategoryAxis(),
-                                        enableAxisAnimation: true,
-                                        primaryXAxis: DateTimeAxis(
-                                          dateFormat: DateFormat("MMM y"),
-                                          minimum: data.first.date,
-                                          maximum: data.last.date,
+                                    if (data.isNotEmpty)
 
-                                          autoScrollingDeltaType:
-                                              DateTimeIntervalType.auto,
-                                          // autoScrollingMode: AutoScrollingMode.end,
-                                        ),
-                                        primaryYAxis: const NumericAxis(
-                                            edgeLabelPlacement:
-                                                EdgeLabelPlacement.shift),
-                                        // axes: [Charts()],
-                                        series: <ChartSeries<_WeightLossData,
-                                            dynamic>>[
-                                          LineSeries<_WeightLossData, dynamic>(
-                                            dataSource: data,
-                                            xValueMapper:
-                                                (_WeightLossData weight, _) =>
-                                                    weight.date,
-                                            yValueMapper:
-                                                (_WeightLossData weight, _) =>
-                                                    weight.weight,
-                                            dataLabelSettings:
-                                                const DataLabelSettings(
-                                              isVisible: true,
+                                      ///CHART
+                                      //   SfCartesianChart(
+                                      //     // primaryXAxis: CategoryAxis(),
+                                      //     enableAxisAnimation: true,
+                                      //     primaryXAxis: DateTimeAxis(
+                                      //       dateFormat: DateFormat("MMM y"),
+                                      //       minimum: data.first.date,
+                                      //       maximum: data.last.date,
+                                      //
+                                      //       autoScrollingDeltaType:
+                                      //           DateTimeIntervalType.auto,
+                                      //       // autoScrollingMode: AutoScrollingMode.end,
+                                      //     ),
+                                      //     primaryYAxis: const NumericAxis(
+                                      //         edgeLabelPlacement:
+                                      //             EdgeLabelPlacement.shift),
+                                      //     // axes: [Charts()],
+                                      //     series: chartData,
+                                      //   ),
+                                      if (data.isEmpty)
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: Get.height * 0.30),
+                                          child: Center(
+                                            child: Text(
+                                              'No weight loss data',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge
+                                                  ?.copyWith(fontSize: 20),
                                             ),
-                                          )
-                                        ] as List<CartesianSeries>,
-                                      ),*/
-                                    if (data.isEmpty)
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            top: Get.height * 0.30),
-                                        child: Center(
-                                          child: Text(
-                                            'No weight loss data',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge
-                                                ?.copyWith(fontSize: 20),
                                           ),
-                                        ),
-                                      )
+                                        )
                                   ],
                                 ),
                               );
@@ -635,6 +621,18 @@ class _WeightlossState extends State<Weightloss> {
           )
         ]).show();
   }
+
+  ///CHART
+  // List<CartesianSeries> chartData = [
+  //   LineSeries<_WeightLossData, dynamic>(
+  //     dataSource: data,
+  //     xValueMapper: (_WeightLossData weight, _) => weight.date,
+  //     yValueMapper: (_WeightLossData weight, _) => weight.weight,
+  //     dataLabelSettings: const DataLabelSettings(
+  //       isVisible: true,
+  //     ),
+  //   )
+  // ];
 }
 
 class _WeightLossData {

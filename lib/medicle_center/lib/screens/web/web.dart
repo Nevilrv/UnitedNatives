@@ -22,7 +22,6 @@ class _WebState extends State<Web> {
   bool _loadCompleted = false;
   bool _receiveCallback = false;
   String? _callbackResult;
-  WebViewController? _controller;
 
   @override
   void initState() {
@@ -44,7 +43,7 @@ class _WebState extends State<Web> {
   ///Clear Cookie
   Future<void> _clearCookie() async {
     if (Platform.isIOS) {
-      await _controller?.clearCache();
+      await controller.clearCache();
     } else {
       // await _cookieManager.clearCookies();
     }
@@ -67,6 +66,8 @@ class _WebState extends State<Web> {
     }
   }
 
+  WebViewController controller = WebViewController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,29 +84,30 @@ class _WebState extends State<Web> {
           Container(
             color: Theme.of(context).colorScheme.surface,
           ),
-
-          /// NEW CODE COMMENT
-          // WebView(
-          //   initialUrl: widget.web.url,
-          //   javascriptMode: JavascriptMode.unrestricted,
-          //   onWebViewCreated: (webViewController) {
-          //     _controller = webViewController;
-          //   },
-          //   onPageStarted: (String url) {
-          //     SVProgressHUD.show();
-          //   },
-          //   onPageFinished: onPageFinished,
-          //   navigationDelegate: (request) {
-          //     for (var item in widget.web!.callbackUrl) {
-          //       if (request.url.contains(item)) {
-          //         _callbackResult = item;
-          //         break;
-          //       }
-          //     }
-          //     return NavigationDecision.navigate;
-          //   },
-          //   gestureNavigationEnabled: true,
-          // ),
+          WebViewWidget(
+            controller: controller
+              ..setJavaScriptMode(JavaScriptMode.unrestricted)
+              ..setNavigationDelegate(NavigationDelegate(
+                onNavigationRequest: (request) {
+                  for (var item in widget.web!.callbackUrl) {
+                    if (request.url.contains(item)) {
+                      _callbackResult = item;
+                      break;
+                    }
+                  }
+                  return NavigationDecision.navigate;
+                },
+                onPageStarted: (String url) {
+                  SVProgressHUD.show();
+                },
+                onPageFinished: onPageFinished,
+              ))
+              ..loadRequest(
+                Uri.parse(
+                  widget.web!.url.toString(),
+                ),
+              ),
+          )
         ],
       ),
     );

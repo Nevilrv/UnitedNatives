@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:date_format/date_format.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/self_monitoring_controller.dart';
@@ -10,15 +15,6 @@ import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
 import 'package:united_natives/utils/constants.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-// import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../../model/health_response_model.dart';
 import '../../utils/utils.dart';
 
@@ -94,14 +90,14 @@ class _BloodPressureState extends State<BloodPressure> {
   List<String> idList = [];
 
   final _editableKey = GlobalKey<EditableState>();
-  List<_BloodPressureData> data = [];
+  static List<_BloodPressureData> data = [];
   TimeOfDay selectedTime = TimeOfDay.now();
   String? _setTime;
 
   Future<HealthResponseModel?> getBloodPressureData() async {
     rows.clear();
     idList.clear();
-    final String url = Constants.getRoutineHealthReport;
+    const String url = Constants.getRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -159,7 +155,7 @@ class _BloodPressureState extends State<BloodPressure> {
   Future addBloodPressureData(reportTableData) async {
     isLoading.value = true;
 
-    final String url = Constants.addRoutineHealthReport;
+    const String url = Constants.addRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -194,7 +190,7 @@ class _BloodPressureState extends State<BloodPressure> {
   Future deleteBloodPressureData(String id) async {
     isLoading.value = true;
 
-    final String url = Constants.deleteRoutineHealthReport;
+    const String url = Constants.deleteRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -221,7 +217,7 @@ class _BloodPressureState extends State<BloodPressure> {
   Future updateBloodPressureData({dynamic reportTableData, String? id}) async {
     isLoading.value = true;
 
-    final String url = Constants.updateRoutineHealthReport;
+    const String url = Constants.updateRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -292,6 +288,7 @@ class _BloodPressureState extends State<BloodPressure> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               "Blood Pressure",
               style: TextStyle(
@@ -514,90 +511,41 @@ class _BloodPressureState extends State<BloodPressure> {
                                         ),
                                       ),
                                     ),
-                                    /*if (data.isNotEmpty)
-                                      SfCartesianChart(
-                                        // primaryXAxis: CategoryAxis(),
-                                        enableAxisAnimation: true,
-                                        primaryXAxis: DateTimeAxis(
-                                            dateFormat: DateFormat("MMM y"),
-                                            minimum: data.first.date,
-                                            maximum: data.last.date,
-                                            autoScrollingDeltaType:
-                                                DateTimeIntervalType.auto
-                                            // autoScrollingMode: AutoScrollingMode.end,
+                                    if (data.isNotEmpty)
+
+                                      ///CHART
+
+                                      // SfCartesianChart(
+                                      //   // primaryXAxis: CategoryAxis(),
+                                      //   enableAxisAnimation: true,
+                                      //   primaryXAxis: DateTimeAxis(
+                                      //       dateFormat: DateFormat("MMM y"),
+                                      //       minimum: data.first.date,
+                                      //       maximum: data.last.date,
+                                      //       autoScrollingDeltaType:
+                                      //           DateTimeIntervalType.auto
+                                      //       // autoScrollingMode: AutoScrollingMode.end,
+                                      //       ),
+                                      //   primaryYAxis: const NumericAxis(
+                                      //       edgeLabelPlacement:
+                                      //           EdgeLabelPlacement.shift),
+                                      //   // axes: [Charts()],
+                                      //   series: chartData,
+                                      // ),
+                                      if (data.isEmpty)
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top: Get.height * 0.32),
+                                          child: Center(
+                                            child: Text(
+                                              'No blood pressure data!',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge
+                                                  ?.copyWith(fontSize: 20),
                                             ),
-                                        primaryYAxis: const NumericAxis(
-                                            edgeLabelPlacement:
-                                                EdgeLabelPlacement.shift),
-                                        // axes: [Charts()],
-                                        series: <ChartSeries<_BloodPressureData,
-                                            dynamic>>[
-                                          ///SBP
-                                          LineSeries<_BloodPressureData,
-                                              dynamic>(
-                                            dataSource: data,
-                                            xValueMapper: (_BloodPressureData
-                                                        bloodPressure,
-                                                    _) =>
-                                                bloodPressure.date,
-                                            yValueMapper: (_BloodPressureData
-                                                        bloodPressure,
-                                                    _) =>
-                                                bloodPressure.sbpValue,
-                                            dataLabelSettings:
-                                                const DataLabelSettings(
-                                                    isVisible: true),
                                           ),
-
-                                          ///DBP
-                                          LineSeries<_BloodPressureData,
-                                              dynamic>(
-                                            dataSource: data,
-                                            xValueMapper: (_BloodPressureData
-                                                        bloodPressure,
-                                                    _) =>
-                                                bloodPressure.date,
-                                            yValueMapper: (_BloodPressureData
-                                                        bloodPressure,
-                                                    _) =>
-                                                bloodPressure.dbpValue,
-                                            dataLabelSettings:
-                                                const DataLabelSettings(
-                                                    isVisible: true),
-                                          ),
-
-                                          ///BPM
-                                          LineSeries<_BloodPressureData,
-                                              dynamic>(
-                                            dataSource: data,
-                                            xValueMapper: (_BloodPressureData
-                                                        bloodPressure,
-                                                    _) =>
-                                                bloodPressure.date,
-                                            yValueMapper: (_BloodPressureData
-                                                        bloodPressure,
-                                                    _) =>
-                                                bloodPressure.bpmValue,
-                                            dataLabelSettings:
-                                                const DataLabelSettings(
-                                                    isVisible: true),
-                                          ),
-                                        ] as List<CartesianSeries>,
-                                      ),*/
-                                    if (data.isEmpty)
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            top: Get.height * 0.32),
-                                        child: Center(
-                                          child: Text(
-                                            'No blood pressure data!',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge
-                                                ?.copyWith(fontSize: 20),
-                                          ),
-                                        ),
-                                      )
+                                        )
                                   ],
                                 ),
                               );
@@ -739,6 +687,36 @@ class _BloodPressureState extends State<BloodPressure> {
           )
         ]).show();
   }
+
+  ///CHART
+  // List<CartesianSeries> chartData = [
+  //   ///SBP
+  //   LineSeries<_BloodPressureData, dynamic>(
+  //     dataSource: data,
+  //     xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
+  //     yValueMapper: (_BloodPressureData bloodPressure, _) =>
+  //         bloodPressure.sbpValue,
+  //     dataLabelSettings: const DataLabelSettings(isVisible: true),
+  //   ),
+  //
+  //   ///DBP
+  //   LineSeries<_BloodPressureData, dynamic>(
+  //     dataSource: data,
+  //     xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
+  //     yValueMapper: (_BloodPressureData bloodPressure, _) =>
+  //         bloodPressure.dbpValue,
+  //     dataLabelSettings: const DataLabelSettings(isVisible: true),
+  //   ),
+  //
+  //   ///BPM
+  //   LineSeries<_BloodPressureData, dynamic>(
+  //     dataSource: data,
+  //     xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
+  //     yValueMapper: (_BloodPressureData bloodPressure, _) =>
+  //         bloodPressure.bpmValue,
+  //     dataLabelSettings: const DataLabelSettings(isVisible: true),
+  //   ),
+  // ];
 }
 
 class _BloodPressureData {

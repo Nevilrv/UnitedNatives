@@ -33,7 +33,8 @@ class IntakeFrom extends StatefulWidget {
 class _IntakeFrom extends State<IntakeFrom> {
   IntakeFormViewModel unitedNativesFormViewModel = Get.find();
   PaypalPaymentModel paypalPaymentModel = PaypalPaymentModel();
-  PatientHomeScreenController patientHomeScreenController = Get.find();
+  final PatientHomeScreenController patientHomeScreenController =
+      Get.find<PatientHomeScreenController>();
   final BookAppointmentController bookAppointmentController = Get.find();
   final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   final ScrollController _scrollController = ScrollController();
@@ -79,6 +80,7 @@ class _IntakeFrom extends State<IntakeFrom> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title: Text(
           'Intake From',
           style: TextStyle(

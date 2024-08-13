@@ -24,6 +24,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back,

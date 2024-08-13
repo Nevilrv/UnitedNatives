@@ -46,6 +46,7 @@ class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             backgroundColor: Colors.white,
             elevation: 0,
             title: const Text(

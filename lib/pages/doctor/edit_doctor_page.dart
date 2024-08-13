@@ -44,6 +44,7 @@ class _EditMyDoctorScreenState extends State<EditMyDoctorScreen> {
     log('doctor-----MOBILE----->>>>>>>>${widget.doctor?.doctorMobile}');
     return Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           centerTitle: true,
           title: Text(
             Translate.of(context)!.translate('Edit Provider'),

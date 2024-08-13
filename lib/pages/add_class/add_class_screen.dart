@@ -31,7 +31,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   TextEditingController featureImageController = TextEditingController();
   final UserController userController = Get.find();
 
-  File ?featureImageFile;
+  File? featureImageFile;
 
   bool isStreaming = false;
 
@@ -39,6 +39,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         centerTitle: true,
         title: Text(
           Translate.of(context)!.translate('add_class'),

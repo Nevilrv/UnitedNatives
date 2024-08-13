@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:share_plus/share_plus.dart';
 import 'package:united_natives/controller/doctor_homescreen_controller.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
@@ -270,13 +271,13 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                       image: 'group',
                       text: 'Invite Friends',
                       onTap: () {
-                        /// NEW CODE COMMENT
-
-                        // final RenderBox box = context.findRenderObject();
-                        // Share.share(text,
-                        //     subject: subject,
-                        //     sharePositionOrigin:
-                        //         box.localToGlobal(Offset.zero) & box.size);
+                        final box = context.findRenderObject() as RenderBox?;
+                        Share.share(
+                          text.toString(),
+                          subject: subject,
+                          sharePositionOrigin:
+                              box!.localToGlobal(Offset.zero) & box.size,
+                        );
                       },
                     ),
 

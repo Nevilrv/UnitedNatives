@@ -39,6 +39,7 @@ class _PatientServicesState extends State<PatientServices> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             'Services',
             style: TextStyle(

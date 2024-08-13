@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/self_monitoring_controller.dart';
@@ -79,7 +78,7 @@ class _SoberDayState extends State<SoberDay> {
   Future<HealthResponseModel?> getSoberDayData() async {
     rows.clear();
     idList.clear();
-    final String url = Constants.getRoutineHealthReport;
+    const String url = Constants.getRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -123,7 +122,7 @@ class _SoberDayState extends State<SoberDay> {
   Future addSoberDayData(reportTableData) async {
     isLoading.value = true;
 
-    final String url = Constants.addRoutineHealthReport;
+    const String url = Constants.addRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -155,7 +154,7 @@ class _SoberDayState extends State<SoberDay> {
   Future deleteSoberDayData(String id) async {
     isLoading.value = true;
 
-    final String url = Constants.deleteRoutineHealthReport;
+    const String url = Constants.deleteRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -184,7 +183,7 @@ class _SoberDayState extends State<SoberDay> {
       {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
-    final String url = Constants.updateRoutineHealthReport;
+    const String url = Constants.updateRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -246,6 +245,7 @@ class _SoberDayState extends State<SoberDay> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               "Sobriety Tracker",
               style: TextStyle(

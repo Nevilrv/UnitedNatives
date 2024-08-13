@@ -37,6 +37,7 @@ class _SurveyState extends State<Survey> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: const Text('Survey'),
         ),
         body: SafeArea(

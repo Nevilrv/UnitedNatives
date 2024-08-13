@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
 import 'package:united_natives/medicle_center/lib/configs/application.dart';
@@ -29,6 +31,9 @@ class LoginCubit extends Cubit<LoginState> {
       username: username.toString(),
       password: password.toString(),
     );
+
+    log('LOGINSUCCCCCC${result}');
+
     if (result != null) {
       ///Begin start Auth flow
       await AppBloc.authenticateCubit.onSave(result);

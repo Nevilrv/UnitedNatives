@@ -56,8 +56,8 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
 
   RateContactUsController rateContactUsController =
       Get.put(RateContactUsController());
-  PatientHomeScreenController patientHomeScreenController =
-      Get.put(PatientHomeScreenController());
+  final PatientHomeScreenController patientHomeScreenController =
+      Get.find<PatientHomeScreenController>();
   LogOutController logOutController = Get.put(LogOutController());
   @override
   void initState() {
@@ -277,6 +277,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                   BorderRadius.circular(controller.isDrawerOpen ? 40 : 0.0),
               child: Scaffold(
                 appBar: AppBar(
+                  surfaceTintColor: Colors.transparent,
                   leading: controller.isDrawerOpen
                       ? IconButton(
                           icon: const Icon(Icons.arrow_back_ios),

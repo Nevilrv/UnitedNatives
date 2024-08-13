@@ -69,10 +69,6 @@ class HTTPManager {
     Function(num)? progress,
     bool? loading,
   }) async {
-    log('options---------->>>>>>>>$options');
-    log('url-----111111111111----->>>>>>>>$url');
-    log('data---------->>>>>>>>$data');
-    log('formData---------->>>>>>>>$formData');
     if (loading == true) {
       SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.light);
       SVProgressHUD.show();

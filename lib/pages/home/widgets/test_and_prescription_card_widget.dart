@@ -38,7 +38,7 @@ class TestAndPrescriptionCardWidget extends StatelessWidget {
               width: 10,
             ),
             SizedBox(
-              width: w * 0.63,
+              width: w * 0.55,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,

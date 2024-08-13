@@ -217,6 +217,7 @@ class _TimeSlotPage2State extends State<TimeSlotPage2> {
               context: context,
             ),
             appBar: AppBar(
+              surfaceTintColor: Colors.transparent,
               centerTitle: true,
               title: Text(
                 Translate.of(context)!.translate('time_slot'),

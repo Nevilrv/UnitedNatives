@@ -362,6 +362,7 @@ class _MoodState extends State<Mood> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             title: Text(
               "Mood",
               style: TextStyle(

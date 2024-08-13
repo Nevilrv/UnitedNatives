@@ -13,24 +13,19 @@ class HomeCubit extends Cubit<HomeState> {
     ///Fetch API Home
     final response = await Api.requestHome();
     if (response.success!) {
-      // log('response.data[categories]----->${response.data['categories']}');
       final banner = List<String>.from(response.data['sliders'] ?? []);
-
       final category = List.from(response.data['categories'] ?? []).map((item) {
         return CategoryModel.fromJson(item);
       }).toList();
-
       final location = List.from(response.data['locations'] ?? []).map((item) {
         return CategoryModel.fromJson(item);
       }).toList();
-
       final recent = List.from(response.data['recent_posts'] ?? []).map((item) {
         return ProductModel.fromJson(
           item,
           setting: Application.setting,
         );
       }).toList();
-
       final nativeAmericanData =
           List.from(response.data['na'] ?? []).map((item) {
         return ProductModel.fromJson(
@@ -38,7 +33,6 @@ class HomeCubit extends Cubit<HomeState> {
           setting: Application.setting,
         );
       }).toList();
-
       final americanNativeData =
           List.from(response.data['an'] ?? []).map((item) {
         return ProductModel.fromJson(

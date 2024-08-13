@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:http/http.dart' as http;
 import 'package:in_app_review/in_app_review.dart';
@@ -181,12 +182,25 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('Delete Account'),
+                            title: const Text(
+                              'Delete Account',
+                              style: TextStyle(fontSize: 22),
+                            ),
                             content: const Text(
-                                "Are you sure want to delete your account?"),
+                              "Are you sure want to delete your account?",
+                              style: TextStyle(fontSize: 22),
+                            ),
                             actions: <Widget>[
                               TextButton(
-                                child: const Text("YES"),
+                                child: const Text("No",
+                                    style: TextStyle(fontSize: 22)),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: const Text("Yes",
+                                    style: TextStyle(fontSize: 22)),
                                 onPressed: () async {
                                   await patientHomeScreenController
                                       .deletePatientAccount(_userController
@@ -213,12 +227,6 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                                   //       message:
                                   //           'Please try again after some time!');
                                   // }
-                                },
-                              ),
-                              TextButton(
-                                child: const Text("NO"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
                                 },
                               ),
                             ],
@@ -309,19 +317,20 @@ class _GeneralWidgetState extends State<GeneralWidget> {
                         //     print(rating);
                         //   },
                         // )
-                        /// NEW CODE COMMENT
-                        /*SmoothStarRating(
-                            allowHalfRating: false,
-                            starCount: 5,
-                            rating: double.parse('${controller.rate}.0'),
-                            size: Get.height * 0.05,
-                            isReadOnly: true,
+                        RatingBarIndicator(
+                          rating: double.parse('${controller.rate}.0'),
+                          itemCount: 5,
+                          itemSize: Get.height * 0.05,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
                             color: Colors.blue,
-                            borderColor: Colors.blue,
-                            filledIconData: Icons.star,
-                            halfFilledIconData: Icons.star_half,
-                            defaultIconData: Icons.star_border,
-                            spacing: .5),*/
+                          ),
+                          unratedColor: Colors.blue.withOpacity(0.3),
+                          direction: Axis.horizontal,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 0.25),
+                        )
                       ],
                     ),
                   ),

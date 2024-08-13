@@ -41,6 +41,7 @@ class _EventScreenState extends State<EventScreen> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           backgroundColor: Colors.white,
           elevation: 0,
           title: const Text(

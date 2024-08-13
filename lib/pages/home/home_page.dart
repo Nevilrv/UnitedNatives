@@ -53,7 +53,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // getStates();
       getUpcomingClassData();
     });
 
@@ -78,6 +77,8 @@ class _HomePageState extends State<HomePage> {
       }
     }
   }
+
+  final ScrollController _controller = ScrollController();
 
   /// GET STATES
   // Future getStates() async {
@@ -205,9 +206,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-
-    FocusScope.of(context).unfocus();
-
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
         bottomNavigationBar: AdsBottomBar(
@@ -216,9 +214,15 @@ class _HomePageState extends State<HomePage> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
+            _controller.animateTo(
+              0.0,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 300),
+            );
             getUpcomingClassData();
           },
           child: SingleChildScrollView(
+            controller: _controller,
             physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
@@ -294,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ).paddingOnly(right: 1)
                                   : _patientHomeScreenController
                                               .patientHomePageData
                                               .value
@@ -1349,7 +1353,6 @@ class _HomePageState extends State<HomePage> {
                                             child: Utils.circular(),
                                           ),
                                         )*/
-
                                   SizedBox(
                                       height: 125,
                                       child: AppPlaceholder(
@@ -1364,7 +1367,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ).paddingOnly(right: 1)
                                   : _patientHomeScreenController
                                               .patientHomePageData
                                               .value

@@ -9,24 +9,26 @@ import 'package:united_natives/medicle_center/lib/models/model_user.dart';
 class UserRepository {
   ///Fetch api login
   static Future<UserModel?> login({
-    String? username,
-    String? password,
+    required String username,
+    required String password,
   }) async {
     final Map<String, dynamic> params = {
       "username": username,
-      "password": password ?? "12345678",
+      "password": password,
     };
 
-    log('params---------->>>>>>>>$params');
+    log('MEDI LOGIN PARAMS REPO ==========>>>>>${params}');
 
     final response = await Api.requestLogin(params);
 
-    if (response.success!) {
-      log('response.data---------->>>>>>>>${response.data}');
+    log('MEDI LOGIN RESPONSE REPO====success======>>>>>${response.success}');
+    log('MEDI LOGIN RESPONSE REPO====data======>>>>>${response.data}');
+    log('MEDI LOGIN RESPONSE REPO====user======>>>>>${response.user}');
+    log('MEDI LOGIN RESPONSE REPO====message======>>>>>${response.message}');
 
+    if (response.success!) {
       return UserModel.fromJson(response.data);
-    } else {}
-    log('response.message---------->>>>>>>>${response.message}');
+    }
     AppBloc.messageCubit.onShow(response.message!);
     return null;
   }
@@ -91,7 +93,7 @@ class UserRepository {
     log('params==========>>>>>$params');
 
     final response = await Api.requestRegister(params);
-    AppBloc.messageCubit.onShow(response.message!);
+    AppBloc.messageCubit.onShow(response.message ?? "");
     if (response.success!) {
       return true;
     }
@@ -131,12 +133,12 @@ class UserRepository {
   }
 
   ///Load User
-  static Future<UserModel?> loadUser() async {
+  static Future<UserModel> loadUser() async {
     final result = Preferences.getString(Preferences.user);
     if (result != null) {
       return UserModel.fromJson(jsonDecode(result));
     }
-    return null;
+    return UserModel();
   }
 
   ///Fetch User

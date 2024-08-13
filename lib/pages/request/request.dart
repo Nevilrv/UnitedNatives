@@ -48,6 +48,7 @@ class _RequestState extends State<Request> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: Text(
             'Request',
             style: TextStyle(

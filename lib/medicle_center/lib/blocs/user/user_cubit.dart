@@ -9,8 +9,8 @@ class UserCubit extends Cubit<UserModel> {
 
   ///Event load user
   Future<UserModel> onLoadUser() async {
-    UserModel? user = await UserRepository.loadUser();
-    emit(user!);
+    UserModel user = await UserRepository.loadUser();
+    emit(user);
     return user;
   }
 
@@ -18,14 +18,14 @@ class UserCubit extends Cubit<UserModel> {
   Future<UserModel> onFetchUser() async {
     UserModel? local = await UserRepository.loadUser();
     UserModel? remote = await UserRepository.fetchUser();
-    final sync = local?.updateUser(
+    final sync = local.updateUser(
       name: remote?.name,
       email: remote?.email,
       url: remote?.url,
       description: remote?.description,
       image: remote?.image,
     );
-    onSaveUser(sync!);
+    onSaveUser(sync);
     return sync;
   }
 

@@ -197,6 +197,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           leading: GestureDetector(
               onTap: () {
                 Get.back();

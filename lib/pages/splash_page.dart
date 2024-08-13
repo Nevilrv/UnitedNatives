@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -45,9 +45,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   final _discoveryCubit = DiscoveryCubit();
-  StreamSubscription? submitSubscription;
-  StreamSubscription? reviewSubscription;
-  SearchHistoryDelegate? delegate;
+  late StreamSubscription submitSubscription;
+  late StreamSubscription reviewSubscription;
+  late SearchHistoryDelegate delegate;
 
   _getMedicalCenterData() {
     /// MEDICAL CENTER
@@ -198,7 +198,6 @@ class _SplashPageState extends State<SplashPage> {
     http.Response response = await http.get(
       Uri.parse(Constants.baseUrl + Constants.getAllAdvertisement),
     );
-    log('response==========>>>>>$response');
 
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);

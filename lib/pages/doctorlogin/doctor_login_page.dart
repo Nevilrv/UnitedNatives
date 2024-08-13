@@ -421,90 +421,85 @@ class _WidgetSigninState extends State<WidgetSignin> {
           const SizedBox(
             height: 35,
           ),
-          isLoading
-              // ? Center(
-              //     child: CircularProgressIndicator(
-              //     strokeWidth: 1,
-              //   ))
-              ? SizedBox(
-                  height: 60,
-                  child: Center(
-                    child: Utils.circular(height: 60),
-                  ),
-                )
-              : CustomButton(
-                  textSize: 24,
-                  // onPressed: () {
-                  //   Navigator.of(context).popAndPushNamed(Routes.home2);
-                  // },
-                  // onPressed: () async {
-                  //   await _userController.userLogin(LogInType.NORMAL, 2,
-                  //       _emailController.text,
-                  //       _passwordController.text, "");
-                  // },
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    if (_formKey.currentState!.validate()) {
-                      _userController.loginData = User(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        userType: "2",
-                      );
+          if (isLoading)
+            SizedBox(
+              height: 60,
+              child: Center(
+                child: Utils.circular(height: 60),
+              ),
+            )
+          else
+            CustomButton(
+              textSize: 24,
+              // onPressed: () {
+              //   Navigator.of(context).popAndPushNamed(Routes.home2);
+              // },
+              // onPressed: () async {
+              //   await _userController.userLogin(LogInType.NORMAL, 2,
+              //       _emailController.text,
+              //       _passwordController.text, "");
+              // },
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                if (_formKey.currentState!.validate()) {
+                  _userController.loginData = User(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    userType: "2",
+                  );
 
-                      loginVerificationData =
-                          await _userController.loginVerificationDetails(
-                              _userController.loginData!.email!,
-                              _userController.loginData?.password);
+                  loginVerificationData =
+                      await _userController.loginVerificationDetails(
+                          _userController.loginData!.email!,
+                          _userController.loginData?.password);
 
-                      if (loginVerificationData != null) {
-                        pinStatusModelData = await _userController
-                            .statusPIN(loginVerificationData.id!);
+                  if (loginVerificationData != null) {
+                    pinStatusModelData = await _userController
+                        .statusPIN(loginVerificationData.id!);
 
-                        if (pinStatusModelData.pinStatusData != null) {
-                          if (pinStatusModelData.pinStatusData?.requestStatus ==
-                              "2") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PhoneVerification3(
-                                      loginVerificationData:
-                                          loginVerificationData,
-                                      resetPINId: pinStatusModelData
-                                          .pinStatusData!.id!),
-                                ));
+                    if (pinStatusModelData.pinStatusData != null) {
+                      if (pinStatusModelData.pinStatusData?.requestStatus ==
+                          "2") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PhoneVerification3(
+                                  loginVerificationData: loginVerificationData,
+                                  resetPINId:
+                                      pinStatusModelData.pinStatusData?.id),
+                            ));
 
-                            await Future.delayed(
-                                    const Duration(milliseconds: 500))
-                                .then((value) => Utils.showSnackBar(
-                                    'Reset Password',
-                                    'Admin Verified Pin Reset Request'));
-                          } else {
-                            await _userController.loginVerification(
-                                _userController.loginData!.email!,
-                                _userController.loginData!.password,
-                                _passwordController.text);
-                          }
-                        } else {
-                          await _userController.loginVerification(
-                              _userController.loginData!.email!,
-                              _userController.loginData!.password,
-                              _passwordController.text);
-                        }
+                        await Future.delayed(const Duration(milliseconds: 500))
+                            .then((value) => Utils.showSnackBar(
+                                'Reset Password',
+                                'Admin Verified Pin Reset Request'));
+                      } else {
+                        await _userController.loginVerification(
+                            _userController.loginData!.email!,
+                            _userController.loginData!.password,
+                            _passwordController.text);
                       }
-
-                      setState(() {
-                        isLoading = false;
-                      });
-
-                      //await Navigator.pushNamed(context, Routes.phoneAuthScreen);
-                      // await _userController.userRegister(userData, 1,
-                      //     useProfilePic: _image);
+                    } else {
+                      await _userController.loginVerification(
+                          _userController.loginData!.email!,
+                          _userController.loginData!.password!,
+                          _passwordController.text);
                     }
-                  },
-                  text: Translate.of(context)!.translate('login'),
-                )
+                  }
+
+                  setState(() {
+                    isLoading = false;
+                  });
+
+                  //await Navigator.pushNamed(context, Routes.phoneAuthScreen);
+                  // await _userController.userRegister(userData, 1,
+                  //     useProfilePic: _image);
+                }
+              },
+              text: Translate.of(context)!.translate('login'),
+            )
         ],
       ),
     );

@@ -8,13 +8,11 @@ class AppBlocObserver extends BlocObserver {
     UtilLogger.log('BLOC ONCHANGE', change);
   }
 
-  /// NEW CODE COMMENT
-
-  // @override
-  // void onEvent(Bloc bloc, Object event) {
-  //   super.onEvent(bloc, event);
-  //   UtilLogger.log('BLOC EVENT', event);
-  // }
+  @override
+  void onEvent(Bloc bloc, Object? event) {
+    super.onEvent(bloc, event);
+    UtilLogger.log('BLOC EVENT', event);
+  }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {

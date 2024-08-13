@@ -9,9 +9,9 @@ enum AppTheme {
 
 class Themes {
   final isLight = ThemeData(
-    useMaterial3: true, // Add this line to use Material 3
+    useMaterial3: false, // Add this line to use Material 3
     colorScheme: const ColorScheme.light(
-      primary: kColorPrimary,
+      primary: Colors.black,
       surface: Colors.white, // or any other color you want
     ),
     brightness: Brightness.light,
@@ -36,7 +36,7 @@ class Themes {
     ),
     dividerColor: Colors.grey[300],
     textTheme: TextTheme(
-      titleLarge: kTextStyleButton,
+      titleLarge: kTextStyleButton.copyWith(color: kColorPrimaryDark),
       titleMedium: kTextStyleSubtitle1.copyWith(color: kColorPrimaryDark),
       titleSmall: kTextStyleSubtitle2.copyWith(color: kColorPrimaryDark),
       bodyLarge: kTextStyleBody2.copyWith(color: kColorPrimaryDark),
@@ -55,7 +55,7 @@ class Themes {
   );
 
   final isDark = ThemeData(
-    useMaterial3: true, // Add this line to use Material 3
+    useMaterial3: false, // Add this line to use Material 3
     colorScheme: const ColorScheme.dark(
       primary: kColorPrimary,
     ),
@@ -80,7 +80,7 @@ class Themes {
     ),
     dividerColor: Colors.white54,
     textTheme: TextTheme(
-      titleLarge: kTextStyleButton,
+      titleLarge: kTextStyleButton.copyWith(color: Colors.white),
       titleMedium: kTextStyleSubtitle1.copyWith(color: Colors.white),
       titleSmall:
           kTextStyleSubtitle2.copyWith(color: Colors.white.withOpacity(0.87)),
@@ -138,7 +138,7 @@ final appThemeData = {
     ),
     dividerColor: Colors.grey[300],
     textTheme: TextTheme(
-      titleLarge: kTextStyleButton,
+      titleLarge: kTextStyleButton.copyWith(color: kColorPrimaryDark),
       titleMedium: kTextStyleSubtitle1.copyWith(color: kColorPrimaryDark),
       titleSmall: kTextStyleSubtitle2.copyWith(color: kColorPrimaryDark),
       bodyLarge: kTextStyleBody2.copyWith(color: kColorPrimaryDark),
@@ -184,7 +184,9 @@ final appThemeData = {
     ),
     dividerColor: Colors.white54,
     textTheme: TextTheme(
-      titleLarge: kTextStyleButton,
+      titleLarge: kTextStyleButton.copyWith(
+        color: Colors.white.withOpacity(0.87),
+      ),
       titleMedium: kTextStyleSubtitle1.copyWith(
         color: Colors.white.withOpacity(0.87),
       ),

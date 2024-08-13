@@ -56,6 +56,7 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
           context: context,
         ),
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: const Text(
             'Resources',
             style: TextStyle(fontSize: 27),

@@ -834,9 +834,13 @@ class PatientHomeScreenController extends GetxController {
   }
 
   @override
-  void onInit() async {
-    await getPatientHomePage();
-    await aboutUsPrivacyPolicy();
+  void onInit() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        getPatientHomePage();
+        aboutUsPrivacyPolicy();
+      },
+    );
     super.onInit();
   }
 

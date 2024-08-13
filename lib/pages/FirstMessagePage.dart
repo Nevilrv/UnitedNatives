@@ -162,6 +162,7 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {

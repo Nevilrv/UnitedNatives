@@ -113,6 +113,7 @@ class _UpdateDocNotesScreenState extends State<UpdateDocNotesScreen> {
         },
         child: Scaffold(
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             centerTitle: true,
             title: Text(
               Translate.of(context)!.translate('Edit Notes'),

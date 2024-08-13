@@ -17,6 +17,7 @@ class _BlogPage1State extends State<BlogPage1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         title: Text(
           Translate.of(context)!.translate('Research and Information'),
           style: TextStyle(

@@ -240,7 +240,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const home.Home());
 
       case Routes.home2:
-        return CupertinoPageRoute(builder: (_) => Home2());
+        return CupertinoPageRoute(builder: (_) => const Home2());
 
       case Routes.contact:
         return CupertinoPageRoute(builder: (_) => const Contact());
@@ -454,7 +454,7 @@ class RouteGenerator {
         return CupertinoPageRoute(builder: (_) => const DocEditProfilePage());
 
       case Routes.changeLanguage:
-        return CupertinoPageRoute(builder: (_) => ChangeLanguagePage());
+        return CupertinoPageRoute(builder: (_) => const ChangeLanguagePage());
 
       case Routes.notificationSettings:
         return CupertinoPageRoute(
@@ -463,7 +463,8 @@ class RouteGenerator {
       case Routes.myDoctors:
         return CupertinoPageRoute(builder: (_) => const MyDoctorListPage());
       case Routes.hospitalStructure:
-        return CupertinoPageRoute(builder: (_) => HospitalStructureScreen());
+        return CupertinoPageRoute(
+            builder: (_) => const HospitalStructureScreen());
 
       case Routes.mypatient:
         return CupertinoPageRoute(builder: (_) => const MyPatientListPage());
@@ -831,6 +832,7 @@ class RouteGenerator {
     return CupertinoPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           title: const Text('Error'),
         ),
         body: const Center(

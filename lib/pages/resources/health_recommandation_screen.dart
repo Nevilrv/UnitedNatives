@@ -44,6 +44,7 @@ class _HealthScreenState extends State<HealthScreen> {
             context: context,
           ),
           appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
             backgroundColor: Colors.white,
             elevation: 0,
             title: const Text(
