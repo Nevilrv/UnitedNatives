@@ -334,13 +334,19 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text('Are you sure want to logout?'),
+                              title: const Text(
+                                'Are you sure want to logout?',
+                                style: TextStyle(fontSize: 22),
+                              ),
                               actions: <Widget>[
                                 TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: const Text('Cancel')),
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(fontSize: 20),
+                                    )),
                                 TextButton(
                                   onPressed: () async {
                                     _userController.user.value.id = null;
@@ -363,6 +369,7 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                                   child: const Text(
                                     'Log out',
                                     style: TextStyle(
+                                      fontSize: 20,
                                       color: Colors.red,
                                     ),
                                   ),

@@ -182,15 +182,20 @@ class _MyAppState extends State<MyApp> {
                     builder: (context, widget) {
                       return MediaQuery(
                         data: MediaQuery.of(context).copyWith(
-                          textScaler: const TextScaler.linear(0.88),
+                          textScaler: const TextScaler.linear(1),
                           boldText: false,
                         ),
-                        child: ResponsiveBreakpoints.builder(
-                          child: widget!,
-                          breakpoints: [
-                            const Breakpoint(start: 0, end: 400, name: MOBILE),
-                            const Breakpoint(
-                                start: 451, end: 1921, name: TABLET),
+                        child: ResponsiveWrapper.builder(
+                          BouncingScrollWrapper.builder(context, widget!),
+                          maxWidth: 1200,
+                          minWidth: 450,
+                          defaultScale: true,
+                          breakpoints: const [
+                            ResponsiveBreakpoint.resize(450, name: MOBILE),
+                            ResponsiveBreakpoint.autoScale(800, name: DESKTOP),
+                            ResponsiveBreakpoint.autoScale(800, name: DESKTOP),
+                            ResponsiveBreakpoint.resize(800, name: DESKTOP),
+                            ResponsiveBreakpoint.autoScale(800, name: DESKTOP),
                           ],
                         ),
                       );
@@ -220,6 +225,8 @@ class _MyAppState extends State<MyApp> {
 class BaseBindings extends Bindings {
   @override
   void dependencies() {
+    WidgetsFlutterBinding.ensureInitialized();
+
     Get.put<UserController>(UserController(), permanent: true);
     Get.put<BookAppointmentController>(BookAppointmentController(),
         permanent: true);

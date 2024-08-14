@@ -69,9 +69,7 @@ class PersonalMedicationItem extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          const SizedBox(height: 15),
           const Divider(
             height: 1,
             thickness: 1,

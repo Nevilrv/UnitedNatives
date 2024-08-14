@@ -39,7 +39,7 @@ class _DoctorMessagesPage extends State<DoctorMessagesPage>
   final TextEditingController _textController = TextEditingController();
   FocusNode searchFocus = FocusNode();
   AddNewChatMessageController addNewChatMessageController = Get.find();
-  GetSortedChatListDoctor getSortedChatListDoctor = GetSortedChatListDoctor();
+  GetSortedChatListDoctor? getSortedChatListDoctor;
   final UserController _userController = Get.find<UserController>();
 
   @override
@@ -121,7 +121,7 @@ class _DoctorMessagesPage extends State<DoctorMessagesPage>
                           Status.COMPLETE) {
                         return Padding(
                           padding: const EdgeInsets.only(top: 70.0),
-                          child: getSortedChatListDoctor
+                          child: getSortedChatListDoctor!
                                       .doctorChatList!.isEmpty ||
                                   controller.getDoctorSortedChatListApiResponse
                                           .data ==
@@ -138,11 +138,11 @@ class _DoctorMessagesPage extends State<DoctorMessagesPage>
                               : ListView.builder(
                                   padding: const EdgeInsets.only(top: 10),
                                   itemCount: getSortedChatListDoctor
-                                          .doctorChatList?.length ??
+                                          ?.doctorChatList?.length ??
                                       0,
                                   itemBuilder: (context, int index) {
                                     ShortedDoctorChat doctorChat =
-                                        getSortedChatListDoctor
+                                        getSortedChatListDoctor!
                                             .doctorChatList![index];
 
                                     return MessageListItem(
@@ -370,14 +370,14 @@ class _DoctorMessagesPage extends State<DoctorMessagesPage>
                         dev.log('Value>>>>>>> 2 ${_textController.text}');
                         if (value.isEmpty) {
                           chatTimer();
-                        } else if (getSortedChatListDoctor
+                        } else if (getSortedChatListDoctor!
                             .doctorChatList!.isEmpty) {
                           await addNewChatMessageController
                               .getSortedChatListDoctor(
                                   doctorId: _userController.user.value.id);
                           setState(() {
-                            getSortedChatListDoctor.doctorChatList =
-                                getSortedChatListDoctor.doctorChatList?.where(
+                            getSortedChatListDoctor?.doctorChatList =
+                                getSortedChatListDoctor?.doctorChatList?.where(
                                     (ShortedDoctorChat shortedDoctorChat) {
                               String data =
                                   '${shortedDoctorChat.patientFirstName} ${shortedDoctorChat.patientLastName}';
@@ -388,15 +388,15 @@ class _DoctorMessagesPage extends State<DoctorMessagesPage>
                                   .contains(value.toLowerCase().trim());
                             }).toList();
                             dev.log(
-                                'getSortedChatListDoctor.doctorChatList ${getSortedChatListDoctor.doctorChatList}');
+                                'getSortedChatListDoctor.doctorChatList ${getSortedChatListDoctor?.doctorChatList}');
                           });
                         } else {
                           dev.log("cancel");
                           TimerChange.timer?.cancel();
                         }
                         setState(() {
-                          getSortedChatListDoctor.doctorChatList =
-                              getSortedChatListDoctor.doctorChatList?.where(
+                          getSortedChatListDoctor?.doctorChatList =
+                              getSortedChatListDoctor?.doctorChatList?.where(
                                   (ShortedDoctorChat shortedDoctorChat) {
                             String data =
                                 '${shortedDoctorChat.patientFirstName}';
@@ -413,7 +413,7 @@ class _DoctorMessagesPage extends State<DoctorMessagesPage>
                                     .replaceAll(" ", ""));
                           }).toList();
                           dev.log(
-                              'getSortedChatListDoctor.doctorChatList ${getSortedChatListDoctor.doctorChatList}');
+                              'getSortedChatListDoctor.doctorChatList ${getSortedChatListDoctor?.doctorChatList}');
                         });
                       },
                       decoration: InputDecoration(

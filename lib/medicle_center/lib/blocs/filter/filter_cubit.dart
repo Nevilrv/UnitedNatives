@@ -52,8 +52,7 @@ class FilterCubit extends Cubit<FilterState> {
           categoryOfStatess.first.name != 'All States') {
         int stateMedicalCenterCount = 0;
         for (var e in categoryOfStatess) {
-          stateMedicalCenterCount +=
-              stateMedicalCenterCount + e.medicalCenterInState!;
+          stateMedicalCenterCount += e.medicalCenterInState!;
         }
 
         StateModel stateAllModel = StateModel(

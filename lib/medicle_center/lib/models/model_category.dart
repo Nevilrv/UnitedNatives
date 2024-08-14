@@ -48,8 +48,8 @@ class CategoryModel {
     if (json['taxonomy'] == 'listar_location') {
       categoryType = CategoryType.location;
     }
-    final icon = UtilIcon.getIconFromCss(json['icon']);
-    final color = UtilColor.getColorFromHex(json['color']);
+    final icon = UtilIcon.getIconFromCss(json['icon'] ?? "");
+    final color = UtilColor.getColorFromHex(json['color'] ?? "");
     return CategoryModel(
       id: json['term_id'] ?? json['id'] ?? 0,
       title: json['name'] ?? 'Unknown',

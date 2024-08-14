@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
@@ -68,20 +69,10 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const SizedBox(height: 20),
-                          Builder(builder: (context) {
-                            var document = parse(privacyData);
-                            return Text(document.body!.text
-                                /* style: {
-                                    "tr": Style(
-                                      border: Border(bottom: BorderSide(color: Colors.grey)),
-                                    ),
-                                    "th": Style(
-                                      padding: EdgeInsets.all(6),
-                                      backgroundColor: Colors.grey,
-                                    ),
-                                  }*/
-                                );
-                          }),
+                          HtmlWidget(
+                            privacyData.toString(),
+                            textStyle: const TextStyle(fontSize: 20),
+                          ),
                           const SizedBox(height: 10),
                         ],
                       ),

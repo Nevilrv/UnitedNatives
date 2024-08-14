@@ -49,6 +49,7 @@ class _DeleteIconState extends State<DeleteIcon> {
               );
             },
             onWillAcceptWithDetails: (medicine) {
+              print('onWillAccept was called');
               setState(() {
                 color = Colors.red;
               });
@@ -58,25 +59,26 @@ class _DeleteIconState extends State<DeleteIcon> {
               setState(() {
                 color = Colors.grey;
               });
+              print('onLeave');
             },
             onAcceptWithDetails: (medicine) {
               // remove it from the database
-              model
-                  .getDatabase()
-                  .deleteMedicine(medicine as MedicinesTableData);
+
+              model.getDatabase().deleteMedicine(medicine.data);
               //remove the medicine notifcation
 
               // for debugging
               // show delete snakbar
-
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                backgroundColor: Colors.red,
-                content: Text(
-                  'Reminder deleted',
-                  style: TextStyle(fontSize: 22),
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text(
+                    'Reminder deleted',
+                    style: TextStyle(fontSize: 22),
+                  ),
+                  duration: Duration(seconds: 1),
                 ),
-                duration: Duration(seconds: 1),
-              ));
+              );
             },
           );
         }));

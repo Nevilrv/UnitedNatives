@@ -6,9 +6,9 @@ part 'moor_database.g.dart';
 class MedicinesTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 5, max: 50)();
-  TextColumn get image => text()();
-  TextColumn get dose => text()();
-  TextColumn get time => text()();
+  TextColumn get image => text().nullable()();
+  TextColumn get dose => text().nullable()();
+  TextColumn get time => text().nullable()();
 }
 
 @DriftDatabase(tables: [MedicinesTable])

@@ -1,15 +1,15 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
 import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
 import 'package:united_natives/medicle_center/lib/configs/application.dart';
 import 'package:united_natives/medicle_center/lib/utils/logger.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
 
 class HTTPManager {
   final exceptionCode = ['jwt_auth_bad_iss', 'jwt_auth_invalid_token'];
-  Dio? _dio;
+  Dio _dio = Dio();
 
   HTTPManager() {
     ///Dio
@@ -24,7 +24,7 @@ class HTTPManager {
     );
 
     ///Interceptors dio
-    _dio?.interceptors.add(
+    _dio.interceptors.add(
       QueuedInterceptorsWrapper(
         onRequest: (options, handler) {
           Map<String, dynamic> headers = {
@@ -34,15 +34,17 @@ class HTTPManager {
             "Type": Application.device?.type,
             "Device-Token": Application.device?.token,
           };
-          String? token = AppBloc.userCubit.state.token;
+          String token = AppBloc.userCubit.state.token ?? "";
 
-          headers["Authorization"] = "Bearer $token";
+          if (token.isNotEmpty) {
+            headers["Authorization"] = "Bearer $token";
+          }
           options.headers.addAll(headers);
           _printRequest(options);
           return handler.next(options);
         },
         onError: (DioException error, handler) async {
-          if (error.type != DioExceptionType.unknown) {
+          if (error.response == null) {
             return handler.next(error);
           }
 
@@ -53,7 +55,9 @@ class HTTPManager {
           final response = Response(
             requestOptions: error.requestOptions,
             data: error.response?.data,
+            statusCode: error.response?.statusCode,
           );
+
           return handler.resolve(response);
         },
       ),
@@ -69,12 +73,16 @@ class HTTPManager {
     Function(num)? progress,
     bool? loading,
   }) async {
+    log('options---------->>>>>>>>$options');
+    log('url-----111111111111----->>>>>>>>$url');
+    log('data---------->>>>>>>>$data');
+    log('formData---------->>>>>>>>$formData');
     if (loading == true) {
       SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.light);
       SVProgressHUD.show();
     }
     try {
-      final response = await _dio?.post(
+      final response = await _dio.post(
         url,
         data: data ?? formData,
         options: options,
@@ -84,7 +92,7 @@ class HTTPManager {
           }
         },
       );
-      return response?.data;
+      return response.data;
     } on DioException catch (error) {
       return _errorHandle(error);
     } finally {
@@ -110,17 +118,17 @@ class HTTPManager {
           "url>>>>medical>>>>center>>>>url>>>>medical>>>>center=====>$url");
       debugPrint("params>>>>$params");
       debugPrint("options>>>>$options");
-      final response = await _dio?.get(
+      final response = await _dio.get(
         url,
         queryParameters: params,
         options: options,
       );
 
-      log('response==========>>>>>${response?.realUri}');
+      log('response==========>>>>>${response.realUri}');
 
       ///0107
       ///10.15
-      return response?.data;
+      return response.data;
     } on DioException catch (error) {
       return _errorHandle(error);
     } finally {
@@ -134,20 +142,20 @@ class HTTPManager {
   Future<dynamic> put({
     required String url,
     dynamic data,
-    required Options options,
-    required bool loading,
+    Options? options,
+    bool? loading,
   }) async {
     try {
       if (loading == true) {
         SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.light);
         SVProgressHUD.show();
       }
-      final response = await _dio?.put(
+      final response = await _dio.put(
         url,
         data: data,
         options: options,
       );
-      return response?.data;
+      return response.data;
     } on DioException catch (error) {
       return _errorHandle(error);
     } finally {
@@ -160,7 +168,7 @@ class HTTPManager {
   ///Post method
   Future<dynamic> download({
     required String url,
-    required String filePath,
+    String? filePath,
     dynamic params,
     Options? options,
     Function(num)? progress,
@@ -171,7 +179,7 @@ class HTTPManager {
       SVProgressHUD.show();
     }
     try {
-      final response = await _dio?.download(
+      final response = await _dio.download(
         url,
         filePath,
         options: options,
@@ -182,10 +190,10 @@ class HTTPManager {
           }
         },
       );
-      if (response?.statusCode == 200) {
+      if (response.statusCode == 200) {
         return {
           "success": true,
-          "data": File(filePath),
+          "data": File("$filePath"),
           "message": 'download_success',
         };
       }
@@ -204,7 +212,7 @@ class HTTPManager {
 
   ///On change domain
   void changeDomain(String domain) {
-    _dio?.options.baseUrl = '$domain/index.php/wp-json';
+    _dio.options.baseUrl = '$domain/index.php/wp-json';
   }
 
   ///Print request info

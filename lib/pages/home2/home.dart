@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:get/get.dart' hide Trans;
+import 'package:http/http.dart' as http;
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/controller/user_update_contoller.dart';
 import 'package:united_natives/data/pref_manager.dart';
@@ -17,12 +22,7 @@ import 'package:united_natives/pages/home2/drawer_controller.dart';
 import 'package:united_natives/utils/time.dart';
 import 'package:united_natives/viewModel/log_out_view_model.dart';
 import 'package:united_natives/viewModel/rate_and%20_contactus_viewModel.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:get/get.dart' hide Trans;
-import 'package:http/http.dart' as http;
-import 'package:rflutter_alert/rflutter_alert.dart';
+
 import '../../routes/routes.dart';
 import '../../utils/constants.dart';
 import '../docdrawer/drawer_page.dart';
@@ -56,8 +56,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
 
   RateContactUsController rateContactUsController =
       Get.put(RateContactUsController());
-  final PatientHomeScreenController patientHomeScreenController =
-      Get.find<PatientHomeScreenController>();
+
   LogOutController logOutController = Get.put(LogOutController());
   @override
   void initState() {
@@ -217,7 +216,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
   // }
 
   final _pages = [
-    Home2Page(),
+    const Home2Page(),
     const DocProfilePage(),
     const DoctorMessagesPage(),
     const SettingsPage(),

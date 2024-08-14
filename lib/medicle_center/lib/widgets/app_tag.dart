@@ -64,7 +64,7 @@ class AppTag extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(4)),
             ),
             child: Text(
-              text!,
+              "$text",
               style: Theme.of(context)
                   .textTheme
                   .bodySmall

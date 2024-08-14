@@ -1,12 +1,15 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'moor_database.dart';
 
+// ignore_for_file: type=lint
 class $MedicinesTableTable extends MedicinesTable
     with TableInfo<$MedicinesTableTable, MedicinesTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $MedicinesTableTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -15,7 +18,7 @@ class $MedicinesTableTable extends MedicinesTable
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _nameMeta = VerificationMeta('name');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, false,
@@ -23,21 +26,21 @@ class $MedicinesTableTable extends MedicinesTable
           GeneratedColumn.checkTextLength(minTextLength: 5, maxTextLength: 50),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
-  static const VerificationMeta _imageMeta = VerificationMeta('image');
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
   @override
   late final GeneratedColumn<String> image = GeneratedColumn<String>(
-      'image', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _doseMeta = VerificationMeta('dose');
+      'image', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _doseMeta = const VerificationMeta('dose');
   @override
   late final GeneratedColumn<String> dose = GeneratedColumn<String>(
-      'dose', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _timeMeta = VerificationMeta('time');
+      'dose', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _timeMeta = const VerificationMeta('time');
   @override
   late final GeneratedColumn<String> time = GeneratedColumn<String>(
-      'time', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'time', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [id, name, image, dose, time];
   @override
@@ -62,20 +65,14 @@ class $MedicinesTableTable extends MedicinesTable
     if (data.containsKey('image')) {
       context.handle(
           _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
-    } else if (isInserting) {
-      context.missing(_imageMeta);
     }
     if (data.containsKey('dose')) {
       context.handle(
           _doseMeta, dose.isAcceptableOrUnknown(data['dose']!, _doseMeta));
-    } else if (isInserting) {
-      context.missing(_doseMeta);
     }
     if (data.containsKey('time')) {
       context.handle(
           _timeMeta, time.isAcceptableOrUnknown(data['time']!, _timeMeta));
-    } else if (isInserting) {
-      context.missing(_timeMeta);
     }
     return context;
   }
@@ -91,11 +88,11 @@ class $MedicinesTableTable extends MedicinesTable
       name: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       image: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}image'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}image']),
       dose: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}dose'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}dose']),
       time: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}time'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}time']),
     );
   }
 
@@ -109,23 +106,25 @@ class MedicinesTableData extends DataClass
     implements Insertable<MedicinesTableData> {
   final int id;
   final String name;
-  final String image;
-  final String dose;
-  final String time;
+  final String? image;
+  final String? dose;
+  final String? time;
   const MedicinesTableData(
-      {required this.id,
-      required this.name,
-      required this.image,
-      required this.dose,
-      required this.time});
+      {required this.id, required this.name, this.image, this.dose, this.time});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
-    map['image'] = Variable<String>(image);
-    map['dose'] = Variable<String>(dose);
-    map['time'] = Variable<String>(time);
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<String>(image);
+    }
+    if (!nullToAbsent || dose != null) {
+      map['dose'] = Variable<String>(dose);
+    }
+    if (!nullToAbsent || time != null) {
+      map['time'] = Variable<String>(time);
+    }
     return map;
   }
 
@@ -133,9 +132,10 @@ class MedicinesTableData extends DataClass
     return MedicinesTableCompanion(
       id: Value(id),
       name: Value(name),
-      image: Value(image),
-      dose: Value(dose),
-      time: Value(time),
+      image:
+          image == null && nullToAbsent ? const Value.absent() : Value(image),
+      dose: dose == null && nullToAbsent ? const Value.absent() : Value(dose),
+      time: time == null && nullToAbsent ? const Value.absent() : Value(time),
     );
   }
 
@@ -145,9 +145,9 @@ class MedicinesTableData extends DataClass
     return MedicinesTableData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      image: serializer.fromJson<String>(json['image']),
-      dose: serializer.fromJson<String>(json['dose']),
-      time: serializer.fromJson<String>(json['time']),
+      image: serializer.fromJson<String?>(json['image']),
+      dose: serializer.fromJson<String?>(json['dose']),
+      time: serializer.fromJson<String?>(json['time']),
     );
   }
   @override
@@ -156,28 +156,32 @@ class MedicinesTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'image': serializer.toJson<String>(image),
-      'dose': serializer.toJson<String>(dose),
-      'time': serializer.toJson<String>(time),
+      'image': serializer.toJson<String?>(image),
+      'dose': serializer.toJson<String?>(dose),
+      'time': serializer.toJson<String?>(time),
     };
   }
 
   MedicinesTableData copyWith(
-          {int? id, String? name, String? image, String? dose, String? time}) =>
+          {int? id,
+          String? name,
+          Value<String?> image = const Value.absent(),
+          Value<String?> dose = const Value.absent(),
+          Value<String?> time = const Value.absent()}) =>
       MedicinesTableData(
         id: id ?? this.id,
         name: name ?? this.name,
-        image: image ?? this.image,
-        dose: dose ?? this.dose,
-        time: time ?? this.time,
+        image: image.present ? image.value : this.image,
+        dose: dose.present ? dose.value : this.dose,
+        time: time.present ? time.value : this.time,
       );
   MedicinesTableData copyWithCompanion(MedicinesTableCompanion data) {
     return MedicinesTableData(
-      id: data.id.present ? data.id.value : id,
-      name: data.name.present ? data.name.value : name,
-      image: data.image.present ? data.image.value : image,
-      dose: data.dose.present ? data.dose.value : dose,
-      time: data.time.present ? data.time.value : time,
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      image: data.image.present ? data.image.value : this.image,
+      dose: data.dose.present ? data.dose.value : this.dose,
+      time: data.time.present ? data.time.value : this.time,
     );
   }
 
@@ -199,19 +203,19 @@ class MedicinesTableData extends DataClass
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is MedicinesTableData &&
-          other.id == id &&
-          other.name == name &&
-          other.image == image &&
-          other.dose == dose &&
-          other.time == time);
+          other.id == this.id &&
+          other.name == this.name &&
+          other.image == this.image &&
+          other.dose == this.dose &&
+          other.time == this.time);
 }
 
 class MedicinesTableCompanion extends UpdateCompanion<MedicinesTableData> {
   final Value<int> id;
   final Value<String> name;
-  final Value<String> image;
-  final Value<String> dose;
-  final Value<String> time;
+  final Value<String?> image;
+  final Value<String?> dose;
+  final Value<String?> time;
   const MedicinesTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -222,13 +226,10 @@ class MedicinesTableCompanion extends UpdateCompanion<MedicinesTableData> {
   MedicinesTableCompanion.insert({
     this.id = const Value.absent(),
     required String name,
-    required String image,
-    required String dose,
-    required String time,
-  })  : name = Value(name),
-        image = Value(image),
-        dose = Value(dose),
-        time = Value(time);
+    this.image = const Value.absent(),
+    this.dose = const Value.absent(),
+    this.time = const Value.absent(),
+  }) : name = Value(name);
   static Insertable<MedicinesTableData> custom({
     Expression<int>? id,
     Expression<String>? name,
@@ -248,9 +249,9 @@ class MedicinesTableCompanion extends UpdateCompanion<MedicinesTableData> {
   MedicinesTableCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
-      Value<String>? image,
-      Value<String>? dose,
-      Value<String>? time}) {
+      Value<String?>? image,
+      Value<String?>? dose,
+      Value<String?>? time}) {
     return MedicinesTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -309,17 +310,17 @@ typedef $$MedicinesTableTableCreateCompanionBuilder = MedicinesTableCompanion
     Function({
   Value<int> id,
   required String name,
-  required String image,
-  required String dose,
-  required String time,
+  Value<String?> image,
+  Value<String?> dose,
+  Value<String?> time,
 });
 typedef $$MedicinesTableTableUpdateCompanionBuilder = MedicinesTableCompanion
     Function({
   Value<int> id,
   Value<String> name,
-  Value<String> image,
-  Value<String> dose,
-  Value<String> time,
+  Value<String?> image,
+  Value<String?> dose,
+  Value<String?> time,
 });
 
 class $$MedicinesTableTableTableManager extends RootTableManager<
@@ -342,9 +343,9 @@ class $$MedicinesTableTableTableManager extends RootTableManager<
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String> name = const Value.absent(),
-            Value<String> image = const Value.absent(),
-            Value<String> dose = const Value.absent(),
-            Value<String> time = const Value.absent(),
+            Value<String?> image = const Value.absent(),
+            Value<String?> dose = const Value.absent(),
+            Value<String?> time = const Value.absent(),
           }) =>
               MedicinesTableCompanion(
             id: id,
@@ -356,9 +357,9 @@ class $$MedicinesTableTableTableManager extends RootTableManager<
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             required String name,
-            required String image,
-            required String dose,
-            required String time,
+            Value<String?> image = const Value.absent(),
+            Value<String?> dose = const Value.absent(),
+            Value<String?> time = const Value.absent(),
           }) =>
               MedicinesTableCompanion.insert(
             id: id,

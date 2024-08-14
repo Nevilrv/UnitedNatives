@@ -24,7 +24,7 @@ class WishListCubit extends Cubit<WishListState> {
 
       ///Notify
       emit(WishListSuccess(
-        updateID: updateID!,
+        updateID: updateID,
         list: list,
         canLoadMore: pagination!.page! < pagination!.maxPage!,
       ));

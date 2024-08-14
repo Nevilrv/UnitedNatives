@@ -11,9 +11,10 @@ class Themes {
   final isLight = ThemeData(
     useMaterial3: false, // Add this line to use Material 3
     colorScheme: const ColorScheme.light(
-      primary: Colors.black,
-      surface: Colors.white, // or any other color you want
-    ),
+        primary: kColorPrimary,
+        surface: Colors.white,
+        secondary: kColorPrimary // or any other color you want
+        ),
     brightness: Brightness.light,
     platform: TargetPlatform.iOS,
     scaffoldBackgroundColor: Colors.white,
@@ -57,8 +58,7 @@ class Themes {
   final isDark = ThemeData(
     useMaterial3: false, // Add this line to use Material 3
     colorScheme: const ColorScheme.dark(
-      primary: kColorPrimary,
-    ),
+        primary: kColorPrimary, secondary: kColorPrimary),
     brightness: Brightness.dark,
     platform: TargetPlatform.iOS,
     scaffoldBackgroundColor: Colors.black,
@@ -113,7 +113,7 @@ final appThemeData = {
   AppTheme.LightTheme: ThemeData(
     useMaterial3: true, // Add this line to use Material 3
     colorScheme: const ColorScheme.light(
-      primary: kColorPrimary,
+      primary: kColorPrimary, secondary: kColorPrimary,
       surface: Colors.white, // or any other color you want
     ),
     brightness: Brightness.light,

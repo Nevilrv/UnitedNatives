@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:html/parser.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:shimmer/shimmer.dart';
 
 class HealthScreen extends StatefulWidget {
   const HealthScreen({super.key});
@@ -26,11 +26,11 @@ class _HealthScreenState extends State<HealthScreen> {
     );
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
-      Map<String, dynamic> temp = result;
-      var a = temp['data']['id'];
+
+      log('result==========>>>>>$result');
 
       return result;
-    } else {}
+    }
   }
 
   AdsController adsController = Get.find();
@@ -108,9 +108,16 @@ class _HealthScreenState extends State<HealthScreen> {
                         ),
 
                         Builder(builder: (context) {
-                          var document =
-                              parse(snapshot.data['data']['content']);
-                          return Text(document.body!.text);
+                          log('snapshot.data=========>>>>>${snapshot.data['data']['content'].toString()}');
+                          if (snapshot.data['data']['content'].toString() !=
+                              'null') {
+                            return HtmlWidget(
+                              snapshot.data['data']['content'].toString(),
+                              textStyle: const TextStyle(fontSize: 20),
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
                         }),
 
                         // Html(

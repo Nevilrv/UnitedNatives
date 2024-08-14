@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/model/appointment.dart';
 import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
 
 class PastAppointmentListItem extends StatelessWidget {
@@ -159,7 +160,7 @@ class PastAppointmentListItem extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .labelLarge
-                          ?.copyWith(fontSize: 18),
+                          ?.copyWith(fontSize: 18, color: kColorBlue),
                     ),
                     const SizedBox(
                       width: 5,

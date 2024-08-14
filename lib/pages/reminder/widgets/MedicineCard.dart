@@ -1,8 +1,8 @@
-import 'package:united_natives/pages/reminder/models/Medicine.dart';
-import 'package:united_natives/pages/reminder/remainder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:united_natives/pages/reminder/models/Medicine.dart';
+import 'package:united_natives/pages/reminder/remainder_page.dart';
 
 import '../database/moor_database.dart';
 
@@ -74,7 +74,7 @@ class _MecicineCardState extends State<MecicineCard> {
                   height: Get.height * 0.01,
                 ),
                 Text(
-                  widget.medicine.dose.toUpperCase(),
+                  "${widget.medicine.dose}".toUpperCase(),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: width * 0.039,
@@ -85,7 +85,7 @@ class _MecicineCardState extends State<MecicineCard> {
                   height: Get.height * 0.01,
                 ),
                 Text(
-                  widget.medicine.time,
+                  "${widget.medicine.time}",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: width * 0.03,

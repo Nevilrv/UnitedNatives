@@ -4,6 +4,7 @@ import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/model/doctor_get_doctor_Appointments_model.dart';
 import 'package:united_natives/model/visited_patient_model.dart';
 import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
 
 class PastAppointmentListItemDoctor extends StatelessWidget {
@@ -106,7 +107,7 @@ class PastAppointmentListItemDoctor extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .labelLarge
-                          ?.copyWith(fontSize: 18),
+                          ?.copyWith(fontSize: 18, color: kColorBlue),
                     ),
                     const SizedBox(
                       width: 5,

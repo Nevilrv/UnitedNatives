@@ -2,7 +2,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationManager {
-  var flutterLocalNotificationsPlugin;
+  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
   NotificationManager() {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -17,21 +17,20 @@ class NotificationManager {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     var initializationSettingsAndroid =
         const AndroidInitializationSettings('@drawable/ic_launcher');
-
-    // Initialization settings for iOS
-    final DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-      onDidReceiveLocalNotification:
-          (int id, String? title, String? body, String? payload) async {
-        onDidReceiveLocalNotification(id, title!, body!, payload!);
-      },
+    var initializationSettingsIOS = DarwinInitializationSettings(
+      onDidReceiveLocalNotification: (id, title, body, payload) =>
+          onDidReceiveLocalNotification,
     );
 
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
+    flutterLocalNotificationsPlugin?.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) {
+        onSelectNotification(details.payload!);
+      },
+    );
   }
 
   void showNotification(
@@ -49,7 +48,7 @@ class NotificationManager {
       scheduledDate.add(const Duration(days: 1));
     }
 
-    await flutterLocalNotificationsPlugin.zonedSchedule(
+    await flutterLocalNotificationsPlugin?.zonedSchedule(
       id,
       title,
       body,
@@ -75,7 +74,7 @@ class NotificationManager {
       minute,
     );
 
-    await flutterLocalNotificationsPlugin.zonedSchedule(
+    await flutterLocalNotificationsPlugin?.zonedSchedule(
       id,
       title,
       body,
@@ -103,6 +102,7 @@ class NotificationManager {
   }
 
   Future onSelectNotification(String payload) async {
+    print('Notification clicked');
     return Future.value(0);
   }
 
@@ -112,6 +112,6 @@ class NotificationManager {
   }
 
   void removeReminder(int notificationId) {
-    flutterLocalNotificationsPlugin.cancel(notificationId);
+    flutterLocalNotificationsPlugin?.cancel(notificationId);
   }
 }

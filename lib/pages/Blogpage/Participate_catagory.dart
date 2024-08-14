@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
@@ -18,11 +18,14 @@ class PCategoryView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
-        title: Text(Translate.of(context)!.translate('Survey List'),
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.titleMedium?.color,
-                fontSize: 24)),
+        title: Text(
+          Translate.of(context)!.translate('Survey List'),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).textTheme.titleMedium?.color,
+            fontSize: 24,
+          ),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -185,6 +188,40 @@ class WebViewLoadUI extends State<WebViewLoad> {
   WebViewController controller = WebViewController();
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        controller = WebViewController()
+          ..setJavaScriptMode(JavaScriptMode.unrestricted)
+          ..setBackgroundColor(const Color(0xFFFFFFFF))
+          ..setNavigationDelegate(
+            NavigationDelegate(
+              onProgress: (int progress) {
+                // Update loading bar.
+              },
+              onPageStarted: (String url) {},
+              onPageFinished: (String url) {},
+              onHttpError: (HttpResponseError error) {},
+              onWebResourceError: (WebResourceError error) {},
+              onNavigationRequest: (NavigationRequest request) {
+                if (request.url.startsWith(widget.url.toString())) {
+                  return NavigationDecision.prevent;
+                }
+                return NavigationDecision.navigate;
+              },
+            ),
+          )
+          ..loadRequest(Uri.parse(
+            widget.url.toString(),
+          ));
+        setState(() {});
+      },
+    );
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
@@ -210,15 +247,7 @@ class WebViewLoadUI extends State<WebViewLoad> {
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: WebViewWidget(
-              controller: controller
-                ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                ..loadRequest(
-                  Uri.parse(
-                    widget.url.toString(),
-                  ),
-                ),
-            ),
+            child: WebViewWidget(controller: controller),
           ),
         ),
       );

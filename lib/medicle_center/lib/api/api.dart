@@ -54,6 +54,8 @@ class Api {
     final result = await httpManager.post(url: login, data: params);
     ResultApiModel resultApiModel = ResultApiModel.fromJson(result);
 
+    log('resultApiModel==========>>>>>${resultApiModel.data}');
+
     if (!resultApiModel.success!) {
       final Map<String, dynamic> registerParams = {
         "username": params['username'].toString().split('@')[0],

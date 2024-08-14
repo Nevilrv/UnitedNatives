@@ -17,16 +17,10 @@ class _SurveyState extends State<Survey> {
   String? email, password, authPIN, webViewUrl, secretPin;
   @override
   void initState() {
-    // TODO: implement initState
     email = Config.getEmail();
     password = Config.getPassword();
     authPIN = Prefs.getString(Prefs.BEARER);
     secretPin = Prefs.getString(Prefs.SecretPin);
-    debugPrint("email===>>>$email");
-    debugPrint("password===>>>$password");
-    debugPrint("authPIN===>>>$authPIN");
-    debugPrint("secretPin===>>>$secretPin");
-
     webViewUrl =
         "${Constants.webUrl}?userEmail=$email&userPassword=$password&securePinInp=$secretPin";
 

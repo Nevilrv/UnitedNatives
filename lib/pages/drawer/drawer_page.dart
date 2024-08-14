@@ -165,6 +165,7 @@ class _DrawerPageState extends State<DrawerPage> {
                             text: 'medical_centers',
                             onTap: () async {
                               Bloc.observer = AppBlocObserver();
+
                               setState(() {});
                               Get.to(const App1())
                                   ?.then((value) => AppBloc.loginCubit.onLogin(
@@ -285,13 +286,18 @@ class _DrawerPageState extends State<DrawerPage> {
                               builder: (context) {
                                 return AlertDialog(
                                   title: const Text(
-                                      'Are you sure want to logout?'),
+                                    'Are you sure want to logout?',
+                                    style: TextStyle(fontSize: 22),
+                                  ),
                                   actions: <Widget>[
                                     TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: const Text('Cancel')),
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(fontSize: 20),
+                                        )),
                                     TextButton(
                                       onPressed: () async {
                                         setState(() {
@@ -355,7 +361,8 @@ class _DrawerPageState extends State<DrawerPage> {
                                       },
                                       child: const Text(
                                         'Log out',
-                                        style: TextStyle(color: Colors.red),
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 20),
                                       ),
                                     ),
                                   ],

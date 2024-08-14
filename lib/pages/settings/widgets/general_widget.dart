@@ -29,8 +29,8 @@ class GeneralWidget extends StatefulWidget {
 class _GeneralWidgetState extends State<GeneralWidget> {
   bool? _darkTheme;
   final UserController _userController = Get.find<UserController>();
-  final PatientHomeScreenController patientHomeScreenController =
-      Get.find<PatientHomeScreenController>();
+  static final PatientHomeScreenController patientHomeScreenController =
+      Get.put(PatientHomeScreenController());
 
   RateContactUsController rateContactUsController =
       Get.put(RateContactUsController());

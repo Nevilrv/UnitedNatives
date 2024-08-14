@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as d;
-import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
 import 'package:united_natives/medicle_center/lib/configs/config.dart';
@@ -14,10 +18,6 @@ import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -124,9 +124,9 @@ class _HomeState extends State<Home> {
                     return Utils.circular();
                   }
                   if (state is FilterSuccess) {
-                    AppBloc.filterCubit.stateList = state.stateList!;
+                    AppBloc.filterCubit.stateList = state.stateList ?? [];
 
-                    AppBloc.filterCubit.cityList = state.cityList!;
+                    AppBloc.filterCubit.cityList = state.cityList ?? [];
                   }
                   return Container(
                     padding: const EdgeInsets.all(16),
@@ -677,16 +677,16 @@ class _HomeState extends State<Home> {
                                                                   },
                                                                   title: Text(
                                                                     '${AppBloc.filterCubit.cityList[index].name.toString()} (${AppBloc.filterCubit.cityList[index].medicalCenterInCity})',
-                                                                    style: TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w600,
-                                                                        color: Theme.of(context)
-                                                                            .textTheme
-                                                                            .titleMedium
-                                                                            ?.color,
-                                                                        fontSize:
-                                                                            17),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          20,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .textTheme
+                                                                          .titleMedium
+                                                                          ?.color,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 const Divider(
@@ -1216,7 +1216,10 @@ class _HomeState extends State<Home> {
         content = const Center(
           child: Padding(
             padding: EdgeInsets.only(top: 5, bottom: 9),
-            child: Text('No NA Health Services available'),
+            child: Text(
+              'No NA Health Services available',
+              style: TextStyle(fontSize: 18),
+            ),
           ),
         );
       }
@@ -1224,7 +1227,10 @@ class _HomeState extends State<Home> {
       content = const Center(
         child: Padding(
           padding: EdgeInsets.only(top: 5, bottom: 9),
-          child: Text('No NA Health Services available'),
+          child: Text(
+            'No NA Health Services available',
+            style: TextStyle(fontSize: 18),
+          ),
         ),
       );
     }
@@ -1399,7 +1405,10 @@ class _HomeState extends State<Home> {
         content = const Center(
           child: Padding(
             padding: EdgeInsets.only(top: 5, bottom: 9),
-            child: Text('No Navajo Nation Services available'),
+            child: Text(
+              'No Navajo Nation Services available',
+              style: TextStyle(fontSize: 18),
+            ),
           ),
         );
       }
@@ -1407,7 +1416,10 @@ class _HomeState extends State<Home> {
       content = const Center(
         child: Padding(
           padding: EdgeInsets.only(top: 5, bottom: 9),
-          child: Text('No Navajo Nation Services available     '),
+          child: Text(
+            'No Navajo Nation Services available',
+            style: TextStyle(fontSize: 18),
+          ),
         ),
       );
     }
@@ -1576,7 +1588,10 @@ class _HomeState extends State<Home> {
           child: Padding(
             padding: EdgeInsets.only(top: 5, bottom: 9),
             // child: Text('No Supportive Health Services available'),
-            child: Text('No Other Health Services available'),
+            child: Text(
+              'No Other Health Services available',
+              style: TextStyle(fontSize: 18),
+            ),
           ),
         );
       }
@@ -1585,7 +1600,10 @@ class _HomeState extends State<Home> {
         child: Padding(
           padding: EdgeInsets.only(top: 5, bottom: 9),
           // child: Text('No Supportive Health Services available'),
-          child: Text('No Other Health Services available'),
+          child: Text(
+            'No Other Health Services available',
+            style: TextStyle(fontSize: 18),
+          ),
         ),
       );
     }

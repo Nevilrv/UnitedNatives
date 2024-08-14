@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
@@ -127,12 +128,13 @@ class _AnnoucMentScreenState extends State<AnnoucMentScreen> {
                                     child: SingleChildScrollView(
                                       child: Column(
                                         children: [
-                                          Builder(builder: (context) {
-                                            var document = parse(
-                                                snapshot.data['data'][index]
-                                                    ['content']);
-                                            return Text(document.body!.text);
-                                          }),
+                                          HtmlWidget(
+                                            snapshot.data['data'][index]
+                                                    ['content']
+                                                .toString(),
+                                            textStyle:
+                                                const TextStyle(fontSize: 20),
+                                          ),
                                           const SizedBox(height: 10),
                                           Row(
                                             children: [

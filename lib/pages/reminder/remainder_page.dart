@@ -6,12 +6,12 @@ import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/pages/reminder/animations/fade_animation.dart';
-import 'package:united_natives/pages/reminder/models/Medicine.dart';
-import 'package:united_natives/pages/reminder/widgets/AddMedicine.dart';
-import 'package:united_natives/pages/reminder/widgets/MedicineEmptyState.dart';
-import 'package:united_natives/pages/reminder/widgets/MedicineGridView.dart';
 import 'package:united_natives/utils/constants.dart';
+import '../reminder/animations/fade_animation.dart';
+import '../reminder/widgets/AddMedicine.dart';
+import '../reminder/widgets/MedicineEmptyState.dart';
+import 'models/Medicine.dart';
+import 'widgets/MedicineGridView.dart';
 
 class RemainderPage extends StatefulWidget {
   const RemainderPage({super.key});
@@ -26,6 +26,8 @@ class _RemainderPageState extends State<RemainderPage> {
 
   @override
   Widget build(BuildContext context) {
+    /// HELLO WORLD ///
+
     return GestureDetector(
       onTap: () {
         // dismiss the keyboard or focus
@@ -41,7 +43,6 @@ class _RemainderPageState extends State<RemainderPage> {
             context: context,
           ),
           appBar: AppBar(
-            surfaceTintColor: Colors.transparent,
             title: Text(
               Translate.of(context)!.translate('Reminder'),
               style: TextStyle(

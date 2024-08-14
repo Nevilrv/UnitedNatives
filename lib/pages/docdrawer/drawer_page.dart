@@ -289,14 +289,19 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title:
-                                    const Text('Are you sure want to logout?'),
+                                title: const Text(
+                                  'Are you sure want to logout?',
+                                  style: TextStyle(fontSize: 22),
+                                ),
                                 actions: <Widget>[
                                   TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: const Text('Cancel')),
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(fontSize: 20),
+                                      )),
                                   TextButton(
                                     onPressed: () async {
                                       _userController.user.value.id = null;
@@ -359,7 +364,8 @@ class _DocDrawerPageState extends State<DocDrawerPage> {
                                     },
                                     child: const Text(
                                       'Log out',
-                                      style: TextStyle(color: Colors.red),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 20),
                                     ),
                                   ),
                                 ],

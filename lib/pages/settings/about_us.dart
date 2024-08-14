@@ -1,6 +1,7 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
-import 'package:html/parser.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/doctor_homescreen_controller.dart';
@@ -33,16 +34,16 @@ class _AboutUNHState extends State<AboutUNH> {
       final PatientHomeScreenController patientHomeScreenController =
           Get.find();
       data = patientHomeScreenController
-          .aboutUsPrivacyPolicyModel.value?.data?.aboutUnh;
+          .aboutUsPrivacyPolicyModel.value.data?.aboutUnh;
     } else {
       data = "";
       final DoctorHomeScreenController doctorHomeScreenController = Get.find();
       doctorHomeScreenController.aboutUsPrivacyPolicy();
 
       data = doctorHomeScreenController
-          .aboutUsPrivacyPolicyDoctorModel.value?.data?.aboutUnh;
+          .aboutUsPrivacyPolicyDoctorModel.value.data?.aboutUnh;
     }
-
+    log('data==========>>>>>$data');
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
         bottomNavigationBar: AdsBottomBar(
@@ -66,11 +67,10 @@ class _AboutUNHState extends State<AboutUNH> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(height: 20),
-                Builder(builder: (context) {
-                  var document = parse(data ?? "");
-                  return Text(document.body!.text);
-                }),
+                HtmlWidget(
+                  data.toString(),
+                  textStyle: const TextStyle(fontSize: 20),
+                ),
                 const SizedBox(height: 20),
               ],
             ),

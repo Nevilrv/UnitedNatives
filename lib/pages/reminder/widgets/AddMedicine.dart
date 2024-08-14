@@ -1,6 +1,8 @@
-import 'package:united_natives/pages/reminder/notifications/NotificationManager.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:united_natives/pages/reminder/notifications/NotificationManager.dart';
 import '../../reminder/database/moor_database.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -40,18 +42,6 @@ class _AddMedicineState extends State<AddMedicine> {
     );
   }
 
-  // void showNotification(
-  //     int id, String title, String body, int hour, int minute) async {
-  //   var time = new Time(hour, minute, 0);
-  //   await flutterLocalNotificationsPlugin.showDailyAtTime(
-  //     id,
-  //     title,
-  //     body,
-  //     time,
-  //     getPlatformChannelSpecfics(),
-  //   );
-  // }
-
   void showNotification(
       int id, String title, String body, int hour, int minute) async {
     final DateTime now = DateTime.now();
@@ -77,16 +67,6 @@ class _AddMedicineState extends State<AddMedicine> {
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
-
-  // void showOnceNotification(
-  //     int id, String title, String body, int hour, int minute) async {
-  //   DateTime now1 = DateTime.now();
-  //   DateTime now =
-  //       DateTime(now1.year, now1.month, now1.day, hour, minute, 00, 00);
-  //
-  //   await flutterLocalNotificationsPlugin.schedule(
-  //       id, title, body, now, getPlatformChannelSpecfics());
-  // }
 
   void showOnceNotification(
       int id, String title, String body, int hour, int minute) async {
@@ -122,38 +102,6 @@ class _AddMedicineState extends State<AddMedicine> {
   void removeReminder(int notificationId) {
     flutterLocalNotificationsPlugin?.cancel(notificationId);
   }
-  /* Future _showNotification() async {
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
-        importance: Importance.Max, priority: Priority.High);
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    var platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'New Notification',
-      'Flutter is awesome',
-      platformChannelSpecifics,
-      payload: 'This is notification detail Text...',
-    );
-  }*/
-
-  // Future _showSchedulaeedNotification() async {
-  //   var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-  //       'your channel id', 'your channel name', 'your channel description',
-  //       importance: Importance.Max, priority: Priority.High);
-  //   var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-  //   var platformChannelSpecifics = new NotificationDetails(
-  //       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-  //   await flutterLocalNotificationsPlugin.showDailyAtTime(
-  //     0,
-  //     'New Notification',
-  //     'Flutter is awesome',
-  //     Time(14, 38, 00),
-  //     platformChannelSpecifics,
-  //     payload: 'This is notification detail Text...',
-  //   );
-  // }
 
   Future onSelectNotification(String payload) async {
     showDialog(
@@ -280,24 +228,22 @@ class _AddMedicineState extends State<AddMedicine> {
     );
   }
 
-  void _submit(NotificationManager manager) async {
+  void _submit(NotificationManager? manager) async {
     if (_formKey.currentState!.validate()) {
       // form is validated
       _formKey.currentState?.save();
+
+      log('_name==========>>>>>${_name}');
+      log('_dose==========>>>>>${_dose}');
       //show the time picker dialog
-      showTimePicker(
+      await showTimePicker(
         initialTime: TimeOfDay.now(),
         context: context,
-      ).then((selectedTime) async {
-        int? hour = selectedTime?.hour;
-        int? minute = selectedTime?.minute;
-        String? type = selectedTime?.period.toString();
-        // DateTime now=DateTime.
-        var newString = type?.substring(type.length - 2).toUpperCase();
-
-        // _time = DateTime.parse(selectedTime.format(context));
-        // print('TIME$_time');
-        // insert into database
+      ).then((TimeOfDay? selectedTime) async {
+        int hour = selectedTime!.hour;
+        int minute = selectedTime.minute;
+        String type = selectedTime.period.toString();
+        var newString = type.substring(type.length - 2).toUpperCase();
 
         var medicineId = await widget._database.insertMedicine(
             MedicinesTableData(
@@ -307,22 +253,14 @@ class _AddMedicineState extends State<AddMedicine> {
                     ? 'Set for Everyday ,$hour:$minute $newString'
                     : '$hour:$minute $newString',
                 image: 'assets/images/${_icons[_selectedIndex]}',
-                id: 0));
-        // sehdule the notification
+                id: 144));
+
+        log('medicineId==========>>>>>$medicineId');
 
         isEveryday == true
-            ? showNotification(medicineId, _name!, _dose!, hour!, minute!)
-            : showOnceNotification(medicineId, _name!, _dose!, hour!, minute!);
-
-        // isEveryday == true
-        //     ? manager.showNotification(medicineId, _name, _dose, hour, minute)
-        //     : manager.showOnceNotification(
-        //         medicineId, _name, _dose, hour, minute);
-
-        // NotificationApi()
-        //     .showOnceNotification(medicineId, _name, _dose, hour, minute);
-        // // // The medicine Id and Notitfaciton Id are the same
-        // go back
+            ? showNotification(medicineId, _name!, _dose!, hour, minute)
+            : showOnceNotification(medicineId, _name!, _dose!, hour, minute);
+        print('New Med id$medicineId');
         Navigator.pop(context, medicineId);
       });
     }

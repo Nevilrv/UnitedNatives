@@ -19,8 +19,8 @@ class MedicineEmptyState extends StatelessWidget {
             width: 150,
             fit: BoxFit.cover,
           ),
-          const SizedBox(height: 8),
-          const Text(
+          SizedBox(height: 8),
+          Text(
             'No Reminder Added yet',
             style: TextStyle(
                 fontWeight: FontWeight.w300, fontSize: 22, letterSpacing: 1.2),

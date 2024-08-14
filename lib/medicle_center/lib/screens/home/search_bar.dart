@@ -38,7 +38,10 @@ class SearchBar extends StatelessWidget {
                       Translate.of(context)!.translate(
                         'search_location',
                       ),
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   const VerticalDivider(),
@@ -67,9 +70,11 @@ class SearchBar extends StatelessWidget {
                         children: [
                           Text(
                             'Filter',
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                    color: Theme.of(context).primaryColor),
                           ),
                           Positioned(
                             right: -5,

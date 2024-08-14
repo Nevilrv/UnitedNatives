@@ -6,6 +6,7 @@ import 'package:united_natives/model/api_state_enum.dart';
 import 'package:united_natives/model/patient_detail_model.dart';
 import 'package:united_natives/model/visited_patient_model.dart';
 import 'package:united_natives/routes/routes.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -293,7 +294,9 @@ class _PatientListVisitDetailPageState
                                         style: Theme.of(context)
                                             .textTheme
                                             .labelLarge
-                                            ?.copyWith(fontSize: 18),
+                                            ?.copyWith(
+                                                fontSize: 18,
+                                                color: kColorBlue),
                                       ),
                                       const SizedBox(
                                         width: 5,
