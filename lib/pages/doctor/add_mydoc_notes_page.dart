@@ -68,7 +68,6 @@ class _AddMyDocNotesScreenState extends State<AddMyDocNotesScreen> {
       return PopScope(
         canPop: true,
         onPopInvokedWithResult: (didPop, result) {
-          Navigator.pop(context);
           textController.clear();
         },
         child: Scaffold(

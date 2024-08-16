@@ -1,17 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:united_natives/pages/reminder/notifications/NotificationManager.dart';
-import '../../reminder/database/moor_database.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:united_natives/pages/reminder2/animations/fade_animation.dart';
+import 'package:united_natives/pages/reminder2/sqflite_database_helper.dart';
 
 class AddMedicine extends StatefulWidget {
   final double height;
-  final AppDatabase _database;
-  final NotificationManager manager;
 
-  const AddMedicine(this.height, this._database, this.manager, {super.key});
+  const AddMedicine(this.height, {super.key});
 
   @override
   State<AddMedicine> createState() => _AddMedicineState();
@@ -20,9 +16,11 @@ class AddMedicine extends StatefulWidget {
 class _AddMedicineState extends State<AddMedicine> {
   static final _formKey = GlobalKey<FormState>();
   String? _name;
+
   String? _dose;
   bool isEveryday = false;
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
+  final dbHelper = DatabaseHelper();
   final List<String> _icons = ['drug.png'];
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
   @override
@@ -73,7 +71,6 @@ class _AddMedicineState extends State<AddMedicine> {
     DateTime now = DateTime.now();
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-
     await flutterLocalNotificationsPlugin?.zonedSchedule(
       id,
       title,
@@ -117,95 +114,93 @@ class _AddMedicineState extends State<AddMedicine> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
-        height: widget.height * .8,
-        child: Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const Text(
-                    'Add Reminder',
-                    style: TextStyle(
-                      fontSize: 27,
-                      fontWeight: FontWeight.w600,
+    return FadeAnimation(
+      0.3,
+      Container(
+          padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
+          height: widget.height * .8,
+          child: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    const Text(
+                      'Add Reminder',
+                      style: TextStyle(
+                        fontSize: 27,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // back to main screen
-                      Navigator.pop(context, null);
-                    },
-                    child: Icon(
-                      Icons.close,
-                      size: 30,
-                      color: Theme.of(context).primaryColor.withOpacity(.65),
+                    GestureDetector(
+                      onTap: () {
+                        // back to main screen
+                        Navigator.pop(context, null);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                        color: Theme.of(context).primaryColor.withOpacity(.65),
+                      ),
+                    )
+                  ],
+                ),
+                _buildForm(),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isEveryday,
+                      onChanged: (value) {
+                        setState(() {
+                          isEveryday = !isEveryday;
+                        });
+                      },
                     ),
-                  )
-                ],
-              ),
-              _buildForm(),
-              const SizedBox(
-                height: 5,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: [
-                  Checkbox(
-                    value: isEveryday,
-                    onChanged: (value) {
-                      setState(() {
-                        isEveryday = !isEveryday;
-                      });
+                    const Text('Remind me everyday')
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: MaterialButton(
+                    padding: const EdgeInsets.all(15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    onPressed: () {
+                      _submit();
                     },
-                  ),
-                  const Text('Remind me everyday')
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: MaterialButton(
-                  padding: const EdgeInsets.all(15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  onPressed: () {
-                    _submit(widget.manager);
-                  },
-                  color: Theme.of(context).colorScheme.secondary,
-                  textColor: Colors.white,
-                  highlightColor: Theme.of(context).primaryColor,
-                  child: Text(
-                    'Add Reminder'.toUpperCase(),
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                    color: Theme.of(context).colorScheme.secondary,
+                    textColor: Colors.white,
+                    highlightColor: Theme.of(context).primaryColor,
+                    child: Text(
+                      'Add Reminder'.toUpperCase(),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ));
+              ],
+            ),
+          )),
+    );
   }
 
   Form _buildForm() {
     TextStyle labelsStyle =
-        const TextStyle(fontWeight: FontWeight.w400, fontSize: 27);
+        const TextStyle(fontWeight: FontWeight.w400, fontSize: 24);
     return Form(
       key: _formKey,
       child: Column(
         children: <Widget>[
           TextFormField(
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 20),
             decoration: InputDecoration(
               labelText: 'Name',
               labelStyle: labelsStyle,
@@ -214,7 +209,7 @@ class _AddMedicineState extends State<AddMedicine> {
             onSaved: (input) => _name = input,
           ),
           TextFormField(
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 20),
             decoration: InputDecoration(
               labelText: 'Remarks',
               labelStyle: labelsStyle,
@@ -228,14 +223,9 @@ class _AddMedicineState extends State<AddMedicine> {
     );
   }
 
-  void _submit(NotificationManager? manager) async {
+  void _submit() async {
     if (_formKey.currentState!.validate()) {
-      // form is validated
       _formKey.currentState?.save();
-
-      log('_name==========>>>>>${_name}');
-      log('_dose==========>>>>>${_dose}');
-      //show the time picker dialog
       await showTimePicker(
         initialTime: TimeOfDay.now(),
         context: context,
@@ -244,47 +234,22 @@ class _AddMedicineState extends State<AddMedicine> {
         int minute = selectedTime.minute;
         String type = selectedTime.period.toString();
         var newString = type.substring(type.length - 2).toUpperCase();
-
-        var medicineId = await widget._database.insertMedicine(
-            MedicinesTableData(
-                name: _name!,
-                dose: _dose!,
-                time: isEveryday == true
-                    ? 'Set for Everyday ,$hour:$minute $newString'
-                    : '$hour:$minute $newString',
-                image: 'assets/images/${_icons[_selectedIndex]}',
-                id: 144));
-
-        log('medicineId==========>>>>>$medicineId');
-
+        var everyDay = isEveryday == true
+            ? 'Set for Everyday, $hour:$minute $newString'
+            : '$hour:$minute $newString';
+        MedicineReminder scope = MedicineReminder(
+          name: _name.toString(),
+          dose: _dose.toString(),
+          image: 'assets/images/${_icons[_selectedIndex]}',
+          time: everyDay,
+          isEveryDay: isEveryday == true ? 1 : 0,
+        );
+        final id = await dbHelper.insertReminderDetails(scope);
         isEveryday == true
-            ? showNotification(medicineId, _name!, _dose!, hour, minute)
-            : showOnceNotification(medicineId, _name!, _dose!, hour, minute);
-        print('New Med id$medicineId');
-        Navigator.pop(context, medicineId);
+            ? showNotification(id, _name!, _dose!, hour, minute)
+            : showOnceNotification(id, _name!, _dose!, hour, minute);
+        Navigator.pop(context, id);
       });
     }
-  }
-
-  Widget _buildIcons(int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedIndex = index;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        height: 70,
-        width: 70,
-        decoration: BoxDecoration(
-          color: (index == _selectedIndex)
-              ? Theme.of(context).colorScheme.secondary.withOpacity(.4)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(40),
-        ),
-        child: Image.asset('assets/images/${_icons[index]}'),
-      ),
-    );
   }
 }

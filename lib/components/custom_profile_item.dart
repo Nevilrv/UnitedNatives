@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
 
 class CustomProfileItem extends StatelessWidget {
@@ -106,7 +107,7 @@ class CustomProfileItem extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .labelLarge
-                                  ?.copyWith(fontSize: 18),
+                                  ?.copyWith(fontSize: 18, color: kColorBlue),
                             ),
                             const SizedBox(
                               width: 5,

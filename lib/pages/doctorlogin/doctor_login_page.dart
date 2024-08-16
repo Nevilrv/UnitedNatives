@@ -368,7 +368,7 @@ class _WidgetSigninState extends State<WidgetSignin> {
     super.initState();
   }
 
-  LoginVerificationData loginVerificationData = LoginVerificationData();
+  LoginVerificationData? loginVerificationData;
   PINStatusModel pinStatusModelData = PINStatusModel();
 
   @override
@@ -452,12 +452,12 @@ class _WidgetSigninState extends State<WidgetSignin> {
 
                   loginVerificationData =
                       await _userController.loginVerificationDetails(
-                          _userController.loginData!.email!,
+                          _userController.loginData?.email ?? "",
                           _userController.loginData?.password);
 
                   if (loginVerificationData != null) {
                     pinStatusModelData = await _userController
-                        .statusPIN(loginVerificationData.id!);
+                        .statusPIN("${loginVerificationData?.id}");
 
                     if (pinStatusModelData.pinStatusData != null) {
                       if (pinStatusModelData.pinStatusData?.requestStatus ==
@@ -489,14 +489,13 @@ class _WidgetSigninState extends State<WidgetSignin> {
                     }
                   }
 
-                  setState(() {
-                    isLoading = false;
-                  });
-
                   //await Navigator.pushNamed(context, Routes.phoneAuthScreen);
                   // await _userController.userRegister(userData, 1,
                   //     useProfilePic: _image);
                 }
+                setState(() {
+                  isLoading = false;
+                });
               },
               text: Translate.of(context)!.translate('login'),
             )

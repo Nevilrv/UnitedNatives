@@ -91,6 +91,7 @@ import 'package:united_natives/pages/personal_medication_notes/add_personal_medi
 import 'package:united_natives/pages/personal_medication_notes/all_personal_medication_list_screen.dart';
 import 'package:united_natives/pages/prescription/doctor_home_all_prescription_page.dart';
 import 'package:united_natives/pages/prescription/patient_home_all_prescription_page.dart';
+import 'package:united_natives/pages/reminder2/remainder_page.dart';
 import 'package:united_natives/pages/report/report.dart';
 import 'package:united_natives/pages/schedule_class/dr_schedule_class.dart';
 import 'package:united_natives/pages/schedule_class/patient_schedule_class.dart';
@@ -139,7 +140,6 @@ import '../pages/paymentregister/payment_register.dart';
 import '../pages/prescription/prescription_detail_page.dart';
 import '../pages/prescription/prescription_list_page.dart';
 import '../pages/profile/edit_profile_page.dart';
-import '../pages/reminder/remainder_page.dart';
 import '../pages/request/request.dart';
 import '../pages/settings/about_us.dart';
 import '../pages/signup/signup_page.dart';

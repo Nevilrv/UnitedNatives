@@ -2,6 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as d;
 import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/doctor_homescreen_controller.dart';
@@ -17,15 +24,7 @@ import 'package:united_natives/sevices/doctor_home_screen_service.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
 import 'package:united_natives/viewModel/log_out_view_model.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-
 import '../../utils/constants.dart';
-import 'my_patient_message_list.dart';
 
 class DoctorMessagesDetailPage2 extends StatefulWidget {
   String? chatKey;
@@ -200,8 +199,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
           surfaceTintColor: Colors.transparent,
           leading: GestureDetector(
               onTap: () {
-                Get.back();
-                Get.off(const MyPatientMessageList());
+                Navigator.pop(context);
               },
               child: const Icon(Icons.arrow_back_ios_new_rounded)),
           title: Row(
@@ -400,8 +398,8 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
               _doctorHomeScreenController.endTimer();
             }
             _doctorHomeScreenController.isClick = false;
-            Get.back();
-            Get.off(const MyPatientMessageList());
+            // Get.back();
+            // Get.off(const MyPatientMessageList());
           },
           child: Column(
             children: <Widget>[
@@ -472,15 +470,17 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                         },
                       ),
                     )
-                  : Center(
-                      child: Text(
-                      'You Don\'t have any Messages',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(fontSize: 20),
-                      textAlign: TextAlign.center,
-                    )),
+                  : Expanded(
+                      child: Center(
+                          child: Text(
+                        'You Don\'t have any Messages',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontSize: 20),
+                        textAlign: TextAlign.center,
+                      )),
+                    ),
               // Expanded(
               //   child: Obx(() {
               //     if (_doctorHomeScreenController
@@ -1060,7 +1060,7 @@ class MessageItem extends StatelessWidget {
                                       onTap: () {
                                         Get.to(MessageShowScreen(
                                           file:
-                                              'https://unhbackend.com/uploads/chat\/$attachment',
+                                              'https://unhbackend.com/uploads/chat/$attachment',
                                           type: 'pdf',
                                         ));
                                       },

@@ -221,15 +221,16 @@ class DoctorHomeScreenController extends GetxController {
       File? attachment}) async {
     try {
       isLoading.value = true;
-      createNewMessageDoctorModel.value = await DoctorHomeScreenService()
-          .createNewMessageDoctor(
-              chatKey: chatKey,
-              fromType: fromType!,
-              fromId: fromId,
-              message: message,
-              attachment: attachment!,
-              toId: toId,
-              toType: toType);
+      createNewMessageDoctorModel.value =
+          await DoctorHomeScreenService().createNewMessageDoctor(
+        chatKey: chatKey,
+        fromType: fromType!,
+        fromId: fromId,
+        message: message,
+        attachment: attachment ?? File(""),
+        toId: toId,
+        toType: toType,
+      );
       isLoading.value = false;
     } catch (isBlank) {
       isLoading.value = false;

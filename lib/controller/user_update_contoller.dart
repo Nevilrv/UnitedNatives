@@ -280,7 +280,6 @@ class UserUpdateController extends GetxController {
       });
 
       User userUpdateData = User(
-        // profilePic: userProfilePic ?? _userController.user.value.profilePic,
         id: _userController.user.value.id,
         email: _userController.user.value.email,
         firstName: firstNameController.text,
@@ -314,7 +313,8 @@ class UserUpdateController extends GetxController {
       );
 
       patientUpdateModelData.value = await UserBackendAuthService()
-          .userProfileUpdate(userUpdateData, userProfilePic!, userType!);
+          .userProfileUpdate(
+              userUpdateData, userProfilePic ?? File(""), userType ?? "");
       _userController.updateUserData(
         userUpdateData,
         patientUpdateModelData.value.patientUpdateData?.profilePic ??

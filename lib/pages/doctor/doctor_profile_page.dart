@@ -11,9 +11,9 @@ import '../../routes/routes.dart';
 import '../../utils/constants.dart';
 
 class DoctorProfilePage extends StatelessWidget {
-  final DoctorSpecialities? doctor;
+  final DoctorSpecialities doctor;
 
-  DoctorProfilePage({super.key, this.doctor});
+  DoctorProfilePage({super.key, required this.doctor});
   final BookAppointmentController _bookAppointmentController =
       Get.find<BookAppointmentController>();
   @override
@@ -40,8 +40,8 @@ class DoctorProfilePage extends StatelessWidget {
               elevation: 1,
               flexibleSpace: FlexibleSpaceBar(
                 background: Center(
-                  child: Utils().patientProfile(doctor?.profilePic ?? '',
-                      doctor?.socialProfilePic ?? '', 130,
+                  child: Utils().patientProfile(doctor.profilePic ?? '',
+                      doctor.socialProfilePic ?? '', 130,
                       fit: BoxFit.contain),
                 ).paddingOnly(top: 25),
               ),
@@ -69,9 +69,9 @@ class DoctorProfilePage extends StatelessWidget {
                           //   ),
                           // ),
                           Text(
-                            '${doctor?.firstName}'
+                            '${doctor.firstName}'
                             ' '
-                            '${doctor?.lastName}',
+                            '${doctor.lastName}',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -80,7 +80,7 @@ class DoctorProfilePage extends StatelessWidget {
                                 ),
                           ),
                           Text(
-                            "${doctor?.education}",
+                            "${doctor.education}",
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 16,
@@ -95,7 +95,7 @@ class DoctorProfilePage extends StatelessWidget {
                     ),
                     RatingBar.builder(
                       itemSize: 20,
-                      initialRating: doctor?.rating?.toDouble() ?? 0,
+                      initialRating: doctor.rating?.toDouble() ?? 0,
                       allowHalfRating: true,
                       itemCount: 5,
                       ignoreGestures: true,
@@ -151,7 +151,7 @@ class DoctorProfilePage extends StatelessWidget {
                     ),
                     RoundIconButton(
                       onPressed: () {
-                        launchCaller(doctor!.contactNumber!);
+                        launchCaller(doctor.contactNumber!);
                       },
                       icon: Icons.phone,
                       elevation: 1,
@@ -173,8 +173,7 @@ class DoctorProfilePage extends StatelessWidget {
                             _bookAppointmentController
                               ..selectedIndex.value = (-1)
                               ..items = <Map<String, dynamic>>[].obs
-                              ..getPatientAppointment(
-                                  doctor?.id ?? "", context);
+                              ..getPatientAppointment(doctor.id ?? "", context);
                             Get.toNamed(Routes.bookingStep3, arguments: doctor);
                           }
                         },

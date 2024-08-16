@@ -69,7 +69,6 @@ class BookAppointmentController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isFiltered = true.obs;
 
-  // RxList<Map<String, dynamic>> items = <Map<String, dynamic>>[].obs;
   int allDoctorCount = 0;
   int doctorCount = 0;
   int ihOrNatives = 1;
@@ -80,21 +79,6 @@ class BookAppointmentController extends GetxController {
     ihOrNatives = value;
     update();
   }
-
-  // int i = 0;
-  //
-  // int updateCount() {
-  //   i = 0;
-  //   items.forEach((element) {
-  //     if (element <=
-  //             int.parse("${DateTime.now().toString().substring(11, 13)}") &&
-  //         00 < int.parse("${DateTime.now().toString().substring(14, 16)}") &&
-  //         mySelectedDate.value == DateTime.now().toString().split(" ")[0]) {
-  //       i = i + 1;
-  //     }
-  //   });
-  //   return i;
-  // }
 
   RxBool medicalLoader = true.obs;
 
@@ -213,49 +197,6 @@ class BookAppointmentController extends GetxController {
 
       DateFormat format = DateFormat("yyyy-MM-dd");
 
-      /*for (var i = 0; i < iterable.length; i++) {
-        DateTime localTime = dayList[i].toLocal();
-        String date =
-            "${localTime.year.toString()}-${localTime.month.toString().padLeft(2, '0')}-${localTime.day.toString().padLeft(2, '0')}";
-        Availability availability = iterable[i].availability;
-
-        if (availability != null) {
-          availability.availData.forEach(
-            (e1) {
-              DateTime startUtcDateTime = e1.startTime.toLocal();
-              DateTime startDateTime = DateTime(
-                  startUtcDateTime.year,
-                  startUtcDateTime.month,
-                  startUtcDateTime.day,
-                  startUtcDateTime.hour,
-                  startUtcDateTime.minute);
-
-              DateTime now = DateTime(
-                  DateTime.now().year,
-                  DateTime.now().month,
-                  DateTime.now().day,
-                  DateTime.now().hour,
-                  DateTime.now().minute);
-
-              if (format.format(DateTime.parse(date)) ==
-                  format.format(startDateTime)) {
-                if (e1.avail == "1" && e1.status != "Booked") {
-                  if (format.format(now) == format.format(startDateTime)) {
-                    if (now.isBefore(startDateTime)) {
-                      iterable[i].actualSlotCount =
-                          iterable[i].actualSlotCount + 1;
-                    }
-                  } else {
-                    iterable[i].actualSlotCount =
-                        iterable[i].actualSlotCount + 1;
-                  }
-                }
-              }
-            },
-          );
-        }
-      }*/
-
       List<DateTime> tempDayList = [];
 
       for (var i = 0; i < iterable.length; i++) {
@@ -316,7 +257,7 @@ class BookAppointmentController extends GetxController {
     for (var el2 in tempDayList) {
       if (el2.toString().contains(format.format(dayList[index]))) {
         if (now.isBefore(el2)) {
-          iterable[index].actualSlotCount! + 1;
+          iterable[index].actualSlotCount++;
         }
       }
     }
@@ -409,9 +350,6 @@ class BookAppointmentController extends GetxController {
             }
           }
         }
-        // getSpecialities(false.obs,
-        //     stateId: chooseStateId ?? "",
-        //     medicalCenterId: chooseMedicalCenter ?? '');
 
         getDoctorSpecialities("", Get.overlayContext!,
             stateId: chooseStateId ?? "",
@@ -446,330 +384,6 @@ class BookAppointmentController extends GetxController {
       return 1;
     }
   }
-
-/*  filterData() {
-    items.clear();
-    List<WeekAvailability> iterable = weekAvailabilityList;
-    for (WeekAvailability element in iterable) {
-      String date = element.date;
-      Availability availability = element.availability;
-
-      if (mySelectedDate.value == date) {
-        if (availability?.avail8 == "1" &&
-            availability.availStatus8 != "Booked") {
-          items.add({"time": 8, "show": "8:00\nAM"});
-        }
-        if (availability?.avail9 == "1" &&
-            availability.availStatus9 != "Booked") {
-          items.add({"time": 9, "show": "9:00\nAM"});
-        }
-
-        if (availability?.avail10 == "1" &&
-            availability.availStatus10 != "Booked") {
-          items.add({"time": 10, "show": "10:00\nAM"});
-        }
-        if (availability?.avail11 == "1" &&
-            availability.availStatus11 != "Booked") {
-          items.add({"time": 11, "show": "11:00\nAM"});
-        }
-        if (availability?.avail12 == "1" &&
-            availability.availStatus12 != "Booked") {
-          items.add({"time": 12, "show": "12:00\nAM"});
-        }
-        if (availability?.avail13 == "1" &&
-            availability.availStatus13 != "Booked") {
-          items.add({"time": 13, "show": "1:00\nPM"});
-        }
-        if (availability?.avail14 == "1" &&
-            availability.availStatus14 != "Booked") {
-          items.add({"time": 14, "show": "2:00\nPM"});
-        }
-        if (availability?.avail15 == "1" &&
-            availability.availStatus15 != "Booked") {
-          items.add({"time": 15, "show": "3:00\nPM"});
-        }
-        if (availability?.avail16 == "1" &&
-            availability.availStatus16 != "Booked") {
-          items.add({"time": 16, "show": "4:00\nPM"});
-        }
-        if (availability?.avail17 == "1" &&
-            availability.availStatus17 != "Booked") {
-          items.add({"time": 17, "show": "5:00\nPM"});
-        }
-        if (availability?.avail18 == "1" &&
-            availability.availStatus18 != "Booked") {
-          items.add({"time": 18, "show": "6:00\nPM"});
-        }
-        if (availability?.avail19 == "1" &&
-            availability.availStatus19 != "Booked") {
-          items.add({"time": 19, "show": "7:00\nPM"});
-        }
-        if (availability?.avail20 == "1" &&
-            availability.availStatus20 != "Booked") {
-          items.add({"time": 20, "show": "8:00\nPM"});
-        }
-        if (availability?.avail21 == "1" &&
-            availability.availStatus21 != "Booked") {
-          items.add({"time": 21, "show": "9:00\nPM"});
-        }
-        if (availability?.avail22 == "1" &&
-            availability.availStatus22 != "Booked") {
-          items.add({"time": 22, "show": "10:00\nPM"});
-        }
-        if (availability?.avail23 == "1" &&
-            availability.availStatus23 != "Booked") {
-          items.add({"time": 23, "show": "11:00\nPM"});
-        }
-      }
-
-      // if (mySelectedDate.value == date) {
-      //   if (availability?.avail8 == "1" &&
-      //       availability.availStatus8 != "Booked" &&
-      //       getDifference(8) > 0) {
-      //     items.add(8);
-      //   }
-      //   if (availability?.avail9 == "1" &&
-      //       availability.availStatus9 != "Booked" &&
-      //       getDifference(9) > 0) {
-      //     items.add(9);
-      //   }
-      //
-      //   if (availability?.avail10 == "1" &&
-      //       availability.availStatus10 != "Booked" &&
-      //       getDifference(10) > 0) {
-      //     items.add(10);
-      //   }
-      //   if (availability?.avail11 == "1" &&
-      //       availability.availStatus11 != "Booked" &&
-      //       getDifference(11) > 0) {
-      //     items.add(11);
-      //   }
-      //   if (availability?.avail12 == "1" &&
-      //       availability.availStatus12 != "Booked" &&
-      //       getDifference(12) > 0) {
-      //     items.add(12);
-      //   }
-      //   if (availability?.avail13 == "1" &&
-      //       availability.availStatus13 != "Booked" &&
-      //       getDifference(13) > 0) {
-      //     items.add(13);
-      //   }
-      //   if (availability?.avail14 == "1" &&
-      //       availability.availStatus14 != "Booked" &&
-      //       getDifference(14) > 0) {
-      //     items.add(14);
-      //   }
-      //   if (availability?.avail15 == "1" &&
-      //       availability.availStatus15 != "Booked" &&
-      //       getDifference(15) > 0) {
-      //     items.add(15);
-      //   }
-      //   if (availability?.avail16 == "1" &&
-      //       availability.availStatus16 != "Booked" &&
-      //       getDifference(16) > 0) {
-      //     items.add(16);
-      //   }
-      //   if (availability?.avail17 == "1" &&
-      //       availability.availStatus17 != "Booked" &&
-      //       getDifference(17) > 0) {
-      //     items.add(17);
-      //   }
-      //   if (availability?.avail18 == "1" &&
-      //       availability.availStatus18 != "Booked" &&
-      //       getDifference(18) > 0) {
-      //     items.add(18);
-      //   }
-      //   if (availability?.avail19 == "1" &&
-      //       availability.availStatus19 != "Booked" &&
-      //       getDifference(19) > 0) {
-      //     items.add(19);
-      //   }
-      //   if (availability?.avail20 == "1" &&
-      //       availability.availStatus20 != "Booked" &&
-      //       getDifference(20) > 0) {
-      //     items.add(20);
-      //   }
-      //   if (availability?.avail21 == "1" &&
-      //       availability.availStatus21 != "Booked" &&
-      //       getDifference(21) > 0) {
-      //     items.add(21);
-      //   }
-      //   if (availability?.avail22 == "1" &&
-      //       availability.availStatus22 != "Booked" &&
-      //       getDifference(22) > 0) {
-      //     items.add(22);
-      //   }
-      //   if (availability?.avail23 == "1" &&
-      //       availability.availStatus23 != "Booked" &&
-      //       getDifference(23) > 0) {
-      //     items.add(23);
-      //   }
-      // }
-    }
-  }*/
-
-  // RxList<int> items = <int>[].obs;
-  ///
-  // filterData() {
-  //   items.clear();
-  //   List<WeekAvailability> iterable = weekAvailabilityList;
-  //   for (WeekAvailability element in iterable) {
-  //     String date = element.date;
-  //     Availability availability = element.availability;
-  //
-  //     if (mySelectedDate.value == date) {
-  //       if (availability?.avail8 == "1" &&
-  //           availability.availStatus8 != "Booked") {
-  //         items.add(8);
-  //       }
-  //       if (availability?.avail9 == "1" &&
-  //           availability.availStatus9 != "Booked") {
-  //         items.add(9);
-  //       }
-  //
-  //       if (availability?.avail10 == "1" &&
-  //           availability.availStatus10 != "Booked") {
-  //         items.add(10);
-  //       }
-  //       if (availability?.avail11 == "1" &&
-  //           availability.availStatus11 != "Booked") {
-  //         items.add(11);
-  //       }
-  //       if (availability?.avail12 == "1" &&
-  //           availability.availStatus12 != "Booked") {
-  //         items.add(12);
-  //       }
-  //       if (availability?.avail13 == "1" &&
-  //           availability.availStatus13 != "Booked") {
-  //         items.add(13);
-  //       }
-  //       if (availability?.avail14 == "1" &&
-  //           availability.availStatus14 != "Booked") {
-  //         items.add(14);
-  //       }
-  //       if (availability?.avail15 == "1" &&
-  //           availability.availStatus15 != "Booked") {
-  //         items.add(15);
-  //       }
-  //       if (availability?.avail16 == "1" &&
-  //           availability.availStatus16 != "Booked") {
-  //         items.add(16);
-  //       }
-  //       if (availability?.avail17 == "1" &&
-  //           availability.availStatus17 != "Booked") {
-  //         items.add(17);
-  //       }
-  //       if (availability?.avail18 == "1" &&
-  //           availability.availStatus18 != "Booked") {
-  //         items.add(18);
-  //       }
-  //       if (availability?.avail19 == "1" &&
-  //           availability.availStatus19 != "Booked") {
-  //         items.add(19);
-  //       }
-  //       if (availability?.avail20 == "1" &&
-  //           availability.availStatus20 != "Booked") {
-  //         items.add(20);
-  //       }
-  //       if (availability?.avail21 == "1" &&
-  //           availability.availStatus21 != "Booked") {
-  //         items.add(21);
-  //       }
-  //       if (availability?.avail22 == "1" &&
-  //           availability.availStatus22 != "Booked") {
-  //         items.add(22);
-  //       }
-  //       if (availability?.avail23 == "1" &&
-  //           availability.availStatus23 != "Booked") {
-  //         items.add(23);
-  //       }
-  //     }
-  //
-  //     // if (mySelectedDate.value == date) {
-  //     //   if (availability?.avail8 == "1" &&
-  //     //       availability.availStatus8 != "Booked" &&
-  //     //       getDifference(8) > 0) {
-  //     //     items.add(8);
-  //     //   }
-  //     //   if (availability?.avail9 == "1" &&
-  //     //       availability.availStatus9 != "Booked" &&
-  //     //       getDifference(9) > 0) {
-  //     //     items.add(9);
-  //     //   }
-  //     //
-  //     //   if (availability?.avail10 == "1" &&
-  //     //       availability.availStatus10 != "Booked" &&
-  //     //       getDifference(10) > 0) {
-  //     //     items.add(10);
-  //     //   }
-  //     //   if (availability?.avail11 == "1" &&
-  //     //       availability.availStatus11 != "Booked" &&
-  //     //       getDifference(11) > 0) {
-  //     //     items.add(11);
-  //     //   }
-  //     //   if (availability?.avail12 == "1" &&
-  //     //       availability.availStatus12 != "Booked" &&
-  //     //       getDifference(12) > 0) {
-  //     //     items.add(12);
-  //     //   }
-  //     //   if (availability?.avail13 == "1" &&
-  //     //       availability.availStatus13 != "Booked" &&
-  //     //       getDifference(13) > 0) {
-  //     //     items.add(13);
-  //     //   }
-  //     //   if (availability?.avail14 == "1" &&
-  //     //       availability.availStatus14 != "Booked" &&
-  //     //       getDifference(14) > 0) {
-  //     //     items.add(14);
-  //     //   }
-  //     //   if (availability?.avail15 == "1" &&
-  //     //       availability.availStatus15 != "Booked" &&
-  //     //       getDifference(15) > 0) {
-  //     //     items.add(15);
-  //     //   }
-  //     //   if (availability?.avail16 == "1" &&
-  //     //       availability.availStatus16 != "Booked" &&
-  //     //       getDifference(16) > 0) {
-  //     //     items.add(16);
-  //     //   }
-  //     //   if (availability?.avail17 == "1" &&
-  //     //       availability.availStatus17 != "Booked" &&
-  //     //       getDifference(17) > 0) {
-  //     //     items.add(17);
-  //     //   }
-  //     //   if (availability?.avail18 == "1" &&
-  //     //       availability.availStatus18 != "Booked" &&
-  //     //       getDifference(18) > 0) {
-  //     //     items.add(18);
-  //     //   }
-  //     //   if (availability?.avail19 == "1" &&
-  //     //       availability.availStatus19 != "Booked" &&
-  //     //       getDifference(19) > 0) {
-  //     //     items.add(19);
-  //     //   }
-  //     //   if (availability?.avail20 == "1" &&
-  //     //       availability.availStatus20 != "Booked" &&
-  //     //       getDifference(20) > 0) {
-  //     //     items.add(20);
-  //     //   }
-  //     //   if (availability?.avail21 == "1" &&
-  //     //       availability.availStatus21 != "Booked" &&
-  //     //       getDifference(21) > 0) {
-  //     //     items.add(21);
-  //     //   }
-  //     //   if (availability?.avail22 == "1" &&
-  //     //       availability.availStatus22 != "Booked" &&
-  //     //       getDifference(22) > 0) {
-  //     //     items.add(22);
-  //     //   }
-  //     //   if (availability?.avail23 == "1" &&
-  //     //       availability.availStatus23 != "Booked" &&
-  //     //       getDifference(23) > 0) {
-  //     //     items.add(23);
-  //     //   }
-  //     // }
-  //   }
-  // }
 
   RxList<Map<String, dynamic>> items = <Map<String, dynamic>>[].obs;
 

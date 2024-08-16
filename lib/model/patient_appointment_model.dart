@@ -53,13 +53,13 @@ class WeekAvailability {
   DateTime? date;
   Availability? availability;
   int? availableSlotCount;
-  int? actualSlotCount;
+  int actualSlotCount;
 
   WeekAvailability({
     this.date,
     this.availability,
     this.availableSlotCount,
-    this.actualSlotCount,
+    required this.actualSlotCount,
   });
 
   factory WeekAvailability.fromJson(Map<String, dynamic> json) =>

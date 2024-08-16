@@ -160,12 +160,26 @@ class _PersonalMedicationListScreenState
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Personal Medication Notes'),
-          content: const Text("Are You Sure Want To Delete ?"),
+          title: const Text(
+            'Delete Notes',
+            style: TextStyle(fontSize: 24),
+          ),
+          content: const Text(
+            "Are you sure want to delete the personal note ?",
+            style: TextStyle(fontSize: 22),
+          ),
           actions: <Widget>[
-            MaterialButton(onPressed: onPressed, child: const Text("YES")),
             MaterialButton(
-              child: const Text("NO"),
+                onPressed: onPressed,
+                child: const Text(
+                  "Yes",
+                  style: TextStyle(fontSize: 20),
+                )),
+            MaterialButton(
+              child: const Text(
+                "No",
+                style: TextStyle(fontSize: 20),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

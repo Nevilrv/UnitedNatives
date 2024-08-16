@@ -669,7 +669,9 @@ class _UpcomingAppointmentListItemDoctorState
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                    "The appointment is completed kindly add Prescription and mark this appointment as completed"),
+                  "The appointment is completed kindly add Prescription and mark this appointment as completed",
+                  style: TextStyle(fontSize: 20),
+                ),
               ],
             ),
             actions: [
@@ -677,14 +679,20 @@ class _UpcomingAppointmentListItemDoctorState
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    child: const Text("Cancel"),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 20),
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                       refresh();
                     },
                   ),
                   TextButton(
-                    child: const Text("Add Prescription"),
+                    child: const Text(
+                      "Add Prescription",
+                      style: TextStyle(fontSize: 20),
+                    ),
                     onPressed: () {
                       WidgetsBinding.instance.addPostFrameCallback(
                         (_) async {

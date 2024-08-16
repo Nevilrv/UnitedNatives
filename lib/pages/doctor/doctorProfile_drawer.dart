@@ -560,7 +560,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                                                 'Date :  ',
                                                 style: TextStyle(
                                                   color: Colors.grey,
-                                                  fontSize: 22,
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                                 maxLines: 1,
@@ -574,7 +574,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                                                     .textTheme
                                                     .titleMedium
                                                     ?.copyWith(
-                                                        fontSize: 22,
+                                                        fontSize: 18,
                                                         fontWeight:
                                                             FontWeight.w500),
                                               ),
@@ -591,7 +591,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                                                 'Note :  ',
                                                 style: TextStyle(
                                                   color: Colors.grey,
-                                                  fontSize: 22,
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                                 maxLines: 1,
@@ -604,7 +604,7 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                                                       .textTheme
                                                       .titleMedium
                                                       ?.copyWith(
-                                                          fontSize: 22,
+                                                          fontSize: 18,
                                                           fontWeight:
                                                               FontWeight.w500),
                                                 ),

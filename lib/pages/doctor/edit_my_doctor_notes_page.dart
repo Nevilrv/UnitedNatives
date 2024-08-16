@@ -108,9 +108,6 @@ class _UpdateDocNotesScreenState extends State<UpdateDocNotesScreen> {
     return GetBuilder<MyClinicianScreenViewModel>(builder: (controller) {
       return PopScope(
         canPop: true,
-        onPopInvokedWithResult: (didPop, result) {
-          Navigator.pop(context);
-        },
         child: Scaffold(
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,

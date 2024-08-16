@@ -104,7 +104,7 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
                     ),
                   ],
                 ),
-                Expanded(
+                const Expanded(
                   child: TabBarView(
                     children: [
                       /// (1) UPCOMING APPOINTMENT  ----------------------------------------------------------
@@ -173,7 +173,7 @@ class _MyAppointmentsPageState extends State<MyAppointmentsPage> {
 
                       /// (3) BOOK APPOINTMENT ----------------------------------------------------------
 
-                      const BookAppointmentTab(),
+                      BookAppointmentTab(),
 
                       // Padding(
                       //   padding: const EdgeInsets.symmetric(horizontal: 20),

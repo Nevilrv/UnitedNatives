@@ -337,7 +337,7 @@ class UserController extends GetxController {
       );
       debugPrint("registerData.providerType----->${jsonEncode(userData)}");
       await UserBackendAuthService().register(userData, userType, bearerToken,
-          profilePic: registerUserProfile!);
+          profilePic: registerUserProfile ?? File(""));
       // await Prefs.setString(Prefs.BEARER, bearerToken);
       if (userType == "1") {
         Get.toNamed(Routes.login);
@@ -392,7 +392,7 @@ class UserController extends GetxController {
     try {
       await UserBackendAuthService().socialRegister(
           userData, userType, bearerToken,
-          useProfilePic: useProfilePic!);
+          useProfilePic: useProfilePic ?? File(""));
       // await Prefs.setString(Prefs.BEARER, bearerToken);
       if (userType == "1") {
         Get.toNamed(Routes.login);

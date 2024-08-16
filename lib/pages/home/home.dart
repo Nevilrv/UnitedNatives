@@ -40,8 +40,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   final UserController userController = Get.find();
   PatientScheduledClassController patientScheduledClassController =
       Get.put(PatientScheduledClassController());
-  static final PatientHomeScreenController patientHomeScreenController =
-      Get.find();
+  PatientHomeScreenController patientHomeScreenController = Get.find();
   RateContactUsController rateContactUsController =
       Get.put(RateContactUsController());
   LogOutController logOutController = Get.put(LogOutController());

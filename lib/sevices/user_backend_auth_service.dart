@@ -585,8 +585,6 @@ class UserBackendAuthService {
         'tribal_federally_member': userUpdateData.tribalFederallyMember ?? "",
         'tribal_federally_state': userUpdateData.tribalFederallyState ?? "",
         'tribal_background_status': userUpdateData.tribalBackgroundStatus ?? "",
-
-        // "profile_pic": userUpdateData.profilePic,
       };
 
       log('body==========>>>>>${jsonEncode(body)}');

@@ -636,7 +636,9 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                   },
                   child: const Text('Update Profile',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)),
                 ),
               )
             ],

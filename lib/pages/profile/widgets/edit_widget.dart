@@ -872,6 +872,7 @@ class _EditWidgetState extends State<EditWidget> {
                   child: const Text(
                     'Update Profile',
                     style: TextStyle(
+                      fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),

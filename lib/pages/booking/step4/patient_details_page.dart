@@ -119,7 +119,9 @@ class _PatientDetailsPageState extends State<PatientDetailsPage> {
         }
       }
     }
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

@@ -30,24 +30,6 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
   Widget _slot() {
     return Obx(
       () {
-        // int i = -1;
-
-        // if (_bookAppointmentController.items.isNotEmpty) {
-        //   _bookAppointmentController.items.forEach((element) {
-        //     if (!(int.parse(
-        //                 element["start_time"].toString().split(":").first) <=
-        //             int.parse(
-        //                 "${DateTime.now().toString().substring(11, 13)}") &&
-        //         00 <
-        //             int.parse(
-        //                 "${DateTime.now().toString().substring(14, 16)}") &&
-        //         _bookAppointmentController.mySelectedDate.value ==
-        //             DateTime.now().toString().split(" ")[0])) {
-        //       i = 0;
-        //     }
-        //   });
-        // }
-
         return _bookAppointmentController.items.isEmpty ||
                 _bookAppointmentController.weekAvailabilityList
                         .where((p0) =>
@@ -57,9 +39,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> {
                                     .mySelectedDate.value)))
                         .first
                         .actualSlotCount ==
-                    0 /*||
-                i == -1*/
-
+                    0
             ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Center(

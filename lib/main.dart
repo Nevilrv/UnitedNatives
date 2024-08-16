@@ -38,6 +38,7 @@ import 'package:united_natives/viewModel/services_view_model.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'controller/user_controller.dart';
 import 'routes/route_generator.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -64,6 +65,8 @@ void main() async {
   );
   await EasyLocalization.ensureInitialized();
   initializeDateFormatting('', null);
+  tz.initializeTimeZones();
+
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   // FirebaseCrashlytics.instance.crash();
   await WakelockPlus.enable();
@@ -242,7 +245,7 @@ class BaseBindings extends Bindings {
       Get.put(ScheduledClassController());
   DoctorHomeScreenController doctorHomeScreenController =
       Get.put(DoctorHomeScreenController());
-  static final PatientHomeScreenController patientHomeScreenController =
+  PatientHomeScreenController patientHomeScreenController =
       Get.put(PatientHomeScreenController());
   ServicesDataController servicesDataController =
       Get.put(ServicesDataController());

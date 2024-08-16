@@ -40,15 +40,6 @@ class Home2 extends StatefulWidget {
 }
 
 class _Home2State extends State<Home2> with WidgetsBindingObserver {
-  // double xOffset = 0;
-  // double yOffset = 0;
-  // double scaleFactor = 1;
-  //
-  // bool isDrawerOpen = false;
-  //
-  // int _selectedIndex = 0;
-  //
-  // PageController _pageController;
   DoctorHomeScreenController? doctorHomeScreenController;
   UserController userController = Get.put(UserController());
   final UserUpdateController _userUpdateController =

@@ -64,12 +64,12 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
           return DateTime.parse(dateA).compareTo(DateTime.parse(dateB));
         });
 
-        VisitedPatient? data = dataList?.first;
+        VisitedPatient data = dataList!.first;
 
         final time = Utils.formattedDate(
-            '${DateTime.parse('${data?.appointmentDate} ${data?.appointmentTime}')}');
+            '${DateTime.parse('${data.appointmentDate} ${data.appointmentTime}')}');
 
-        bool rejoin = (data!.meetingData!.id.toString().isNotEmpty &&
+        bool rejoin = (data.meetingData!.id.toString().isNotEmpty &&
             data.meetingData!.password.toString().isNotEmpty);
 
         return Container(
@@ -263,9 +263,11 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
 
                                           await Future.delayed(
                                                   const Duration(seconds: 5))
-                                              .then((value) => setState(() {
-                                                    isLoading = false;
-                                                  }));
+                                              .then((value) {
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                          });
 
                                           return;
                                         }
@@ -368,6 +370,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                               setState(() {
                                                 isLoading = false;
                                               });
+                                              if (!context.mounted) return;
                                               await startMeeting(
                                                       patientAppoint: data1,
                                                       context: context,
@@ -386,7 +389,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                             setState(() {
                                               isLoadingMeet = false;
                                             });
-
+                                            if (!context.mounted) return;
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
@@ -395,7 +398,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                               ),
                                             );
                                           }
-                                        } else {}
+                                        }
                                       }
 
                                       if (mounted) {
@@ -610,8 +613,8 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
 
                                           changeMeetingStatus(
                                               docId:
-                                                  userController.user.value.id!,
-                                              s2: data.meetingData!.id!);
+                                                  "${userController.user.value.id}",
+                                              s2: "${data.meetingData?.id}");
 
                                           String url1 = Constants.baseUrl +
                                               Constants
@@ -734,6 +737,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
     PermissionStatus cameraStatus = await Permission.camera.request();
 
     if (cameraStatus == PermissionStatus.denied) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You need to provide a Camera Permission'),
       ));
@@ -744,6 +748,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
 
     PermissionStatus microPhoneStatus = await Permission.microphone.request();
     if (microPhoneStatus == PermissionStatus.denied) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You need to provide a MicroPhone Permission'),
       ));
@@ -754,7 +759,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
   }
 
   Future startMeeting({
-    BuildContext? context,
+    required BuildContext context,
     required String channelsName,
     required String tokens,
     required PatientAppoint patientAppoint,
@@ -811,8 +816,9 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
     setState(() {
       isLoadingMeet = false;
     });
+    if (!context.mounted) return;
     await Navigator.push(
-      context!,
+      context,
       MaterialPageRoute(
         builder: (context) => MyVideoCall(
           docId: userController.user.value.id,
@@ -829,7 +835,7 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
         /// /// /// /// /// /// ///
 
         await Future.delayed(const Duration(milliseconds: 500));
-
+        if (!context.mounted) return;
         await showDialog<String>(
           context: context,
           barrierDismissible: false,
@@ -844,7 +850,9 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                    "The appointment is completed kindly add Prescription and mark this appointment as completed"),
+                  "The appointment is completed kindly add Prescription and mark this appointment as completed",
+                  style: TextStyle(fontSize: 20),
+                ),
               ],
             ),
             actions: [
@@ -852,20 +860,27 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    child: const Text("Cancel"),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 20),
+                    ),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(c1);
                       refresh();
                     },
                   ),
                   TextButton(
-                    child: const Text("Add Prescription"),
+                    child: const Text(
+                      "Add Prescription",
+                      style: TextStyle(fontSize: 20),
+                    ),
                     onPressed: () {
                       WidgetsBinding.instance.addPostFrameCallback(
                         (_) async {
-                          Get.back();
+                          Navigator.pop(c1);
                           await Future.delayed(Duration.zero).then(
                             (value) async {
+                              if (!c1.mounted) return;
                               await Navigator.of(c1).pushNamed(
                                   Routes.addprescription,
                                   arguments: patientAppoint);
@@ -909,8 +924,6 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
       "meeting_id": s2,
       "meeting_status": 'ended'
     };
-
-    log('RESPONSE========MEET========UPDATE========>$body1');
 
     Map<String, String> header1 = {
       "Authorization": 'Bearer ${Prefs.getString(Prefs.BEARER)}',

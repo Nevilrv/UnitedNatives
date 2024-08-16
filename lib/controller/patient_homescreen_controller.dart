@@ -405,7 +405,7 @@ class PatientHomeScreenController extends GetxController {
               fromType: fromType,
               fromId: fromId,
               message: message,
-              attachment: attachment!,
+              attachment: attachment ?? File(""),
               toId: toId,
               toType: toType);
       isLoading.value = false;

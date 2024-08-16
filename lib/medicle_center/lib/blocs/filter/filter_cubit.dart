@@ -38,7 +38,6 @@ class FilterCubit extends Cubit<FilterState> {
           item,
         );
       }).toList();
-      log('categoryOfStatess---------->>>>>>>>$categoryOfStatess');
       // if (categoryOfStatess.isEmpty) {
       //   emit(
       //     FilterSuccess(stateList: categoryOfStatess ?? []),
@@ -62,8 +61,6 @@ class FilterCubit extends Cubit<FilterState> {
         );
 
         categoryOfStatess.insert(0, stateAllModel);
-
-        // log('categoryOfStatess---------->>>>>>>>${categoryOfStatess}');
       }
 
       onCitiesLoad(

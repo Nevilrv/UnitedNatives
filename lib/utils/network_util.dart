@@ -162,11 +162,11 @@ class NetworkAPICall {
       var request = http.MultipartRequest('POST', Uri.parse(fullURL));
       request.headers.addAll(header!);
       request.fields.addAll(body);
-      if (image1 != null) {
+      if (image1 != null && image1.path != "") {
         request.files.add(await http.MultipartFile.fromPath(
             image1Key ?? "", image1.absolute.path));
       }
-      if (image2 != null) {
+      if (image2 != null && image2.path != "") {
         request.files.add(await http.MultipartFile.fromPath(
             image2Key ?? "", image2.absolute.path));
       }

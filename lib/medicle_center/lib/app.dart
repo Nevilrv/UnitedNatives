@@ -36,9 +36,6 @@ class _App1State extends State<App1> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvokedWithResult: (didPop, result) {
-        Get.back();
-      },
       child: Scaffold(
         body: BlocListener<MessageCubit, String>(
           listener: (context, message) {

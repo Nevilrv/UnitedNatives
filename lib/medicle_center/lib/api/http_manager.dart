@@ -73,10 +73,6 @@ class HTTPManager {
     Function(num)? progress,
     bool? loading,
   }) async {
-    log('options---------->>>>>>>>$options');
-    log('url-----111111111111----->>>>>>>>$url');
-    log('data---------->>>>>>>>$data');
-    log('formData---------->>>>>>>>$formData');
     if (loading == true) {
       SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.light);
       SVProgressHUD.show();
@@ -114,20 +110,11 @@ class HTTPManager {
         SVProgressHUD.setDefaultStyle(SVProgressHUDStyle.light);
         SVProgressHUD.show();
       }
-      debugPrint(
-          "url>>>>medical>>>>center>>>>url>>>>medical>>>>center=====>$url");
-      debugPrint("params>>>>$params");
-      debugPrint("options>>>>$options");
       final response = await _dio.get(
         url,
         queryParameters: params,
         options: options,
       );
-
-      log('response==========>>>>>${response.realUri}');
-
-      ///0107
-      ///10.15
       return response.data;
     } on DioException catch (error) {
       return _errorHandle(error);

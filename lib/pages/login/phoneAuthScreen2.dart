@@ -81,20 +81,20 @@ class _PhoneVerification2State extends State<PhoneVerification2> {
                   SizedBox(
                     height: appBarHeight,
                   ),
-                  /* widget.isShow == true
-                      ?*/
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back_ios,
-                            color: Colors.white),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ) /*  : const SizedBox()*/,
+                  Get.previousRoute != "/"
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.arrow_back_ios,
+                                  color: Colors.white),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   Text(

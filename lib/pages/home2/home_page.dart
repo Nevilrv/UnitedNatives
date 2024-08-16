@@ -36,7 +36,7 @@ class _Home2PageState extends State<Home2Page> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _doctorHomeScreenController.filterData();
+      refresh();
     });
     super.initState();
   }
