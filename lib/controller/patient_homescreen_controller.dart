@@ -227,6 +227,7 @@ class PatientHomeScreenController extends GetxController {
   ///****call Timer function for chat messages****
 
   void getAllChatMessages(String chatKey, String id) {
+    log('timer==========>>>>>$timer');
     if (timer != null) {
       timer?.cancel();
     }

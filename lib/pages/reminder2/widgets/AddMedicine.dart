@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:united_natives/pages/reminder2/animations/fade_animation.dart';
 import 'package:united_natives/pages/reminder2/sqflite_database_helper.dart';
+import 'package:timezone/data/latest.dart' as tzz;
 
 class AddMedicine extends StatefulWidget {
   final double height;
@@ -32,33 +35,63 @@ class _AddMedicineState extends State<AddMedicine> {
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin?.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse: (details) {
-        onSelectNotification(details.payload!);
-      },
+    flutterLocalNotificationsPlugin?.initialize(initializationSettings);
+  }
+
+  triggerNotification(
+      int id, String title, String body, int hour, int minute) async {
+    tzz.initializeTimeZones();
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      channelDescription: 'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        const DarwinNotificationDetails();
+
+    NotificationDetails notificationDetails = NotificationDetails(
+        android: androidNotificationDetails, iOS: iOSPlatformChannelSpecifics);
+
+    // tz.TZDateTime scheduledDate =
+    //     tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10));
+
+    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+
+    final time = scheduledDate.toUtc();
+    log('time==========>>>>>${time}');
+    await flutterLocalNotificationsPlugin?.zonedSchedule(
+      0,
+      title,
+      body,
+      time,
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 
   void showNotification(
       int id, String title, String body, int hour, int minute) async {
-    final DateTime now = DateTime.now();
-    final DateTime scheduledDate = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      hour,
-      minute,
-    );
-    final tz.TZDateTime tzScheduledDate = tz.TZDateTime.from(
-      scheduledDate,
-      tz.local,
-    );
+    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+
+    final time = scheduledDate.toUtc();
     await flutterLocalNotificationsPlugin?.zonedSchedule(
-      id,
+      0,
       title,
       body,
-      tzScheduledDate,
+      time,
       getPlatformChannelSpecfics(),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.wallClockTime,
@@ -68,14 +101,16 @@ class _AddMedicineState extends State<AddMedicine> {
 
   void showOnceNotification(
       int id, String title, String body, int hour, int minute) async {
-    DateTime now = DateTime.now();
+    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+
+    final time = scheduledDate.toUtc();
     await flutterLocalNotificationsPlugin?.zonedSchedule(
-      id,
+      0,
       title,
       body,
-      scheduledDate,
+      time,
       getPlatformChannelSpecfics(),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
@@ -92,7 +127,6 @@ class _AddMedicineState extends State<AddMedicine> {
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
-
     return platformChannelSpecifics;
   }
 
@@ -245,9 +279,10 @@ class _AddMedicineState extends State<AddMedicine> {
           isEveryDay: isEveryday == true ? 1 : 0,
         );
         final id = await dbHelper.insertReminderDetails(scope);
+
         isEveryday == true
-            ? showNotification(id, _name!, _dose!, hour, minute)
-            : showOnceNotification(id, _name!, _dose!, hour, minute);
+            ? triggerNotification(id, _name!, _dose!, hour, minute)
+            : triggerNotification(id, _name!, _dose!, hour, minute);
         Navigator.pop(context, id);
       });
     }

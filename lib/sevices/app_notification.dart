@@ -10,6 +10,7 @@ import 'package:united_natives/controller/patient_homescreen_controller.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/model/getSorted_patient_chatList_model.dart';
+import 'package:united_natives/model/get_all_doctor.dart';
 import 'package:united_natives/model/get_sorted_chat_list_doctor_model.dart';
 import 'package:united_natives/model/patient_prescription_model.dart';
 import 'package:united_natives/pages/appointment/doctor_appointment.dart';
@@ -63,17 +64,6 @@ class AppNotificationHandler {
 
       showMsg(notification!, data['screen'], data['timestamp'],
           data['relationId'].toString());
-
-      // FlutterAppBadger.updateBadgeCount(10);
-
-      // if (message.notification.apple.badge != null) {
-      //   Badge(
-      //     badgeContent: Text("${message.notification.apple.badge}"),
-      //   );
-      //
-      //   FlutterAppBadger.updateBadgeCount(
-      //       int.parse(message.notification.apple.badge));
-      // }
     });
   }
 
@@ -102,134 +92,144 @@ class AppNotificationHandler {
             android: AndroidInitializationSettings("@drawable/ic_launcher"),
             iOS: DarwinInitializationSettings());
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: (payload) async {
-      _userController.isScreenName.value = type;
-      if (type == 'doctorAppointment') {
-        _userController.isPinScreen.value == true
-            ? await Get.to(const PhoneVerification2())?.then((value) {
-                if (_userController.isPinScreen.value == true) {
-                  return Get.to(MyAppointmentsDoctor());
-                }
-              })
-            : Get.to(MyAppointmentsDoctor());
-      } else if (type == 'patientAppointment') {
-        _userController.isPinScreen.value == true
-            ? await Get.to(const PhoneVerification2())?.then((value) {
-                if (_userController.isPinScreen.value == true) {
-                  return Get.to(MyAppointmentsPage());
-                }
-              })
-            : Get.to(MyAppointmentsPage());
-      } else if (type == 'patientAppointmentPrescription') {
-        await patientHomeScreenController.getPatientPrescriptions();
-        PatientPrescriptionsModel patientPrescriptionsModel =
-            patientHomeScreenController.patientPrescriptionsModelData.value;
-        for (var element in patientPrescriptionsModel.data!) {
-          if (element.created == date) {
-            _userController.notificationValue.value = element.appointmentId!;
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (payload) async {
+        log('payload==========>>>>>$payload');
+        _userController.isScreenName.value = type;
+        if (type == 'doctorAppointment') {
+          _userController.isPinScreen.value == true
+              ? await Get.to(const PhoneVerification2())?.then((value) {
+                  if (_userController.isPinScreen.value == true) {
+                    return Get.to(const MyAppointmentsDoctor());
+                  }
+                })
+              : Get.to(const MyAppointmentsDoctor());
+        } else if (type == 'patientAppointment') {
+          _userController.isPinScreen.value == true
+              ? await Get.to(const PhoneVerification2())?.then((value) {
+                  if (_userController.isPinScreen.value == true) {
+                    return Get.to(const MyAppointmentsPage());
+                  }
+                })
+              : Get.to(const MyAppointmentsPage());
+        } else if (type == 'patientAppointmentPrescription') {
+          await patientHomeScreenController.getPatientPrescriptions();
+          PatientPrescriptionsModel patientPrescriptionsModel =
+              patientHomeScreenController.patientPrescriptionsModelData.value;
+          for (var element in patientPrescriptionsModel.data!) {
+            if (element.created == date) {
+              _userController.notificationValue.value = element.appointmentId!;
 
-            _userController.isPinScreen.value == true
-                ? await Get.to(const PhoneVerification2())?.then((value) {
-                    if (_userController.isPinScreen.value == true) {
-                      return Get.to(PrescriptionPage(
-                          appointmentId: element.appointmentId));
-                    }
-                  })
-                : Get.to(
-                    PrescriptionPage(appointmentId: element.appointmentId));
-          }
-        }
-      } else if (type == 'zoomMeeting') {
-        _userController.isPinScreen.value == true
-            ? await Get.to(const PhoneVerification2())?.then((value) {
-                if (_userController.isPinScreen.value == true) {
-                  return Get.to(const PatientNotificationPage());
-                }
-              })
-            : Get.to(const PatientNotificationPage());
-      } else if (type == 'patientChat') {
-        _userController.notificationValue.value = relationId.toString();
-
-        List<ShortedDoctorChat> doctorChat = <ShortedDoctorChat>[];
-        await addNewChatMessageController
-            .getSortedChatListDoctor(doctorId: _userController.user.value.id)
-            .then((value) {
-          getSortedChatListDoctor = addNewChatMessageController
-              .getDoctorSortedChatListApiResponse.data;
-
-          for (var element in getSortedChatListDoctor.doctorChatList!) {
-            if (relationId.toString() == element.patientId.toString()) {
-              doctorChat.add(element);
+              _userController.isPinScreen.value == true
+                  ? await Get.to(const PhoneVerification2())?.then((value) {
+                      if (_userController.isPinScreen.value == true) {
+                        return Get.to(PrescriptionPage(
+                            appointmentId: element.appointmentId));
+                      }
+                    })
+                  : Get.to(
+                      PrescriptionPage(appointmentId: element.appointmentId));
             }
           }
-        }).then((value) async {
-          _doctorHomeScreenController.doctorChat.value = doctorChat[0];
+        } else if (type == 'zoomMeeting') {
+          _userController.isPinScreen.value == true
+              ? await Get.to(const PhoneVerification2())?.then((value) {
+                  if (_userController.isPinScreen.value == true) {
+                    return Get.to(const PatientNotificationPage());
+                  }
+                })
+              : Get.to(const PatientNotificationPage());
+        } else if (type == 'patientChat') {
+          _userController.notificationValue.value = relationId.toString();
+          log('relationId.toString()==========>>>>>${relationId.toString()}');
+          List<ShortedDoctorChat> doctorChat = <ShortedDoctorChat>[];
+          await addNewChatMessageController
+              .getSortedChatListDoctor(doctorId: _userController.user.value.id)
+              .then((value) {
+            getSortedChatListDoctor = addNewChatMessageController
+                .getDoctorSortedChatListApiResponse.data;
 
-          if (_userController.isPinScreen.value == true) {
-            await Get.to(const PhoneVerification2())?.then((value) {
-              if (_userController.isPinScreen.value == true) {
-                return Get.to(DoctorMessagesDetailPage());
+            for (var element in getSortedChatListDoctor.doctorChatList!) {
+              if (relationId.toString() == element.patientId.toString()) {
+                doctorChat.add(element);
               }
-            });
-          } else {
-            Get.to(DoctorMessagesDetailPage());
-          }
-        });
-      } else if (type == 'doctorChat') {
-        _userController.notificationValue.value = relationId.toString();
-
-        List<SortedPatientChat> patientChat = <SortedPatientChat>[];
-        await patientHomeScreenController
-            .getSortedPatientChatList()
-            .then((value) {
-          for (var element in patientHomeScreenController.newDataList) {
-            if (relationId.toString() == element.doctorId.toString()) {
-              patientChat.add(element);
             }
-          }
-        }).then((value) async {
-          patientHomeScreenController.chatKey.value =
-              "${patientChat[0].chatKey}";
-          patientHomeScreenController.doctorName.value =
-              "${patientChat[0].doctorFirstName}";
-          patientHomeScreenController.doctorLastName.value =
-              "${patientChat[0].doctorLastName}";
-          patientHomeScreenController.doctorId.value =
-              "${patientChat[0].doctorId}";
-          patientHomeScreenController.toId.value = "${patientChat[0].doctorId}";
+          }).then((value) async {
+            _doctorHomeScreenController.doctorChat.value = doctorChat[0];
 
-          patientHomeScreenController.doctorProfile =
-              "${patientChat[0].doctorProfilePic}";
-          patientHomeScreenController.doctorSocialProfile =
-              "${patientChat[0].doctorSocialProfilePic}";
-
-          patientHomeScreenController
-              .getAllPatientChatMessages.value.patientChatList
-              ?.clear();
-
-          patientHomeScreenController
-              .getAllPatientChatMessagesList(patientChat[0].chatKey);
-
-          if (_userController.isPinScreen.value == true) {
-            await Get.to(() => const PhoneVerification2());
             if (_userController.isPinScreen.value == true) {
+              await Get.to(const PhoneVerification2())?.then((value) {
+                if (_userController.isPinScreen.value == true) {
+                  return Get.to(const DoctorMessagesDetailPage());
+                }
+              });
+            } else {
+              Get.to(const DoctorMessagesDetailPage());
+            }
+          });
+        } else if (type == 'doctorChat') {
+          _userController.notificationValue.value = relationId.toString();
+          log('relationId.toString()==========>>>>>${relationId.toString()}');
+          List<SortedPatientChat> patientChat = <SortedPatientChat>[];
+          await patientHomeScreenController
+              .getSortedPatientChatList()
+              .then((value) {
+            for (var element in patientHomeScreenController.newDataList) {
+              if (relationId.toString() == element.doctorId.toString()) {
+                patientChat.add(element);
+              }
+            }
+          }).then((value) async {
+            patientHomeScreenController.chatKey.value =
+                "${patientChat[0].chatKey}";
+            patientHomeScreenController.doctorName.value =
+                "${patientChat[0].doctorFirstName}";
+            patientHomeScreenController.doctorLastName.value =
+                "${patientChat[0].doctorLastName}";
+            patientHomeScreenController.doctorId.value =
+                "${patientChat[0].doctorId}";
+            patientHomeScreenController.toId.value =
+                "${patientChat[0].doctorId}";
+
+            patientHomeScreenController.doctorProfile =
+                "${patientChat[0].doctorProfilePic}";
+            patientHomeScreenController.doctorSocialProfile =
+                "${patientChat[0].doctorSocialProfilePic}";
+
+            patientHomeScreenController
+                .getAllPatientChatMessages.value.patientChatList
+                ?.clear();
+
+            patientHomeScreenController
+                .getAllPatientChatMessagesList(patientChat[0].chatKey);
+
+            if (_userController.isPinScreen.value == true) {
+              await Get.to(() => const PhoneVerification2());
+              if (_userController.isPinScreen.value == true) {
+                return Get.to(
+                  MessagesDetailPage(
+                    doctor: Doctor(
+                      chatKey: patientChat[0].chatKey.toString(),
+                    ),
+                    sortedPatientChat: patientChat[0],
+                  ),
+                );
+              }
+            } else {
               return Get.to(
                 MessagesDetailPage(
+                  doctor: Doctor(
+                    chatKey: patientChat[0].chatKey.toString(),
+                  ),
                   sortedPatientChat: patientChat[0],
                 ),
               );
             }
-          } else {
-            return Get.to(
-              MessagesDetailPage(
-                sortedPatientChat: patientChat[0],
-              ),
-            );
-          }
-        });
-      }
-    });
+          });
+        }
+      },
+    );
 
     flutterLocalNotificationsPlugin.show(
       0,
@@ -261,27 +261,24 @@ class AppNotificationHandler {
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) async {
-        log('A new onMessageOpenedApp event was published!');
-        log('listen 1->${jsonDecode(message.data['payload']).runtimeType}');
-        log('listen 2->${message.data}');
         var data = jsonDecode(message.data['payload']);
         _userController.isScreenName.value = data['screen'];
         if (data['screen'] == 'doctorAppointment') {
           _userController.isPinScreen.value == true
               ? await Get.to(const PhoneVerification2())?.then((value) {
                   if (_userController.isPinScreen.value == true) {
-                    return Get.to(MyAppointmentsDoctor());
+                    return Get.to(const MyAppointmentsDoctor());
                   }
                 })
-              : Get.to(MyAppointmentsDoctor());
+              : Get.to(const MyAppointmentsDoctor());
         } else if (data['screen'] == 'patientAppointment') {
           _userController.isPinScreen.value == true
               ? await Get.to(const PhoneVerification2())?.then((value) {
                   if (_userController.isPinScreen.value == true) {
-                    return Get.to(MyAppointmentsPage());
+                    return Get.to(const MyAppointmentsPage());
                   }
                 })
-              : Get.to(MyAppointmentsPage());
+              : Get.to(const MyAppointmentsPage());
         } else if (data['screen'] == 'patientAppointmentPrescription') {
           await patientHomeScreenController.getPatientPrescriptions();
           PatientPrescriptionsModel patientPrescriptionsModel =
@@ -313,6 +310,8 @@ class AppNotificationHandler {
                 })
               : Get.to(const PatientNotificationPage());
         } else if (data['screen'] == 'patientChat') {
+          log('patientChat======11111====>>>>>patientChatpatientChatpatientChat}');
+
           _userController.notificationValue.value =
               data['relationId'].toString();
 
@@ -335,14 +334,16 @@ class AppNotificationHandler {
             if (_userController.isPinScreen.value == true) {
               await Get.to(const PhoneVerification2())?.then((value) {
                 if (_userController.isPinScreen.value == true) {
-                  return Get.to(DoctorMessagesDetailPage());
+                  return Get.to(const DoctorMessagesDetailPage());
                 }
               });
             } else {
-              Get.to(DoctorMessagesDetailPage());
+              Get.to(const DoctorMessagesDetailPage());
             }
           });
         } else if (data['screen'] == 'doctorChat') {
+          log('doctorChat======11111====>>>>>doctorChatdoctorChatdoctorChat}');
+
           _userController.notificationValue.value =
               data['relationId'].toString();
 
@@ -358,41 +359,50 @@ class AppNotificationHandler {
             }
           }).then(
             (value) async {
-              patientHomeScreenController.chatKey.value =
-                  patientChat[0].chatKey.toString();
-              patientHomeScreenController.doctorName.value =
-                  patientChat[0].doctorFirstName.toString();
-              patientHomeScreenController.doctorLastName.value =
-                  patientChat[0].doctorLastName.toString();
-              patientHomeScreenController.doctorId.value =
-                  patientChat[0].doctorId.toString();
-              patientHomeScreenController.toId.value =
-                  patientChat[0].doctorId.toString();
+              await Future.delayed(const Duration(milliseconds: 500));
+              if (patientChat.isNotEmpty) {
+                patientHomeScreenController.chatKey.value =
+                    patientChat[0].chatKey.toString();
+                patientHomeScreenController.doctorName.value =
+                    patientChat[0].doctorFirstName.toString();
+                patientHomeScreenController.doctorLastName.value =
+                    patientChat[0].doctorLastName.toString();
+                patientHomeScreenController.doctorId.value =
+                    patientChat[0].doctorId.toString();
+                patientHomeScreenController.toId.value =
+                    patientChat[0].doctorId.toString();
 
-              patientHomeScreenController.doctorProfile =
-                  patientChat[0].doctorProfilePic.toString();
-              patientHomeScreenController.doctorSocialProfile =
-                  patientChat[0].doctorSocialProfilePic.toString();
+                patientHomeScreenController.doctorProfile =
+                    patientChat[0].doctorProfilePic.toString();
+                patientHomeScreenController.doctorSocialProfile =
+                    patientChat[0].doctorSocialProfilePic.toString();
 
-              patientHomeScreenController
-                  .getAllPatientChatMessages.value.patientChatList
-                  ?.clear();
+                patientHomeScreenController
+                    .getAllPatientChatMessages.value.patientChatList
+                    ?.clear();
 
-              patientHomeScreenController
-                  .getAllPatientChatMessagesList(patientChat[0].chatKey);
+                patientHomeScreenController
+                    .getAllPatientChatMessagesList(patientChat[0].chatKey);
 
-              if (_userController.isPinScreen.value == true) {
-                await Get.to(const PhoneVerification2())?.then((value) {
-                  if (_userController.isPinScreen.value == true) {
-                    return Get.to(MessagesDetailPage(
-                      sortedPatientChat: patientChat[0],
-                    ));
-                  }
-                });
-              } else {
-                Get.to(MessagesDetailPage(
-                  sortedPatientChat: patientChat[0],
-                ));
+                if (_userController.isPinScreen.value == true) {
+                  await Get.to(const PhoneVerification2())?.then((value) {
+                    if (_userController.isPinScreen.value == true) {
+                      return Get.to(MessagesDetailPage(
+                        doctor: Doctor(
+                          chatKey: patientChat[0].chatKey.toString(),
+                        ),
+                        sortedPatientChat: patientChat[0],
+                      ));
+                    }
+                  });
+                } else {
+                  Get.to(MessagesDetailPage(
+                    doctor: Doctor(
+                      chatKey: patientChat[0].chatKey.toString(),
+                    ),
+                    sortedPatientChat: patientChat[0],
+                  ));
+                }
               }
             },
           );

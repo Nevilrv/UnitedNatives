@@ -46,7 +46,7 @@ class AddNewChatMessageRepo extends BaseService {
       url: allChatMessagePatientURL,
       body: {"chat_key": chatKey, "patient_id": id},
     );
-    log("add class res CHAT:$response");
+
     GetAllPatientChatMessages getAllChatMessagesDoctor =
         GetAllPatientChatMessages.fromJson(response);
     return getAllChatMessagesDoctor;

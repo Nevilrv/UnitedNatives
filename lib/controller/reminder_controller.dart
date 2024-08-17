@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:united_natives/newModel/repo/reminder_response_model.dart';
@@ -12,12 +10,13 @@ class RemindersController extends GetxController {
 
   getAllReminders() async {
     getData = true;
-    reminders = [];
     update();
     final fetchDetailsData = await dbHelper.getDataFromTable();
     if (fetchDetailsData.isNotEmpty) {
       reminders = List<RemindersResponseModel>.from(
           fetchDetailsData.map((x) => RemindersResponseModel.fromJson(x)));
+    } else {
+      reminders = [];
     }
     getData = false;
     update();

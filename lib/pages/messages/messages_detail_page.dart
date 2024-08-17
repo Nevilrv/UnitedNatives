@@ -31,8 +31,13 @@ import '../../utils/constants.dart';
 class MessagesDetailPage extends StatefulWidget {
   final Doctor? doctor;
   final SortedPatientChat? sortedPatientChat;
+
   final UserController _userController = Get.find<UserController>();
-  MessagesDetailPage({super.key, this.doctor, this.sortedPatientChat}) {
+  MessagesDetailPage({
+    super.key,
+    this.doctor,
+    this.sortedPatientChat,
+  }) {
     final PatientHomeScreenController patientHomeScreenController =
         Get.find<PatientHomeScreenController>();
     log('doctor.chatKey==========>>>>>${doctor?.chatKey ?? ""}');

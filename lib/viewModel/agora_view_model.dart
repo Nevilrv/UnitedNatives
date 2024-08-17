@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class AgoraController extends GetxController {
   bool muted = false;
   bool isCamera = false;
   bool isLoadingMeet = false;
-  final remoteUsers = <int>[];
+  List<int> remoteUsers = <int>[];
   late RtcEngine rtcEngine;
 
   loadingMeet() {
@@ -78,6 +79,7 @@ class AgoraController extends GetxController {
     };
     http.Response response1 = await http.post(Uri.parse(url1),
         body: jsonEncode(body1), headers: header1);
+    log("response1==========>>>>>$response1");
   }
 
   void muteAudio() {
@@ -127,22 +129,26 @@ class AgoraController extends GetxController {
       onLeaveChannel: (connection, stats) {
         _infoStrings.add('onLeaveChannel');
         remoteUsers.clear();
+        update();
         leaveChannel(s2: s2, docId: docId);
       },
       onUserJoined: (connection, remoteUid, elapsed) {
         String info = 'userJoined: $remoteUid';
         _infoStrings.add(info);
         remoteUsers.add(remoteUid);
+        update();
       },
       onUserOffline: (connection, remoteUid, reason) {
         String info = 'userOffline: $remoteUid';
         _infoStrings.add(info);
         remoteUsers.remove(remoteUid);
         leaveChannel(docId: docId, s2: s2);
+        update();
       },
       onFirstRemoteVideoFrame: (connection, remoteUid, width, height, elapsed) {
         String info = 'firstRemoteVideo: $remoteUid ${width}x$height';
         _infoStrings.add(info);
+        update();
       },
     ));
     update();

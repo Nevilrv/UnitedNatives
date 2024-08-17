@@ -420,8 +420,7 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                               GetAllChatMessagesDoctor responseModel =
                                   controller.allNewMessageApiResponse.data;
 
-                              if (controller.allNewMessageApiResponse.data ==
-                                  null) {
+                              if (responseModel.doctorChatList!.isEmpty) {
                                 return Center(
                                     child: Text(
                                   'You Don\'t have any Messages',
@@ -440,8 +439,6 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                               // log('tempMsg==========>>>>>${tempMsg.map((e) => e.message)}');
 
                               // doctorChat.insertAll(0, tempMsg);
-
-                              log('doctorChat==========>>>>>${doctorChat.map((e) => e.message)}');
 
                               return Padding(
                                 padding: const EdgeInsets.all(10.0),

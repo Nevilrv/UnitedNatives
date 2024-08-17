@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -135,6 +137,9 @@ class _MyAppsState extends State<MyVideoCall> {
           canvas: VideoCanvas(uid: uid),
         ),
       );
+      if (agoraController.remoteUsers.length != 1) {
+        break;
+      }
     }
   }
 }
