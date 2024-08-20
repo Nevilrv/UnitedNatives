@@ -74,7 +74,7 @@ class _WomenHealthState extends State<WomenHealth> {
   Future<HealthResponseModel?> getWomenHealthData() async {
     rows.clear();
     idList.clear();
-    final String url = Constants.getRoutineHealthReport;
+    const String url = Constants.getRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -110,7 +110,7 @@ class _WomenHealthState extends State<WomenHealth> {
   Future addWomenHealthData(reportTableData) async {
     isLoading.value = true;
 
-    final String url = Constants.addRoutineHealthReport;
+    const String url = Constants.addRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -136,7 +136,7 @@ class _WomenHealthState extends State<WomenHealth> {
   Future deleteWomenHealthData(String id) async {
     isLoading.value = true;
 
-    final String url = Constants.deleteRoutineHealthReport;
+    const String url = Constants.deleteRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -163,7 +163,7 @@ class _WomenHealthState extends State<WomenHealth> {
       {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
-    final String url = Constants.updateRoutineHealthReport;
+    const String url = Constants.updateRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",

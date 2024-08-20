@@ -118,7 +118,7 @@ class _MedicationCheckListState extends State<MedicationCheckList> {
   Future<HealthResponseModel?> getMedicationData() async {
     rows.clear();
     idList.clear();
-    final String url = Constants.getRoutineHealthReport;
+    const String url = Constants.getRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -163,7 +163,7 @@ class _MedicationCheckListState extends State<MedicationCheckList> {
   Future addMedicationData(reportTableData) async {
     isLoading.value = true;
 
-    final String url = Constants.addRoutineHealthReport;
+    const String url = Constants.addRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -200,7 +200,7 @@ class _MedicationCheckListState extends State<MedicationCheckList> {
   Future deleteMedicationData(String id) async {
     isLoading.value = true;
 
-    final String url = Constants.deleteRoutineHealthReport;
+    const String url = Constants.deleteRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",
@@ -229,7 +229,7 @@ class _MedicationCheckListState extends State<MedicationCheckList> {
       {dynamic reportTableData, required String id}) async {
     isLoading.value = true;
 
-    final String url = Constants.updateRoutineHealthReport;
+    const String url = Constants.updateRoutineHealthReport;
 
     var body = {
       "patient_id": "${_userController.user.value.id}",

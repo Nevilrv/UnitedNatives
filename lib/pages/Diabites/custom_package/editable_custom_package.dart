@@ -68,7 +68,7 @@ class Editable extends StatefulWidget {
       this.trHeight = 50.0,
       this.borderWidth = 0.5,
       this.thWeight = FontWeight.w600,
-      this.thSize = 20,
+      this.thSize = 18,
       this.showSaveIcon = false,
       this.saveIcon = Icons.save,
       this.saveIconColor = Colors.black12,
@@ -507,7 +507,7 @@ class EditableState extends State<Editable> {
                       tdPaddingBottom: widget.tdPaddingBottom,
                       tdPaddingRight: widget.tdPaddingRight,
                       tdAlignment: widget.tdAlignment,
-                      tdStyle: widget.tdStyle ?? const TextStyle(),
+                      tdStyle: widget.tdStyle ?? const TextStyle(fontSize: 18),
                       tdEditableMaxLines: widget.tdEditableMaxLines,
                       onSubmitted: widget.onSubmitted ??
                           (String val) {

@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:get/get.dart';
+import 'package:united_natives/controller/reminder_controller.dart';
 import 'package:united_natives/pages/reminder2/animations/fade_animation.dart';
 import 'package:united_natives/pages/reminder2/sqflite_database_helper.dart';
-import 'package:timezone/data/latest.dart' as tzz;
 
 class AddMedicine extends StatefulWidget {
   final double height;
@@ -19,131 +16,22 @@ class AddMedicine extends StatefulWidget {
 class _AddMedicineState extends State<AddMedicine> {
   static final _formKey = GlobalKey<FormState>();
   String? _name;
-
   String? _dose;
   bool isEveryday = false;
   final int _selectedIndex = 0;
   final dbHelper = DatabaseHelper();
   final List<String> _icons = ['drug.png'];
-  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+  final RemindersController remindersController =
+      Get.put(RemindersController());
+
   @override
   initState() {
-    super.initState();
-    var initializationSettingsAndroid =
-        const AndroidInitializationSettings('@drawable/ic_launcher');
-    var initializationSettingsIOS = const DarwinInitializationSettings();
-    var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin?.initialize(initializationSettings);
-  }
-
-  triggerNotification(
-      int id, String title, String body, int hour, int minute) async {
-    tzz.initializeTimeZones();
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      channelDescription: 'your channel description',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-
-    DarwinNotificationDetails iOSPlatformChannelSpecifics =
-        const DarwinNotificationDetails();
-
-    NotificationDetails notificationDetails = NotificationDetails(
-        android: androidNotificationDetails, iOS: iOSPlatformChannelSpecifics);
-
-    // tz.TZDateTime scheduledDate =
-    //     tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10));
-
-    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-
-    final time = scheduledDate.toUtc();
-    log('time==========>>>>>${time}');
-    await flutterLocalNotificationsPlugin?.zonedSchedule(
-      0,
-      title,
-      body,
-      time,
-      notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
-  }
-
-  void showNotification(
-      int id, String title, String body, int hour, int minute) async {
-    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-
-    final time = scheduledDate.toUtc();
-    await flutterLocalNotificationsPlugin?.zonedSchedule(
-      0,
-      title,
-      body,
-      time,
-      getPlatformChannelSpecfics(),
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.wallClockTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
-  }
-
-  void showOnceNotification(
-      int id, String title, String body, int hour, int minute) async {
-    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-
-    final time = scheduledDate.toUtc();
-    await flutterLocalNotificationsPlugin?.zonedSchedule(
-      0,
-      title,
-      body,
-      time,
-      getPlatformChannelSpecfics(),
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
-  }
-
-  getPlatformChannelSpecfics() {
-    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-        'your channel id', 'your channel name',
-        importance: Importance.max,
-        priority: Priority.high,
-        ticker: 'Medicine Reminder');
-    var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
-    return platformChannelSpecifics;
-  }
-
-  void removeReminder(int notificationId) {
-    flutterLocalNotificationsPlugin?.cancel(notificationId);
-  }
-
-  Future onSelectNotification(String payload) async {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text("Your Notification Detail"),
-          content: Text("Payload : $payload"),
-        );
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        remindersController.initializeNotification();
       },
     );
+    super.initState();
   }
 
   @override
@@ -281,8 +169,10 @@ class _AddMedicineState extends State<AddMedicine> {
         final id = await dbHelper.insertReminderDetails(scope);
 
         isEveryday == true
-            ? triggerNotification(id, _name!, _dose!, hour, minute)
-            : triggerNotification(id, _name!, _dose!, hour, minute);
+            ? remindersController.showNotification(
+                id, _name!, _dose!, hour, minute)
+            : remindersController.showOnceNotification(
+                id, _name!, _dose!, hour, minute);
         Navigator.pop(context, id);
       });
     }

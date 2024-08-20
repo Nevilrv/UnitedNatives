@@ -257,7 +257,6 @@ class AppNotificationHandler {
   ///call when click on notification back
   static void onMsgOpen() {
     // ignore: missing_return
-    log('click notification........');
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (RemoteMessage message) async {

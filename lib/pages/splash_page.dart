@@ -201,9 +201,11 @@ class _SplashPageState extends State<SplashPage> {
 
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
-      tempList = result['data'];
-      return result;
-    } else {}
+      if (result['data'] != []) {
+        tempList = result['data'];
+        return result;
+      }
+    }
   }
 
   @override
