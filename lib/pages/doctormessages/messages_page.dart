@@ -78,7 +78,7 @@ class _DoctorMessagesPage extends State<DoctorMessagesPage>
   Widget build(BuildContext context) {
     return PopScope(
         canPop: true,
-        onPopInvokedWithResult: (didPop, result) {
+        onPopInvoked: (didPop) {
           TimerChange.timer?.cancel();
         },
         child: GetBuilder<AdsController>(builder: (ads) {

@@ -145,7 +145,6 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
       // _controller.animateTo(_controller.position.maxScrollExtent,
       //     duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
     });
-
     // _controller.jumpTo(_controller.position.maxScrollExtent);
   }
 
@@ -317,7 +316,7 @@ class _FisrtMessagePageState extends State<FirstMessagePage> {
       ),
       body: PopScope(
         canPop: true,
-        onPopInvokedWithResult: (didPop, result) async {
+        onPopInvoked: (didPop) async {
           await patientHomeScreenController.endTimer();
         },
         child: Column(

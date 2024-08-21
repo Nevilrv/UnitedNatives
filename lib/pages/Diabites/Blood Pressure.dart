@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:date_format/date_format.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:syncfusion_flutter_charts/charts.dart' as chart;
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/self_monitoring_controller.dart';
@@ -268,9 +268,12 @@ class _BloodPressureState extends State<BloodPressure> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller.isLoading.value = true;
-    getData();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        getData();
+      },
+    );
     super.initState();
   }
 
@@ -517,37 +520,37 @@ class _BloodPressureState extends State<BloodPressure> {
 
                                       ///CHART
 
-                                      // SfCartesianChart(
-                                      //   // primaryXAxis: CategoryAxis(),
-                                      //   enableAxisAnimation: true,
-                                      //   primaryXAxis: DateTimeAxis(
-                                      //       dateFormat: DateFormat("MMM y"),
-                                      //       minimum: data.first.date,
-                                      //       maximum: data.last.date,
-                                      //       autoScrollingDeltaType:
-                                      //           DateTimeIntervalType.auto
-                                      //       // autoScrollingMode: AutoScrollingMode.end,
-                                      //       ),
-                                      //   primaryYAxis: const NumericAxis(
-                                      //       edgeLabelPlacement:
-                                      //           EdgeLabelPlacement.shift),
-                                      //   // axes: [Charts()],
-                                      //   series: chartData,
-                                      // ),
-                                      if (data.isEmpty)
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: Get.height * 0.32),
-                                          child: Center(
-                                            child: Text(
-                                              'No blood pressure data!',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge
-                                                  ?.copyWith(fontSize: 20),
+                                      chart.SfCartesianChart(
+                                        // primaryXAxis: CategoryAxis(),
+                                        enableAxisAnimation: true,
+                                        primaryXAxis: chart.DateTimeAxis(
+                                            dateFormat: DateFormat("MMM y"),
+                                            minimum: data.first.date,
+                                            maximum: data.last.date,
+                                            autoScrollingDeltaType:
+                                                chart.DateTimeIntervalType.auto
+                                            // autoScrollingMode: AutoScrollingMode.end,
                                             ),
+                                        primaryYAxis: const chart.NumericAxis(
+                                            edgeLabelPlacement:
+                                                chart.EdgeLabelPlacement.shift),
+                                        // axes: [Charts()],
+                                        series: chartData,
+                                      ),
+                                    if (data.isEmpty)
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: Get.height * 0.32),
+                                        child: Center(
+                                          child: Text(
+                                            'No blood pressure data!',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge
+                                                ?.copyWith(fontSize: 20),
                                           ),
-                                        )
+                                        ),
+                                      )
                                   ],
                                 ),
                               );
@@ -691,34 +694,34 @@ class _BloodPressureState extends State<BloodPressure> {
   }
 
   ///CHART
-  // List<CartesianSeries> chartData = [
-  //   ///SBP
-  //   LineSeries<_BloodPressureData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
-  //     yValueMapper: (_BloodPressureData bloodPressure, _) =>
-  //         bloodPressure.sbpValue,
-  //     dataLabelSettings: const DataLabelSettings(isVisible: true),
-  //   ),
-  //
-  //   ///DBP
-  //   LineSeries<_BloodPressureData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
-  //     yValueMapper: (_BloodPressureData bloodPressure, _) =>
-  //         bloodPressure.dbpValue,
-  //     dataLabelSettings: const DataLabelSettings(isVisible: true),
-  //   ),
-  //
-  //   ///BPM
-  //   LineSeries<_BloodPressureData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
-  //     yValueMapper: (_BloodPressureData bloodPressure, _) =>
-  //         bloodPressure.bpmValue,
-  //     dataLabelSettings: const DataLabelSettings(isVisible: true),
-  //   ),
-  // ];
+  List<chart.CartesianSeries> chartData = [
+    ///SBP
+    chart.LineSeries<_BloodPressureData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
+      yValueMapper: (_BloodPressureData bloodPressure, _) =>
+          bloodPressure.sbpValue,
+      dataLabelSettings: const chart.DataLabelSettings(isVisible: true),
+    ),
+
+    ///DBP
+    chart.LineSeries<_BloodPressureData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
+      yValueMapper: (_BloodPressureData bloodPressure, _) =>
+          bloodPressure.dbpValue,
+      dataLabelSettings: const chart.DataLabelSettings(isVisible: true),
+    ),
+
+    ///BPM
+    chart.LineSeries<_BloodPressureData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
+      yValueMapper: (_BloodPressureData bloodPressure, _) =>
+          bloodPressure.bpmValue,
+      dataLabelSettings: const chart.DataLabelSettings(isVisible: true),
+    ),
+  ];
 }
 
 class _BloodPressureData {

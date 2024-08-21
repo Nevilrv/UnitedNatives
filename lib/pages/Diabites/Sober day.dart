@@ -222,15 +222,17 @@ class _SoberDayState extends State<SoberDay> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller.isLoading.value = true;
-    getData();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        getData();
+      },
+    );
     super.initState();
   }
 
   getData() async {
     await getSoberDayData();
-    setState(() {});
   }
 
   AdsController adsController = Get.find();

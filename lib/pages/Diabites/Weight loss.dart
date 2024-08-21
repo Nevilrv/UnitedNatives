@@ -1,8 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart' as chart;
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/self_monitoring_controller.dart';
@@ -10,12 +17,7 @@ import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
 import 'package:united_natives/utils/constants.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:rflutter_alert/rflutter_alert.dart';
+
 import '../../model/health_response_model.dart';
 import '../../utils/utils.dart';
 
@@ -478,38 +480,38 @@ class _WeightlossState extends State<Weightloss> {
                                     if (data.isNotEmpty)
 
                                       ///CHART
-                                      //   SfCartesianChart(
-                                      //     // primaryXAxis: CategoryAxis(),
-                                      //     enableAxisAnimation: true,
-                                      //     primaryXAxis: DateTimeAxis(
-                                      //       dateFormat: DateFormat("MMM y"),
-                                      //       minimum: data.first.date,
-                                      //       maximum: data.last.date,
-                                      //
-                                      //       autoScrollingDeltaType:
-                                      //           DateTimeIntervalType.auto,
-                                      //       // autoScrollingMode: AutoScrollingMode.end,
-                                      //     ),
-                                      //     primaryYAxis: const NumericAxis(
-                                      //         edgeLabelPlacement:
-                                      //             EdgeLabelPlacement.shift),
-                                      //     // axes: [Charts()],
-                                      //     series: chartData,
-                                      //   ),
-                                      if (data.isEmpty)
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: Get.height * 0.30),
-                                          child: Center(
-                                            child: Text(
-                                              'No weight loss data',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge
-                                                  ?.copyWith(fontSize: 20),
-                                            ),
+                                      chart.SfCartesianChart(
+                                        // primaryXAxis: CategoryAxis(),
+                                        enableAxisAnimation: true,
+                                        primaryXAxis: chart.DateTimeAxis(
+                                          dateFormat: DateFormat("MMM y"),
+                                          minimum: data.first.date,
+                                          maximum: data.last.date,
+
+                                          autoScrollingDeltaType:
+                                              chart.DateTimeIntervalType.auto,
+                                          // autoScrollingMode: AutoScrollingMode.end,
+                                        ),
+                                        primaryYAxis: const chart.NumericAxis(
+                                            edgeLabelPlacement:
+                                                chart.EdgeLabelPlacement.shift),
+                                        // axes: [Charts()],
+                                        series: chartData,
+                                      ),
+                                    if (data.isEmpty)
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: Get.height * 0.30),
+                                        child: Center(
+                                          child: Text(
+                                            'No weight loss data',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge
+                                                ?.copyWith(fontSize: 20),
                                           ),
-                                        )
+                                        ),
+                                      )
                                   ],
                                 ),
                               );
@@ -625,16 +627,16 @@ class _WeightlossState extends State<Weightloss> {
   }
 
   ///CHART
-  // List<CartesianSeries> chartData = [
-  //   LineSeries<_WeightLossData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_WeightLossData weight, _) => weight.date,
-  //     yValueMapper: (_WeightLossData weight, _) => weight.weight,
-  //     dataLabelSettings: const DataLabelSettings(
-  //       isVisible: true,
-  //     ),
-  //   )
-  // ];
+  List<chart.CartesianSeries> chartData = [
+    chart.LineSeries<_WeightLossData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_WeightLossData weight, _) => weight.date,
+      yValueMapper: (_WeightLossData weight, _) => weight.weight,
+      dataLabelSettings: const chart.DataLabelSettings(
+        isVisible: true,
+      ),
+    )
+  ];
 }
 
 class _WeightLossData {

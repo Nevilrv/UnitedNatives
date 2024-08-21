@@ -424,7 +424,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
       ),
       body: PopScope(
         canPop: true,
-        onPopInvokedWithResult: (didPop, result) async {
+        onPopInvoked: (didPop) async {
           await patientHomeScreenController.endTimer();
           Prefs.clearFilter();
         },

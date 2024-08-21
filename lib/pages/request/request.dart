@@ -33,7 +33,6 @@ class _RequestState extends State<Request> {
   ];
   @override
   void initState() {
-    // TODO: implement initState
     requestController.getRequestList();
     super.initState();
   }

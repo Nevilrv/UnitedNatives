@@ -67,7 +67,7 @@ class _AddMyDocNotesScreenState extends State<AddMyDocNotesScreen> {
     return GetBuilder<MyClinicianScreenViewModel>(builder: (controller) {
       return PopScope(
         canPop: true,
-        onPopInvokedWithResult: (didPop, result) {
+        onPopInvoked: (didPop) {
           textController.clear();
         },
         child: Scaffold(

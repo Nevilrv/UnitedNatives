@@ -15,7 +15,6 @@ class _SearchScreenState extends State<SearchScreen> {
       Get.put(DirectDoctorController());
   @override
   void initState() {
-    // TODO: implement initState
     directDoctorController.getAllDoctor();
     super.initState();
   }

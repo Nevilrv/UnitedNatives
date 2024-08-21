@@ -301,15 +301,17 @@ class _SleepState extends State<Sleep> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller.isLoading.value = true;
-    getData();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        getData();
+      },
+    );
     super.initState();
   }
 
   getData() async {
     await getSleepData();
-    setState(() {});
   }
 
   AdsController adsController = Get.find();

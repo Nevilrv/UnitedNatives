@@ -60,7 +60,7 @@ class _DrScheduleClassState extends State<DrScheduleClass> {
   void initState() {
     scheduledClassController.getClassDoctor(
         id: userController.user.value.id!, date: '');
-    // TODO: implement initState
+
     super.initState();
   }
 

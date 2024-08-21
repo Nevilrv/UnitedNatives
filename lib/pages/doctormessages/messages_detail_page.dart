@@ -298,9 +298,9 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
                             return const SizedBox();
                           } else {
                             String lastSeen =
-                                snapshot.data['data']['last_seen'];
+                                snapshot.data['data']['last_seen'] ?? "";
 
-                            if (lastSeen != null) {
+                            if (lastSeen.isNotEmpty) {
                               // String date =
                               //     "${"13-06-2024 11:16:49".split(" ")[0].split("-")[2]}-${lastSeen.split(" ")[0].split("-")[1]}-${lastSeen.split(" ")[0].split("-")[0]}";
                               // String time = lastSeen.split(" ")[1];
@@ -388,7 +388,7 @@ class _DoctorMessagesDetailPageState extends State<DoctorMessagesDetailPage> {
         ),
         body: PopScope(
           canPop: true,
-          onPopInvokedWithResult: (didPop, result) {
+          onPopInvoked: (didPop) {
             _doctorHomeScreenController.isLoadingOne = true;
             _doctorHomeScreenController.endTimer();
           },

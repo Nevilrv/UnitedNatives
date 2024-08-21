@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/self_monitoring_controller.dart';
@@ -17,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../model/health_response_model.dart';
 import '../../utils/utils.dart';
+import 'package:syncfusion_flutter_charts/charts.dart' as chart;
 
 void enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
@@ -284,9 +284,12 @@ class _FoodState extends State<Food> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller.isLoading.value = true;
-    getData();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        getData();
+      },
+    );
 
     super.initState();
   }
@@ -508,34 +511,34 @@ class _FoodState extends State<Food> {
                                     if (data.isNotEmpty)
 
                                       ///CHART
-                                      //   SfCartesianChart(
-                                      //     // primaryXAxis: CategoryAxis(),
-                                      //     enableAxisAnimation: true,
-                                      //
-                                      //     /// NEW CODE COMMENT
-                                      //     // primaryXAxis: const CategoryAxis(
-                                      //     //   zoomPosition: 0.1,
-                                      //     // ),
-                                      //     primaryYAxis: const NumericAxis(
-                                      //         edgeLabelPlacement:
-                                      //             EdgeLabelPlacement.shift),
-                                      //     // axes: [Charts()],
-                                      //     series: chartData,
-                                      //   ),
-                                      if (data.isEmpty)
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: Get.height * 0.30),
-                                          child: Center(
-                                            child: Text(
-                                              'No food/caloric intake data',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge
-                                                  ?.copyWith(fontSize: 20),
-                                            ),
+                                      chart.SfCartesianChart(
+                                        // primaryXAxis: CategoryAxis(),
+                                        enableAxisAnimation: true,
+
+                                        /// NEW CODE COMMENT
+                                        // primaryXAxis: const CategoryAxis(
+                                        //   zoomPosition: 0.1,
+                                        // ),
+                                        primaryYAxis: const chart.NumericAxis(
+                                            edgeLabelPlacement:
+                                                chart.EdgeLabelPlacement.shift),
+                                        // axes: [Charts()],
+                                        series: chartData,
+                                      ),
+                                    if (data.isEmpty)
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: Get.height * 0.30),
+                                        child: Center(
+                                          child: Text(
+                                            'No food/caloric intake data',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge
+                                                ?.copyWith(fontSize: 20),
                                           ),
-                                        )
+                                        ),
+                                      )
                                   ],
                                 ),
                               );
@@ -647,67 +650,67 @@ class _FoodState extends State<Food> {
   }
 
   ///CHART
-  // List<CartesianSeries> chartData = [
-  //   ///calories
-  //   LineSeries<_FoodCaloricIntakeData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
-  //     yValueMapper: (_FoodCaloricIntakeData food, _) => food.calories,
-  //     dataLabelSettings: const DataLabelSettings(
-  //       isVisible: true,
-  //     ),
-  //   ),
-  //
-  //   ///fat
-  //   LineSeries<_FoodCaloricIntakeData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
-  //     yValueMapper: (_FoodCaloricIntakeData food, _) => food.fat,
-  //     dataLabelSettings: const DataLabelSettings(
-  //       isVisible: true,
-  //     ),
-  //   ),
-  //
-  //   ///carbs
-  //   LineSeries<_FoodCaloricIntakeData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
-  //     yValueMapper: (_FoodCaloricIntakeData food, _) => food.carbs,
-  //     dataLabelSettings: const DataLabelSettings(
-  //       isVisible: true,
-  //     ),
-  //   ),
-  //
-  //   ///protein
-  //   LineSeries<_FoodCaloricIntakeData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
-  //     yValueMapper: (_FoodCaloricIntakeData food, _) => food.protein,
-  //     dataLabelSettings: const DataLabelSettings(
-  //       isVisible: true,
-  //     ),
-  //   ),
-  //
-  //   ///water
-  //   LineSeries<_FoodCaloricIntakeData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
-  //     yValueMapper: (_FoodCaloricIntakeData food, _) => food.water,
-  //     dataLabelSettings: const DataLabelSettings(
-  //       isVisible: true,
-  //     ),
-  //   ),
-  //
-  //   ///sugar
-  //   LineSeries<_FoodCaloricIntakeData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
-  //     yValueMapper: (_FoodCaloricIntakeData food, _) => food.sugar,
-  //     dataLabelSettings: const DataLabelSettings(
-  //       isVisible: true,
-  //     ),
-  //   )
-  // ];
+  List<chart.CartesianSeries> chartData = [
+    ///calories
+    chart.LineSeries<_FoodCaloricIntakeData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
+      yValueMapper: (_FoodCaloricIntakeData food, _) => food.calories,
+      dataLabelSettings: const chart.DataLabelSettings(
+        isVisible: true,
+      ),
+    ),
+
+    ///fat
+    chart.LineSeries<_FoodCaloricIntakeData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
+      yValueMapper: (_FoodCaloricIntakeData food, _) => food.fat,
+      dataLabelSettings: const chart.DataLabelSettings(
+        isVisible: true,
+      ),
+    ),
+
+    ///carbs
+    chart.LineSeries<_FoodCaloricIntakeData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
+      yValueMapper: (_FoodCaloricIntakeData food, _) => food.carbs,
+      dataLabelSettings: const chart.DataLabelSettings(
+        isVisible: true,
+      ),
+    ),
+
+    ///protein
+    chart.LineSeries<_FoodCaloricIntakeData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
+      yValueMapper: (_FoodCaloricIntakeData food, _) => food.protein,
+      dataLabelSettings: const chart.DataLabelSettings(
+        isVisible: true,
+      ),
+    ),
+
+    ///water
+    chart.LineSeries<_FoodCaloricIntakeData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
+      yValueMapper: (_FoodCaloricIntakeData food, _) => food.water,
+      dataLabelSettings: const chart.DataLabelSettings(
+        isVisible: true,
+      ),
+    ),
+
+    ///sugar
+    chart.LineSeries<_FoodCaloricIntakeData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_FoodCaloricIntakeData food, _) => food.name,
+      yValueMapper: (_FoodCaloricIntakeData food, _) => food.sugar,
+      dataLabelSettings: const chart.DataLabelSettings(
+        isVisible: true,
+      ),
+    )
+  ];
 }
 
 class _FoodCaloricIntakeData {

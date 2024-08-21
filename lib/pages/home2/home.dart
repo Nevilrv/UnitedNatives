@@ -69,19 +69,11 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
       }
     });
 
-    addChatOnlineStatus(type: true);
-    // _pageController = PageController(
-    //   initialPage: _selectedIndex,
-    // );
-    // _pageController.addListener(() {
-    //   _selectedIndex = _pageController.page.toInt();
-    // });
-
-    drawerController2.initPageView();
-
-    addChatOnlineStatus(type: true);
     doctorHomeScreenController = Get.put(DoctorHomeScreenController())
       ?..callDoctorHomeScreenApi();
+
+    addChatOnlineStatus(type: true);
+    drawerController2.initPageView();
 
     WidgetsBinding.instance.addObserver(this);
 

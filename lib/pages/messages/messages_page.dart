@@ -75,7 +75,7 @@ class _MessagesPageState extends State<MessagesPage> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvoked: (didPop) {
         TimerChange.timer?.cancel();
       },
 

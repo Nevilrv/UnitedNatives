@@ -27,7 +27,7 @@ class _MyDoctorMessageListState extends State<MyDoctorMessageList> {
     // _patientHomeScreenController.getAllDoctors();
     return PopScope(
       canPop: true,
-      onPopInvokedWithResult: (didPop, result) {
+      onPopInvoked: (didPop) {
         TimerChange().patientTimerChange();
       },
       child: Stack(

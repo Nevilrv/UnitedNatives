@@ -26,7 +26,6 @@ class _ChooseDirectAppointmentScreenState
   AdsController adsController = Get.find();
   @override
   void initState() {
-    // TODO: implement initState
     directDoctorController.getDirectDoctor();
     super.initState();
   }

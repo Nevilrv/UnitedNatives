@@ -67,13 +67,11 @@ class AgoraController extends GetxController {
     required String docId,
   }) async {
     String url1 = Constants.baseUrl + Constants.doctorZoomAction;
-
     Map<String, dynamic> body1 = {
       "doctor_id": docId,
       "meeting_id": s2,
       "meeting_status": 'rejoin'
     };
-
     Map<String, String> header1 = {
       "Authorization": 'Bearer ${Prefs.getString(Prefs.BEARER)}',
     };
@@ -120,6 +118,7 @@ class AgoraController extends GetxController {
   }) {
     rtcEngine.registerEventHandler(RtcEngineEventHandler(
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+        remoteUsers.clear();
         String info =
             'onJoinChannel: ${connection.channelId}, uid: ${connection.localUid}';
         uidOfUser = connection.localUid?.toInt();
@@ -129,6 +128,7 @@ class AgoraController extends GetxController {
       onLeaveChannel: (connection, stats) {
         _infoStrings.add('onLeaveChannel');
         remoteUsers.clear();
+
         update();
         leaveChannel(s2: s2, docId: docId);
       },

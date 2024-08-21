@@ -279,16 +279,18 @@ class _MedicationCheckListState extends State<MedicationCheckList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller.isLoading.value = true;
-    isChecked = List<bool>.filled(_texts.length, false);
-    getData();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        isChecked = List<bool>.filled(_texts.length, false);
+        getData();
+      },
+    );
     super.initState();
   }
 
   getData() async {
     await getMedicationData();
-    setState(() {});
   }
 
   @override

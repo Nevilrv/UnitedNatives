@@ -105,6 +105,12 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
   }
 
   Future<void> data() async {
+    await checkAvailableOrNot();
+    await addNotesController.addNotesControllers(
+        dId: appointment.doctorId, pId: '${userController.user.value.id}');
+  }
+
+  checkAvailableOrNot() async {
     await patientHomeScreenController.getSortedPatientChatList();
     patientHomeScreenController.newDataList =
         patientHomeScreenController.getSortedPatientChatListModel.value.data!;
@@ -120,10 +126,8 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
           });
           break;
         }
-      } else {}
+      }
     }
-    await addNotesController.addNotesControllers(
-        dId: appointment.doctorId, pId: '${userController.user.value.id}');
   }
 
   SetRatingForTheDoctorViewModel setRatingForTheDoctorViewModel =
@@ -236,19 +240,17 @@ class _DoctorProfilePage2State extends State<DoctorProfilePage2> {
                         RoundIconButton(
                           onPressed: () async {
                             if (isAvailable == true) {
-                              Get.to(FirstMessagePage(
-                                patientId: _userController.user.value.id,
-                                docId: appointment.doctorId,
-                                docFName: appointment.doctorFirstName,
-                                docLName: appointment.doctorLastName,
-                                docImage: appointment.doctorProfilePic,
-                                docSocialImage:
-                                    appointment.doctorSocialProfilePic,
-                              ));
-
-                              setState(() {
-                                isAvailable = true;
-                              });
+                              await Get.to(
+                                FirstMessagePage(
+                                  patientId: _userController.user.value.id,
+                                  docId: appointment.doctorId,
+                                  docFName: appointment.doctorFirstName,
+                                  docLName: appointment.doctorLastName,
+                                  docImage: appointment.doctorProfilePic,
+                                  docSocialImage:
+                                      appointment.doctorSocialProfilePic,
+                                ),
+                              )?.then((value) => checkAvailableOrNot());
                             } else {
                               patientHomeScreenController.onTapDoctorDetail(
                                   context, chatListItem, appointment);

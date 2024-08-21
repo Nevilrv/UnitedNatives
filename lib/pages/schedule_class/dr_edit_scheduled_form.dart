@@ -101,7 +101,6 @@ class _EditScheduledFormState extends State<EditScheduledForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
     formKey = GlobalKey<FormState>();
 
     titleEditingController = TextEditingController(text: widget.title);

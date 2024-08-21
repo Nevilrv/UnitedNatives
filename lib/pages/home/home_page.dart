@@ -298,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                    ).paddingOnly(right: 1)
+                                    ).paddingOnly(right: 3)
                                   : _patientHomeScreenController
                                               .patientHomePageData
                                               .value
@@ -1367,7 +1367,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                    ).paddingOnly(right: 1)
+                                    ).paddingOnly(right: 3)
                                   : _patientHomeScreenController
                                               .patientHomePageData
                                               .value

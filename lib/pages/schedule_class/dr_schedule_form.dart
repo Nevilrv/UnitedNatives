@@ -85,7 +85,6 @@ class _ScheduleFormState extends State<ScheduleForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
     formKey = GlobalKey<FormState>();
     titleEditingController = TextEditingController();
     descriptionController = TextEditingController();

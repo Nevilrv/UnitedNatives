@@ -744,7 +744,7 @@ class DoctorHomeScreenController extends GetxController {
     super.onInit();
   }
 
-  void callDoctorHomeScreenApi() {
-    getDoctorHomePage();
+  Future<void> callDoctorHomeScreenApi() async {
+  await  getDoctorHomePage();
   }
 }

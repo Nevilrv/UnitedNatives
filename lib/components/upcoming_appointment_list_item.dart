@@ -211,12 +211,26 @@ _showAlert(BuildContext context, Function()? onPressed) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Cancel Client Appointment'),
-        content: const Text("Are You Sure Want To Proceed ?"),
+        title: const Text(
+          'Cancel Client Appointment',
+          style: TextStyle(fontSize: 22),
+        ),
+        content: const Text(
+          "Are You Sure Want To Proceed ?",
+          style: TextStyle(fontSize: 20),
+        ),
         actions: <Widget>[
-          MaterialButton(onPressed: onPressed, child: const Text("YES")),
           MaterialButton(
-            child: const Text("NO"),
+              onPressed: onPressed,
+              child: const Text(
+                "Yes",
+                style: TextStyle(fontSize: 20),
+              )),
+          MaterialButton(
+            child: const Text(
+              "No",
+              style: TextStyle(fontSize: 20),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },

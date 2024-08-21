@@ -44,7 +44,6 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
   String? id;
   String? meetingID;
   bool isLoadingMark = false;
-  AgoraController agoraController = Get.put(AgoraController());
 
   refresh() async {
     await _doctorHomeScreenController.getDoctorHomePage();
@@ -581,8 +580,6 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                     final started =
                         now.compareTo(showMarkAssCompletedTime) >= 0;
                     // final ended = now.compareTo(endTime) >= 0;
-
-                    log('data.appo===>>>>>${data.appointmentStatus == '1' && !started}');
 
                     return data.appointmentStatus == '1' && !started && !rejoin
                         ? const SizedBox()

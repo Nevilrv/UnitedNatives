@@ -144,8 +144,6 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     getChatStatus();
 
     // getMessage();
@@ -393,7 +391,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
         ),
         body: PopScope(
           canPop: true,
-          onPopInvokedWithResult: (didPop, result) {
+          onPopInvoked: (didPop) {
             if (_doctorHomeScreenController.isClick == true) {
               _doctorHomeScreenController.endTimer();
             }

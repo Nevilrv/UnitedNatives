@@ -166,8 +166,17 @@ class _IntakeFormListState extends State<IntakeFormList> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
-                                                    "${resData.data!.forms?[index].postTitle}"),
+                                                SizedBox(
+                                                  width: Get.width * 0.75,
+                                                  child: Text(
+                                                    maxLines: 3,
+                                                    "${resData.data!.forms?[index].postTitle}",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                        fontSize: 18),
+                                                  ),
+                                                ),
                                                 controller.savedForm.any(
                                                         (element) =>
                                                             element["formId"]

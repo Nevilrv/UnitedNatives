@@ -25,7 +25,6 @@ class _MyPatientListsState extends State<MyPatientLists> {
   final bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

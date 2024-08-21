@@ -30,7 +30,7 @@ class _MyPatientMessageListState extends State<MyPatientMessageList> {
     // _patientHomeScreenController.getAllPatients();
     return PopScope(
       canPop: true,
-      onPopInvokedWithResult: (didPop, result) async {
+      onPopInvoked: (didPop) async {
         await addNewChatMessageController.getSortedChatListDoctor(
             doctorId: _userController.user.value.id);
         TimerChange().docTimerChange();

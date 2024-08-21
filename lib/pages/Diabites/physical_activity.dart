@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:date_format/date_format.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/controller/self_monitoring_controller.dart';
@@ -19,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:syncfusion_flutter_charts/charts.dart' as chart;
 
 void enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
@@ -259,7 +259,11 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
   @override
   void initState() {
     _controller.isLoading.value = true;
-    getData();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        getData();
+      },
+    );
     super.initState();
   }
 
@@ -368,7 +372,8 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                                         setState(() {});
                                                       },
                                                       value:
-                                                          '${trackerActivityList[index]}',
+                                                          trackerActivityList[
+                                                              index],
                                                       child: Text(
                                                           '${trackerActivityList[index].capitalizeFirst}')),
                                                 ),
@@ -789,38 +794,38 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
                                 if (data.isNotEmpty)
 
                                   ///CHART
-                                  //   SfCartesianChart(
-                                  //     // primaryXAxis: CategoryAxis(),
-                                  //     enableAxisAnimation: true,
-                                  //     primaryXAxis: DateTimeAxis(
-                                  //       dateFormat: DateFormat("MMM y"),
-                                  //       minimum: data.first.date,
-                                  //       maximum: data.last.date,
-                                  //
-                                  //       autoScrollingDeltaType:
-                                  //           DateTimeIntervalType.auto,
-                                  //       // autoScrollingMode: AutoScrollingMode.end,
-                                  //     ),
-                                  //     primaryYAxis: const NumericAxis(
-                                  //         edgeLabelPlacement:
-                                  //             EdgeLabelPlacement.shift),
-                                  //     // axes: [Charts()],
-                                  //     series: chartData,
-                                  //   ),
-                                  if (data.isEmpty)
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          top: Get.height * 0.30),
-                                      child: Center(
-                                        child: Text(
-                                          'No any physical activity',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge
-                                              ?.copyWith(fontSize: 20),
-                                        ),
+                                  chart.SfCartesianChart(
+                                    // primaryXAxis: CategoryAxis(),
+                                    enableAxisAnimation: true,
+                                    primaryXAxis: chart.DateTimeAxis(
+                                      dateFormat: DateFormat("MMM y"),
+                                      minimum: data.first.date,
+                                      maximum: data.last.date,
+
+                                      autoScrollingDeltaType:
+                                          chart.DateTimeIntervalType.auto,
+                                      // autoScrollingMode: AutoScrollingMode.end,
+                                    ),
+                                    primaryYAxis: const chart.NumericAxis(
+                                        edgeLabelPlacement:
+                                            chart.EdgeLabelPlacement.shift),
+                                    // axes: [Charts()],
+                                    series: chartData,
+                                  ),
+                                if (data.isEmpty)
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(top: Get.height * 0.30),
+                                    child: Center(
+                                      child: Text(
+                                        'No any physical activity',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge
+                                            ?.copyWith(fontSize: 20),
                                       ),
-                                    )
+                                    ),
+                                  )
                               ],
                             ),
                           );
@@ -987,16 +992,16 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
   }
 
   ///CHART
-  // List<CartesianSeries> chartData = [
-  //   LineSeries<_PhysicalActivityData, dynamic>(
-  //     dataSource: data,
-  //     xValueMapper: (_PhysicalActivityData weight, _) => weight.date,
-  //     yValueMapper: (_PhysicalActivityData weight, _) => weight.duration,
-  //     dataLabelSettings: const DataLabelSettings(
-  //       isVisible: true,
-  //     ),
-  //   )
-  // ];
+  List<chart.CartesianSeries> chartData = [
+    chart.LineSeries<_PhysicalActivityData, dynamic>(
+      dataSource: data,
+      xValueMapper: (_PhysicalActivityData weight, _) => weight.date,
+      yValueMapper: (_PhysicalActivityData weight, _) => weight.duration,
+      dataLabelSettings: const chart.DataLabelSettings(
+        isVisible: true,
+      ),
+    )
+  ];
 }
 
 class _PhysicalActivityData {

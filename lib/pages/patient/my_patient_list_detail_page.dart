@@ -29,7 +29,6 @@ class _PatientListVisitDetailPageState
 
   @override
   void initState() {
-    // TODO: implement initState
     doctorHomeScreenController.getVisitedPatient(
         patientId: widget.patientData?.patientId);
     super.initState();

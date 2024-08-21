@@ -54,7 +54,6 @@ class _ScheduleClassState extends State<ScheduleClass> {
 
   @override
   void initState() {
-    // TODO: implement initState
     // patientScheduledClassController.getClassListPatient(
     //     id: Prefs.getString(Prefs.SOCIALID), date: '');
     super.initState();

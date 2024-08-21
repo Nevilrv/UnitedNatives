@@ -271,16 +271,15 @@ class _DiabetesState extends State<Diabetes> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller.isLoading.value = true;
-    getData();
-
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getData();
+    });
     super.initState();
   }
 
   getData() async {
     await getDiabetesData();
-    setState(() {});
   }
 
   @override

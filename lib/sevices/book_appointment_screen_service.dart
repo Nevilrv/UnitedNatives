@@ -45,9 +45,6 @@ class BookAppointmentScreenService {
       var result = await _networkAPICall.get(
           '${Constants.getSpecialities}?state_id=$stateId&medical_center_id=$medicalCenterId',
           header: Config.getHeaders());
-
-      log('HELLO=======>>>>>API=======>>>>>${'${Constants.getSpecialities}?state_id=$stateId&medical_center_id=$medicalCenterId'}');
-
       if (result['status'] == 'Success') {
         specialitiesModelData = SpecialitiesModel.fromJson(result);
       } else {

@@ -28,7 +28,6 @@ class _MyDoctorListItemState extends State<MyDoctorListItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
