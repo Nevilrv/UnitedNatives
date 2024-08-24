@@ -243,16 +243,16 @@ class _UpcomingAppointmentListItemDoctorState
                             child:
                                 widget.patientAppoint.appointmentStatus == '3'
                                     ? CustomOutlineButton(
-                                        text: 'Declined',
-                                        textSize: 14,
+                                        text: 'Cancelled',
+                                        textSize: 16,
                                         onPressed: () {},
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10),
                                       )
                                     : CustomOutlineButton(
                                         text: Translate.of(context)!
-                                            .translate('Decline'),
-                                        textSize: 14,
+                                            .translate('Cancel'),
+                                        textSize: 16,
                                         onPressed: () => _showAlert(
                                           context,
                                           () async {
@@ -432,6 +432,12 @@ class _UpcomingAppointmentListItemDoctorState
                                   text: 'Mark this appointment completed',
                                   textSize: 18,
                                   onPressed: () async {
+                                    if ("${widget.patientAppoint.meetingData?.id}"
+                                        .isNotEmpty) {
+                                      Utils.showSnackBar('Appointment',
+                                          'Please start meeting once');
+                                      return;
+                                    }
                                     setState(() {
                                       isLoadingMark = true;
                                     });
@@ -448,15 +454,17 @@ class _UpcomingAppointmentListItemDoctorState
                                     DateTime? end;
                                     String? meetingDuration;
 
-                                    if (Prefs.getString(Prefs.vcStartTime)!
+                                    if ((Prefs.getString(Prefs.vcStartTime) ??
+                                                "")
                                             .isNotEmpty &&
-                                        Prefs.getString(Prefs.vcEndTime)!
+                                        (Prefs.getString(Prefs.vcEndTime) ?? "")
                                             .isNotEmpty) {
                                       start = DateTime.parse(
-                                          Prefs.getString(Prefs.vcStartTime)!);
-
+                                          Prefs.getString(Prefs.vcStartTime)
+                                              .toString());
                                       end = DateTime.parse(
-                                          Prefs.getString(Prefs.vcEndTime)!);
+                                          Prefs.getString(Prefs.vcEndTime)
+                                              .toString());
 
                                       meetingDuration = end
                                                   .difference(start)
@@ -577,7 +585,7 @@ class _UpcomingAppointmentListItemDoctorState
       "meeting_id": s2,
       "meeting_status": 'ended'
     };
-
+    log('body1==========>>>>>$body1');
     Map<String, String> header1 = {
       "Authorization": 'Bearer ${Prefs.getString(Prefs.BEARER)}',
     };

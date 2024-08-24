@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart' hide Trans;
 import 'package:united_natives/controller/book_appointment_controller.dart';
 import 'package:united_natives/controller/patient_homescreen_controller.dart';
 import 'package:united_natives/controller/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/model/doctor_by_specialities.dart';
 import 'package:united_natives/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart' hide Trans;
 import '../../../components/custom_button.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/constants.dart';
@@ -16,7 +16,7 @@ class AppointmentBookedPage extends StatefulWidget {
   const AppointmentBookedPage({super.key, this.navigationModel});
 
   @override
-  State<AppointmentBookedPage> createState() => _AppointmentBookedPageState();
+  _AppointmentBookedPageState createState() => _AppointmentBookedPageState();
 }
 
 class _AppointmentBookedPageState extends State<AppointmentBookedPage> {
@@ -72,7 +72,7 @@ class _AppointmentBookedPageState extends State<AppointmentBookedPage> {
                     //     child: CircularProgressIndicator(
                     //     strokeWidth: 1,
                     //   ))
-                    ? SizedBox(
+                    ? Container(
                         height: 60,
                         child: Center(
                           child: Utils.circular(height: 60),
@@ -86,7 +86,7 @@ class _AppointmentBookedPageState extends State<AppointmentBookedPage> {
                           });
                           await _bookAppointmentController
                               .getSpecificAppointmentDetails(
-                                  _userController.user.value.id!,
+                                  "${_userController.user.value.id}",
                                   _patientHomeScreenController
                                       .appointmentBookedModelData.value.data
                                       .toString());

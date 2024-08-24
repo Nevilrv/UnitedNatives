@@ -38,7 +38,6 @@ import 'package:united_natives/viewModel/services_view_model.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'controller/user_controller.dart';
 import 'routes/route_generator.dart';
-import 'package:timezone/data/latest.dart' as tz;
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -56,16 +55,15 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyCA_Tt5erwNZeaH34FQLS8kb2XBhEH60HE",
-      appId: "1:1007237012704:android:d6cf3d5245212288178485",
-      messagingSenderId: "1007237012704",
-      projectId: "unh-app-58bd8",
-    ),
-  );
+      // options: const FirebaseOptions(
+      //   apiKey: "AIzaSyCA_Tt5erwNZeaH34FQLS8kb2XBhEH60HE",
+      //   appId: "1:1007237012704:android:d6cf3d5245212288178485",
+      //   messagingSenderId: "1007237012704",
+      //   projectId: "unh-app-58bd8",
+      // ),
+      );
   await EasyLocalization.ensureInitialized();
   initializeDateFormatting('', null);
-  tz.initializeTimeZones();
 
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   // FirebaseCrashlytics.instance.crash();

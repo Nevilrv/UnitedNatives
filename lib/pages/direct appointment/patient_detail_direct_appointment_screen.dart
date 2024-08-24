@@ -1,6 +1,9 @@
 import 'dart:developer';
-
-import 'package:united_natives/utils/common_snackbar.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart' hide Trans;
+import 'package:intl/intl.dart';
 import 'package:united_natives/components/custom_button.dart';
 import 'package:united_natives/components/progress_indicator.dart';
 import 'package:united_natives/components/text_form_field.dart';
@@ -13,14 +16,10 @@ import 'package:united_natives/newModel/apiModel/requestModel/add_direct_appoint
 import 'package:united_natives/newModel/apiModel/responseModel/add_direct_appointment_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
+import 'package:united_natives/utils/common_snackbar.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:united_natives/viewModel/direct_doctor_view_model.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart' hide Trans;
-import 'package:intl/intl.dart';
 
 class PatientDetailDirectAppointment extends StatefulWidget {
   final DirectDoctorModel? navigationModel;
@@ -259,8 +258,7 @@ class _PatientDetailDirectAppointmentState
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        widget.navigationModel!
-                                            .doctorSpecialities!.firstName!,
+                                        "${widget.navigationModel?.doctorSpecialities?.firstName}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleSmall
@@ -271,8 +269,7 @@ class _PatientDetailDirectAppointmentState
                                         height: 3,
                                       ),
                                       Text(
-                                        widget.navigationModel!
-                                            .doctorSpecialities!.speciality!,
+                                        "${widget.navigationModel?.doctorSpecialities?.speciality}",
                                         style: TextStyle(
                                           color: Colors.grey[350],
                                           fontSize: 14,
@@ -430,7 +427,8 @@ class _PatientDetailDirectAppointmentState
                                           title: Text(
                                             Translate.of(context)!.translate(
                                                 _userController
-                                                    .user.value.firstName!),
+                                                    .user.value.firstName
+                                                    .toString()),
                                           ),
                                         ),
                                         Divider(

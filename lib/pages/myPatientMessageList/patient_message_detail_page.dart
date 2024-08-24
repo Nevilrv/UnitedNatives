@@ -291,7 +291,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                     '${widget.fullName ?? ""} ${widget.lastName ?? ""}',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w700,
-                          fontSize: 22,
+                          fontSize: 18,
                         ),
                   ),
                   FutureBuilder(
@@ -343,7 +343,7 @@ class _DoctorMessagesDetailPage2State extends State<DoctorMessagesDetailPage2> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
-                                    ?.copyWith(fontSize: 18),
+                                    ?.copyWith(fontSize: 16),
                               );
                             } else {
                               return const SizedBox();
@@ -789,15 +789,23 @@ class MessageItem extends StatelessWidget {
                   send ? MainAxisAlignment.end : MainAxisAlignment.start,
               children: <Widget>[
                 Visibility(
-                  visible: !send,
-                  child: CircleAvatar(
-                    radius: 10,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(_doctorHomeScreenController
-                            .doctorChat.value.patientProfilePic ??
-                        ''),
-                  ),
-                ),
+                    visible: !send,
+                    child: Utils().patientProfile(
+                        _doctorHomeScreenController
+                                .doctorChat.value.patientProfilePic ??
+                            "",
+                        _doctorHomeScreenController
+                                .doctorChat.value.patientSocialProfilePic ??
+                            "",
+                        10)
+                    // CircleAvatar(
+                    //   radius: 10,
+                    //   backgroundColor: Colors.transparent,
+                    //   backgroundImage: NetworkImage(_doctorHomeScreenController
+                    //           .doctorChat.value.patientProfilePic ??
+                    //       ''),
+                    // ),
+                    ),
                 Flexible(
                   child: Container(
                       margin: EdgeInsets.only(
@@ -941,13 +949,15 @@ class MessageItem extends StatelessWidget {
                             )),
                 ),
                 Visibility(
-                  visible: send,
-                  child: CircleAvatar(
-                    radius: 10,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(networkImage),
-                  ),
-                ),
+                    visible: send,
+                    child:
+                        Utils().patientProfile(networkImage, networkImage, 10)
+                    // CircleAvatar(
+                    //   radius: 10,
+                    //   backgroundColor: Colors.transparent,
+                    //   backgroundImage: NetworkImage(networkImage),
+                    // ),
+                    ),
               ],
             )
           : Row(
@@ -956,15 +966,23 @@ class MessageItem extends StatelessWidget {
                   send ? MainAxisAlignment.end : MainAxisAlignment.start,
               children: <Widget>[
                 Visibility(
-                  visible: !send,
-                  child: CircleAvatar(
-                    radius: 10,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(_doctorHomeScreenController
-                            .doctorChat.value.patientProfilePic ??
-                        ''),
-                  ),
-                ),
+                    visible: !send,
+                    child: Utils().patientProfile(
+                        _doctorHomeScreenController
+                                .doctorChat.value.patientProfilePic ??
+                            "",
+                        _doctorHomeScreenController
+                                .doctorChat.value.patientSocialProfilePic ??
+                            "",
+                        10)
+                    // CircleAvatar(
+                    //   radius: 10,
+                    //   backgroundColor: Colors.transparent,
+                    //   backgroundImage: NetworkImage(_doctorHomeScreenController
+                    //           .doctorChat.value.patientProfilePic ??
+                    //       ''),
+                    // ),
+                    ),
                 Flexible(
                   child: Container(
                     margin: EdgeInsets.only(
@@ -1116,13 +1134,15 @@ class MessageItem extends StatelessWidget {
                   ),
                 ),
                 Visibility(
-                  visible: send,
-                  child: CircleAvatar(
-                    radius: 10,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: NetworkImage(networkImage),
-                  ),
-                ),
+                    visible: send,
+                    child:
+                        Utils().patientProfile(networkImage, networkImage, 10)
+                    // CircleAvatar(
+                    //   radius: 10,
+                    //   backgroundColor: Colors.transparent,
+                    //   backgroundImage: NetworkImage(networkImage),
+                    // ),
+                    ),
               ],
             );
     }

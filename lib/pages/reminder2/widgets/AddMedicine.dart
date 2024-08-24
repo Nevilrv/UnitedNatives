@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:united_natives/controller/reminder_controller.dart';
 import 'package:united_natives/pages/reminder2/animations/fade_animation.dart';
 import 'package:united_natives/pages/reminder2/sqflite_database_helper.dart';
+import 'package:united_natives/sevices/app_notification.dart';
 
 class AddMedicine extends StatefulWidget {
   final double height;
@@ -21,18 +22,18 @@ class _AddMedicineState extends State<AddMedicine> {
   final int _selectedIndex = 0;
   final dbHelper = DatabaseHelper();
   final List<String> _icons = ['drug.png'];
-  final RemindersController remindersController =
-      Get.put(RemindersController());
-
-  @override
-  initState() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        remindersController.initializeNotification();
-      },
-    );
-    super.initState();
-  }
+  // final RemindersController remindersController =
+  //     Get.put(RemindersController());
+  //
+  // @override
+  // initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback(
+  //     (timeStamp) {
+  //       remindersController.initializeNotification();
+  //     },
+  //   );
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -169,9 +170,9 @@ class _AddMedicineState extends State<AddMedicine> {
         final id = await dbHelper.insertReminderDetails(scope);
 
         isEveryday == true
-            ? remindersController.showNotification(
+            ? AppNotificationHandler.showNotification(
                 id, _name!, _dose!, hour, minute)
-            : remindersController.showOnceNotification(
+            : AppNotificationHandler.showOnceNotification(
                 id, _name!, _dose!, hour, minute);
         Navigator.pop(context, id);
       });

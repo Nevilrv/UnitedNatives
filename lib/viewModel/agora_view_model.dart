@@ -128,7 +128,6 @@ class AgoraController extends GetxController {
       onLeaveChannel: (connection, stats) {
         _infoStrings.add('onLeaveChannel');
         remoteUsers.clear();
-
         update();
         leaveChannel(s2: s2, docId: docId);
       },

@@ -16,7 +16,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   void _onIntroEnd(context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => LoginPageA()),
+      MaterialPageRoute(builder: (_) => const LoginPageA()),
     );
   }
 
@@ -91,6 +91,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             size: Size(10.0, 10.0),
             color: Color(0xFFBDBDBD),
             activeSize: Size(22.0, 10.0),
+            activeColor: kColorBlue,
             activeShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(25.0)),
             ),

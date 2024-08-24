@@ -341,7 +341,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                   style: Theme.of(context)
                       .textTheme
                       .titleSmall
-                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 22),
+                      ?.copyWith(fontWeight: FontWeight.w700, fontSize: 18),
                 ),
                 FutureBuilder(
                   future: getChatStatus(),
@@ -383,7 +383,7 @@ class _MessagesDetailPageState extends State<MessagesDetailPage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .titleSmall
-                                  ?.copyWith(fontSize: 18),
+                                  ?.copyWith(fontSize: 16),
                             );
                           } else {
                             return const SizedBox();
@@ -905,12 +905,16 @@ class MessageItem extends StatelessWidget {
                     children: <Widget>[
                       Visibility(
                         visible: !send.value,
-                        child: CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: NetworkImage(
-                              patientHomeScreenController.doctorProfile),
-                        ),
+                        child: Utils().patientProfile(
+                            patientHomeScreenController.doctorProfile,
+                            patientHomeScreenController.doctorSocialProfile,
+                            10),
+                        // CircleAvatar(
+                        //   radius: 10,
+                        //   backgroundColor: Colors.transparent,
+                        //   backgroundImage: NetworkImage(
+                        //       patientHomeScreenController.doctorProfile),
+                        // ),
                       ),
                       Flexible(
                         child: Container(
@@ -1060,11 +1064,14 @@ class MessageItem extends StatelessWidget {
                       ),
                       Visibility(
                         visible: send.value,
-                        child: CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: NetworkImage(networkImage),
-                        ),
+                        child: Utils()
+                            .patientProfile(networkImage, networkImage, 10),
+
+                        // CircleAvatar(
+                        //   radius: 10,
+                        //   backgroundColor: Colors.transparent,
+                        //   backgroundImage: NetworkImage(networkImage),
+                        // ),
                       ),
                     ],
                   )
@@ -1075,14 +1082,18 @@ class MessageItem extends StatelessWidget {
                         : MainAxisAlignment.start,
                     children: <Widget>[
                       Visibility(
-                        visible: !send.value,
-                        child: CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: NetworkImage(
-                              patientHomeScreenController.doctorProfile),
-                        ),
-                      ),
+                          visible: !send.value,
+                          child: Utils().patientProfile(
+                              patientHomeScreenController.doctorProfile,
+                              patientHomeScreenController.doctorSocialProfile,
+                              10)
+                          // CircleAvatar(
+                          //   radius: 10,
+                          //   backgroundColor: Colors.transparent,
+                          //   backgroundImage: NetworkImage(
+                          //       patientHomeScreenController.doctorProfile),
+                          // ),
+                          ),
                       Flexible(
                         child: Container(
                           margin: EdgeInsets.only(
@@ -1247,13 +1258,15 @@ class MessageItem extends StatelessWidget {
                         ),
                       ),
                       Visibility(
-                        visible: send.value,
-                        child: CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: NetworkImage(networkImage),
-                        ),
-                      ),
+                          visible: send.value,
+                          child: Utils()
+                              .patientProfile(networkImage, networkImage, 10)
+                          // CircleAvatar(
+                          //   radius: 10,
+                          //   backgroundColor: Colors.transparent,
+                          //   backgroundImage: NetworkImage(networkImage),
+                          // ),
+                          ),
                     ],
                   );
           }

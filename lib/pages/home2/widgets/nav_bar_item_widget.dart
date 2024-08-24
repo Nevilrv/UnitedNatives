@@ -25,12 +25,13 @@ class NavBarItemWidget extends StatelessWidget {
           children: <Widget>[
             Icon(
               iconData,
+              size: 30,
               color: color,
             ),
             Text(
               text,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 color: color,
                 fontFamily: 'NunitoSans',
                 fontWeight: FontWeight.w300,

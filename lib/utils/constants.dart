@@ -211,16 +211,31 @@ const kTextStyleButton = TextStyle(
     fontFamily: 'NunitoSans');
 
 const kTextStyleSubtitle1 = TextStyle(
-    fontSize: 18, fontWeight: FontWeight.w400, fontFamily: 'NunitoSans');
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+  fontFamily: 'NunitoSans',
+);
 
 const kTextStyleSubtitle2 = TextStyle(
-    fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'NunitoSans');
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+  fontFamily: 'NunitoSans',
+);
 
 const kTextStyleBody2 = TextStyle(
-    fontSize: 16, fontWeight: FontWeight.w400, fontFamily: 'NunitoSans');
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+  fontFamily: 'NunitoSans',
+);
 
 const kTextStyleHeadline6 = TextStyle(
-    fontSize: 22, fontWeight: FontWeight.w500, fontFamily: 'NunitoSans');
+  fontSize: 22,
+  fontWeight: FontWeight.w500,
+  fontFamily: 'NunitoSans',
+);
 
-const hintStyle =
-    TextStyle(fontSize: 20, color: Color(0xffbcbcbc), fontFamily: 'NunitoSans');
+const hintStyle = TextStyle(
+  fontSize: 20,
+  color: Color(0xffbcbcbc),
+  fontFamily: 'NunitoSans',
+);

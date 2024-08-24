@@ -118,7 +118,7 @@ class _DiscoveryState extends State<Discovery> {
                                           .translate('search_location'),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .labelLarge,
+                                          .titleLarge,
                                     ),
                                   ],
                                 ),

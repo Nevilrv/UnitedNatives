@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:united_natives/medicle_center/lib/models/model.dart';
@@ -196,12 +197,13 @@ class AppCommentItem extends StatelessWidget {
                               maxLines: 1,
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleSmall
+                                  .titleMedium
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
                           Text(
-                            "${item?.createDate}",
+                            DateFormat("hh:mm a")
+                                .format(item?.createDate ?? DateTime.now()),
                             style: Theme.of(context).textTheme.bodySmall,
                           )
                         ],
@@ -213,7 +215,7 @@ class AppCommentItem extends StatelessWidget {
                         allowHalfRating: true,
                         unratedColor: Colors.amber.withAlpha(100),
                         itemCount: 5,
-                        itemSize: 12.0,
+                        itemSize: 18.0,
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.amber,
@@ -232,7 +234,7 @@ class AppCommentItem extends StatelessWidget {
           Text(
             item!.comment!,
             maxLines: 5,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           )
         ],
       ),

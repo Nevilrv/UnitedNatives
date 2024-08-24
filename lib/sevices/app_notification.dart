@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -408,5 +408,74 @@ class AppNotificationHandler {
         }
       },
     );
+  }
+
+  /// reminder scheduled notification
+
+  static getPlatformChannelSpecfics() {
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      channelDescription: 'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'Medicine Reminder',
+    );
+    var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    return platformChannelSpecifics;
+  }
+
+  static void showNotification(
+      int id, String title, String body, int hour, int minute) async {
+    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+
+    DateTime temp = DateTime(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, hour, minute, 0);
+
+    final utc = temp.toUtc();
+
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+        tz.local, now.year, now.month, now.day, utc.hour, utc.minute);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      scheduledDate,
+      getPlatformChannelSpecfics(),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.wallClockTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  static void showOnceNotification(
+      int id, String title, String body, int hour, int minute) async {
+    tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+
+    DateTime temp = DateTime(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, hour, minute, 0);
+
+    final utc = temp.toUtc();
+
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+        tz.local, now.year, now.month, now.day, utc.hour, utc.minute);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      scheduledDate,
+      getPlatformChannelSpecfics(),
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  static void removeReminder(int notificationId) {
+    flutterLocalNotificationsPlugin.cancel(notificationId);
   }
 }

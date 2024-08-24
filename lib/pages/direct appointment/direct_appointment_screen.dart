@@ -11,7 +11,7 @@ class DirectAppointmentScreen extends StatefulWidget {
   const DirectAppointmentScreen({super.key});
 
   @override
-  State<DirectAppointmentScreen> createState() =>
+  _DirectAppointmentScreenState createState() =>
       _DirectAppointmentScreenState();
 }
 
@@ -23,6 +23,8 @@ class _DirectAppointmentScreenState extends State<DirectAppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// HELLO WORLD ///
+
     _bookAppointmentController.getSpecialities(_isLoading);
     return Stack(
       children: [
@@ -109,7 +111,7 @@ class _DirectAppointmentScreenState extends State<DirectAppointmentScreen> {
                                         CircleAvatar(
                                             backgroundColor: Colors.grey[300],
                                             backgroundImage: NetworkImage(
-                                                "${_bookAppointmentController.specialitiesModelData.value.specialities?[index].specialityIcon}"),
+                                                "${_bookAppointmentController.specialitiesModelData.value.specialities![index].specialityIcon}"),
                                             radius: 25),
                                         const SizedBox(width: 10),
                                         Expanded(

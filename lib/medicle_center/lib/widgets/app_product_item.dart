@@ -75,6 +75,7 @@ class AppProductItem extends StatelessWidget {
                 '${item!.priceDisplay}',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
+                    fontSize: 16,
                     color: Theme.of(context).primaryColor),
               )
             ],
@@ -136,7 +137,7 @@ class AppProductItem extends StatelessWidget {
                       maxLines: 1,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyLarge
+                          .titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 2),
@@ -144,7 +145,7 @@ class AppProductItem extends StatelessWidget {
                       item?.category?.title ?? '',
                       style: Theme.of(context)
                           .textTheme
-                          .bodySmall
+                          .titleSmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
@@ -529,21 +530,20 @@ class AppProductItem extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           item?.category?.title ?? '',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 4),
                         Text(
                           "${item?.title}",
                           maxLines: 1,
                           style: Theme.of(context)
                               .textTheme
-                              .titleSmall
+                              .titleLarge
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
@@ -573,7 +573,7 @@ class AppProductItem extends StatelessWidget {
                           children: <Widget>[
                             Icon(
                               Icons.location_on_outlined,
-                              size: 12,
+                              size: 16,
                               color: Theme.of(context).primaryColor,
                             ),
                             const SizedBox(width: 4),
@@ -591,7 +591,7 @@ class AppProductItem extends StatelessWidget {
                           children: <Widget>[
                             Icon(
                               Icons.phone_outlined,
-                              size: 12,
+                              size: 16,
                               color: Theme.of(context).primaryColor,
                             ),
                             const SizedBox(width: 4),
@@ -833,7 +833,7 @@ class AppProductItem extends StatelessWidget {
                                 item?.category?.title ?? '',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodySmall
+                                    .titleMedium
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 4),
@@ -842,7 +842,7 @@ class AppProductItem extends StatelessWidget {
                                 maxLines: 1,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .titleSmall
+                                    .titleLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -856,7 +856,7 @@ class AppProductItem extends StatelessWidget {
                       children: <Widget>[
                         Icon(
                           Icons.location_on_outlined,
-                          size: 12,
+                          size: 16,
                           color: Theme.of(context).primaryColor,
                         ),
                         const SizedBox(width: 4),
@@ -874,7 +874,7 @@ class AppProductItem extends StatelessWidget {
                       children: <Widget>[
                         Icon(
                           Icons.phone_outlined,
-                          size: 12,
+                          size: 16,
                           color: Theme.of(context).primaryColor,
                         ),
                         const SizedBox(width: 4),
@@ -898,7 +898,7 @@ class AppProductItem extends StatelessWidget {
       case ProductViewType.card:
         if (item == null) {
           return SizedBox(
-            width: 110,
+            width: 130,
             child: AppPlaceholder(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -923,7 +923,7 @@ class AppProductItem extends StatelessWidget {
           );
         }
         return SizedBox(
-          width: 110,
+          width: 140,
           child: GestureDetector(
             onTap: onPressed,
             child: Column(
@@ -984,8 +984,9 @@ class AppProductItem extends StatelessWidget {
                   padding: const EdgeInsets.all(4),
                   child: Text(
                     "${item?.title}",
-                    style: Theme.of(context).textTheme.bodySmall,
-                    maxLines: 1,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 )

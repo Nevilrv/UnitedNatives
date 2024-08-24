@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart' hide Trans;
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/doctor_item.dart';
 import 'package:united_natives/controller/ads_controller.dart';
@@ -7,14 +9,12 @@ import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/pages/direct%20appointment/time_slot_page_direct_appointment.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:united_natives/viewModel/direct_doctor_view_model.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart' hide Trans;
 
 class ChooseDirectAppointmentScreen extends StatefulWidget {
   const ChooseDirectAppointmentScreen({super.key});
 
   @override
-  State<ChooseDirectAppointmentScreen> createState() =>
+  _ChooseDirectAppointmentScreenState createState() =>
       _ChooseDirectAppointmentScreenState();
 }
 
@@ -26,12 +26,15 @@ class _ChooseDirectAppointmentScreenState
   AdsController adsController = Get.find();
   @override
   void initState() {
+    // TODO: implement initState
     directDoctorController.getDirectDoctor();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    /// HELLO WORLD ///
+
     return Stack(
       children: [
         GetBuilder<AdsController>(builder: (ads) {
@@ -101,7 +104,7 @@ class _ChooseDirectAppointmentScreenState
                         style: TextStyle(fontSize: 21),
                       ),
                     );
-                  } else if (responseModel.data!.isEmpty) {
+                  } else if (responseModel.data!.length <= 0) {
                     return const Center(
                       child: Text(
                         "No data found",
@@ -135,8 +138,9 @@ class _ChooseDirectAppointmentScreenState
                                 doctorPrice: responseModel
                                         .data?[index].perAppointmentCharge ??
                                     "100",
-                                doctorSpeciality:
-                                    responseModel.data?[index].speciality ?? "",
+                                doctorSpeciality: responseModel
+                                    .data![index].speciality
+                                    .toString(),
                                 rating: responseModel.data![index].rating
                                     .toString(),
                                 // onTap: () => Get.toNamed(Routes.bookingStep3, arguments: _bookAppointmentController.doctorBySpecialitiesModelData.value.doctorSpecialities[index]),

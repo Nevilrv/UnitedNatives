@@ -178,7 +178,7 @@ class _AppContainerState extends State<AppContainer> {
               Text(
                 Translate.of(context)!.translate(title),
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontSize: 12,
+                      fontSize: 16,
                       color: color,
                     ),
                 maxLines: 1,
@@ -207,7 +207,7 @@ class _AppContainerState extends State<AppContainer> {
               Text(
                 'Search',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontSize: 12,
+                      fontSize: 16,
                     ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -240,7 +240,7 @@ class _AppContainerState extends State<AppContainer> {
     }
     return BottomAppBar(
       child: SizedBox(
-        height: 56,
+        height: 60,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

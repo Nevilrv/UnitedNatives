@@ -207,6 +207,7 @@ class _Home2PageState extends State<Home2Page> {
                                                 child: const Text(
                                                   'MY APPOINTMENTS',
                                                   style: TextStyle(
+                                                      fontSize: 18,
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.bold),

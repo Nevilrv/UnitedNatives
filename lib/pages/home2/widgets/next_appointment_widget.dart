@@ -604,10 +604,15 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                         text: 'Mark this appointment completed',
                                         textSize: 18,
                                         onPressed: () async {
+                                          if ("${data.meetingData?.id}"
+                                              .isEmpty) {
+                                            Utils.showSnackBar('Appointment',
+                                                'Please start meeting once');
+                                            return;
+                                          }
                                           setState(() {
                                             isLoadingMark = true;
                                           });
-
                                           changeMeetingStatus(
                                               docId:
                                                   "${userController.user.value.id}",
@@ -620,21 +625,22 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                           DateTime? start;
                                           DateTime? end;
 
-                                          if (Prefs.getString(
-                                                      Prefs.vcStartTime) !=
-                                                  null &&
-                                              Prefs.getString(
-                                                      Prefs.vcEndTime) !=
-                                                  null) {
+                                          if ((Prefs.getString(
+                                                          Prefs.vcStartTime) ??
+                                                      "")
+                                                  .isNotEmpty &&
+                                              (Prefs.getString(
+                                                          Prefs.vcEndTime) ??
+                                                      "")
+                                                  .isNotEmpty) {
                                             start = DateTime.parse(
                                                 Prefs.getString(
-                                                        Prefs.vcStartTime) ??
-                                                    "");
+                                                        Prefs.vcStartTime)
+                                                    .toString());
 
                                             end = DateTime.parse(
-                                                Prefs.getString(
-                                                        Prefs.vcEndTime) ??
-                                                    "");
+                                                Prefs.getString(Prefs.vcEndTime)
+                                                    .toString());
 
                                             meetingDuration = end
                                                         .difference(start)
@@ -656,15 +662,18 @@ class _NextAppointment2WidgetState extends State<NextAppointment2Widget> {
                                             "vc_end_time": "$end",
                                             "vc_duration": meetingDuration
                                           };
+
                                           Map<String, String> header1 = {
                                             "Content-Type": "application/json",
                                             "Authorization":
                                                 'Bearer ${Prefs.getString(Prefs.BEARER)}',
                                           };
+
                                           http.Response response1 =
                                               await http.post(Uri.parse(url1),
-                                                  body: jsonEncode(body1),
+                                                  body: json.encode(body1),
                                                   headers: header1);
+
                                           if (response1.statusCode == 200) {
                                             Prefs.removeKey(Prefs.vcStartTime);
                                             Prefs.removeKey(Prefs.vcEndTime);

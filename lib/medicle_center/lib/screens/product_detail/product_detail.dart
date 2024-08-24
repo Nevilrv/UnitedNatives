@@ -835,7 +835,7 @@ class _ProductDetailState extends State<ProductDetail> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                Translate.of(context)!.translate('latest'),
+                Translate.of(context)!.translate('Letest'),
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge
@@ -989,8 +989,8 @@ class _ProductDetailState extends State<ProductDetail> {
                     child: Row(
                       children: [
                         Container(
-                          width: 32,
-                          height: 32,
+                          width: 40,
+                          height: 40,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Theme.of(context).dividerColor,
@@ -1008,7 +1008,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             children: <Widget>[
                               Text(
                                 Translate.of(context)!.translate('address'),
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
                               Text(
                                 "${product.address}",
@@ -1016,7 +1016,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyLarge
+                                    .titleMedium
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -1047,10 +1047,10 @@ class _ProductDetailState extends State<ProductDetail> {
                       "${product.state?.title}".isNotEmpty),
               child: Container(
                 margin: const EdgeInsets.only(left: 42),
-                padding: const EdgeInsets.only(top: 12),
+                padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   '${product.country?.title}, ${product.city?.title}, ${product.state?.title}',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
             ),
@@ -1071,8 +1071,8 @@ class _ProductDetailState extends State<ProductDetail> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 40,
+                    height: 40,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Theme.of(context).dividerColor,
@@ -1090,7 +1090,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       children: <Widget>[
                         Text(
                           Translate.of(context)!.translate('phone'),
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Text(
                           "${product.phone}",
@@ -1098,7 +1098,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyLarge
+                              .titleMedium
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -1124,8 +1124,8 @@ class _ProductDetailState extends State<ProductDetail> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 40,
+                    height: 40,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Theme.of(context).dividerColor,
@@ -1143,7 +1143,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       children: <Widget>[
                         Text(
                           Translate.of(context)!.translate('fax'),
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Text(
                           "${product.fax}",
@@ -1151,7 +1151,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyLarge
+                              .titleMedium
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -1177,8 +1177,8 @@ class _ProductDetailState extends State<ProductDetail> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 40,
+                    height: 40,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Theme.of(context).dividerColor,
@@ -1196,7 +1196,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       children: <Widget>[
                         Text(
                           Translate.of(context)!.translate('email'),
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Text(
                           "${product.email}",
@@ -1204,7 +1204,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyLarge
+                              .titleMedium
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -1231,8 +1231,8 @@ class _ProductDetailState extends State<ProductDetail> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 40,
+                    height: 40,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Theme.of(context).dividerColor,
@@ -1250,7 +1250,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       children: <Widget>[
                         Text(
                           Translate.of(context)!.translate('website'),
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         Text(
                           "${product.website}",
@@ -1258,7 +1258,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyLarge
+                              .titleMedium
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -1289,8 +1289,8 @@ class _ProductDetailState extends State<ProductDetail> {
                     child: Row(
                       children: <Widget>[
                         Container(
-                          width: 32,
-                          height: 32,
+                          width: 40,
+                          height: 40,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Theme.of(context).dividerColor,
@@ -1304,7 +1304,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         const SizedBox(width: 8),
                         Text(
                           Translate.of(context)!.translate('open_time'),
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
@@ -1351,7 +1351,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       children: <Widget>[
                         Text(
                           Translate.of(context)!.translate(item.key!),
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -1408,8 +1408,8 @@ class _ProductDetailState extends State<ProductDetail> {
                     child: Row(
                       children: <Widget>[
                         Container(
-                          width: 32,
-                          height: 32,
+                          width: 40,
+                          height: 40,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Theme.of(context).dividerColor,
@@ -1425,14 +1425,14 @@ class _ProductDetailState extends State<ProductDetail> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              Translate.of(context)!.translate('attachments'),
-                              style: Theme.of(context).textTheme.bodySmall,
+                              Translate.of(context)!.translate('Attachments'),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             Text(
                               '${product.attachments?.length} ${Translate.of(context)?.translate('files')}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyLarge
+                                  .titleMedium
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -1462,7 +1462,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         Expanded(
                           child: Text(
                             '${item.name}.${item.type}',
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: Theme.of(context).textTheme.titleMedium,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -1474,7 +1474,7 @@ class _ProductDetailState extends State<ProductDetail> {
                               "${item.size}",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodySmall
+                                  .titleMedium
                                   ?.copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -1526,14 +1526,14 @@ class _ProductDetailState extends State<ProductDetail> {
           children: <Widget>[
             Text(
               Translate.of(context)!.translate('price_range'),
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 4),
             Text(
               "${product.priceMin} - ${product.priceMax}",
               style: Theme.of(context)
                   .textTheme
-                  .titleSmall
+                  .titleMedium
                   ?.copyWith(fontWeight: FontWeight.bold),
             )
           ],
@@ -1546,7 +1546,7 @@ class _ProductDetailState extends State<ProductDetail> {
           children: [
             Text(
               "${product.priceDisplay}",
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
                   ),
@@ -1669,8 +1669,8 @@ class _ProductDetailState extends State<ProductDetail> {
                     child: Row(
                       children: <Widget>[
                         Container(
-                          width: 32,
-                          height: 32,
+                          width: 40,
+                          height: 40,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Theme.of(context).dividerColor,
@@ -1684,7 +1684,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         const SizedBox(width: 8),
                         Text(
                           Translate.of(context)!.translate('social_network'),
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
@@ -1745,7 +1745,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     "${product.title}",
                     style: Theme.of(context)
                         .textTheme
-                        .titleSmall
+                        .bodyMedium
                         ?.copyWith(fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -1767,7 +1767,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       product.category?.title ?? '',
                       style: Theme.of(context)
                           .textTheme
-                          .bodySmall
+                          .titleMedium
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
@@ -1798,7 +1798,7 @@ class _ProductDetailState extends State<ProductDetail> {
                           const SizedBox(width: 4),
                           Text(
                             "(${product.numRate})",
-                            style: Theme.of(context).textTheme.bodyLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
                       ),
@@ -1827,7 +1827,7 @@ class _ProductDetailState extends State<ProductDetail> {
             const SizedBox(height: 16),
             Text(
               "${product.description}",
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     height: 1.3,
                   ),
             ),

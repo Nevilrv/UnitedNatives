@@ -387,7 +387,7 @@ class _ListProductState extends State<ListProduct> {
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
                         Translate.of(context)!.translate('list_is_empty'),
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
                   ],

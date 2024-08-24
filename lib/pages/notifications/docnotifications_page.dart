@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/controller/ads_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:united_natives/pages/notifications/docnotification_list_item.dart';
 import '../../model/notification.dart';
-import 'widgets/docnotification_list_item.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
@@ -17,6 +17,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   AdsController adsController = Get.find();
   @override
   Widget build(BuildContext context) {
+    /// HELLO WORLD ///
     return GetBuilder<AdsController>(builder: (ads) {
       return Scaffold(
         bottomNavigationBar: AdsBottomBar(
@@ -24,7 +25,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
           context: context,
         ),
         appBar: AppBar(
-          surfaceTintColor: Colors.transparent,
           leading: IconButton(
               icon: const Icon(
                 Icons.arrow_back,

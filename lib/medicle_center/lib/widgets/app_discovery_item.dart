@@ -52,7 +52,7 @@ class AppDiscoveryItem extends StatelessWidget {
                       "${item?.category?.title}",
                       style: Theme.of(context)
                           .textTheme
-                          .titleMedium
+                          .titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 2),
@@ -70,7 +70,7 @@ class AppDiscoveryItem extends StatelessWidget {
                 },
                 child: Text(
                   Translate.of(context)!.translate('see_more'),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.secondary),
                 ),
               ),

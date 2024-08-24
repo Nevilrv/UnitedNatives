@@ -1,8 +1,6 @@
-import 'dart:developer';
-
-import 'package:united_natives/data/pref_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
 import 'package:united_natives/medicle_center/lib/configs/config.dart';
 import 'package:united_natives/medicle_center/lib/models/model.dart';
@@ -138,10 +136,6 @@ class _ReviewState extends State<Review> {
                     element.user!.email.toString() ==
                     "${Prefs.getString(Prefs.EMAIL)}");
 
-                log('index < 0 == !isWriteShow---------->>>>>>>>${index <= 0 == isWriteShow}');
-                log('index < 0 ---------->>>>>>>>${index < 0}');
-                log('index---------->>>>>>>>$index');
-
                 if (index >= 0 == !isWriteShow) {
                   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                     setState(() {
@@ -158,8 +152,6 @@ class _ReviewState extends State<Review> {
                     itemCount: state.list!.length,
                     itemBuilder: (context, index) {
                       final item = state.list![index];
-
-                      log('item.user===========>>>>>${item.user?.image}');
 
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16),

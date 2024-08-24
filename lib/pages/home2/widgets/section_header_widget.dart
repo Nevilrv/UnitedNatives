@@ -13,7 +13,7 @@ class SectionHeader2Widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -21,7 +21,7 @@ class SectionHeader2Widget extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700,
-                    fontSize: 21,
+                    fontSize: 23,
                   ),
             ),
           ),
@@ -34,7 +34,7 @@ class SectionHeader2Widget extends StatelessWidget {
                   child: Text(
                     Translate.of(context)!.translate('see_all'),
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontSize: 18,
+                          fontSize: 20,
                         ),
                   ),
                 )
