@@ -83,7 +83,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Weight tracker',
+                    'Weight Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),
@@ -140,7 +140,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Sobriety tracker',
+                    'Sobriety Tracker',
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize:
@@ -202,7 +202,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Food/caloric intake',
+                    'Food/caloric Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),
@@ -258,7 +258,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Sleep',
+                    'Sleep Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),
@@ -313,7 +313,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Mood',
+                    'Mood Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),
@@ -368,7 +368,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Female menstrual cycle',
+                    'Female Menstrual Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),
@@ -423,7 +423,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Physical activity',
+                    'Physical Activity Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),
@@ -478,7 +478,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Medication checklist tracker',
+                    'Medication Checklist Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),
@@ -650,7 +650,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Blood sugar tracker',
+                    'Blood Sugar Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),
@@ -705,7 +705,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Blood pressure',
+                    'Blood Pressure Tracker',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),

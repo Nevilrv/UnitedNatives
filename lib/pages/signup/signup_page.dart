@@ -214,9 +214,13 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
   final cityController = TextEditingController();
   final sController = TextEditingController();
   final insuranceCompanyName = TextEditingController();
+  final insuranceNumberCompanyName = TextEditingController();
   final howDidYouHearAboutUs = TextEditingController();
   final allergiesController = TextEditingController();
   final whatTribe1Controller = TextEditingController();
+  final whatTribe1SecondController = TextEditingController();
+  final whatTribe1ThirdController = TextEditingController();
+  final whatTribe1FourthController = TextEditingController();
   final whatTribe2Controller = TextEditingController();
 
   final heightController = TextEditingController();
@@ -479,17 +483,16 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
-                  focusNode: FocusNode(),
-                  keyboardType: TextInputType.phone,
-                  textInputAction: TextInputAction.next,
-                  controller: _contactController,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(10),
-                  ],
-                  validator: validateMobile,
-                  hintText: '+1 520 44 54 661',
-                ),
+                    focusNode: FocusNode(),
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.next,
+                    controller: _contactController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10),
+                    ],
+                    validator: validateMobile,
+                    hintText: '+1 520 44 54 661'),
                 const SizedBox(
                   height: 20,
                 ),
@@ -723,7 +726,26 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                 }
                                 return null;
                               },
-                            )
+                            ),
+                            // const SizedBox(
+                            //   height: 20,
+                            // ),
+                            // Text(
+                            //   "${Translate.of(context)!.translate('What is your medical insurance policy number?')} *",
+                            //   style: kInputTextStyle,
+                            // ),
+                            // CustomTextFormField(
+                            //   focusNode: FocusNode(),
+                            //   textInputAction: TextInputAction.next,
+                            //   controller: insuranceNumberCompanyName,
+                            //   hintText: 'Enter medical insurance policy number',
+                            //   validator: (text) {
+                            //     if (text!.isEmpty) {
+                            //       return 'Enter medical insurance policy number';
+                            //     }
+                            //     return null;
+                            //   },
+                            // )
                           ],
                         )
                     ],
@@ -763,34 +785,34 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('Tribal Status')} *",
-                  style: kInputTextStyle,
-                ),
-                Obx(
-                  () => DropdownButtonFormField(
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).textTheme.titleMedium?.color,
-                    ),
-                    focusNode: FocusNode(),
-                    validator: (value) =>
-                        value == null ? 'Please Select Tribal Status' : null,
-                    isExpanded: true,
-                    value: _userController.selectedTribalStatus.value.isEmpty
-                        ? null
-                        : _userController.selectedTribalStatus.value,
-                    hint: Text(
-                      Translate.of(context)!.translate('Select Tribal Status'),
-                      style: hintStyle,
-                    ),
-                    onChanged: _userController.onChangeTribalStatus,
-                    items: _userController.dropDownTribal,
-                  ),
-                ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Text(
+                //   "${Translate.of(context)!.translate('Tribal Status')} *",
+                //   style: kInputTextStyle,
+                // ),
+                // Obx(
+                //   () => DropdownButtonFormField(
+                //     style: TextStyle(
+                //       fontSize: 20,
+                //       color: Theme.of(context).textTheme.titleMedium?.color,
+                //     ),
+                //     focusNode: FocusNode(),
+                //     validator: (value) =>
+                //         value == null ? 'Please Select Tribal Status' : null,
+                //     isExpanded: true,
+                //     value: _userController.selectedTribalStatus.value.isEmpty
+                //         ? null
+                //         : _userController.selectedTribalStatus.value,
+                //     hint: Text(
+                //       Translate.of(context)!.translate('Select Tribal Status'),
+                //       style: hintStyle,
+                //     ),
+                //     onChanged: _userController.onChangeTribalStatus,
+                //     items: _userController.dropDownTribal,
+                //   ),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -832,21 +854,61 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               height: 20,
                             ),
                             Text(
-                              "${Translate.of(context)!.translate('What tribe?')} *",
+                              "${Translate.of(context)!.translate('What federally recognized tribe you are enrolled in?')} *",
                               style: kInputTextStyle,
                             ),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe1Controller,
-                              hintText: 'Enter state tribal affiliation',
+                              hintText:
+                                  'Enter enter federally recognized tribe',
                               validator: (text) {
                                 if (text!.isEmpty) {
-                                  return 'Please state tribal affiliation';
+                                  return 'Please enter federally recognized tribe';
                                 }
                                 return null;
                               },
-                            )
+                            ),
+                            // const SizedBox(
+                            //   height: 20,
+                            // ),
+                            // Text(
+                            //   "${Translate.of(context)!.translate('What is your second tribal affliction?')} (Optional)",
+                            //   style: kInputTextStyle,
+                            // ),
+                            // CustomTextFormField(
+                            //   focusNode: FocusNode(),
+                            //   textInputAction: TextInputAction.next,
+                            //   controller: whatTribe1SecondController,
+                            //   hintText: 'Enter your second tribal affliction',
+                            // ),
+                            // const SizedBox(
+                            //   height: 20,
+                            // ),
+                            // Text(
+                            //   "${Translate.of(context)!.translate('What is your third tribal affliction?')} (Optional)",
+                            //   style: kInputTextStyle,
+                            // ),
+                            // CustomTextFormField(
+                            //   focusNode: FocusNode(),
+                            //   textInputAction: TextInputAction.next,
+                            //   controller: whatTribe1ThirdController,
+                            //   hintText: 'Enter your third tribal affliction',
+                            // ),
+                            // const SizedBox(
+                            //   height: 20,
+                            // ),
+                            // Text(
+                            //   "${Translate.of(context)!.translate('What is your fourth tribal affliction?')} (Optional)",
+                            //   style: kInputTextStyle,
+                            // ),
+                            // CustomTextFormField(
+                            //   focusNode: FocusNode(),
+                            //   textInputAction: TextInputAction.next,
+                            //   controller: whatTribe1FourthController,
+                            //   hintText: 'Enter your fourth tribal affliction',
+                            // ),
                           ],
                         )
                     ],
@@ -914,30 +976,42 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "${Translate.of(context)!.translate('If you are not enrolled tribal member, please select racial/ethnic background')} *",
-                  style: kInputTextStyle,
-                ),
+
                 Obx(
-                  () => DropdownButtonFormField(
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).textTheme.titleMedium?.color,
-                    ),
-                    focusNode: FocusNode(),
-                    validator: (value) => value == null
-                        ? 'Please select racial/ethnic background'
-                        : null,
-                    isExpanded: true,
-                    value: _userController.tribalBackgroundStatus.value.isEmpty
-                        ? null
-                        : _userController.tribalBackgroundStatus.value,
-                    hint: Text(
-                        Translate.of(context)!
-                            .translate('Select racial/ethnic background'),
-                        style: hintStyle),
-                    onChanged: _userController.onChangeTribalBackgroundStatus,
-                    items: _userController.dropDownTribal3,
+                  () => Column(
+                    children: [
+                      Text(
+                        "${Translate.of(context)!.translate('If you are not enrolled tribal member, please select racial/ethnic background')} ${_userController.tribalFederallyState.value == "No" && _userController.tribalFederallyMember.value == "No" ? "*" : "(Optional)"}",
+                        style: kInputTextStyle,
+                      ),
+                      DropdownButtonFormField(
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
+                        ),
+                        focusNode: FocusNode(),
+                        validator: _userController.tribalFederallyState.value ==
+                                    "No" &&
+                                _userController.tribalFederallyMember.value ==
+                                    "No"
+                            ? (value) => value == null
+                                ? 'Please select racial/ethnic background'
+                                : null
+                            : null,
+                        isExpanded: true,
+                        value:
+                            _userController.tribalBackgroundStatus.value.isEmpty
+                                ? null
+                                : _userController.tribalBackgroundStatus.value,
+                        hint: Text(
+                            Translate.of(context)!
+                                .translate('Select racial/ethnic background'),
+                            style: hintStyle),
+                        onChanged:
+                            _userController.onChangeTribalBackgroundStatus,
+                        items: _userController.dropDownTribal3,
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(

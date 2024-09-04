@@ -120,9 +120,9 @@ class _DocProfilePageState extends State<DocProfilePage> {
                     hint: Translate.of(context)!.translate('add_gender'),
                   ),
                   ProfileInfoTile(
-                    title: Translate.of(context)!.translate('Certificate No.'),
+                    title: Translate.of(context)!.translate('Licence No.'),
                     trailing: _userController.user.value.certificateNo ??
-                        "Enter Certificate Number",
+                        "Enter Licence Number",
                     hint: Translate.of(context)!
                         .translate('Enter your license no.'),
                   ),

@@ -306,33 +306,34 @@ class _MedicationCheckListState extends State<MedicationCheckList> {
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             title: Text(
-              "Medication Checklist",
+              "Medication Checklist Tracker",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).textTheme.titleMedium?.color,
-                  fontSize: 24),
+                  fontSize: 22),
             ),
           ),
           body: Stack(
+            fit: StackFit.expand,
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Medication CheckList Tracker',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    // const Align(
+                    //   alignment: Alignment.center,
+                    //   child: Text(
+                    //     'Medication CheckList Tracker',
+                    //     textAlign: TextAlign.center,
+                    //     style: TextStyle(
+                    //       fontSize: 30,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
                     Expanded(
                       child: Obx(() {
                         return _controller.isLoading.value

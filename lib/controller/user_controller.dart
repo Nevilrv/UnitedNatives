@@ -107,7 +107,9 @@ class UserController extends GetxController {
     'Black or African American',
     'Hispanic or Latino',
     'Native Hawaiian or Other Pacific Islander',
-    'White'
+    'White',
+    'Native American',
+    'Alaska Native'
   ];
   static const _bloodGroupItem = <String>[
     'A+',
@@ -131,7 +133,8 @@ class UserController extends GetxController {
   String? userProfile;
 
   List<DropdownMenuItem<String>>? dropDownGender;
-  List<DropdownMenuItem<String>>? dropDownSpeciality;
+  List<Map<String, dynamic>> dropDownSpeciality = [];
+  // List<DropdownMenuItem<String>>? dropDownSpeciality;
   List<DropdownMenuItem<String>>? dropDownBlood;
   List<DropdownMenuItem<String>>? dropDownMarital;
   List<DropdownMenuItem<String>>? dropDownInsurance;
@@ -359,11 +362,15 @@ class UserController extends GetxController {
       specialitiesModelData.value =
           await UserBackendAuthService().specialitiesModelDropDown();
 
-      dropDownSpeciality = specialitiesModelData.value.specialities
-              ?.map((map) => DropdownMenuItem<String>(
-                  value: map.id, child: Text(map.specialityName ?? "")))
-              .toList() ??
-          [];
+      for (var element in specialitiesModelData.value.specialities!) {
+        dropDownSpeciality.add(element.toJson());
+      }
+
+      // dropDownSpeciality = specialitiesModelData.value.specialities
+      //         ?.map((map) => DropdownMenuItem<String>(
+      //             value: map.id, child: Text(map.specialityName ?? "")))
+      //         .toList() ??
+      //     [];
     } catch (isBlank) {
       // Utils.showSnackBar(
       //      'Error Occurred',  'Please try again later');

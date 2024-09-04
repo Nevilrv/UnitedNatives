@@ -185,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       if (_userController.user.value.insuranceEligibility
                               ?.toLowerCase() ==
-                          "yes")
+                          "yes") ...[
                         ProfileInfoTile(
                           title: Translate.of(context)
                               ?.translate('State the name of your insurance'),
@@ -195,18 +195,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               : _userController.user.value.insuranceCompanyName,
                           hint: Translate.of(context)?.translate(''),
                         ),
+                        // ProfileInfoTile(
+                        //   title: Translate.of(context)
+                        //       ?.translate('Medical insurance policy number'),
+                        //   trailing: _userController
+                        //           .user.value.insuranceCompanyName!.isEmpty
+                        //       ? "   -   "
+                        //       : _userController.user.value.insuranceCompanyName,
+                        //   hint: Translate.of(context)?.translate(''),
+                        // ),
+                      ],
                       ProfileInfoTile(
                         title: Translate.of(context)
                             ?.translate('Are you a US Veteran?'),
                         trailing: _userController.user.value.usVeteranStatus,
                         hint: Translate.of(context)?.translate('yes'),
                       ),
-                      ProfileInfoTile(
-                        title:
-                            Translate.of(context)?.translate('Tribal Status'),
-                        trailing: _userController.user.value.tribalStatus,
-                        hint: Translate.of(context)?.translate('No'),
-                      ),
+                      // ProfileInfoTile(
+                      //   title:
+                      //       Translate.of(context)?.translate('Tribal Status'),
+                      //   trailing: _userController.user.value.tribalStatus,
+                      //   hint: Translate.of(context)?.translate('No'),
+                      // ),
                       ProfileInfoTile(
                         title: Translate.of(context)
                             ?.translate('Federally Enrolled Tribal Member?'),
@@ -217,15 +227,40 @@ class _ProfilePageState extends State<ProfilePage> {
                         hint: Translate.of(context)?.translate('yes'),
                       ),
                       if (_userController
-                          .user.value.tribalFederallyMember!.isNotEmpty)
+                          .user.value.tribalFederallyMember!.isNotEmpty) ...[
                         ProfileInfoTile(
                           title: Translate.of(context)
-                              ?.translate('Tribal affiliation'),
+                              ?.translate('First federally recognized trine'),
                           trailing:
                               _userController.user.value.tribalFederallyMember,
                           hint: Translate.of(context)
-                              ?.translate('Tribal affiliation'),
+                              ?.translate('First federally recognized trine'),
                         ),
+                        // ProfileInfoTile(
+                        //   title: Translate.of(context)
+                        //       ?.translate('Second federally recognized trine'),
+                        //   trailing:
+                        //       _userController.user.value.tribalFederallyMember,
+                        //   hint: Translate.of(context)
+                        //       ?.translate('Second federally recognized trine'),
+                        // ),
+                        // ProfileInfoTile(
+                        //   title: Translate.of(context)
+                        //       ?.translate('Third federally recognized trine'),
+                        //   trailing:
+                        //       _userController.user.value.tribalFederallyMember,
+                        //   hint: Translate.of(context)
+                        //       ?.translate('Third federally recognized trine'),
+                        // ),
+                        // ProfileInfoTile(
+                        //   title: Translate.of(context)
+                        //       ?.translate('Fourth federally recognized trine'),
+                        //   trailing:
+                        //       _userController.user.value.tribalFederallyMember,
+                        //   hint: Translate.of(context)
+                        //       ?.translate('Fourth federally recognized trine'),
+                        // ),
+                      ],
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate(
                             'Are you enrolled in a State Recognized Tribe?'),

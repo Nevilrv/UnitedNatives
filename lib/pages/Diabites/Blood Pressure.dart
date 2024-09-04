@@ -295,32 +295,33 @@ class _BloodPressureState extends State<BloodPressure> {
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             title: Text(
-              "Blood Pressure",
+              "Blood Pressure Tracker",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).textTheme.titleMedium?.color,
-                  fontSize: 24),
+                  fontSize: 22),
             ),
           ),
           body: Stack(
+            fit: StackFit.expand,
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Blood Pressure Logs',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    // const Align(
+                    //   alignment: Alignment.center,
+                    //   child: Text(
+                    //     'Blood Pressure Logs',
+                    //     style: TextStyle(
+                    //       fontSize: 30,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
                     Expanded(
                       child: Obx(() {
                         return _controller.isLoading.value

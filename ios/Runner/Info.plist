@@ -17,73 +17,72 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>1.0.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
-    <array>
-    	<dict>
-    		<key>CFBundleTypeRole</key>
-    		<string>Editor</string>
-    		<key>CFBundleURLSchemes</key>
-    		<array>
-    			<string>com.googleusercontent.apps.1007237012704-2galsugg6tbnvc8igs3kj8ghm4mclh1r</string>
-    		</array>
-    	</dict>
-    </array>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1007237012704-2galsugg6tbnvc8igs3kj8ghm4mclh1r</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>2</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
-    <true/>
-    <key>FirebaseCrashlyticsCollectionEnabled</key>
-    <false/>
-    <key>FirebaseMessagingAutoInitEnabled</key>
-    <string>NO</string>
-
+	<true/>
+	<key>FirebaseCrashlyticsCollectionEnabled</key>
+	<false/>
+	<key>FirebaseMessagingAutoInitEnabled</key>
+	<string>NO</string>
 	<key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-8318136058462894~6986590261</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-    	<string>com.googleusercontent.apps.1007237012704-2galsugg6tbnvc8igs3kj8ghm4mclh1r</string>
-    	<string>sms</string>
-    	<string>tel</string>
-    	<string>https</string>
-    	<string>http</string>
-    </array>
+	<string>ca-app-pub-8318136058462894~6986590261</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>com.googleusercontent.apps.1007237012704-2galsugg6tbnvc8igs3kj8ghm4mclh1r</string>
+		<string>sms</string>
+		<string>tel</string>
+		<string>https</string>
+		<string>http</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
-    <dict>
-    	<key>NSAllowsArbitraryLoads</key>
-    	<true/>
-    	<key>NSAllowsArbitraryLoadsInWebContent</key>
-    	<true/>
-    </dict>
-    <key>NSBluetoothAlwaysUsageDescription</key>
-    <string>Bluetooth</string>
-    <key>NSBluetoothPeripheralUsageDescription</key>
-    <string>Bluetooth</string>
-    <key>NSCameraUsageDescription</key>
-    <string>We need access to the camera to allow you to take photos and videos directly within the app for your profile, posts, and sharing with friends.</string>
-    <key>NSContactsUsageDescription</key>
-    <string>We need access to your contacts to help you connect with friends who are already using the app, and to invite new friends to join your network within the app.</string>
-    <key>NSFaceIDUsageDescription</key>
-    <string>We use Face ID for secure and easy authentication to protect your account and data, allowing you to log in quickly without needing to remember a password.</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>We need access to your location at all times to provide personalized place recommendations, deliver location-based notifications and services, and improve your overall experience even when the app is not in active use.</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>We need access to your location while you are using the app to provide personalized place recommendations, deliver relevant content and services, and enhance your user experience based on your current location.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>We need access to your microphone to allow you to record audio for videos and voice messages within the app.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>We need access to your photo library to allow you to upload photos for your profile and posts.</string>
-    <key>UIBackgroundModes</key>
-    <array>
-    	<string>fetch</string>
-    	<string>remote-notification</string>
-    </array>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Bluetooth</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bluetooth</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to the camera to allow you to take photos and videos directly within the app for your profile, posts, and sharing with friends.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We need access to your contacts to help you connect with friends who are already using the app, and to invite new friends to join your network within the app.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>We use Face ID for secure and easy authentication to protect your account and data, allowing you to log in quickly without needing to remember a password.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need access to your location at all times to provide personalized place recommendations, deliver location-based notifications and services, and improve your overall experience even when the app is not in active use.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location while you are using the app to provide personalized place recommendations, deliver relevant content and services, and enhance your user experience based on your current location.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to your microphone to allow you to record audio for videos and voice messages within the app.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to allow you to upload photos for your profile and posts.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UIUserInterfaceStyle</key>
-    <string>Light</string>
-    <key>UIViewControllerBasedStatusBarAppearance</key>
-    <true/>
+	<string>Light</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

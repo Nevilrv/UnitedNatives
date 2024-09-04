@@ -557,7 +557,27 @@ class _EditWidgetState extends State<EditWidget> {
                               }
                               return null;
                             },
-                          )
+                          ),
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Text(
+                          //   "${Translate.of(context)!.translate('What is your medical insurance policy number?')} *",
+                          //   style: kInputTextStyle,
+                          // ),
+                          // CustomTextFormField(
+                          //   focusNode: FocusNode(),
+                          //   textInputAction: TextInputAction.next,
+                          //   controller: _userUpdateController
+                          //       .insuranceNumberCompanyName,
+                          //   hintText: 'Enter medical insurance policy number',
+                          //   validator: (text) {
+                          //     if (text!.isEmpty) {
+                          //       return 'Enter medical insurance policy number';
+                          //     }
+                          //     return null;
+                          //   },
+                          // )
                         ],
                       )
                   ],
@@ -596,33 +616,33 @@ class _EditWidgetState extends State<EditWidget> {
                   ],
                 ),
               ),
-              const SizedBox(height: 15),
-              Text(
-                "${Translate.of(context)?.translate('Tribal Status')} *",
-                style: kInputTextStyle,
-              ),
-              Obx(
-                () => DropdownButtonFormField(
-                  validator: (value) =>
-                      value == null ? 'Please Select Tribal Status' : null,
-                  isExpanded: true,
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).textTheme.titleMedium?.color,
-                  ),
-                  value:
-                      _userUpdateController.selectedTribalStatus.value.isEmpty
-                          ? null
-                          : _userUpdateController.selectedTribalStatus.value,
-                  hint: Text(
-                    Translate.of(context)!
-                        .translate('Please Select Tribal Status'),
-                    style: hintStyle,
-                  ),
-                  onChanged: _userUpdateController.onChangeTribalStatus,
-                  items: _userUpdateController.dropDownTribal,
-                ),
-              ),
+              // const SizedBox(height: 15),
+              // Text(
+              //   "${Translate.of(context)?.translate('Tribal Status')} *",
+              //   style: kInputTextStyle,
+              // ),
+              // Obx(
+              //   () => DropdownButtonFormField(
+              //     validator: (value) =>
+              //         value == null ? 'Please Select Tribal Status' : null,
+              //     isExpanded: true,
+              //     style: TextStyle(
+              //       fontSize: 20,
+              //       color: Theme.of(context).textTheme.titleMedium?.color,
+              //     ),
+              //     value:
+              //         _userUpdateController.selectedTribalStatus.value.isEmpty
+              //             ? null
+              //             : _userUpdateController.selectedTribalStatus.value,
+              //     hint: Text(
+              //       Translate.of(context)!
+              //           .translate('Please Select Tribal Status'),
+              //       style: hintStyle,
+              //     ),
+              //     onChanged: _userUpdateController.onChangeTribalStatus,
+              //     items: _userUpdateController.dropDownTribal,
+              //   ),
+              // ),
 
               ///
 
@@ -672,7 +692,7 @@ class _EditWidgetState extends State<EditWidget> {
                             height: 20,
                           ),
                           Text(
-                            "${Translate.of(context)?.translate('What tribe?')} *",
+                            "${Translate.of(context)!.translate('What federally recognized tribe you are enrolled in?')} *",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -680,14 +700,56 @@ class _EditWidgetState extends State<EditWidget> {
                             textInputAction: TextInputAction.next,
                             controller:
                                 _userUpdateController.whatTribe1Controller,
-                            hintText: 'Enter state tribal affiliation',
+                            hintText: 'Enter enter federally recognized tribe',
                             validator: (text) {
                               if (text!.isEmpty) {
-                                return 'Please state tribal affiliation';
+                                return 'Please enter federally recognized tribe';
                               }
                               return null;
                             },
-                          )
+                          ),
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Text(
+                          //   "${Translate.of(context)!.translate('What is your second tribal affliction?')} (Optional)",
+                          //   style: kInputTextStyle,
+                          // ),
+                          // CustomTextFormField(
+                          //   focusNode: FocusNode(),
+                          //   textInputAction: TextInputAction.next,
+                          //   controller: _userUpdateController
+                          //       .whatTribe1SecondController,
+                          //   hintText: 'Enter your second tribal affliction',
+                          // ),
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Text(
+                          //   "${Translate.of(context)!.translate('What is your third tribal affliction?')} (Optional)",
+                          //   style: kInputTextStyle,
+                          // ),
+                          // CustomTextFormField(
+                          //   focusNode: FocusNode(),
+                          //   textInputAction: TextInputAction.next,
+                          //   controller:
+                          //       _userUpdateController.whatTribe1ThirdController,
+                          //   hintText: 'Enter your third tribal affliction',
+                          // ),
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Text(
+                          //   "${Translate.of(context)!.translate('What is your fourth tribal affliction?')} (Optional)",
+                          //   style: kInputTextStyle,
+                          // ),
+                          // CustomTextFormField(
+                          //   focusNode: FocusNode(),
+                          //   textInputAction: TextInputAction.next,
+                          //   controller: _userUpdateController
+                          //       .whatTribe1FourthController,
+                          //   hintText: 'Enter your fourth tribal affliction',
+                          // ),
                         ],
                       )
                   ],

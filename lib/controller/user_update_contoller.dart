@@ -43,7 +43,11 @@ class UserUpdateController extends GetxController {
 
   final allergiesController = TextEditingController();
   final insuranceCompanyName = TextEditingController();
+  final insuranceNumberCompanyName = TextEditingController();
   final whatTribe1Controller = TextEditingController();
+  final whatTribe1SecondController = TextEditingController();
+  final whatTribe1ThirdController = TextEditingController();
+  final whatTribe1FourthController = TextEditingController();
   final whatTribe2Controller = TextEditingController();
 
   ScrollController dScrollController = ScrollController();
@@ -92,7 +96,9 @@ class UserUpdateController extends GetxController {
     'Black or African American',
     'Hispanic or Latino',
     'Native Hawaiian or Other Pacific Islander',
-    'White'
+    'White',
+    'Native American',
+    'Alaska Native'
   ];
 
   // var _maritalItems = <String>['Single'.tr(), 'Married'.tr()];

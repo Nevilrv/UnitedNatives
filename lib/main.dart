@@ -183,7 +183,7 @@ class _MyAppState extends State<MyApp> {
                     builder: (context, widget) {
                       return MediaQuery(
                         data: MediaQuery.of(context).copyWith(
-                          textScaler: const TextScaler.linear(1),
+                          textScaler: const TextScaler.linear(0.98),
                           boldText: false,
                         ),
                         child: ResponsiveWrapper.builder(

@@ -293,11 +293,11 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             title: Text(
-              "Physical Activity",
+              "Physical Activity Tracker",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).textTheme.titleMedium?.color,
-                  fontSize: 24),
+                  fontSize: 22),
             ),
             leading: IconButton(
               onPressed: () {
@@ -311,24 +311,23 @@ class _PhysicalActivityState extends State<PhysicalActivity> {
             ),
           ),
           body: Stack(
+            fit: StackFit.expand,
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Physical Activity Tracker',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    // const Align(
+                    //   alignment: Alignment.center,
+                    //   child: Text(
+                    //     'Physical Activity Tracker',
+                    //     style: TextStyle(
+                    //       fontSize: 30,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
+                    const SizedBox(height: 5),
                     Expanded(
                       child: Obx(() {
                         if (_controller.isLoading.value) {

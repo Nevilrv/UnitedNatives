@@ -430,7 +430,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
               }),
               const SizedBox(height: 15),
               Text(
-                "${Translate.of(context)?.translate('Certificate No.')} *",
+                "${Translate.of(context)?.translate('Licence No.')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -442,7 +442,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                         "Enter certificate number"),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please Enter Certificate Number';
+                    return 'Please Enter Licence Number';
                   }
                   return null;
                 },
