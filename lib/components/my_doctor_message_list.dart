@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/get_all_doctor.dart';
+import 'package:united_natives/ResponseModel/get_all_doctor.dart';
 import 'package:united_natives/utils/utils.dart';
 
 import '../utils/constants.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/model/login_verification.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/ResponseModel/login_verification.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/material.dart' hide Key;
 import 'package:get/get.dart';

@@ -1,8 +1,8 @@
-import 'package:united_natives/newModel/apiModel/requestModel/add_my_doctors_request_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/delete_doctor_response_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/delete_my_doctor_notes_request_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/my_doctor_list_request_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/update_my_doctor_request_model.dart';
+import 'package:united_natives/requestModel/add_my_doctors_request_model.dart';
+import 'package:united_natives/requestModel/delete_doctor_response_model.dart';
+import 'package:united_natives/requestModel/delete_my_doctor_notes_request_model.dart';
+import 'package:united_natives/requestModel/my_doctor_list_request_model.dart';
+import 'package:united_natives/requestModel/update_my_doctor_request_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/add_my_doctors_reposnse_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/delete_my_doctor_notes_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/delete_my_doctor_reponse_model.dart';

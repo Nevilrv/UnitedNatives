@@ -1,4 +1,4 @@
-import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/ResponseModel/visited_patient_model.dart';
 import 'package:united_natives/pages/prescription/widget/doctor_presciption_card.dart';
 import 'package:flutter/material.dart';
 

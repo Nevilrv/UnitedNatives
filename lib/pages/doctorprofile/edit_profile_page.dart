@@ -1,6 +1,6 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/user_update_contoller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/user_update_contoller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;

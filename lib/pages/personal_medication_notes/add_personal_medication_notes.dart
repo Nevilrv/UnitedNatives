@@ -1,7 +1,7 @@
 import 'package:united_natives/components/text_form_field.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/add_personal_medication_notes_req_model.dart';
+import 'package:united_natives/requestModel/add_personal_medication_notes_req_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/utils/common_snackbar.dart';
 import 'package:united_natives/utils/utils.dart';

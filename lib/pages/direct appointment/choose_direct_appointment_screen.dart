@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/doctor_item.dart';
-import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';

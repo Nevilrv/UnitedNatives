@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
 import 'package:united_natives/utils/utils.dart';
 
 class AboutUNH extends StatefulWidget {

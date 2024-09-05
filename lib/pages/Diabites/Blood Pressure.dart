@@ -9,15 +9,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:syncfusion_flutter_charts/charts.dart' as chart;
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/self_monitoring_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/self_monitoring_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
 import 'package:united_natives/utils/constants.dart';
-import '../../model/health_response_model.dart';
+import '../../ResponseModel/health_response_model.dart';
 import '../../utils/utils.dart';
 
 void enablePlatformOverrideForDesktop() {
@@ -99,6 +99,7 @@ class _BloodPressureState extends State<BloodPressure> {
   Future<HealthResponseModel?> getBloodPressureData() async {
     rows.clear();
     idList.clear();
+    // data.clear();
     const String url = Constants.getRoutineHealthReport;
 
     var body = {
@@ -114,6 +115,8 @@ class _BloodPressureState extends State<BloodPressure> {
         _controller.isLoading.value = false;
         HealthResponseModel model = healthResponseModelFromJson(response.body);
         listDatum = model.data!;
+        List<_BloodPressureData> temp = [];
+
         model.data?.forEach((element) {
           idList.add(element.id!);
           list = (jsonDecode(element.tableData!) as List);
@@ -127,17 +130,17 @@ class _BloodPressureState extends State<BloodPressure> {
           });
 
           List dateFixedList = list[0].toString().split('-');
-          data.add(
-            _BloodPressureData(
-              date: DateTime(int.parse(dateFixedList[2]),
-                  int.parse(dateFixedList[1]), int.parse(dateFixedList[0])),
-              sbpValue: double.parse(list[2]),
-              dbpValue: double.parse(list[3]),
-              bpmValue: double.parse(list[4]),
-            ),
-          );
+
+          temp.add(_BloodPressureData(
+            date: DateTime(int.parse(dateFixedList[2]),
+                int.parse(dateFixedList[1]), int.parse(dateFixedList[0])),
+            sbpValue: double.parse(list[2]),
+            dbpValue: double.parse(list[3]),
+            bpmValue: double.parse(list[4]),
+          ));
         });
 
+        data = temp;
         data.sort((a, b) => a.date.compareTo(b.date));
 
         getDataLength = rows.length;
@@ -335,7 +338,7 @@ class _BloodPressureState extends State<BloodPressure> {
                                       key: _editableKey,
                                       columns: cols,
                                       rows: rows,
-                                      popUpTitle: 'Blood Pressure Logs',
+                                      popUpTitle: 'Blood Pressure Tracker',
                                       showSaveIcon: true,
                                       borderWidth: 1,
                                       saveIconColor:
@@ -521,22 +524,73 @@ class _BloodPressureState extends State<BloodPressure> {
 
                                       ///CHART
 
-                                      chart.SfCartesianChart(
+                                      SfCartesianChart(
                                         // primaryXAxis: CategoryAxis(),
                                         enableAxisAnimation: true,
-                                        primaryXAxis: chart.DateTimeAxis(
+                                        primaryXAxis: DateTimeAxis(
                                             dateFormat: DateFormat("MMM y"),
                                             minimum: data.first.date,
                                             maximum: data.last.date,
                                             autoScrollingDeltaType:
-                                                chart.DateTimeIntervalType.auto
+                                                DateTimeIntervalType.auto
                                             // autoScrollingMode: AutoScrollingMode.end,
                                             ),
-                                        primaryYAxis: const chart.NumericAxis(
+                                        primaryYAxis: const NumericAxis(
                                             edgeLabelPlacement:
-                                                chart.EdgeLabelPlacement.shift),
+                                                EdgeLabelPlacement.shift),
                                         // axes: [Charts()],
-                                        series: chartData,
+                                        series: [
+                                          ///SBP
+                                          LineSeries<_BloodPressureData,
+                                              dynamic>(
+                                            dataSource: data,
+                                            xValueMapper: (_BloodPressureData
+                                                        bloodPressure,
+                                                    _) =>
+                                                bloodPressure.date,
+                                            yValueMapper: (_BloodPressureData
+                                                        bloodPressure,
+                                                    _) =>
+                                                bloodPressure.sbpValue,
+                                            dataLabelSettings:
+                                                const DataLabelSettings(
+                                                    isVisible: true),
+                                          ),
+
+                                          ///DBP
+                                          LineSeries<_BloodPressureData,
+                                              dynamic>(
+                                            dataSource: data,
+                                            xValueMapper: (_BloodPressureData
+                                                        bloodPressure,
+                                                    _) =>
+                                                bloodPressure.date,
+                                            yValueMapper: (_BloodPressureData
+                                                        bloodPressure,
+                                                    _) =>
+                                                bloodPressure.dbpValue,
+                                            dataLabelSettings:
+                                                const DataLabelSettings(
+                                                    isVisible: true),
+                                          ),
+
+                                          ///BPM
+                                          LineSeries<_BloodPressureData,
+                                              dynamic>(
+                                            dataSource: data,
+                                            xValueMapper: (_BloodPressureData
+                                                        bloodPressure,
+                                                    _) =>
+                                                bloodPressure.date,
+                                            yValueMapper: (_BloodPressureData
+                                                        bloodPressure,
+                                                    _) =>
+                                                bloodPressure.bpmValue,
+                                            dataLabelSettings:
+                                                const DataLabelSettings(
+                                                    isVisible: true),
+                                          ),
+                                        ],
                                       ),
                                     if (data.isEmpty)
                                       Padding(
@@ -580,7 +634,7 @@ class _BloodPressureState extends State<BloodPressure> {
     editNotesController.text = editList[5];
     Alert(
         context: context,
-        title: 'Add Blood Pressure Logs',
+        title: 'Blood Pressure Tracker',
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: SizedBox(
@@ -693,36 +747,6 @@ class _BloodPressureState extends State<BloodPressure> {
           )
         ]).show();
   }
-
-  ///CHART
-  List<chart.CartesianSeries> chartData = [
-    ///SBP
-    chart.LineSeries<_BloodPressureData, dynamic>(
-      dataSource: data,
-      xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
-      yValueMapper: (_BloodPressureData bloodPressure, _) =>
-          bloodPressure.sbpValue,
-      dataLabelSettings: const chart.DataLabelSettings(isVisible: true),
-    ),
-
-    ///DBP
-    chart.LineSeries<_BloodPressureData, dynamic>(
-      dataSource: data,
-      xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
-      yValueMapper: (_BloodPressureData bloodPressure, _) =>
-          bloodPressure.dbpValue,
-      dataLabelSettings: const chart.DataLabelSettings(isVisible: true),
-    ),
-
-    ///BPM
-    chart.LineSeries<_BloodPressureData, dynamic>(
-      dataSource: data,
-      xValueMapper: (_BloodPressureData bloodPressure, _) => bloodPressure.date,
-      yValueMapper: (_BloodPressureData bloodPressure, _) =>
-          bloodPressure.bpmValue,
-      dataLabelSettings: const chart.DataLabelSettings(isVisible: true),
-    ),
-  ];
 }
 
 class _BloodPressureData {

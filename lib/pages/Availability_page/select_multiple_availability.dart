@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/pages/Availability_page/checkbox_group.dart';
 
 class SelectMultipleAvailability extends StatefulWidget {

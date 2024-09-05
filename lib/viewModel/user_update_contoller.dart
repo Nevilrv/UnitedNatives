@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/model/patient_update_data.dart';
-import 'package:united_natives/model/specialities_model.dart';
-import 'package:united_natives/model/user.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/ResponseModel/patient_update_data.dart';
+import 'package:united_natives/ResponseModel/specialities_model.dart';
+import 'package:united_natives/ResponseModel/user.dart';
 import 'package:united_natives/sevices/user_backend_auth_service.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/exception.dart';
@@ -108,7 +108,8 @@ class UserUpdateController extends GetxController {
   String? getCityId;
   String? getMedicalCenterId;
   List<DropdownMenuItem<String>>? dropDownGender;
-  List<DropdownMenuItem<String>>? dropDownSpeciality;
+  List<Map<String, dynamic>> dropDownSpeciality = [];
+  // List<DropdownMenuItem<String>>? dropDownSpeciality;
   List<DropdownMenuItem<String>>? dropDownBlood;
   List<DropdownMenuItem<String>>? dropDownMarital;
   List<DropdownMenuItem<String>>? dropDownInsurance;
@@ -186,13 +187,18 @@ class UserUpdateController extends GetxController {
             DropdownMenuItem<String>(value: value, child: Text(value)))
         .toList();
 
-    dropDownSpeciality = _userController
-            .specialitiesModelData.value.specialities
-            ?.map((map) => DropdownMenuItem<String>(
-                value: map.specialityName,
-                child: Text(map.specialityName ?? "")))
-            .toList() ??
-        [];
+    for (var element
+        in _userController.specialitiesModelData.value.specialities!) {
+      dropDownSpeciality.add(element.toJson());
+    }
+
+    // dropDownSpeciality = _userController
+    //         .specialitiesModelData.value.specialities
+    //         ?.map((map) => DropdownMenuItem<String>(
+    //             value: map.specialityName,
+    //             child: Text(map.specialityName ?? "")))
+    //         .toList() ??
+    //     [];
 
     // speciality.value = _userController
     //     .specialitiesModelData.value.specialities

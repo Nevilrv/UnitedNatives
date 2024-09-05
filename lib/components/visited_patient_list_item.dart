@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:octo_image/octo_image.dart';
-import 'package:united_natives/data/pref_manager.dart';
-import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/utils/pref_manager.dart';
+import 'package:united_natives/ResponseModel/visited_patient_model.dart';
 
 class VisitedPatientListItem extends StatelessWidget {
   final VisitedPatient? patient;

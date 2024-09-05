@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/utils/app_themes.dart';
 
 class ThemeController extends GetxController {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/pages/resources/about_the_app_screen.dart';
 import 'package:united_natives/pages/resources/newsletter_screen.dart';
 import 'package:united_natives/pages/resources/thank_you_sponser_screen.dart';
@@ -26,7 +26,7 @@ class _ShowAllScreenState extends State<ShowAllScreen> {
     'About The United Natives App',
     'About Native American',
     // 'Upcoming Event',
-    'Thank You Sponser',
+    'Thank You Sponsor',
     'Health Recommendation',
     'Guideline Of WHO',
   ];

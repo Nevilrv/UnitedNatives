@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/utils/constants.dart';
 
 bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
@@ -83,6 +83,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               fontFamily: 'NunitoSans',
             ),
         errorText: widget.error,
+        errorStyle: const TextStyle(fontSize: 16),
         suffixIcon: (widget.obscureText != null && widget.obscureText!)
             ? GestureDetector(
                 onTap: () {

@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/self_monitoring_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/self_monitoring_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
-import '../../model/health_response_model.dart';
+import '../../ResponseModel/health_response_model.dart';
 import '../../utils/utils.dart';
 import 'package:syncfusion_flutter_charts/charts.dart' as chart;
 
@@ -352,7 +352,7 @@ class _FoodState extends State<Food> {
                                       key: _editableKey,
                                       columns: cols,
                                       rows: rows,
-                                      popUpTitle: 'Food/Caloric Intake Data',
+                                      popUpTitle: 'Food/Caloric Tracker',
                                       borderColor: Colors.blueGrey,
                                       showCreateButton: true,
                                       showSaveIcon: true,
@@ -532,7 +532,7 @@ class _FoodState extends State<Food> {
                                             top: Get.height * 0.30),
                                         child: Center(
                                           child: Text(
-                                            'No food/caloric intake data',
+                                            'No food/caloric tracker data',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleLarge
@@ -569,7 +569,7 @@ class _FoodState extends State<Food> {
     editSugarController.text = editList[6];
     Alert(
         context: context,
-        title: 'Food/Caloric Intake Data',
+        title: 'Food/Caloric Tracker',
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: SizedBox(

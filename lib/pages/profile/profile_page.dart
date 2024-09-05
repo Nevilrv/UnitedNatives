@@ -1,7 +1,7 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/round_icon_button.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/pages/doctorprofile/widgets/profile_info_tile.dart';
 import 'package:united_natives/routes/routes.dart';
@@ -318,8 +318,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/round_icon_button.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/data/pref_manager.dart';
 import 'package:united_natives/pages/prescription/patient_profile_prescription_tab_page.dart';
 import 'package:united_natives/pages/splash_page.dart';

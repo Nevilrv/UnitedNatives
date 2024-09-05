@@ -1,8 +1,8 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/progress_indicator.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/book_appointment_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';
 import 'package:united_natives/utils/utils.dart';

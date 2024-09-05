@@ -4,7 +4,7 @@ import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/pages/Availability_page/select_multiple_availability.dart';
 import 'package:united_natives/pages/Availability_page/update_availability.dart';
-import '../../controller/ads_controller.dart';
+import '../../viewModel/ads_controller.dart';
 import '../../utils/constants.dart';
 
 class AvailabilityPage extends StatefulWidget {

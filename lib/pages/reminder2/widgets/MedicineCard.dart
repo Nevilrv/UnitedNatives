@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:united_natives/controller/reminder_controller.dart';
+import 'package:united_natives/viewModel/reminder_controller.dart';
 import 'package:united_natives/newModel/repo/reminder_response_model.dart';
 
 class MecicineCard extends StatefulWidget {

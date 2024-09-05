@@ -1,8 +1,8 @@
 import 'package:united_natives/components/custom_button.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/get_all_patient_response_model.dart';
+import 'package:united_natives/ResponseModel/get_all_patient_response_model.dart';
 import 'package:united_natives/pages/myPatientMessageList/patient_message_detail_page.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';

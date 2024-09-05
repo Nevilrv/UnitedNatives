@@ -10,14 +10,10 @@ import 'package:flutter_signature_pad/flutter_signature_pad.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:united_natives/controller/book_appointment_controller.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/configs/routes.dart';
-import 'package:united_natives/model/booked_appointment_data.dart';
-import 'package:united_natives/model/doctor_by_specialities.dart';
-import 'package:united_natives/model/patient_appointment_model.dart';
-import 'package:united_natives/model/paymentPaypalModel.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_city_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_states_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/intake_form_list_res_model.dart';
@@ -25,6 +21,8 @@ import 'package:united_natives/newModel/apiModel/responseModel/intake_form_res_m
 import 'package:united_natives/newModel/apiModel/responseModel/submit_form_res_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/newModel/repo/united_natives_form_repo.dart';
+import 'package:united_natives/ResponseModel/doctor_by_specialities.dart';
+import 'package:united_natives/ResponseModel/paymentPaypalModel.dart';
 import 'package:united_natives/utils/utils.dart';
 
 class IntakeFormViewModel extends GetxController {

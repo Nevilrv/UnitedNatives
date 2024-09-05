@@ -7,10 +7,10 @@ import 'package:ndialog/ndialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
-import 'package:united_natives/model/api_state_enum.dart';
-import 'package:united_natives/model/doctor_research_document_details_model.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/doctor_research_document_details_model.dart';
 import 'package:united_natives/pages/Blogpage/video_player.dart';
 import 'package:united_natives/utils/utils.dart';
 

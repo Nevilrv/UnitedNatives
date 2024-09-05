@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/model/get_all_patient_messagelist_model.dart';
-import 'package:united_natives/model/get_new_message_doctor_model.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/ResponseModel/get_all_patient_messagelist_model.dart';
+import 'package:united_natives/ResponseModel/get_new_message_doctor_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/pages/doctormessages/msg_show_screen.dart';
 import 'package:united_natives/pages/myPatientMessageList/upload_screen.dart';
 import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
 
-import '../data/pref_manager.dart';
+import '../utils/pref_manager.dart';
 import '../utils/constants.dart';
 import '../utils/utils.dart';
 

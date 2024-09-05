@@ -9,7 +9,7 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
 

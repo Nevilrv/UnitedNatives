@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
-import 'package:united_natives/model/get_all_chat_messeage_doctor.dart';
-import 'package:united_natives/model/get_all_patient_messagelist_model.dart';
-import 'package:united_natives/model/get_sorted_chat_list_doctor_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/add_new_message.dart';
+import 'package:united_natives/requestModel/add_new_message.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/add_new_message_response_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/newModel/repo/add_new_chat_response_model.dart';
+import 'package:united_natives/ResponseModel/get_all_chat_messeage_doctor.dart';
+import 'package:united_natives/ResponseModel/get_all_patient_messagelist_model.dart';
+import 'package:united_natives/ResponseModel/get_sorted_chat_list_doctor_model.dart';
 
 class AddNewChatMessageController extends GetxController {
   ApiResponse addNewMessageApiResponse = ApiResponse.initial('Initial');

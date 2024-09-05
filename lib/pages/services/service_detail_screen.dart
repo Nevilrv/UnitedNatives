@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   final String? image;

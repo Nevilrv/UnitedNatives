@@ -1,5 +1,5 @@
-import 'package:united_natives/model/prescription.dart';
-import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/ResponseModel/prescription.dart';
+import 'package:united_natives/ResponseModel/visited_patient_model.dart';
 
 class DoctorHomePageModel {
   String? status;

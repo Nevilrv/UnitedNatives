@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart' as dio;
 import 'package:http/http.dart' as http;
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/newModel/apis/api_exception.dart';
 import 'base_service.dart';
 

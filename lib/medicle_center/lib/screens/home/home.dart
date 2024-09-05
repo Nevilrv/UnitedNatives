@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
 import 'package:united_natives/medicle_center/lib/configs/config.dart';
 import 'package:united_natives/medicle_center/lib/models/model.dart';

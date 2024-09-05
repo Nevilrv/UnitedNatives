@@ -1,5 +1,5 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -368,7 +368,7 @@ class _SelfMoniteringState extends State<SelfMonitering> {
                     width: 16,
                   ),
                   const Text(
-                    'Female Menstrual Tracker',
+                    'Female Menstrual Cycle',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   const Expanded(child: SizedBox()),

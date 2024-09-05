@@ -1,8 +1,8 @@
 import 'dart:developer';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
-import 'package:united_natives/model/doctor_availability_display_model.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
+import 'package:united_natives/ResponseModel/doctor_availability_display_model.dart';
 import 'package:united_natives/pages/Availability_page/checkbox_group.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';

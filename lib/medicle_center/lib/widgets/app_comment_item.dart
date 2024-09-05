@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -201,11 +203,15 @@ class AppCommentItem extends StatelessWidget {
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
-                          Text(
-                            DateFormat("hh:mm a")
-                                .format(item?.createDate ?? DateTime.now()),
-                            style: Theme.of(context).textTheme.bodySmall,
-                          )
+                          Builder(builder: (context) {
+                            log('item?.createDate==========>>>>>${item?.createDate}');
+
+                            return Text(
+                              DateFormat("hh:mm a")
+                                  .format(item?.createDate ?? DateTime.now()),
+                              style: Theme.of(context).textTheme.bodySmall,
+                            );
+                          })
                         ],
                       ),
                       const SizedBox(height: 4),

@@ -1,8 +1,8 @@
 import 'package:united_natives/components/my_doctor_message_list.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/api_state_enum.dart';
-import 'package:united_natives/model/get_all_doctor.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/get_all_doctor.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/time.dart';
 import 'package:united_natives/utils/utils.dart';

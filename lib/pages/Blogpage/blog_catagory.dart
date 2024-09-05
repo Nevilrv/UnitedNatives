@@ -1,8 +1,8 @@
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/api_state_enum.dart';
-import 'package:united_natives/model/patient_homepage_model.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/patient_homepage_model.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;

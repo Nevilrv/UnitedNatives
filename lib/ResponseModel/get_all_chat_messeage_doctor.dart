@@ -1,4 +1,4 @@
-import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
 
 class GetAllChatMessagesDoctor {
   String? status;

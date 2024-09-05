@@ -1,9 +1,9 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/progress_indicator.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/ResponseModel/doctor_by_specialities.dart';
 import 'package:united_natives/pages/booking/filter/filter_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;

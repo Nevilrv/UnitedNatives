@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';

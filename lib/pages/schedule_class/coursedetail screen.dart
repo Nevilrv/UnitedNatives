@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/book_withdraw_req_model.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
+import 'package:united_natives/requestModel/book_withdraw_req_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/class_detail_patient_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';

@@ -10,14 +10,15 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/book_appointment_controller.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/controller/self_monitoring_controller.dart';
-import 'package:united_natives/controller/theme_controlller.dart';
-import 'package:united_natives/controller/user_update_contoller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/self_monitoring_controller.dart';
+import 'package:united_natives/viewModel/theme_controlller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/viewModel/user_update_contoller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
 import 'package:united_natives/medicle_center/lib/blocs/language/language_cubit.dart';
 import 'package:united_natives/medicle_center/lib/blocs/theme/theme_cubit.dart';
@@ -36,7 +37,6 @@ import 'package:united_natives/viewModel/room_view_model.dart';
 import 'package:united_natives/viewModel/scheduled_class_viewmodel.dart';
 import 'package:united_natives/viewModel/services_view_model.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'controller/user_controller.dart';
 import 'routes/route_generator.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -183,7 +183,7 @@ class _MyAppState extends State<MyApp> {
                     builder: (context, widget) {
                       return MediaQuery(
                         data: MediaQuery.of(context).copyWith(
-                          textScaler: const TextScaler.linear(0.98),
+                          textScaler: const TextScaler.linear(1),
                           boldText: false,
                         ),
                         child: ResponsiveWrapper.builder(

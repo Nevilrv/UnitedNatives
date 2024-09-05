@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/my_patient_list_item.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;

@@ -1,8 +1,8 @@
 import 'package:united_natives/components/custom_button.dart';
-import 'package:united_natives/controller/book_appointment_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/ResponseModel/doctor_by_specialities.dart';
 import 'package:united_natives/routes/routes.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/gestures.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
 import 'package:united_natives/medicle_center/lib/configs/config.dart';
 import 'package:united_natives/medicle_center/lib/models/model.dart';
@@ -77,14 +77,25 @@ class _ReviewState extends State<Review> {
         centerTitle: true,
         title: Text(
           Translate.of(context)!.translate('review'),
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         actions: [
           if (!isWriteShow)
-            AppButton(
-              Translate.of(context)!.translate('write'),
+            TextButton(
               onPressed: _onWriteReview,
-              type: ButtonType.text,
-            ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    Translate.of(context)!.translate('write'),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            )
         ],
       ),
       body: SafeArea(
@@ -124,7 +135,7 @@ class _ReviewState extends State<Review> {
                         padding: const EdgeInsets.all(4),
                         child: Text(
                           Translate.of(context)!.translate('review_not_found'),
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       ),
                     ],

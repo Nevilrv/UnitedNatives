@@ -7,7 +7,7 @@ library editable;
 
 import 'dart:developer';
 
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/helpers.dart';
 import 'package:united_natives/pages/Diabites/custom_package/row_builder.dart';
 import 'package:flutter/material.dart';

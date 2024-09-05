@@ -1,28 +1,28 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/model/aboutus_privacy_policy_doctor_model.dart';
-import 'package:united_natives/model/add_prescription_model.dart';
-import 'package:united_natives/model/api_state_enum.dart';
-import 'package:united_natives/model/cancle_appointment_doctor.dart';
-import 'package:united_natives/model/delete_chat_messages_response_model.dart';
-import 'package:united_natives/model/doctor_availability_display_model.dart';
-import 'package:united_natives/model/doctor_availability_model.dart';
-import 'package:united_natives/model/doctor_get_doctor_Appointments_model.dart';
-import 'package:united_natives/model/doctor_homepage_model.dart';
-import 'package:united_natives/model/doctor_multiple_availability_model.dart';
-import 'package:united_natives/model/doctor_next_appointment_model.dart';
-import 'package:united_natives/model/doctor_prescription_model.dart';
-import 'package:united_natives/model/doctor_research_document_details_model.dart';
-import 'package:united_natives/model/doctor_research_document_model.dart';
-import 'package:united_natives/model/get_all_chat_messeage_doctor.dart';
-import 'package:united_natives/model/get_all_patient_response_model.dart';
-import 'package:united_natives/model/get_new_message_doctor_model.dart';
-import 'package:united_natives/model/get_sorted_chat_list_doctor_model.dart';
-import 'package:united_natives/model/patient_detail_model.dart';
-import 'package:united_natives/model/start_appointment_doctor.dart';
-import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/ResponseModel/aboutus_privacy_policy_doctor_model.dart';
+import 'package:united_natives/ResponseModel/add_prescription_model.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/cancle_appointment_doctor.dart';
+import 'package:united_natives/ResponseModel/delete_chat_messages_response_model.dart';
+import 'package:united_natives/ResponseModel/doctor_availability_display_model.dart';
+import 'package:united_natives/ResponseModel/doctor_availability_model.dart';
+import 'package:united_natives/ResponseModel/doctor_get_doctor_Appointments_model.dart';
+import 'package:united_natives/ResponseModel/doctor_homepage_model.dart';
+import 'package:united_natives/ResponseModel/doctor_multiple_availability_model.dart';
+import 'package:united_natives/ResponseModel/doctor_next_appointment_model.dart';
+import 'package:united_natives/ResponseModel/doctor_prescription_model.dart';
+import 'package:united_natives/ResponseModel/doctor_research_document_details_model.dart';
+import 'package:united_natives/ResponseModel/doctor_research_document_model.dart';
+import 'package:united_natives/ResponseModel/get_all_chat_messeage_doctor.dart';
+import 'package:united_natives/ResponseModel/get_all_patient_response_model.dart';
+import 'package:united_natives/ResponseModel/get_new_message_doctor_model.dart';
+import 'package:united_natives/ResponseModel/get_sorted_chat_list_doctor_model.dart';
+import 'package:united_natives/ResponseModel/patient_detail_model.dart';
+import 'package:united_natives/ResponseModel/start_appointment_doctor.dart';
+import 'package:united_natives/ResponseModel/visited_patient_model.dart';
 import 'package:united_natives/routes/routes.dart';
 import 'package:united_natives/sevices/doctor_home_screen_service.dart';
 import 'package:united_natives/utils/exception.dart';
@@ -745,6 +745,6 @@ class DoctorHomeScreenController extends GetxController {
   }
 
   Future<void> callDoctorHomeScreenApi() async {
-  await  getDoctorHomePage();
+    await getDoctorHomePage();
   }
 }

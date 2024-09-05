@@ -1,23 +1,23 @@
-import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
 
-class GetAllDoctor {
+class GetAllPatient {
   String? status;
-  List<Doctor>? data;
+  List<Patient>? data;
   String? message;
   APIState? apiState;
 
-  GetAllDoctor({this.status, this.data, this.message});
+  GetAllPatient({this.status, this.data, this.message});
 
-  GetAllDoctor.fromJson(Map<String, dynamic> json) {
+  GetAllPatient.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
-      data = <Doctor>[];
+      data = <Patient>[];
       json['data'].forEach((v) {
-        data?.add(Doctor.fromJson(v));
+        data?.add(Patient.fromJson(v));
       });
     }
-    message = json['message'];
 
+    message = json['message'];
     if (data!.isEmpty) {
       apiState = APIState.COMPLETE_WITH_NO_DATA;
     } else {
@@ -32,13 +32,15 @@ class GetAllDoctor {
       data['data'] = this.data?.map((v) => v.toJson()).toList();
     }
     data['message'] = message;
+
     return data;
   }
 }
 
-class Doctor {
+class Patient {
   String? id;
   String? userType;
+  String? isAdmin;
   String? firstName;
   String? lastName;
   String? gender;
@@ -51,43 +53,54 @@ class Doctor {
   String? password;
   String? socialProfilePic;
   String? profilePic;
+  String? deviceTokens;
   String? adminReadStat;
   String? modified;
   String? created;
-  String? certificateNo;
-  String? education;
-  double? rating;
-  String? speciality;
+  String? bloodGroup;
+  String? maritalStatus;
+  String? height;
+  String? weight;
+  String? emergencyContact;
+  String? caseManager;
+  String? insuranceEligibility;
+  String? tribalStatus;
   String? chatKey;
 
-  Doctor({
-    this.id,
-    this.userType,
-    this.firstName,
-    this.lastName,
-    this.gender,
-    this.email,
-    this.loginType,
-    this.fbId,
-    this.googleId,
-    this.contactNumber,
-    this.dateOfBirth,
-    this.password,
-    this.socialProfilePic,
-    this.profilePic,
-    this.adminReadStat,
-    this.modified,
-    this.created,
-    this.certificateNo,
-    this.education,
-    this.rating,
-    this.speciality,
-    this.chatKey,
-  });
+  Patient(
+      {this.id,
+      this.userType,
+      this.isAdmin,
+      this.firstName,
+      this.lastName,
+      this.gender,
+      this.email,
+      this.loginType,
+      this.fbId,
+      this.googleId,
+      this.contactNumber,
+      this.dateOfBirth,
+      this.password,
+      this.socialProfilePic,
+      this.profilePic,
+      this.deviceTokens,
+      this.adminReadStat,
+      this.modified,
+      this.created,
+      this.bloodGroup,
+      this.maritalStatus,
+      this.height,
+      this.weight,
+      this.emergencyContact,
+      this.caseManager,
+      this.insuranceEligibility,
+      this.tribalStatus,
+      this.chatKey});
 
-  Doctor.fromJson(Map<String, dynamic> json) {
+  Patient.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userType = json['user_type'];
+    isAdmin = json['is_admin'];
     firstName = json['first_name'];
     lastName = json['last_name'];
     gender = json['gender'];
@@ -100,13 +113,18 @@ class Doctor {
     password = json['password'];
     socialProfilePic = json['social_profile_pic'];
     profilePic = json['profile_pic'];
+    deviceTokens = json['device_tokens'];
     adminReadStat = json['admin_read_stat'];
     modified = json['modified'];
     created = json['created'];
-    certificateNo = json['certificate_no'];
-    education = json['education'];
-    rating = json['rating']?.toDouble() ?? 0.0;
-    speciality = json['speciality'];
+    bloodGroup = json['blood_group'];
+    maritalStatus = json['marital_status'];
+    height = json['height'];
+    weight = json['weight'];
+    emergencyContact = json['emergency_contact'];
+    caseManager = json['case_manager'];
+    insuranceEligibility = json['insurance_eligibility'];
+    tribalStatus = json['tribal_status'];
     chatKey = json['chat_key'];
   }
 
@@ -114,6 +132,7 @@ class Doctor {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['user_type'] = userType;
+    data['is_admin'] = isAdmin;
     data['first_name'] = firstName;
     data['last_name'] = lastName;
     data['gender'] = gender;
@@ -126,13 +145,18 @@ class Doctor {
     data['password'] = password;
     data['social_profile_pic'] = socialProfilePic;
     data['profile_pic'] = profilePic;
+    data['device_tokens'] = deviceTokens;
     data['admin_read_stat'] = adminReadStat;
     data['modified'] = modified;
     data['created'] = created;
-    data['certificate_no'] = certificateNo;
-    data['education'] = education;
-    data['rating'] = rating;
-    data['speciality'] = speciality;
+    data['blood_group'] = bloodGroup;
+    data['marital_status'] = maritalStatus;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['emergency_contact'] = emergencyContact;
+    data['case_manager'] = caseManager;
+    data['insurance_eligibility'] = insuranceEligibility;
+    data['tribal_status'] = tribalStatus;
     data['chat_key'] = chatKey;
     return data;
   }

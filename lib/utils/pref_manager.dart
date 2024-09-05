@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/exception.dart';
+import 'package:united_natives/utils/exception.dart';
 
 class Prefs {
   static const String DARKTHEME = "dark_theme";

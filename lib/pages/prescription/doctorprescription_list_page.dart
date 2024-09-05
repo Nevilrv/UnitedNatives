@@ -1,8 +1,8 @@
 // import 'package:doctor_appointment_booking/components/custom_profile_item.dart';
-// import 'package:doctor_appointment_booking/controller/doctor_prescription_controller.dart';
+// import 'package:doctor_appointment_booking/viewModel/doctor_prescription_controller.dart';
 // import 'package:doctor_appointment_booking/medicle_center/lib/utils/translate.dart';
-// import 'package:doctor_appointment_booking/model/api_state_enum.dart';
-// import 'package:doctor_appointment_booking/model/prescription.dart';
+// import 'package:doctor_appointment_booking/ResponseModel/api_state_enum.dart';
+// import 'package:doctor_appointment_booking/ResponseModel/prescription.dart';
 // import 'package:doctor_appointment_booking/routes/routes.dart';
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart' hide Trans;

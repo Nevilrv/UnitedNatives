@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/visited_patient_list_item.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/medicle_center/lib/widgets/app_placeholder.dart';
-import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/ResponseModel/visited_patient_model.dart';
 import 'package:united_natives/pages/appointment/doctor_appointment.dart';
 import 'package:united_natives/pages/home/nav_transition/nav_slide_from_bottom.dart';
 import 'package:united_natives/routes/routes.dart';

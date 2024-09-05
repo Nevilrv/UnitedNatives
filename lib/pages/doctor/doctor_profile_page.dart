@@ -1,6 +1,6 @@
-import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/ResponseModel/doctor_by_specialities.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';

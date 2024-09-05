@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/services_response_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/newModel/repo/services_repo.dart';

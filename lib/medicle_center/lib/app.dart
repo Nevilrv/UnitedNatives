@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/app_container.dart';
 import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
 import 'package:united_natives/medicle_center/lib/utils/utils.dart';

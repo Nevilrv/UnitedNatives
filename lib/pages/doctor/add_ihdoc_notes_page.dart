@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/utils/common_snackbar.dart';
 import 'package:united_natives/utils/utils.dart';

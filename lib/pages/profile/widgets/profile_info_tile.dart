@@ -1,4 +1,4 @@
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:flutter/material.dart';
 
 class ProfileInfoTile extends StatelessWidget {

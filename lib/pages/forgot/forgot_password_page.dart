@@ -7,11 +7,11 @@ import 'package:get/get.dart' hide Trans;
 import 'package:http/http.dart' as http;
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/user.dart';
+import 'package:united_natives/ResponseModel/user.dart';
 
 import '../../components/text_form_field.dart';
 import '../../utils/constants.dart';

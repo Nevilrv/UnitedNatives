@@ -2,7 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:united_natives/pages/login/login_page_auth.dart';
 import '../../components/visited_doctor_list_item.dart';
-import '../../data/pref_manager.dart';
+import '../../utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import '../../routes/routes.dart';
 import '../../utils/constants.dart';

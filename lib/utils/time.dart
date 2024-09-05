@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
 
 class TimerChange {

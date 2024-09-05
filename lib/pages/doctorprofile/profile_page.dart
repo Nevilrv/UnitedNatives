@@ -1,7 +1,7 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/round_icon_button.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/pages/profile/widgets/profile_info_tile.dart';
 import 'package:united_natives/routes/routes.dart';
@@ -120,9 +120,9 @@ class _DocProfilePageState extends State<DocProfilePage> {
                     hint: Translate.of(context)!.translate('add_gender'),
                   ),
                   ProfileInfoTile(
-                    title: Translate.of(context)!.translate('Licence No.'),
+                    title: Translate.of(context)!.translate('License No.'),
                     trailing: _userController.user.value.certificateNo ??
-                        "Enter Licence Number",
+                        "Enter License Number",
                     hint: Translate.of(context)!
                         .translate('Enter your license no.'),
                   ),

@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:united_natives/model/api_state_enum.dart';
-import 'package:united_natives/model/prescription.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/prescription.dart';
 import 'package:united_natives/sevices/prescription_service.dart';
-import 'user_controller.dart';
+import '../viewModel/user_controller.dart';
 
 class PrescriptionController extends GetxController {
   RxList<Prescription> prescriptionList = <Prescription>[].obs;

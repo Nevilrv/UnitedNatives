@@ -1,10 +1,10 @@
-import 'package:united_natives/controller/book_appointment_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import '../../../components/custom_button.dart';
-import '../../../data/pref_manager.dart';
+import '../../../utils/pref_manager.dart';
 import '../../../utils/constants.dart';
 
 class FilterPage extends StatefulWidget {

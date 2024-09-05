@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/doctor_prescription_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/doctor_prescription_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
 import 'package:united_natives/utils/utils.dart';
 import '../../components/custom_recipe_item.dart';
 

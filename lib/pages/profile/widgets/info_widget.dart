@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_city_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_states_response_model.dart';

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/api/api.dart';
 import 'package:united_natives/medicle_center/lib/models/model_city_data.dart';
 import 'package:united_natives/medicle_center/lib/models/model_state_data.dart';

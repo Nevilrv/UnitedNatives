@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:united_natives/model/prescription.dart';
+import 'package:united_natives/ResponseModel/prescription.dart';
 import 'package:united_natives/utils/exception.dart';
 import 'package:united_natives/utils/network_util.dart';
 import 'package:united_natives/utils/utils.dart';

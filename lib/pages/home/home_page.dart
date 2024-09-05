@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/visited_doctor_list_item.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/book_appointment_controller.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_all_notes_model.dart';
 import 'package:united_natives/newModel/services/base_service.dart';
 import 'package:united_natives/utils/constants.dart';

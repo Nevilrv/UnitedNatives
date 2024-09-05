@@ -1,4 +1,4 @@
-import 'package:united_natives/model/doctor_by_specialities.dart';
+import 'package:united_natives/ResponseModel/doctor_by_specialities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';

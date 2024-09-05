@@ -1,7 +1,7 @@
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import '../../data/pref_manager.dart';
+import '../../utils/pref_manager.dart';
 
 enum Language { english, spanish, italian, portuguese }
 

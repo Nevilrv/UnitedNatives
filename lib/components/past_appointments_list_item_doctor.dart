@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/doctor_get_doctor_Appointments_model.dart';
-import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/ResponseModel/doctor_get_doctor_Appointments_model.dart';
+import 'package:united_natives/ResponseModel/visited_patient_model.dart';
 import 'package:united_natives/routes/routes.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';

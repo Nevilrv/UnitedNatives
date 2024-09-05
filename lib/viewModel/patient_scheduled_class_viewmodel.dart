@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/book_withdraw_req_model.dart';
+import 'package:united_natives/requestModel/book_withdraw_req_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/class_detail_patient_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_class_list_patient_data_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';

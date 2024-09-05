@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_agora_token_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/newModel/repo/agora_repo.dart';

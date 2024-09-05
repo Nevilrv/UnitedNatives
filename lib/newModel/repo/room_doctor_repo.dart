@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:united_natives/newModel/apiModel/requestModel/add_maintenance_req_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/add_room_data_req_model.dart';
+import 'package:united_natives/requestModel/add_maintenance_req_model.dart';
+import 'package:united_natives/requestModel/add_room_data_req_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/room_detail_response_model.dart';
 import 'package:united_natives/newModel/services/api_service.dart';

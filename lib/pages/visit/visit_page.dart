@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/model/api_state_enum.dart';
-import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/appointment.dart';
 import '../../components/custom_profile_item.dart';
 import '../../routes/routes.dart';
 import '../../utils/utils.dart';

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/pages/Blogpage/Participate_catagory.dart';
 import 'package:united_natives/utils/utils.dart';
 import '../../utils/constants.dart';

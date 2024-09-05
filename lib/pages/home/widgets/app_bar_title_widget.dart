@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 
 class AppBarTitleWidget extends StatelessWidget {
   const AppBarTitleWidget({super.key});

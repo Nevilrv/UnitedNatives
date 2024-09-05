@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/ResponseModel/appointment.dart';
 import 'package:united_natives/utils/utils.dart';
 
 import 'custom_outline_button.dart';

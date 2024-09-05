@@ -9,9 +9,9 @@ import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/controller/user_update_contoller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/viewModel/user_update_contoller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/utils/utils.dart';
 

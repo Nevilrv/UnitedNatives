@@ -11,14 +11,14 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/self_monitoring_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/self_monitoring_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
 import 'package:united_natives/utils/constants.dart';
 
-import '../../model/health_response_model.dart';
+import '../../ResponseModel/health_response_model.dart';
 import '../../utils/utils.dart';
 
 void enablePlatformOverrideForDesktop() {
@@ -295,7 +295,7 @@ class _WeightlossState extends State<Weightloss> {
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             title: Text(
-              "Weight Loss Tracker",
+              "Weight Tracker",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).textTheme.titleMedium?.color,
@@ -335,7 +335,7 @@ class _WeightlossState extends State<Weightloss> {
                                       key: _editableKey,
                                       columns: cols,
                                       rows: rows,
-                                      popUpTitle: 'Weight Loss Data',
+                                      popUpTitle: 'Weight Tracker',
                                       borderColor: Colors.blueGrey,
                                       showSaveIcon: true,
                                       saveIconColor:
@@ -505,7 +505,7 @@ class _WeightlossState extends State<Weightloss> {
                                             top: Get.height * 0.30),
                                         child: Center(
                                           child: Text(
-                                            'No weight loss data',
+                                            'No weight tracker data',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleLarge
@@ -541,7 +541,7 @@ class _WeightlossState extends State<Weightloss> {
     editNotesController.text = editList[5];
     Alert(
         context: context,
-        title: 'Weight Loss Data',
+        title: 'Weight Tracker',
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: SizedBox(

@@ -1,5 +1,5 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/pages/prescription/widget/patient_presciption_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -1,7 +1,7 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/book_appointment_controller.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/pages/appointment/book_appointment_tab.dart';
 import 'package:flutter/material.dart';

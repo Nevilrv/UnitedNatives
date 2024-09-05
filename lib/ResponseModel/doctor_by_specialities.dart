@@ -1,4 +1,4 @@
-import 'package:united_natives/model/appointment.dart';
+import 'package:united_natives/ResponseModel/appointment.dart';
 
 class DoctorBySpecialitiesModel {
   String? status;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +14,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/custom_button.dart';
 import 'package:united_natives/components/text_form_field.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/sevices/user_backend_auth_service.dart';
 
-import '../../model/user.dart';
+import '../../ResponseModel/user.dart';
 import '../../routes/routes.dart';
 import '../../utils/constants.dart';
 import '../../utils/utils.dart';
@@ -233,7 +233,10 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
   String? getIds;
   String? getIds1;
   String? getMedicalCenterID;
-
+  bool dateValidate = true;
+  bool stateValidate = true;
+  bool cityValidate = true;
+  bool specialityValidate = true;
   ImagePicker imagePicker = ImagePicker();
 
   // Future _getImage(ImageSource imageSource) async {
@@ -446,18 +449,6 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
     super.dispose();
   }
 
-  // @override
-  // void dispose() {
-  //   categoryOfStatesDropDown = null;
-  //   categoryOfCitiesDropDown = null;
-  //   categoryOfMedicalCenterDropDown = null;
-  //   categoryOfStates = [];
-  //   categoryOfCity = [];
-  //   categoryOfMedicalCenter = [];
-  //   _userController.onDispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
@@ -624,49 +615,67 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   () => ListTile(
                     contentPadding: const EdgeInsets.all(0),
                     // title: Text(_userController.dateOfBirth.value),
-                    title: _userController.dateOfBirth.value.isEmpty
-                        ? Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: Colors.grey),
-                              ),
-                            ),
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Tap to Select BirthDate",
-                                  style: hintStyle,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _userController.dateOfBirth.value.isEmpty
+                            ? Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        color: !dateValidate
+                                            ? Colors.red.shade900
+                                            : Colors.grey),
+                                  ),
                                 ),
-                                Icon(
-                                  Icons.calendar_today_outlined,
-                                  color: Colors.grey,
-                                )
-                              ],
-                            ),
-                          )
-                        : Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: Colors.grey),
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: const Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Tap to Select BirthDate",
+                                      style: hintStyle,
+                                    ),
+                                    Icon(
+                                      Icons.calendar_today_outlined,
+                                      color: Colors.grey,
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Text(
+                                  DateFormat('EEEE, dd MMMM, yyyy').format(
+                                    DateTime.parse(
+                                        _userController.dateOfBirth.value),
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.color,
+                                  ),
+                                ),
                               ),
-                            ),
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Text(
-                              DateFormat('EEEE, dd MMMM, yyyy').format(
-                                DateTime.parse(
-                                    _userController.dateOfBirth.value),
-                              ),
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.color,
-                              ),
-                            ),
-                          ),
+                        dateValidate
+                            ? const SizedBox()
+                            : Text(
+                                "Please Select Birthdate",
+                                style: TextStyle(
+                                    color: Colors.red.shade900, fontSize: 16),
+                              ).paddingOnly(top: 6)
+                      ],
+                    ),
                     onTap: () {
                       showDatePicker(
                         context: context,
@@ -683,7 +692,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  "${Translate.of(context)!.translate('Licence No.')} *",
+                  "${Translate.of(context)!.translate('License No.')} *",
                   style: kInputTextStyle,
                 ),
                 CustomTextFormField(
@@ -693,7 +702,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   hintText: 'DFGBV784959F0',
                   validator: (text) {
                     if (text!.isEmpty) {
-                      return 'Please Enter Licence Number';
+                      return 'Please Enter License Number';
                     }
                     return null;
                   },
@@ -890,7 +899,8 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                                                           index]
                                                                           [
                                                                           'speciality_name']
-                                                                      .toString(),
+                                                                      .toString()
+                                                                      .trim(),
                                                                   style:
                                                                       TextStyle(
                                                                     fontSize:
@@ -907,12 +917,16 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                                                   Navigator.pop(
                                                                       context);
 
-                                                                  _userController.onChangeSpeciality(_userController
-                                                                      .dropDownSpeciality[
-                                                                          index]
-                                                                          [
-                                                                          'speciality_name']
-                                                                      .toString());
+                                                                  _userController
+                                                                      .onChangeSpeciality(
+                                                                    _userController
+                                                                        .dropDownSpeciality[
+                                                                            index]
+                                                                            [
+                                                                            'speciality_name']
+                                                                        .toString()
+                                                                        .trim(),
+                                                                  );
 
                                                                   sController
                                                                       .clear();
@@ -949,12 +963,12 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                       }
                     },
                     child: Container(
-                      height: 60,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
                         color: Colors.transparent,
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
@@ -998,14 +1012,25 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                             height: 10,
                           ),
                           Container(
-                            height: 1,
-                            width: double.infinity,
-                            color: Colors.grey.shade500,
-                          )
+                              height: 1,
+                              width: double.infinity,
+                              color: !specialityValidate
+                                  ? Colors.red.shade900
+                                  : Colors.grey.shade500),
+                          specialityValidate
+                              ? const SizedBox()
+                              : Text(
+                                  "Please Select Speciality",
+                                  style: TextStyle(
+                                      color: Colors.red.shade900, fontSize: 16),
+                                ).paddingOnly(top: 6)
                         ],
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 // Obx(
                 //   () => DropdownButtonFormField(
@@ -1109,14 +1134,14 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                   },
                 ),
                 const SizedBox(
-                  height: 35,
+                  height: 20,
                 ),
                 Text(
                   "${Translate.of(context)!.translate('State')} *",
                   style: kInputTextStyle,
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 12,
                 ),
                 dropDownView(
                   category: 's',
@@ -1131,12 +1156,13 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                     }
                   },
                 ),
+                const SizedBox(height: 20),
                 Text(
                   "${Translate.of(context)!.translate('city')} *",
                   style: kInputTextStyle,
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 12,
                 ),
                 dropDownView(
                   category: 'c',
@@ -1151,6 +1177,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                     }
                   },
                 ),
+                const SizedBox(height: 20),
                 Text(
                   "${Translate.of(context)!.translate('Medical Center')} *",
                   style: kInputTextStyle,
@@ -1228,29 +1255,30 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                 CustomButton(
                   textSize: 24,
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      if (_userController.dateOfBirth.value == "") {
-                        Utils.showSnackBar(
-                            'Warning!', "Please select date of birth.");
-                        return;
-                      }
-                      if (categoryOfStatesDropDown.toString().isEmpty ||
-                          categoryOfStatesDropDown == null) {
-                        Utils.showSnackBar('Warning!', "Please select state.");
-                        return;
-                      }
-                      if (categoryOfCitiesDropDown.toString().isEmpty ||
-                          categoryOfCitiesDropDown == null) {
-                        Utils.showSnackBar('Warning!', "Please select city.");
-                        return;
-                      }
-                      if (categoryOfMedicalCenterDropDown.toString().isEmpty ||
-                          categoryOfMedicalCenterDropDown == null) {
-                        Utils.showSnackBar(
-                            'Warning!', "Please select medical center.");
-                        return;
-                      }
+                    dateValidate =
+                        _userController.dateOfBirth.value == "" ? false : true;
+                    specialityValidate =
+                        _userController.selectedSpeciality.value == ""
+                            ? false
+                            : true;
+                    stateValidate =
+                        (categoryOfStatesDropDown.toString().isEmpty ||
+                                categoryOfStatesDropDown == null)
+                            ? false
+                            : true;
+                    cityValidate =
+                        (categoryOfCitiesDropDown.toString().isEmpty ||
+                                categoryOfCitiesDropDown == null)
+                            ? false
+                            : true;
 
+                    setState(() {});
+
+                    if (_formKey.currentState!.validate() &&
+                        dateValidate &&
+                        stateValidate &&
+                        cityValidate &&
+                        specialityValidate) {
                       /*if (selector == 0 && isDoctorVerify == false) {
                         showDialog(
                           context: context,
@@ -1486,12 +1514,12 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: Colors.transparent,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -1538,10 +1566,34 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
               height: 10,
             ),
             Container(
-              height: 1,
-              width: double.infinity,
-              color: Colors.grey.shade500,
-            )
+                height: 1,
+                width: double.infinity,
+                color: category == 's'
+                    ? !stateValidate
+                        ? Colors.red.shade900
+                        : Colors.grey.shade500
+                    : category == 'c'
+                        ? !cityValidate
+                            ? Colors.red.shade900
+                            : Colors.grey.shade500
+                        : Colors.grey.shade500),
+            category == 's'
+                ? stateValidate
+                    ? const SizedBox()
+                    : Text(
+                        "Please Select State",
+                        style:
+                            TextStyle(color: Colors.red.shade900, fontSize: 16),
+                      ).paddingOnly(top: 6)
+                : category == 'c'
+                    ? cityValidate
+                        ? const SizedBox()
+                        : Text(
+                            "Please Select City",
+                            style: TextStyle(
+                                color: Colors.red.shade900, fontSize: 16),
+                          ).paddingOnly(top: 6)
+                    : const SizedBox()
           ],
         ),
       ),

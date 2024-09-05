@@ -11,14 +11,14 @@ import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/blocs/app_bloc.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import '../../components/custom_button.dart';
 import '../../components/text_form_field.dart';
-import '../../data/pref_manager.dart';
-import '../../model/user.dart';
+import '../../utils/pref_manager.dart';
+import '../../ResponseModel/user.dart';
 import '../../routes/routes.dart';
 import '../../utils/constants.dart';
 import '../../utils/utils.dart';
@@ -313,6 +313,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
 
   String? doctorsTypes;
   final digitController = TextEditingController();
+  bool dateValidate = true;
+  bool stateValidate = true;
+  bool cityValidate = true;
 
   @override
   void dispose() {
@@ -503,43 +506,61 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 Obx(
                   () => ListTile(
                     contentPadding: const EdgeInsets.all(0),
-                    title: _userController.dateOfBirth.value.isEmpty
-                        ? Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: Colors.grey),
-                              ),
-                            ),
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Tap to Select BirthDate",
-                                  style: hintStyle,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _userController.dateOfBirth.value.isEmpty
+                            ? Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        color: !dateValidate
+                                            ? Colors.red.shade900
+                                            : Colors.grey),
+                                  ),
                                 ),
-                                Icon(
-                                  Icons.calendar_today_outlined,
-                                  color: Colors.grey,
-                                )
-                              ],
-                            ),
-                          )
-                        : Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: Colors.grey),
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: const Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Tap to Select BirthDate",
+                                      style: hintStyle,
+                                    ),
+                                    Icon(
+                                      Icons.calendar_today_outlined,
+                                      color: Colors.grey,
+                                    )
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Text(
+                                  DateFormat('EEEE, dd MMMM, yyyy').format(
+                                    DateTime.parse(
+                                        _userController.dateOfBirth.value),
+                                  ),
+                                  style: const TextStyle(fontSize: 20),
+                                ),
                               ),
-                            ),
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Text(
-                              DateFormat('EEEE, dd MMMM, yyyy').format(
-                                DateTime.parse(
-                                    _userController.dateOfBirth.value),
-                              ),
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          ),
+                        dateValidate
+                            ? const SizedBox()
+                            : Text(
+                                "Please Select Birthdate",
+                                style: TextStyle(
+                                    color: Colors.red.shade900, fontSize: 16),
+                              ).paddingOnly(top: 6)
+                      ],
+                    ),
                     onTap: () {
                       showDatePicker(
                         context: context,
@@ -1081,6 +1102,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     }
                   },
                 ),
+
+                const SizedBox(height: 15),
+
                 Text(
                   "${Translate.of(context)!.translate('City')} *",
                   style: kInputTextStyle,
@@ -1103,7 +1127,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     }
                   },
                 ),
-                const SizedBox(height: 6),
+
+                const SizedBox(height: 15),
+
                 Text(
                   "${Translate.of(context)!.translate('How did you hear about us?')} (Optional)",
                   style: kInputTextStyle,
@@ -1196,23 +1222,21 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 CustomButton(
                   textSize: 24,
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      if (_userController.dateOfBirth.value == "") {
-                        Utils.showSnackBar(
-                            'Warning!', "Please select date of birth.");
-                        return;
-                      }
-                      if (dropdownValuesStateID.toString().isEmpty ||
-                          dropdownValuesStateID == null) {
-                        Utils.showSnackBar('Warning!', "Please select state.");
-                        return;
-                      }
-                      if (dropdownValuesCityID.toString().isEmpty ||
-                          dropdownValuesCityID == null) {
-                        Utils.showSnackBar('Warning!', "Please select city.");
-                        return;
-                      }
-
+                    dateValidate =
+                        _userController.dateOfBirth.value == "" ? false : true;
+                    stateValidate = (dropdownValuesStateID.toString().isEmpty ||
+                            dropdownValuesStateID == null)
+                        ? false
+                        : true;
+                    cityValidate = (dropdownValuesCityID.toString().isEmpty ||
+                            dropdownValuesCityID == null)
+                        ? false
+                        : true;
+                    setState(() {});
+                    if (_formKey.currentState!.validate() &&
+                        dateValidate &&
+                        stateValidate &&
+                        cityValidate) {
                       _userController.registerData = User(
                         firstName: _firstNameController.text,
                         lastName: _lastNameController.text,
@@ -1539,7 +1563,6 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 60,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4), color: Colors.transparent),
         child: Column(
@@ -1589,7 +1612,30 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
               height: 10,
             ),
             Container(
-                height: 1, width: double.infinity, color: Colors.grey.shade500)
+                height: 1,
+                width: double.infinity,
+                color: state == true
+                    ? !stateValidate
+                        ? Colors.red.shade900
+                        : Colors.grey.shade500
+                    : !cityValidate
+                        ? Colors.red.shade900
+                        : Colors.grey.shade500),
+            state == true
+                ? stateValidate
+                    ? const SizedBox()
+                    : Text(
+                        "Please Select State",
+                        style:
+                            TextStyle(color: Colors.red.shade900, fontSize: 16),
+                      ).paddingOnly(top: 6)
+                : cityValidate
+                    ? const SizedBox()
+                    : Text(
+                        "Please Select City",
+                        style:
+                            TextStyle(color: Colors.red.shade900, fontSize: 16),
+                      ).paddingOnly(top: 6)
           ],
         ),
       ),

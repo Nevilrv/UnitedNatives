@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:united_natives/model/doctor_by_specialities.dart';
-import 'package:united_natives/model/doctor_specialities_filter_model.dart';
-import 'package:united_natives/model/patient_appointment_model.dart';
-import 'package:united_natives/model/specialities_model.dart';
-import 'package:united_natives/model/specific_appointment_details_model.dart';
+import 'package:united_natives/ResponseModel/doctor_by_specialities.dart';
+import 'package:united_natives/ResponseModel/doctor_specialities_filter_model.dart';
+import 'package:united_natives/ResponseModel/patient_appointment_model.dart';
+import 'package:united_natives/ResponseModel/specialities_model.dart';
+import 'package:united_natives/ResponseModel/specific_appointment_details_model.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/exception.dart';
 import 'package:united_natives/utils/network_util.dart';

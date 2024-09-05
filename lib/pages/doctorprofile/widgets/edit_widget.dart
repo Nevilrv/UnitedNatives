@@ -11,9 +11,9 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/controller/user_update_contoller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/viewModel/user_update_contoller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:united_natives/utils/utils.dart';
 
@@ -430,7 +430,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
               }),
               const SizedBox(height: 15),
               Text(
-                "${Translate.of(context)?.translate('Licence No.')} *",
+                "${Translate.of(context)?.translate('License No.')} *",
                 style: kInputTextStyle,
               ),
               CustomTextFormField(
@@ -442,7 +442,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                         "Enter certificate number"),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please Enter Licence Number';
+                    return 'Please Enter License Number';
                   }
                   return null;
                 },
@@ -473,31 +473,318 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                 "${Translate.of(context)?.translate('Speciality')} *",
                 style: kInputTextStyle,
               ),
-              Obx(() {
-                return DropdownButtonFormField(
-                  validator: (value) =>
-                      value == null ? 'Please Select Speciality' : null,
-                  isExpanded: true,
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Theme.of(context).textTheme.titleMedium?.color,
-                  ),
-                  value: _userUpdateController.speciality.value.isEmpty
-                      ? null
-                      : _userUpdateController.speciality.value,
-                  hint: Text(
-                    Translate.of(context)!.translate('Add Speciality'),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      color: Color(0xffbcbcbc),
-                      fontFamily: 'NunitoSans',
+              const SizedBox(
+                height: 15,
+              ),
+              Obx(
+                () => GestureDetector(
+                  onTap: () async {
+                    if (_userUpdateController.dropDownSpeciality.isNotEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PopScope(
+                            canPop: false,
+                            child: StatefulBuilder(
+                              builder: (context, setState234) {
+                                return Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                        maxHeight: h * 0.6, maxWidth: 550),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: _isDark
+                                            ? Colors.grey.shade800
+                                            : Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          top: h * 0.015,
+                                          left: h * 0.015,
+                                          right: h * 0.005,
+                                          bottom: 0,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: _isDark
+                                                          ? Colors.grey.shade800
+                                                          : Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              25),
+                                                      border: Border.all(
+                                                          color: Colors.grey),
+                                                    ),
+                                                    height: 48,
+                                                    child: Center(
+                                                      child: TextField(
+                                                        controller: sController,
+                                                        onChanged: (value) {
+                                                          setState234(() {});
+                                                        },
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                contentPadding:
+                                                                    EdgeInsets.only(
+                                                                        top: 10,
+                                                                        left:
+                                                                            16),
+                                                                suffixIcon:
+                                                                    Icon(Icons
+                                                                        .search),
+                                                                enabledBorder:
+                                                                    InputBorder
+                                                                        .none,
+                                                                focusedBorder:
+                                                                    InputBorder
+                                                                        .none,
+                                                                hintText:
+                                                                    'Search...'),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    sController.clear();
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.clear,
+                                                    color: Colors.black,
+                                                    size: 25,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: h * 0.01,
+                                            ),
+                                            Expanded(
+                                              child: Builder(
+                                                builder: (context) {
+                                                  int index = _userUpdateController
+                                                      .dropDownSpeciality
+                                                      .indexWhere((element) => element[
+                                                              "speciality_name"]
+                                                          .toString()
+                                                          .toLowerCase()
+                                                          .contains(sController
+                                                              .text
+                                                              .toString()
+                                                              .toLowerCase()));
+                                                  if (index < 0) {
+                                                    return Center(
+                                                      child: Text(
+                                                        'No Speciality !',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleMedium
+                                                                  ?.color,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+
+                                                  return ListView.builder(
+                                                    padding: EdgeInsets.zero,
+                                                    physics:
+                                                        const BouncingScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemCount:
+                                                        _userUpdateController
+                                                            .dropDownSpeciality
+                                                            .length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      if (_userUpdateController
+                                                          .dropDownSpeciality[
+                                                              index][
+                                                              'speciality_name']
+                                                          .toString()
+                                                          .toLowerCase()
+                                                          .contains(sController
+                                                              .text
+                                                              .toString()
+                                                              .toLowerCase())) {
+                                                        return Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            ListTile(
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .zero,
+                                                              title: Text(
+                                                                _userUpdateController
+                                                                    .dropDownSpeciality[
+                                                                        index][
+                                                                        'speciality_name']
+                                                                    .toString()
+                                                                    .trim(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 20,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .titleMedium
+                                                                      ?.color,
+                                                                ),
+                                                              ),
+                                                              onTap: () async {
+                                                                Navigator.pop(
+                                                                    context);
+
+                                                                _userUpdateController
+                                                                    .onChangeSpeciality(
+                                                                  _userUpdateController
+                                                                      .dropDownSpeciality[
+                                                                          index]
+                                                                          [
+                                                                          'speciality_name']
+                                                                      .toString()
+                                                                      .trim(),
+                                                                );
+
+                                                                sController
+                                                                    .clear();
+                                                              },
+                                                            ),
+                                                            Divider(
+                                                              height: 0,
+                                                              color: Colors.grey
+                                                                  .shade400,
+                                                            ).paddingOnly(
+                                                                right: 6)
+                                                          ],
+                                                        );
+                                                      } else {
+                                                        return const SizedBox();
+                                                      }
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.transparent,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                _userUpdateController.speciality.value.isEmpty
+                                    ? "Select Speciality"
+                                    : _userUpdateController.speciality.value,
+                                overflow: TextOverflow.ellipsis,
+                                style: _userUpdateController
+                                        .speciality.value.isEmpty
+                                    ? const TextStyle(
+                                        fontSize: 20,
+                                        color: Color(0xffbcbcbc),
+                                        fontFamily: 'NunitoSans',
+                                      )
+                                    : TextStyle(
+                                        fontSize: 20,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.color,
+                                      ),
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color: _isDark
+                                  ? _userUpdateController
+                                          .dropDownSpeciality.isEmpty
+                                      ? Colors.grey.shade800
+                                      : Colors.grey.shade100
+                                  : _userUpdateController
+                                          .dropDownSpeciality.isEmpty
+                                      ? Colors.grey
+                                      : Colors.grey.shade800,
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 1,
+                          width: double.infinity,
+                          color: Colors.grey.shade500,
+                        )
+                      ],
                     ),
                   ),
-                  onChanged: _userUpdateController.onChangeSpeciality,
-                  items: _userUpdateController.dropDownSpeciality ?? [],
-                );
-              }),
-              const SizedBox(height: 15),
+                ),
+              ),
+              // Obx(() {
+              //   return DropdownButtonFormField(
+              //     validator: (value) =>
+              //         value == null ? 'Please Select Speciality' : null,
+              //     isExpanded: true,
+              //     style: TextStyle(
+              //       fontSize: 22,
+              //       color: Theme.of(context).textTheme.titleMedium?.color,
+              //     ),
+              //     value: _userUpdateController.speciality.value.isEmpty
+              //         ? null
+              //         : _userUpdateController.speciality.value,
+              //     hint: Text(
+              //       Translate.of(context)!.translate('Add Speciality'),
+              //       style: const TextStyle(
+              //         fontSize: 22,
+              //         color: Color(0xffbcbcbc),
+              //         fontFamily: 'NunitoSans',
+              //       ),
+              //     ),
+              //     onChanged: _userUpdateController.onChangeSpeciality,
+              //     items: _userUpdateController.dropDownSpeciality ?? [],
+              //   );
+              // }),
+              // const SizedBox(
+              //   height: 15,
+              // ),
               Text(
                 "${Translate.of(context)?.translate('Education')} *",
                 style: kInputTextStyle,

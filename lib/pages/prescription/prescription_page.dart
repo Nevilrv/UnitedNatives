@@ -1,5 +1,5 @@
 import 'package:united_natives/components/custom_profile_item.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
 import 'package:united_natives/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

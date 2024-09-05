@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:united_natives/pages/on%20board/Showcaseview/model/slider.dart';
 import 'package:united_natives/routes/routes.dart';
 
 import '../constants/constants.dart';
-import '../model/slider.dart';
 import '../widgets/slide_dots.dart';
 import '../widgets/slide_items/slide_item.dart';
 

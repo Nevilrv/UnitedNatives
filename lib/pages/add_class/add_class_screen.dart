@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:united_natives/components/text_form_field.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/add_class_request_model.dart';
+import 'package:united_natives/requestModel/add_class_request_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/add_class_response_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/utils/utils.dart';

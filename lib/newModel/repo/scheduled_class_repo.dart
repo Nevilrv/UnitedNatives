@@ -1,5 +1,5 @@
-import 'package:united_natives/newModel/apiModel/requestModel/add_class_request_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/edit_class_request_model.dart';
+import 'package:united_natives/requestModel/add_class_request_model.dart';
+import 'package:united_natives/requestModel/edit_class_request_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/add_class_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/class_detail_doctor_data_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_class_doctor_data_reponse_model.dart';

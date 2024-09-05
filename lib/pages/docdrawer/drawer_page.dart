@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io' show Platform;
 import 'package:share_plus/share_plus.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/app.dart';
 import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
+import 'package:united_natives/requestModel/add_chat_status_request_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/pages/home2/drawer_controller.dart';
 import 'package:united_natives/routes/routes.dart';

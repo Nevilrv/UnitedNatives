@@ -1,8 +1,8 @@
 import 'package:united_natives/components/custom_profile_item.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/utils.dart';
-import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
 import 'package:united_natives/routes/routes.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/utils.dart';

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/theme_controlller.dart';
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/theme_controlller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/viewModel/rate_and%20_contactus_viewModel.dart';
 
-import '../../data/pref_manager.dart';
+import '../../utils/pref_manager.dart';
 import '../../utils/constants.dart';
 import 'widgets/widgets.dart';
 

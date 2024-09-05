@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/patient_homepage_model.dart';
+import 'package:united_natives/ResponseModel/patient_homepage_model.dart';
 import '../../components/custom_recipe_item.dart';
 
 class PrescriptionDetailPage extends StatefulWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:intl/intl.dart';
-import 'package:united_natives/controller/doctor_homescreen_controller.dart';
-import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
 import 'package:united_natives/utils/utils.dart';
 
 import '../../components/custom_profile_item.dart';

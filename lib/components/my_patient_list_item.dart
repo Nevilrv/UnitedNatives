@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/patient_detail_model.dart';
+import 'package:united_natives/ResponseModel/patient_detail_model.dart';
 import 'package:united_natives/routes/routes.dart';
 import 'package:united_natives/utils/utils.dart';
 

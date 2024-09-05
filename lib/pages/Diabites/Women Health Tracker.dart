@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/self_monitoring_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/self_monitoring_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../model/health_response_model.dart';
+import '../../ResponseModel/health_response_model.dart';
 import '../../utils/utils.dart';
 
 void enablePlatformOverrideForDesktop() {
@@ -215,7 +215,7 @@ class _WomenHealthState extends State<WomenHealth> {
           appBar: AppBar(
             surfaceTintColor: Colors.transparent,
             title: Text(
-              "Female Menstrual Tracker",
+              "Female Menstrual Cycle",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).textTheme.titleMedium?.color,
@@ -251,7 +251,7 @@ class _WomenHealthState extends State<WomenHealth> {
                                 key: _editableKey,
                                 columns: cols,
                                 rows: rows,
-                                popUpTitle: 'Women Health Tracker',
+                                popUpTitle: 'Female Menstrual Cycle',
                                 showSaveIcon: true,
                                 saveIconColor:
                                     _isDark ? Colors.white : Colors.black,
@@ -333,7 +333,7 @@ class _WomenHealthState extends State<WomenHealth> {
                       Padding(
                         padding: EdgeInsets.only(bottom: Get.height * 0.44),
                         child: Text(
-                          'No women health tracker data',
+                          'No female menstrual cycle data',
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge
@@ -360,7 +360,7 @@ class _WomenHealthState extends State<WomenHealth> {
 
     Alert(
         context: context,
-        title: 'Physical Activity Tracker',
+        title: 'Female Menstrual Cycle',
         content: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SizedBox(

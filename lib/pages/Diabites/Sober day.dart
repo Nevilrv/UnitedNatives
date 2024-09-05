@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
-import 'package:united_natives/controller/self_monitoring_controller.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
+import 'package:united_natives/viewModel/self_monitoring_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/pages/Diabites/custom_package/editable_custom_package.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:flutter/foundation.dart';
@@ -15,7 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../model/health_response_model.dart';
+import '../../ResponseModel/health_response_model.dart';
 import '../../utils/utils.dart';
 
 void enablePlatformOverrideForDesktop() {

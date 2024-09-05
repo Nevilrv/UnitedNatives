@@ -1,7 +1,7 @@
 import 'dart:core';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/model/booked_appointment_data.dart';
-import 'package:united_natives/model/paymentPaypalModel.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/ResponseModel/booked_appointment_data.dart';
+import 'package:united_natives/ResponseModel/paymentPaypalModel.dart';
 import 'package:united_natives/routes/routes.dart';
 import 'package:united_natives/sevices/patient_home_screen_service.dart';
 import 'package:united_natives/sevices/paypal_service.dart';

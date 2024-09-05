@@ -1,7 +1,7 @@
 import 'package:united_natives/components/agora_video_call.dart';
 import 'package:united_natives/components/custom_button.dart';
-import 'package:united_natives/controller/patient_homescreen_controller.dart';
-import 'package:united_natives/model/patient_homepage_model.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
+import 'package:united_natives/ResponseModel/patient_homepage_model.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

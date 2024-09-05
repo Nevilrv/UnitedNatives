@@ -1,7 +1,7 @@
 import 'package:united_natives/components/ads_bottom_bar.dart';
-import 'package:united_natives/controller/ads_controller.dart';
+import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/model/visited_patient_model.dart';
+import 'package:united_natives/ResponseModel/visited_patient_model.dart';
 import 'package:united_natives/pages/prescription/widget/doctor_presciption_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

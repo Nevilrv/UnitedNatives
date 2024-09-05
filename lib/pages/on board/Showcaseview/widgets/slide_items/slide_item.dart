@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
-import '../../model/slider.dart';
+import 'package:united_natives/pages/on%20board/Showcaseview/model/slider.dart';
 
 class SlideItem extends StatelessWidget {
   final int index;

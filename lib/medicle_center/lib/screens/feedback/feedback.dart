@@ -1,4 +1,4 @@
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/blocs/bloc.dart';
 import 'package:united_natives/medicle_center/lib/models/model.dart';
 import 'package:united_natives/medicle_center/lib/utils/utils.dart';
@@ -69,6 +69,7 @@ class _WriteReviewState extends State<WriteReview> {
         centerTitle: true,
         title: Text(
           Translate.of(context)!.translate('feedback'),
+          style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
       body: SafeArea(
@@ -138,7 +139,7 @@ class _WriteReviewState extends State<WriteReview> {
                         // )
                       ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     RatingBar.builder(
                       initialRating: _rate,
                       minRating: 1,
@@ -156,9 +157,10 @@ class _WriteReviewState extends State<WriteReview> {
                         });
                       },
                     ),
+                    const SizedBox(height: 6),
                     Text(
                       Translate.of(context)!.translate('tap_rate'),
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16),
@@ -171,7 +173,7 @@ class _WriteReviewState extends State<WriteReview> {
                               Translate.of(context)!.translate('description'),
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleSmall
+                                  .titleLarge
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -202,13 +204,28 @@ class _WriteReviewState extends State<WriteReview> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: AppButton(
-                Translate.of(context)?.translate('send'),
-                onPressed: _onSave,
-                mainAxisSize: MainAxisSize.max,
-              ),
-            )
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: ElevatedButton(
+                  onPressed: _onSave,
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        Translate.of(context)?.translate('send') ?? "",
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ).paddingAll(10),
+                    ],
+                  ),
+                ))
           ],
         ),
       ),

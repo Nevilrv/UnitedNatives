@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:date_format/date_format.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/data/pref_manager.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/edit_class_request_model.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/utils/pref_manager.dart';
+import 'package:united_natives/requestModel/edit_class_request_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/add_class_response_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/pages/schedule_class/comman_textform_widget.dart';

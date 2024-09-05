@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:united_natives/newModel/apiModel/requestModel/add_direct_appointment_req_model.dart';
+import 'package:united_natives/requestModel/add_direct_appointment_req_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/add_direct_appointment_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_all_doctor.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_direct_doctor_response_model.dart';

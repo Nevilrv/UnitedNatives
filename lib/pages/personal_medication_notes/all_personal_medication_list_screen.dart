@@ -1,7 +1,7 @@
-import 'package:united_natives/controller/user_controller.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/delete_personal_medication_notes_request_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/get_all_personal_medication_notes_request_model.dart';
+import 'package:united_natives/requestModel/delete_personal_medication_notes_request_model.dart';
+import 'package:united_natives/requestModel/get_all_personal_medication_notes_request_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_all_personal_medication_notes_response_model.dart';
 import 'package:united_natives/newModel/apis/api_response.dart';
 import 'package:united_natives/pages/personal_medication_notes/edit_personal_medication_notes.dart';

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:united_natives/data/pref_manager.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/add_chat_status_request_model.dart';
+import 'package:united_natives/utils/pref_manager.dart';
+import 'package:united_natives/requestModel/add_chat_status_request_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/chat_status_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
 import 'package:united_natives/newModel/services/api_service.dart';

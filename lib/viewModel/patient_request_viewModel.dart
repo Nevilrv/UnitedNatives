@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:united_natives/controller/user_controller.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/patient_add_request_model.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:united_natives/requestModel/patient_add_request_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/message_status_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/patient_all_request_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/patient_request_list_response_model.dart';

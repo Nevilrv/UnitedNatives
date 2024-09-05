@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/add_personal_medication_notes_req_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/delete_personal_medication_notes_request_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/get_all_personal_medication_notes_request_model.dart';
-import 'package:united_natives/newModel/apiModel/requestModel/update_personal_medication_notes_request_model.dart';
+import 'package:united_natives/requestModel/add_personal_medication_notes_req_model.dart';
+import 'package:united_natives/requestModel/delete_personal_medication_notes_request_model.dart';
+import 'package:united_natives/requestModel/get_all_personal_medication_notes_request_model.dart';
+import 'package:united_natives/requestModel/update_personal_medication_notes_request_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/add_personal_medication_notes_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/delete_personal_medication_notes_response_model.dart';
 import 'package:united_natives/newModel/apiModel/responseModel/get_all_personal_medication_notes_response_model.dart';

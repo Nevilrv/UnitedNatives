@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:united_natives/model/api_state_enum.dart';
+import 'package:united_natives/ResponseModel/api_state_enum.dart';
 
 PatientDetailsResponseModel patientDetailsResponseModelFromJson(String str) =>
     PatientDetailsResponseModel.fromJson(json.decode(str));

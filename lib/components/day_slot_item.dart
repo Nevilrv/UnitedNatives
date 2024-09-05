@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:united_natives/controller/book_appointment_controller.dart';
+import 'package:united_natives/viewModel/book_appointment_controller.dart';
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 
 import '../utils/constants.dart';

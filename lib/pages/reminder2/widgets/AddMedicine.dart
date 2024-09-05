@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:united_natives/controller/reminder_controller.dart';
+import 'package:united_natives/viewModel/reminder_controller.dart';
 import 'package:united_natives/pages/reminder2/animations/fade_animation.dart';
 import 'package:united_natives/pages/reminder2/sqflite_database_helper.dart';
 import 'package:united_natives/sevices/app_notification.dart';
