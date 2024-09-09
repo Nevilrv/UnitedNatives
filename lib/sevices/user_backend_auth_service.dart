@@ -172,6 +172,10 @@ class UserBackendAuthService {
         "weight": userData.weight ?? "",
         "emergency_contact_number": userData.emergencyContact ?? "",
         "case_manager": userData.currentCaseManagerInfo ?? "",
+        "medical_insurance_number": userData.insuranceNumber ?? "",
+        "second_tribal_affiliation": userData.second_tribal_affiliation ?? "",
+        "third_tribal_affiliation": userData.third_tribal_affiliation ?? "",
+        "fourth_tribal_affiliation": userData.fourth_tribal_affiliation ?? "",
 
         // 'is_IH_user': userData.isIhUser,
         //'is_admin':userData.isAdmin
@@ -583,8 +587,15 @@ class UserBackendAuthService {
         'medical_insurance_name': userUpdateData.insuranceCompanyName ?? "",
         'us_veteran_status': userUpdateData.usVeteranStatus ?? "",
         'tribal_federally_member': userUpdateData.tribalFederallyMember ?? "",
+        'second_tribal_affiliation':
+            userUpdateData.second_tribal_affiliation ?? "",
+        'third_tribal_affiliation':
+            userUpdateData.third_tribal_affiliation ?? "",
+        'fourth_tribal_affiliation':
+            userUpdateData.fourth_tribal_affiliation ?? "",
         'tribal_federally_state': userUpdateData.tribalFederallyState ?? "",
         'tribal_background_status': userUpdateData.tribalBackgroundStatus ?? "",
+        'medical_insurance_number': userUpdateData.insuranceNumber ?? "",
       };
 
       log('body==========>>>>>${jsonEncode(body)}');

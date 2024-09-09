@@ -214,7 +214,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
   final cityController = TextEditingController();
   final sController = TextEditingController();
   final insuranceCompanyName = TextEditingController();
-  final insuranceNumberCompanyName = TextEditingController();
+  final insuranceNumber = TextEditingController();
   final howDidYouHearAboutUs = TextEditingController();
   final allergiesController = TextEditingController();
   final whatTribe1Controller = TextEditingController();
@@ -339,6 +339,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
     _userController.tribalFederallyMember = ''.obs;
     _userController.tribalFederallyState = ''.obs;
     _userController.tribalBackgroundStatus = ''.obs;
+    _userController.howYouHereAboutUs = ''.obs;
     super.dispose();
   }
 
@@ -557,7 +558,11 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                             : Text(
                                 "Please Select Birthdate",
                                 style: TextStyle(
-                                    color: Colors.red.shade900, fontSize: 16),
+                                    color: Colors.red.shade900,
+                                    fontSize: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.fontSize),
                               ).paddingOnly(top: 6)
                       ],
                     ),
@@ -748,25 +753,25 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                 return null;
                               },
                             ),
-                            // const SizedBox(
-                            //   height: 20,
-                            // ),
-                            // Text(
-                            //   "${Translate.of(context)!.translate('What is your medical insurance policy number?')} *",
-                            //   style: kInputTextStyle,
-                            // ),
-                            // CustomTextFormField(
-                            //   focusNode: FocusNode(),
-                            //   textInputAction: TextInputAction.next,
-                            //   controller: insuranceNumberCompanyName,
-                            //   hintText: 'Enter medical insurance policy number',
-                            //   validator: (text) {
-                            //     if (text!.isEmpty) {
-                            //       return 'Enter medical insurance policy number';
-                            //     }
-                            //     return null;
-                            //   },
-                            // )
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "${Translate.of(context)!.translate('What is your medical insurance policy number?')} *",
+                              style: kInputTextStyle,
+                            ),
+                            CustomTextFormField(
+                              focusNode: FocusNode(),
+                              textInputAction: TextInputAction.next,
+                              controller: insuranceNumber,
+                              hintText: 'Enter medical insurance policy number',
+                              validator: (text) {
+                                if (text!.isEmpty) {
+                                  return 'Enter medical insurance policy number';
+                                }
+                                return null;
+                              },
+                            )
                           ],
                         )
                     ],
@@ -891,45 +896,45 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                 return null;
                               },
                             ),
-                            // const SizedBox(
-                            //   height: 20,
-                            // ),
-                            // Text(
-                            //   "${Translate.of(context)!.translate('What is your second tribal affliction?')} (Optional)",
-                            //   style: kInputTextStyle,
-                            // ),
-                            // CustomTextFormField(
-                            //   focusNode: FocusNode(),
-                            //   textInputAction: TextInputAction.next,
-                            //   controller: whatTribe1SecondController,
-                            //   hintText: 'Enter your second tribal affliction',
-                            // ),
-                            // const SizedBox(
-                            //   height: 20,
-                            // ),
-                            // Text(
-                            //   "${Translate.of(context)!.translate('What is your third tribal affliction?')} (Optional)",
-                            //   style: kInputTextStyle,
-                            // ),
-                            // CustomTextFormField(
-                            //   focusNode: FocusNode(),
-                            //   textInputAction: TextInputAction.next,
-                            //   controller: whatTribe1ThirdController,
-                            //   hintText: 'Enter your third tribal affliction',
-                            // ),
-                            // const SizedBox(
-                            //   height: 20,
-                            // ),
-                            // Text(
-                            //   "${Translate.of(context)!.translate('What is your fourth tribal affliction?')} (Optional)",
-                            //   style: kInputTextStyle,
-                            // ),
-                            // CustomTextFormField(
-                            //   focusNode: FocusNode(),
-                            //   textInputAction: TextInputAction.next,
-                            //   controller: whatTribe1FourthController,
-                            //   hintText: 'Enter your fourth tribal affliction',
-                            // ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "${Translate.of(context)!.translate('What is your second tribal affliction?')} (Optional)",
+                              style: kInputTextStyle,
+                            ),
+                            CustomTextFormField(
+                              focusNode: FocusNode(),
+                              textInputAction: TextInputAction.next,
+                              controller: whatTribe1SecondController,
+                              hintText: 'Enter your second tribal affliction',
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "${Translate.of(context)!.translate('What is your third tribal affliction?')} (Optional)",
+                              style: kInputTextStyle,
+                            ),
+                            CustomTextFormField(
+                              focusNode: FocusNode(),
+                              textInputAction: TextInputAction.next,
+                              controller: whatTribe1ThirdController,
+                              hintText: 'Enter your third tribal affliction',
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "${Translate.of(context)!.translate('What is your fourth tribal affliction?')} (Optional)",
+                              style: kInputTextStyle,
+                            ),
+                            CustomTextFormField(
+                              focusNode: FocusNode(),
+                              textInputAction: TextInputAction.next,
+                              controller: whatTribe1FourthController,
+                              hintText: 'Enter your fourth tribal affliction',
+                            ),
                           ],
                         )
                     ],
@@ -1161,7 +1166,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   ),
                 ),
 
-                /* SizedBox(
+                /*  SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -1258,6 +1263,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         insuranceEligibility:
                             _userController.selectedInsuranceEligibility.value,
                         insuranceCompanyName: insuranceCompanyName.text.trim(),
+                        insuranceNumber: insuranceNumber.text.trim(),
                         userType: "1",
                         city: dropdownValuesCityID ?? "",
                         state: dropdownValuesStateID ?? "",
@@ -1275,6 +1281,13 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                             _userController.tribalFederallyState.value == "Yes"
                                 ? whatTribe2Controller.text.trim()
                                 : "",
+                        federallyRecognizedTribe: whatTribe1Controller.text,
+                        second_tribal_affiliation:
+                            whatTribe1SecondController.text,
+                        third_tribal_affiliation:
+                            whatTribe1ThirdController.text,
+                        fourth_tribal_affiliation:
+                            whatTribe1FourthController.text,
                         tribalBackgroundStatus:
                             _userController.tribalBackgroundStatus.value,
                       );
@@ -1626,15 +1639,23 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     ? const SizedBox()
                     : Text(
                         "Please Select State",
-                        style:
-                            TextStyle(color: Colors.red.shade900, fontSize: 16),
+                        style: TextStyle(
+                            color: Colors.red.shade900,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.fontSize),
                       ).paddingOnly(top: 6)
                 : cityValidate
                     ? const SizedBox()
                     : Text(
                         "Please Select City",
-                        style:
-                            TextStyle(color: Colors.red.shade900, fontSize: 16),
+                        style: TextStyle(
+                            color: Colors.red.shade900,
+                            fontSize: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.fontSize),
                       ).paddingOnly(top: 6)
           ],
         ),

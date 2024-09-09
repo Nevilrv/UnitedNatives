@@ -43,7 +43,7 @@ class UserUpdateController extends GetxController {
 
   final allergiesController = TextEditingController();
   final insuranceCompanyName = TextEditingController();
-  final insuranceNumberCompanyName = TextEditingController();
+  final insuranceNumber = TextEditingController();
   final whatTribe1Controller = TextEditingController();
   final whatTribe1SecondController = TextEditingController();
   final whatTribe1ThirdController = TextEditingController();
@@ -173,8 +173,15 @@ class UserUpdateController extends GetxController {
         _userController.user.value.insuranceCompanyName ?? "";
     whatTribe1Controller.text =
         _userController.user.value.tribalFederallyMember ?? "";
+    whatTribe1SecondController.text =
+        _userController.user.value.second_tribal_affiliation ?? "";
+    whatTribe1ThirdController.text =
+        _userController.user.value.third_tribal_affiliation ?? "";
+    whatTribe1FourthController.text =
+        _userController.user.value.fourth_tribal_affiliation ?? "";
     whatTribe2Controller.text =
         _userController.user.value.tribalFederallyState ?? "";
+    insuranceNumber.text = _userController.user.value.insuranceNumber ?? "";
 
     _initDropDowns();
   }
@@ -320,8 +327,12 @@ class UserUpdateController extends GetxController {
         tribalFederallyState: whatTribe2Controller.text.trim(),
         tribalBackgroundStatus: tribalBackgroundStatus.value,
         tribalFederallyMember: whatTribe1Controller.text.trim(),
+        second_tribal_affiliation: whatTribe1SecondController.text.trim(),
+        third_tribal_affiliation: whatTribe1ThirdController.text.trim(),
+        fourth_tribal_affiliation: whatTribe1FourthController.text.trim(),
         usVeteranStatus: areYouAUSVeteran.value,
         insuranceCompanyName: insuranceCompanyName.text.trim(),
+        insuranceNumber: insuranceNumber.text.trim(),
       );
 
       patientUpdateModelData.value = await UserBackendAuthService()

@@ -304,11 +304,18 @@ class UserController extends GetxController {
       {File? useProfilePic}) async {
     try {
       User userData = User(
+        federallyRecognizedTribe: registerData?.federallyRecognizedTribe ?? "",
+        second_tribal_affiliation:
+            registerData?.second_tribal_affiliation ?? "",
+        third_tribal_affiliation: registerData?.third_tribal_affiliation ?? "",
+        fourth_tribal_affiliation:
+            registerData?.fourth_tribal_affiliation ?? "",
         firstName: registerData?.firstName,
         lastName: registerData?.lastName,
         gender: selectedGender.value,
         email: registerData?.email,
         contactNumber: registerData?.contactNumber,
+        insuranceNumber: registerData?.insuranceNumber ?? "",
         emergencyContact: registerData?.emergencyContact,
         dateOfBirth: registerData?.dateOfBirth ?? "",
         certificateNo: registerData?.certificateNo,
@@ -338,7 +345,7 @@ class UserController extends GetxController {
         weight: registerData?.weight,
         currentCaseManagerInfo: registerData?.currentCaseManagerInfo,
       );
-      debugPrint("registerData.providerType----->${jsonEncode(userData)}");
+
       await UserBackendAuthService().register(userData, userType, bearerToken,
           profilePic: registerUserProfile ?? File(""));
       // await Prefs.setString(Prefs.BEARER, bearerToken);
@@ -365,6 +372,16 @@ class UserController extends GetxController {
       for (var element in specialitiesModelData.value.specialities!) {
         dropDownSpeciality.add(element.toJson());
       }
+      Map<String, dynamic> data = {
+        "id": "0",
+        "speciality_name": "Other",
+        "speciality_image": "",
+        "created": "",
+        "modified": "",
+        "doctors_count": ""
+      };
+
+      dropDownSpeciality.add(data);
 
       // dropDownSpeciality = specialitiesModelData.value.specialities
       //         ?.map((map) => DropdownMenuItem<String>(
@@ -431,8 +448,6 @@ class UserController extends GetxController {
           bearerToken,
           socialProfilePic);
 
-      log('user.value==========>>>>>${user.value}');
-
       await Prefs.setString(Prefs.BEARER, bearerToken);
       await Prefs.setString(Prefs.EMAIL, email);
       await Prefs.setString(Prefs.profileImage, socialProfilePic);
@@ -452,7 +467,6 @@ class UserController extends GetxController {
       Utils.showSnackBar('Welcome $firstName', 'Google Sign in Successfully!');
       return user.value;
     } catch (e) {
-      log('e======1111====>>>>>$e');
       if (e is AppException) {
         Utils.showSnackBar('Login Failed', e.message);
       } else {

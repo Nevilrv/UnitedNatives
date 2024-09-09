@@ -37,15 +37,20 @@ class User {
   String? stateId;
   String? providerType;
   String? insuranceCompanyName;
+  String? insuranceNumber;
   String? howDidYouHearAboutUs;
   String? allergies;
   String? usVeteranStatus;
   String? tribalFederallyMember;
+  String? second_tribal_affiliation;
+  String? third_tribal_affiliation;
+  String? fourth_tribal_affiliation;
   String? tribalFederallyState;
   String? tribalBackgroundStatus;
   String? cityName;
   String? stateName;
   String? medicalCenterName;
+  String? federallyRecognizedTribe;
 
   User({
     this.id,
@@ -81,6 +86,7 @@ class User {
     this.city,
     this.medicalCenterID,
     this.isNativeAmerican,
+    this.insuranceNumber,
     this.isIhUser,
     this.stateId,
     this.cityId,
@@ -95,6 +101,10 @@ class User {
     this.cityName,
     this.stateName,
     this.medicalCenterName,
+    this.federallyRecognizedTribe,
+    this.second_tribal_affiliation,
+    this.third_tribal_affiliation,
+    this.fourth_tribal_affiliation,
   });
 
   User.fromJson(Map<String, dynamic> json) {
@@ -124,6 +134,7 @@ class User {
         json['case_manager_dec'] ?? json['current_case_manager'] ?? "";
     insuranceEligibility = json['insurance_eligibility'];
     tribalStatus = json['tribal_status'];
+    insuranceNumber = json['medical_insurance_number'] ?? "";
     perAppointmentCharge = json['per_appointment_charge'];
     certificateNo = json['certificate_no'];
     education = json['education'];
@@ -146,6 +157,10 @@ class User {
     cityName = json["cityName"] ?? "";
     stateName = json["stateName"] ?? "";
     medicalCenterName = json["medicalCenterName"] ?? "";
+    second_tribal_affiliation = json["second_tribal_affiliation"] ?? "";
+    third_tribal_affiliation = json["third_tribal_affiliation"] ?? "";
+    fourth_tribal_affiliation = json["fourth_tribal_affiliation"] ?? "";
+    federallyRecognizedTribe = json["federally_recognized_tribe"] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -172,6 +187,9 @@ class User {
     data['maritalStatus'] = maritalStatus;
     data['height_dec'] = height;
     data['weight_dec'] = weight;
+    data['second_tribal_affiliation'] = second_tribal_affiliation;
+    data['third_tribal_affiliation'] = third_tribal_affiliation;
+    data['fourth_tribal_affiliation'] = fourth_tribal_affiliation;
     data['emergency_contact_dec'] = emergencyContact;
     data['case_manager_dec'] = currentCaseManagerInfo;
     data['insuranceEligibility'] = insuranceEligibility;
@@ -198,6 +216,8 @@ class User {
     data['cityName;'] = cityName;
     data['stateName;'] = stateName;
     data['medicalCenterName;'] = medicalCenterName;
+    data['medical_insurance_number'] = insuranceNumber;
+    data['federally_recognized_tribe'] = federallyRecognizedTribe;
 
     return data;
   }

@@ -83,7 +83,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               fontFamily: 'NunitoSans',
             ),
         errorText: widget.error,
-        errorStyle: const TextStyle(fontSize: 16),
+        // errorStyle: const TextStyle(fontSize: 16),
         suffixIcon: (widget.obscureText != null && widget.obscureText!)
             ? GestureDetector(
                 onTap: () {

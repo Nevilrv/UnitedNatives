@@ -14,6 +14,7 @@ class ProfileInfoTile extends StatelessWidget {
         ListTile(
           title: Text(
             title!,
+            maxLines: 10,
             style: const TextStyle(
               color: Colors.grey,
               fontSize: 18,
@@ -21,10 +22,12 @@ class ProfileInfoTile extends StatelessWidget {
             ),
           ),
           trailing: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.4,
+            width: MediaQuery.of(context).size.width * 0.42,
             child: Text(
               trailing ?? hint!,
               textAlign: TextAlign.end,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: trailing != null
                     ? isDark
