@@ -81,8 +81,8 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
   }
 
   Future<void> refresh() async {
-    doctorHomeScreenController?.getDoctorHomePage();
-    doctorHomeScreenController?.filterData();
+    await doctorHomeScreenController?.getDoctorHomePage();
+    await doctorHomeScreenController?.filterData();
   }
 
   editProfileDialog() async {
@@ -229,7 +229,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
       return Stack(
         children: <Widget>[
           DocDrawerPage(
-            onTap: () {
+            onTap: () async {
               // setState(
               //   () {
               //     xOffset = 0;
@@ -240,7 +240,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
               //   },
               // );
               controller.closeDrawer();
-              refresh();
+              await refresh();
             },
           ),
           AnimatedContainer(
@@ -263,7 +263,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                   leading: controller.isDrawerOpen
                       ? IconButton(
                           icon: const Icon(Icons.arrow_back_ios),
-                          onPressed: () {
+                          onPressed: () async {
                             // setState(
                             //   () {
                             //     xOffset = 0;
@@ -274,7 +274,7 @@ class _Home2State extends State<Home2> with WidgetsBindingObserver {
                             //   },
                             // );
                             controller.closeDrawer();
-                            refresh();
+                            await refresh();
                           },
                         )
                       : IconButton(

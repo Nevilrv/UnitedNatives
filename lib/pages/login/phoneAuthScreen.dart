@@ -195,6 +195,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                               final encryptedUtf = utf8.encode(userPIN);
                               var md5 = crypto.md5;
                               final encryptedPIN = md5.convert(encryptedUtf);
+
                               if (_formKey.currentState!.validate()) {
                                 await _userController.userRegister(
                                   _userController.registerData!,
@@ -216,6 +217,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                           : const Text('Set Secure PIN to Proceed',
                               style: TextStyle(
                                   color: kColorBlue,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold)),
                     ),
                   ),

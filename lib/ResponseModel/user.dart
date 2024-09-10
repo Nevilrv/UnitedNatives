@@ -153,7 +153,8 @@ class User {
     usVeteranStatus = json["us_veteran_status"] ?? "";
     tribalFederallyMember = json["tribal_federally_member"] ?? "";
     tribalFederallyState = json["tribal_federally_state"] ?? "";
-    tribalBackgroundStatus = json["tribal_background_status"] ?? "";
+    tribalBackgroundStatus =
+        json["tribal_background_status"] ?? json["ethnic_background"] ?? "";
     cityName = json["cityName"] ?? "";
     stateName = json["stateName"] ?? "";
     medicalCenterName = json["medicalCenterName"] ?? "";
@@ -213,6 +214,7 @@ class User {
     data['tribal_federally_member'] = tribalFederallyMember;
     data['tribal_federally_state'] = tribalFederallyState;
     data['tribal_background_status'] = tribalBackgroundStatus;
+    data['ethnic_background'] = tribalBackgroundStatus;
     data['cityName;'] = cityName;
     data['stateName;'] = stateName;
     data['medicalCenterName;'] = medicalCenterName;

@@ -18,6 +18,7 @@ import 'package:united_natives/utils/network_util.dart';
 import 'package:united_natives/utils/utils.dart';
 
 import '../utils/constants.dart';
+import 'package:http/http.dart' as http;
 
 class UserBackendAuthService {
   static final UserBackendAuthService _authService =
@@ -107,7 +108,7 @@ class UserBackendAuthService {
       'device_token': Prefs.getString(Prefs.FcmToken)
     });
 
-    log('body=====1111111=====>>>>>${body}');
+    log('body=====1111111=====>>>>>$body');
 
     Map<String, String> loginHeaders = {
       "Authorization": 'Bearer $bearerToken',
@@ -119,7 +120,7 @@ class UserBackendAuthService {
         var result = await _networkAPICall.post(Constants.patientLogin, body,
             header: loginHeaders);
 
-        log('result==========>>>>>${result}');
+        log('result==========>>>>>$result');
 
         if (result['status'] == 'Success') {
           userData = User.fromJson(result['data']);
@@ -143,8 +144,39 @@ class UserBackendAuthService {
     }
   }
 
+  Future<String> addSpeciality(String title, String bearerToken) async {
+    String id = '';
+
+    try {
+      Map<String, String> headers = {"Authorization": 'Bearer $bearerToken'};
+      Map<String, String> body = {'speciality_name': title.toString()};
+      try {
+        final result = await http.post(
+            Uri.parse("${Constants.baseUrl}${Constants.addSpeciality}"),
+            body: body,
+            headers: headers);
+
+        log('result==========>>>>>${result}');
+
+        if (result.statusCode == 200) {
+          var data = jsonDecode(result.body);
+          log('data==========>>>>>${data}');
+
+          id = data["id"];
+        } else {
+          await addSpeciality(title, bearerToken);
+        }
+      } catch (e, stackStrace) {
+        throw AppException.exceptionHandler(e, stackStrace);
+      }
+    } catch (e, stackStrace) {
+      throw AppException.exceptionHandler(e, stackStrace);
+    }
+    return id;
+  }
+
   Future register(User userData, String userType, String bearerToken,
-      {required File profilePic}) async {
+      {required File profilePic, String? specialityId}) async {
     try {
       Map<String, String> body = {
         'first_name': userData.firstName ?? "",
@@ -195,7 +227,7 @@ class UserBackendAuthService {
         'per_appointment_rate': userData.perAppointmentCharge ?? "",
         'contact_number': userData.contactNumber ?? "",
         'date_of_birth': userData.dateOfBirth ?? "",
-        'speciality': userData.speciality ?? "",
+        'speciality': '${[specialityId]}',
         'certificate_no': userData.certificateNo ?? "",
         'education': userData.education ?? "",
         'state': userData.state ?? "",
@@ -203,6 +235,8 @@ class UserBackendAuthService {
         'is_IH_user': userData.isIhUser ?? "",
         "medical_center_id": userData.medicalCenterID ?? "",
         'provider_type': userData.providerType ?? "",
+        'ethnic_background': userData.tribalBackgroundStatus ?? "",
+
         // 'is_admin':userData.isAdmin
         // 'is_native_american':userData.isNativeAmerican,
       };
@@ -615,6 +649,7 @@ class UserBackendAuthService {
         "city_id": userUpdateData.cityId ?? "",
         "medical_center_id": userUpdateData.medicalCenterID ?? "",
         "provider_type": userUpdateData.providerType ?? "",
+        "ethnic_background": userUpdateData.tribalBackgroundStatus ?? ""
       };
       if (userType == "1") {
         // PatientUpdateData patientUpdateData =

@@ -742,7 +742,8 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                 ),
 
                 Obx(
-                  () => Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  () => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
                         onTap: () async {
@@ -758,7 +759,8 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                         backgroundColor: Colors.transparent,
                                         child: ConstrainedBox(
                                           constraints: BoxConstraints(
-                                              maxHeight: h * 0.6, maxWidth: 550),
+                                              maxHeight: h * 0.6,
+                                              maxWidth: 550),
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color: _isDark
@@ -783,32 +785,40 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                                     children: [
                                                       Expanded(
                                                         child: Container(
-                                                          decoration: BoxDecoration(
+                                                          decoration:
+                                                              BoxDecoration(
                                                             color: _isDark
-                                                                ? Colors
-                                                                    .grey.shade800
+                                                                ? Colors.grey
+                                                                    .shade800
                                                                 : Colors.white,
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .circular(25),
+                                                                    .circular(
+                                                                        25),
                                                             border: Border.all(
-                                                                color: Colors.grey),
+                                                                color: Colors
+                                                                    .grey),
                                                           ),
                                                           height: 48,
                                                           child: Center(
                                                             child: TextField(
                                                               controller:
                                                                   sController,
-                                                              onChanged: (value) {
-                                                                setState234(() {});
+                                                              onChanged:
+                                                                  (value) {
+                                                                setState234(
+                                                                    () {});
                                                               },
                                                               decoration: const InputDecoration(
                                                                   contentPadding:
                                                                       EdgeInsets.only(
-                                                                          top: 10,
-                                                                          left: 16),
-                                                                  suffixIcon: Icon(
-                                                                      Icons.search),
+                                                                          top:
+                                                                              10,
+                                                                          left:
+                                                                              16),
+                                                                  suffixIcon:
+                                                                      Icon(Icons
+                                                                          .search),
                                                                   enabledBorder:
                                                                       InputBorder
                                                                           .none,
@@ -826,7 +836,8 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                                       ),
                                                       IconButton(
                                                         onPressed: () {
-                                                          Navigator.pop(context);
+                                                          Navigator.pop(
+                                                              context);
                                                           sController.clear();
                                                         },
                                                         icon: const Icon(
@@ -865,14 +876,16 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                                                     .titleMedium
                                                                     ?.color,
                                                                 fontWeight:
-                                                                    FontWeight.w400,
+                                                                    FontWeight
+                                                                        .w400,
                                                               ),
                                                             ),
                                                           );
                                                         }
 
                                                         return ListView.builder(
-                                                          padding: EdgeInsets.zero,
+                                                          padding:
+                                                              EdgeInsets.zero,
                                                           physics:
                                                               const BouncingScrollPhysics(),
                                                           shrinkWrap: true,
@@ -912,8 +925,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                                                           TextStyle(
                                                                         fontSize:
                                                                             20,
-                                                                        color: Theme.of(
-                                                                                context)
+                                                                        color: Theme.of(context)
                                                                             .textTheme
                                                                             .titleMedium
                                                                             ?.color,
@@ -927,10 +939,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                                                       _userController
                                                                           .onChangeSpeciality(
                                                                         _userController
-                                                                            .dropDownSpeciality[
-                                                                                index]
-                                                                                [
-                                                                                'speciality_name']
+                                                                            .dropDownSpeciality[index]['speciality_name']
                                                                             .toString()
                                                                             .trim(),
                                                                       );
@@ -1006,10 +1015,12 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                   Icon(
                                     Icons.arrow_drop_down,
                                     color: _isDark
-                                        ? _userController.dropDownSpeciality.isEmpty
+                                        ? _userController
+                                                .dropDownSpeciality.isEmpty
                                             ? Colors.grey.shade800
                                             : Colors.grey.shade100
-                                        : _userController.dropDownSpeciality.isEmpty
+                                        : _userController
+                                                .dropDownSpeciality.isEmpty
                                             ? Colors.grey
                                             : Colors.grey.shade800,
                                   )
@@ -1039,16 +1050,13 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                           ),
                         ),
                       ),
-                      if(_userController
-                          .selectedSpeciality.value == "Other")...[
-                        const SizedBox(
-                          height: 20
-                        ),
+                      if (_userController.selectedSpeciality.value ==
+                          "Other") ...[
+                        const SizedBox(height: 20),
                         Text(
                           "${Translate.of(context)!.translate('Enter Speciality')} *",
                           style: kInputTextStyle,
                         ),
-
                         CustomTextFormField(
                           focusNode: FocusNode(),
                           textInputAction: TextInputAction.next,
@@ -1062,10 +1070,10 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                           },
                         ),
                       ]
-
                     ],
                   ),
                 ),
+
                 const SizedBox(
                   height: 20,
                 ),
@@ -1126,6 +1134,43 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                     }
                     return null;
                   },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+
+                Obx(
+                  () => Column(
+                    children: [
+                      Text(
+                        Translate.of(context)!.translate(
+                            'If you are not enrolled tribal member, please select racial/ethnic background *'),
+                        style: kInputTextStyle,
+                      ),
+                      DropdownButtonFormField(
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
+                        ),
+                        focusNode: FocusNode(),
+                        validator: (value) => value == null
+                            ? 'Please select racial/ethnic background'
+                            : null,
+                        isExpanded: true,
+                        value:
+                            _userController.tribalBackgroundStatus.value.isEmpty
+                                ? null
+                                : _userController.tribalBackgroundStatus.value,
+                        hint: Text(
+                            Translate.of(context)!
+                                .translate('Select racial/ethnic background'),
+                            style: hintStyle),
+                        onChanged:
+                            _userController.onChangeTribalBackgroundStatus,
+                        items: _userController.dropDownTribal3,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
@@ -1396,8 +1441,16 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                 _perAppointmentChargeController.text,
                             profilePic: _image?.path ?? "",
                             certificateNo: _certificateController.text,
+
+
                             speciality:
-                                "${[_userController.selectedSpeciality.value]}",
+                            _userController.selectedSpeciality.value ==
+                                "Other"
+                                ? specialityController.text.trim()
+                                : _userController.selectedSpeciality.value,
+                            tribalBackgroundStatus:
+                            _userController.tribalBackgroundStatus.value,
+
                             userType: "2",
                             dateOfBirth: DateFormat('yyyy-MM-dd').format(
                                 DateTime.parse(
@@ -1431,8 +1484,12 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                             profilePic: _image?.path ?? "",
                             certificateNo: _certificateController.text,
                             speciality:
-                            _userController.selectedSpeciality.value == "Other" ? specialityController.text.trim():_userController.selectedSpeciality.value,
-
+                                _userController.selectedSpeciality.value ==
+                                        "Other"
+                                    ? specialityController.text.trim()
+                                    : _userController.selectedSpeciality.value,
+                            tribalBackgroundStatus:
+                            _userController.tribalBackgroundStatus.value,
                             userType: "2",
                             isAdmin: '2',
                             contactNumber: _contactController.text,

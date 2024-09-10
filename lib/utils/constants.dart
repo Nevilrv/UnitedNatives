@@ -160,6 +160,10 @@ class Constants {
   static const String socialLoginVerificationGoogle =
       'SecurityPINReset/userSocialLoginVerification';
 
+  /// ADD SPECIALITY
+
+  static const String addSpeciality = 'Patient/addSpeciality';
+
   /// Location
   static const String getAllCityByState = 'Location/get_cities_by_state_id';
   static const String getAllStates = 'Location/get_all_states';

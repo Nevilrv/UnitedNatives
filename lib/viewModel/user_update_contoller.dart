@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/ResponseModel/patient_update_data.dart';
 import 'package:united_natives/ResponseModel/specialities_model.dart';
@@ -140,7 +141,7 @@ class UserUpdateController extends GetxController {
     providerTypeController.text = _userController.user.value.providerType ?? '';
     certificateNoController.text =
         _userController.user.value.certificateNo ?? '';
-    specialityController.text = _userController.user.value.speciality ?? '';
+
     userProfile = _userController.user.value.profilePic;
     selectedGender.value = "${_userController.user.value.gender}";
     speciality.value = _userController.user.value.speciality ?? "";
@@ -198,6 +199,17 @@ class UserUpdateController extends GetxController {
         in _userController.specialitiesModelData.value.specialities!) {
       dropDownSpeciality.add(element.toJson());
     }
+
+    Map<String, dynamic> data = {
+      "id": "0",
+      "speciality_name": "Other",
+      "speciality_image": "",
+      "created": "",
+      "modified": "",
+      "doctors_count": ""
+    };
+
+    dropDownSpeciality.add(data);
 
     // dropDownSpeciality = _userController
     //         .specialitiesModelData.value.specialities
@@ -291,12 +303,27 @@ class UserUpdateController extends GetxController {
       {User? userUpdateData, File? userProfilePic, String? userType}) async {
     try {
       String? id;
-      _userController.specialitiesModelData.value.specialities
-          ?.forEach((element) {
-        if (element.specialityName == speciality.value) {
-          id = element.id;
+
+      if (userType != "1") {
+        if (speciality.value == "Other") {
+          id = await UserBackendAuthService().addSpeciality(
+              specialityController.text.trim(),
+              "${Prefs.getString(Prefs.BEARER)}");
+
+          if (id.isEmpty) {
+            id = await UserBackendAuthService().addSpeciality(
+                specialityController.text.trim(),
+                "${Prefs.getString(Prefs.BEARER)}");
+          }
+        } else {
+          _userController.specialitiesModelData.value.specialities
+              ?.forEach((element) {
+            if (element.specialityName == speciality.value) {
+              id = element.id;
+            }
+          });
         }
-      });
+      }
 
       User userUpdateData = User(
         id: _userController.user.value.id,

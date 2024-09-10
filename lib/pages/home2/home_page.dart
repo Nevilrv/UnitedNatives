@@ -131,6 +131,7 @@ class _Home2PageState extends State<Home2Page> {
                                     child: const Text(
                                       'UPDATE AVAILABILITY',
                                       style: TextStyle(
+                                          fontSize: 18,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),

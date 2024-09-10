@@ -303,6 +303,25 @@ class UserController extends GetxController {
   Future userRegister(User userData, String userType, String bearerToken,
       {File? useProfilePic}) async {
     try {
+      String specialityId = '';
+      if (userType != "1") {
+        if (selectedSpeciality.value == "Other") {
+          specialityId = await UserBackendAuthService()
+              .addSpeciality("${registerData?.speciality}", bearerToken);
+
+          if (specialityId.isEmpty) {
+            specialityId = await UserBackendAuthService()
+                .addSpeciality("${registerData?.speciality}", bearerToken);
+          }
+        } else {
+          specialitiesModelData.value.specialities?.forEach((element) {
+            if (element.specialityName == speciality.value) {
+              specialityId = element.id ?? "";
+            }
+          });
+        }
+      }
+
       User userData = User(
         federallyRecognizedTribe: registerData?.federallyRecognizedTribe ?? "",
         second_tribal_affiliation:
@@ -347,7 +366,9 @@ class UserController extends GetxController {
       );
 
       await UserBackendAuthService().register(userData, userType, bearerToken,
-          profilePic: registerUserProfile ?? File(""));
+          profilePic: registerUserProfile ?? File(""),
+          specialityId: specialityId);
+
       // await Prefs.setString(Prefs.BEARER, bearerToken);
       if (userType == "1") {
         Get.toNamed(Routes.login);

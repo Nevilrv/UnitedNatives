@@ -152,6 +152,15 @@ class _DocProfilePageState extends State<DocProfilePage> {
                         Translate.of(context)!.translate('Enter Provider Type'),
                   ),
                   ProfileInfoTile(
+                    title:
+                        Translate.of(context)!.translate('Ethnic Background'),
+                    trailing:
+                        _userController.user.value.tribalBackgroundStatus ??
+                            "Enter Ethnic Background",
+                    hint: Translate.of(context)!
+                        .translate('Enter Ethnic Background'),
+                  ),
+                  ProfileInfoTile(
                     title: Translate.of(context)!.translate('State'),
                     trailing: _userController.user.value.stateName ?? "Alaska",
                     hint: Translate.of(context)!.translate('State'),
