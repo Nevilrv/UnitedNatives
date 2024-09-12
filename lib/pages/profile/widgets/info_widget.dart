@@ -186,7 +186,7 @@ class _InfoWidgetState extends State<InfoWidget> {
         ),
         ProfileInfoTile(
           title: Translate.of(context)!
-              .translate('Federally Enrolled Tribal Member?'),
+              .translate('Are you enrolled in a federally recognized tribe?'),
           trailing: _userController.user.value.tribalFederallyMember!.isEmpty
               ? "No"
               : "Yes",

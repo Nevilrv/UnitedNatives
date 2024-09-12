@@ -900,40 +900,40 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               height: 20,
                             ),
                             Text(
-                              "${Translate.of(context)!.translate('What is your second tribal affliction?')} (Optional)",
+                              "${Translate.of(context)!.translate('What is your second tribal affiliation?')} (Optional)",
                               style: kInputTextStyle,
                             ),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe1SecondController,
-                              hintText: 'Enter your second tribal affliction',
+                              hintText: 'Enter your second tribal affiliation',
                             ),
                             const SizedBox(
                               height: 20,
                             ),
                             Text(
-                              "${Translate.of(context)!.translate('What is your third tribal affliction?')} (Optional)",
+                              "${Translate.of(context)!.translate('What is your third tribal affiliation?')} (Optional)",
                               style: kInputTextStyle,
                             ),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe1ThirdController,
-                              hintText: 'Enter your third tribal affliction',
+                              hintText: 'Enter your third tribal affiliation',
                             ),
                             const SizedBox(
                               height: 20,
                             ),
                             Text(
-                              "${Translate.of(context)!.translate('What is your fourth tribal affliction?')} (Optional)",
+                              "${Translate.of(context)!.translate('What is your fourth tribal affiliation?')} (Optional)",
                               style: kInputTextStyle,
                             ),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe1FourthController,
-                              hintText: 'Enter your fourth tribal affliction',
+                              hintText: 'Enter your fourth tribal affiliation',
                             ),
                           ],
                         )
@@ -979,7 +979,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               height: 20,
                             ),
                             Text(
-                              "${Translate.of(context)!.translate('Please state tribal affiliation')} *",
+                              "${Translate.of(context)!.translate('Enter state recognized tribe')} *",
                               style: kInputTextStyle,
                             ),
                             CustomTextFormField(
@@ -989,7 +989,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               hintText: 'Enter state tribal affiliation',
                               validator: (text) {
                                 if (text!.isEmpty) {
-                                  return 'Please state tribal affiliation';
+                                  return 'Enter state recognized tribe';
                                 }
                                 return null;
                               },

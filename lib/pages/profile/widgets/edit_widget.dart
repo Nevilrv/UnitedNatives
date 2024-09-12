@@ -711,7 +711,7 @@ class _EditWidgetState extends State<EditWidget> {
                             height: 20,
                           ),
                           Text(
-                            "${Translate.of(context)!.translate('What is your second tribal affliction?')} (Optional)",
+                            "${Translate.of(context)!.translate('What is your second tribal affiliation?')} (Optional)",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -719,13 +719,13 @@ class _EditWidgetState extends State<EditWidget> {
                             textInputAction: TextInputAction.next,
                             controller: _userUpdateController
                                 .whatTribe1SecondController,
-                            hintText: 'Enter your second tribal affliction',
+                            hintText: 'Enter your second tribal affiliation',
                           ),
                           const SizedBox(
                             height: 20,
                           ),
                           Text(
-                            "${Translate.of(context)!.translate('What is your third tribal affliction?')} (Optional)",
+                            "${Translate.of(context)!.translate('What is your third tribal affiliation?')} (Optional)",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -733,13 +733,13 @@ class _EditWidgetState extends State<EditWidget> {
                             textInputAction: TextInputAction.next,
                             controller:
                                 _userUpdateController.whatTribe1ThirdController,
-                            hintText: 'Enter your third tribal affliction',
+                            hintText: 'Enter your third tribal affiliation',
                           ),
                           const SizedBox(
                             height: 20,
                           ),
                           Text(
-                            "${Translate.of(context)!.translate('What is your fourth tribal affliction?')} (Optional)",
+                            "${Translate.of(context)!.translate('What is your fourth tribal affiliation?')} (Optional)",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -747,7 +747,7 @@ class _EditWidgetState extends State<EditWidget> {
                             textInputAction: TextInputAction.next,
                             controller: _userUpdateController
                                 .whatTribe1FourthController,
-                            hintText: 'Enter your fourth tribal affliction',
+                            hintText: 'Enter your fourth tribal affiliation',
                           ),
                         ],
                       )
@@ -795,7 +795,7 @@ class _EditWidgetState extends State<EditWidget> {
                         children: [
                           const SizedBox(height: 20),
                           Text(
-                            "${Translate.of(context)?.translate('Please state tribal affiliation')} *",
+                            "${Translate.of(context)?.translate('Enter state recognized tribe')} *",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -806,7 +806,7 @@ class _EditWidgetState extends State<EditWidget> {
                             hintText: 'Enter state tribal affiliation',
                             validator: (text) {
                               if (text!.isEmpty) {
-                                return 'Please state tribal affiliation';
+                                return 'Enter state recognized tribe';
                               }
                               return null;
                             },
@@ -828,8 +828,13 @@ class _EditWidgetState extends State<EditWidget> {
                     color: Theme.of(context).textTheme.titleMedium?.color,
                   ),
                   focusNode: FocusNode(),
-                  validator: (value) => value == null
-                      ? 'Please select racial/ethnic background'
+                  validator: _userUpdateController.tribalFederallyState.value ==
+                              "No" &&
+                          _userUpdateController.tribalFederallyMember.value ==
+                              "No"
+                      ? (value) => value == null
+                          ? 'Please select racial/ethnic background'
+                          : null
                       : null,
                   isExpanded: true,
                   value:

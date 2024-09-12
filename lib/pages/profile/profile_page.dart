@@ -218,8 +218,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       //   hint: Translate.of(context)?.translate('No'),
                       // ),
                       ProfileInfoTile(
-                        title: Translate.of(context)
-                            ?.translate('Federally Enrolled Tribal Member?'),
+                        title: Translate.of(context)?.translate(
+                            'Are you enrolled in a federally recognized tribe?'),
                         trailing: _userController
                                 .user.value.tribalFederallyMember!.isEmpty
                             ? "No"
@@ -230,35 +230,35 @@ class _ProfilePageState extends State<ProfilePage> {
                           .user.value.tribalFederallyMember!.isNotEmpty) ...[
                         ProfileInfoTile(
                           title: Translate.of(context)
-                              ?.translate('First federally recognized trine'),
+                              ?.translate('Federally recognized tribe'),
                           trailing:
                               _userController.user.value.tribalFederallyMember,
                           hint: Translate.of(context)
-                              ?.translate('First federally recognized trine'),
+                              ?.translate('Federally recognized tribe'),
                         ),
                         ProfileInfoTile(
                           title: Translate.of(context)
-                              ?.translate('Second federally recognized trine'),
+                              ?.translate('Second federally recognized tribe'),
                           trailing: _userController
                               .user.value.second_tribal_affiliation,
                           hint: Translate.of(context)
-                              ?.translate('Second federally recognized trine'),
+                              ?.translate('Second federally recognized tribe'),
                         ),
                         ProfileInfoTile(
                           title: Translate.of(context)
-                              ?.translate('Third federally recognized trine'),
+                              ?.translate('Third federally recognized tribe'),
                           trailing: _userController
                               .user.value.third_tribal_affiliation,
                           hint: Translate.of(context)
-                              ?.translate('Third federally recognized trine'),
+                              ?.translate('Third federally recognized tribe'),
                         ),
                         ProfileInfoTile(
                           title: Translate.of(context)
-                              ?.translate('Fourth federally recognized trine'),
+                              ?.translate('Fourth federally recognized tribe'),
                           trailing: _userController
                               .user.value.fourth_tribal_affiliation,
                           hint: Translate.of(context)
-                              ?.translate('Fourth federally recognized trine'),
+                              ?.translate('Fourth federally recognized tribe'),
                         ),
                       ],
                       ProfileInfoTile(
@@ -274,11 +274,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           .user.value.tribalFederallyState!.isNotEmpty)
                         ProfileInfoTile(
                           title: Translate.of(context)
-                              ?.translate('Tribal affiliation'),
+                              ?.translate('State recognized tribe'),
                           trailing:
                               _userController.user.value.tribalFederallyState,
                           hint: Translate.of(context)
-                              ?.translate('Tribal affiliation'),
+                              ?.translate('State recognized tribe'),
                         ),
                       ProfileInfoTile(
                         title: Translate.of(context)
