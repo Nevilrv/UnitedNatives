@@ -1141,10 +1141,11 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
 
                 Obx(
                   () => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Translate.of(context)!.translate(
-                            'If you are not enrolled tribal member, please select racial/ethnic background *'),
+                        Translate.of(context)!
+                            .translate('Racial/ethnic background *'),
                         style: kInputTextStyle,
                       ),
                       DropdownButtonFormField(
@@ -1441,16 +1442,13 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                 _perAppointmentChargeController.text,
                             profilePic: _image?.path ?? "",
                             certificateNo: _certificateController.text,
-
-
                             speciality:
-                            _userController.selectedSpeciality.value ==
-                                "Other"
-                                ? specialityController.text.trim()
-                                : _userController.selectedSpeciality.value,
+                                _userController.selectedSpeciality.value ==
+                                        "Other"
+                                    ? specialityController.text.trim()
+                                    : _userController.selectedSpeciality.value,
                             tribalBackgroundStatus:
-                            _userController.tribalBackgroundStatus.value,
-
+                                _userController.tribalBackgroundStatus.value,
                             userType: "2",
                             dateOfBirth: DateFormat('yyyy-MM-dd').format(
                                 DateTime.parse(
@@ -1489,7 +1487,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                     ? specialityController.text.trim()
                                     : _userController.selectedSpeciality.value,
                             tribalBackgroundStatus:
-                            _userController.tribalBackgroundStatus.value,
+                                _userController.tribalBackgroundStatus.value,
                             userType: "2",
                             isAdmin: '2',
                             contactNumber: _contactController.text,

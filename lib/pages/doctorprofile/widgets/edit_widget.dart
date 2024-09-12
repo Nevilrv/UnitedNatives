@@ -774,8 +774,7 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                         ),
                       ),
                     ),
-                    if (_userUpdateController
-                        .speciality.value == "Other") ...[
+                    if (_userUpdateController.speciality.value == "Other") ...[
                       Text(
                         "${Translate.of(context)!.translate('Enter Speciality')} *",
                         style: kInputTextStyle,
@@ -863,10 +862,11 @@ class _DocEditWidgetState extends State<DocEditWidget> {
 
               Obx(
                 () => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      Translate.of(context)!.translate(
-                          'If you are not enrolled tribal member, please select racial/ethnic background *'),
+                      Translate.of(context)!
+                          .translate('Racial/ethnic background *'),
                       style: kInputTextStyle,
                     ),
                     DropdownButtonFormField(
