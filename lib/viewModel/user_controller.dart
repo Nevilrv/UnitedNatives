@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:united_natives/pages/login/phoneAuthScreen3.dart';
+
+import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
-import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
-import 'package:united_natives/utils/pref_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:united_natives/ResponseModel/getSorted_patient_chatList_model.dart';
 import 'package:united_natives/ResponseModel/get_sorted_chat_list_doctor_model.dart';
 import 'package:united_natives/ResponseModel/login_verification.dart';
@@ -19,6 +20,7 @@ import 'package:united_natives/newModel/apiModel/responseModel/get_states_respon
 import 'package:united_natives/pages/appointment/doctor_appointment.dart';
 import 'package:united_natives/pages/appointment/my_appointments_page.dart';
 import 'package:united_natives/pages/doctormessages/messages_detail_page.dart';
+import 'package:united_natives/pages/login/phoneAuthScreen3.dart';
 import 'package:united_natives/pages/messages/messages_detail_page.dart';
 import 'package:united_natives/pages/notifications/patient_notification_page.dart';
 import 'package:united_natives/pages/prescription/prescription_list_page.dart';
@@ -28,13 +30,13 @@ import 'package:united_natives/utils/app_enum.dart';
 import 'package:united_natives/utils/app_themes.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/exception.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/utils/utils.dart';
 import 'package:united_natives/viewModel/add_new_chat_message_view_model.dart';
+import 'package:united_natives/viewModel/doctor_homescreen_controller.dart';
 import 'package:united_natives/viewModel/get_city_view_model.dart';
 import 'package:united_natives/viewModel/get_states_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart' hide User;
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:united_natives/viewModel/patient_homescreen_controller.dart';
 // import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class UserController extends GetxController {
@@ -63,13 +65,14 @@ class UserController extends GetxController {
   RxString selectedMaritalStatus = ''.obs;
   RxString dateOfBirth = ''.obs;
   RxString certificateNo = ''.obs;
-  RxString speciality = ''.obs;
+  // RxString speciality = ''.obs;
   RxString education = ''.obs;
 
   RxString tribalFederallyMember = ''.obs;
   RxString tribalFederallyState = ''.obs;
   RxString tribalBackgroundStatus = ''.obs;
   RxString howYouHereAboutUs = ''.obs;
+  RxString fedRecognizedTribe = ''.obs;
 
   onDispose() {
     selectedGender = ''.obs;
@@ -84,8 +87,10 @@ class UserController extends GetxController {
     selectedMaritalStatus = ''.obs;
     dateOfBirth = ''.obs;
     certificateNo = ''.obs;
-    speciality = ''.obs;
     education = ''.obs;
+    selectedSpeciality = ''.obs;
+    fedRecognizedTribe = ''.obs;
+    howYouHereAboutUs = ''.obs;
   }
 
   final _genderItems = <String>[
@@ -144,6 +149,7 @@ class UserController extends GetxController {
   List<DropdownMenuItem<String>>? dropDownTribal3;
   List<DropdownMenuItem<String>>? dropDownAreYouAUSVeteran;
   List<DropdownMenuItem<String>>? dropDownHowYouHereAboutUs;
+  List<DropdownMenuItem<String>>? dropDownFedRecognizedTribe;
 
   @override
   onInit() {
@@ -276,6 +282,14 @@ class UserController extends GetxController {
           ),
         )
         .toList();
+    dropDownFedRecognizedTribe = _areYouAUSVeteran
+        .map(
+          (String value) => DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          ),
+        )
+        .toList();
   }
 
   void onChangeGender(value) => selectedGender.value = value ?? '';
@@ -299,6 +313,7 @@ class UserController extends GetxController {
       tribalBackgroundStatus.value = value;
   void onChangeHowYouHereAboutUsStatus(value) =>
       howYouHereAboutUs.value = value;
+  void onChangeFedRecognizedTribe(value) => fedRecognizedTribe.value = value;
 
   Future userRegister(User userData, String userType, String bearerToken,
       {File? useProfilePic}) async {
@@ -315,7 +330,7 @@ class UserController extends GetxController {
           }
         } else {
           specialitiesModelData.value.specialities?.forEach((element) {
-            if (element.specialityName == speciality.value) {
+            if (element.specialityName == selectedSpeciality.value) {
               specialityId = element.id ?? "";
             }
           });
@@ -336,7 +351,9 @@ class UserController extends GetxController {
         contactNumber: registerData?.contactNumber,
         insuranceNumber: registerData?.insuranceNumber ?? "",
         emergencyContact: registerData?.emergencyContact,
-        dateOfBirth: registerData?.dateOfBirth ?? "",
+        // dateOfBirth: registerData?.dateOfBirth ?? "",
+        dateOfBirth: DateFormat("yyyy-MM-dd").format(DateTime.parse(
+            registerData?.dateOfBirth ?? DateTime.now().toString())),
         certificateNo: registerData?.certificateNo,
         perAppointmentCharge: registerData?.perAppointmentCharge,
         password: registerData?.password,
@@ -363,6 +380,9 @@ class UserController extends GetxController {
         height: registerData?.height,
         weight: registerData?.weight,
         currentCaseManagerInfo: registerData?.currentCaseManagerInfo,
+        tribal_affiliation_enrolled: registerData?.tribal_affiliation_enrolled,
+        tribal_descendancy_affiliate:
+            registerData?.tribal_descendancy_affiliate,
       );
 
       await UserBackendAuthService().register(userData, userType, bearerToken,

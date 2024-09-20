@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,11 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/utils/pref_manager.dart';
+import 'package:united_natives/utils/utils.dart';
 import 'package:united_natives/viewModel/user_controller.dart';
 import 'package:united_natives/viewModel/user_update_contoller.dart';
-import 'package:united_natives/utils/pref_manager.dart';
-import 'package:united_natives/medicle_center/lib/utils/translate.dart';
-import 'package:united_natives/utils/utils.dart';
 
 import '../../../components/text_form_field.dart';
 import '../../../utils/constants.dart';
@@ -891,6 +892,93 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                           _userUpdateController.onChangeTribalBackgroundStatus,
                       items: _userUpdateController.dropDownTribal3,
                     ),
+                    if (_userUpdateController.tribalBackgroundStatus.value ==
+                            "Native American" ||
+                        _userUpdateController.tribalBackgroundStatus.value ==
+                            "Alaska Native")
+                      Column(
+                        children: [
+                          Text(
+                            "${Translate.of(context)!.translate('Are you enrolled in a federally recognized tribe?')} *",
+                            style: kInputTextStyle,
+                          ).paddingOnly(top: 18),
+                          DropdownButtonFormField(
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.color,
+                            ),
+                            focusNode: FocusNode(),
+                            validator: (value) =>
+                                value == null ? 'Please Select' : null,
+                            isExpanded: true,
+                            value: _userUpdateController
+                                    .fedRecognizedTribe.value.isEmpty
+                                ? null
+                                : _userUpdateController
+                                    .fedRecognizedTribe.value,
+                            hint: Text(
+                              Translate.of(context)!.translate(
+                                  'Select enrolled in a federally recognized tribe or not'),
+                              style: hintStyle,
+                            ),
+                            onChanged: _userUpdateController
+                                .onChangeFedRecognizedTribe,
+                            items: _userUpdateController
+                                .dropDownFedRecognizedTribe,
+                          ),
+                          if (_userUpdateController.fedRecognizedTribe.value ==
+                              "Yes")
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${Translate.of(context)!.translate('What tribal affiliation are you enrolled in?')} *",
+                                  style: kInputTextStyle,
+                                ).paddingOnly(top: 18),
+                                CustomTextFormField(
+                                  focusNode: FocusNode(),
+                                  textInputAction: TextInputAction.next,
+                                  controller: _userUpdateController
+                                      .tribalRecognizedYesController,
+                                  hintText: 'Enter...',
+                                  validator: (text) {
+                                    if (text!.isEmpty) {
+                                      return 'Please enter tribal affiliation are you enrolled in';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            ),
+                          if (_userUpdateController.fedRecognizedTribe.value ==
+                              "No")
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${Translate.of(context)!.translate('What tribal descendency do you affiliate with?')} *",
+                                  style: kInputTextStyle,
+                                ).paddingOnly(top: 18),
+                                CustomTextFormField(
+                                  focusNode: FocusNode(),
+                                  textInputAction: TextInputAction.next,
+                                  controller: _userUpdateController
+                                      .tribalRecognizedNoController,
+                                  hintText: 'Enter...',
+                                  validator: (text) {
+                                    if (text!.isEmpty) {
+                                      return 'Please enter tribal descendency do you affiliate with';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            )
+                        ],
+                      ),
                   ],
                 ),
               ),
@@ -970,7 +1058,9 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                   successColor: Colors.white,
                   controller: _btnController,
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate() &&
+                        _userUpdateController
+                            .tribalBackgroundStatus.value.isNotEmpty) {
                       if ((_userUpdateController.dateOfBirth.value.isEmpty) &&
                           categoryOfMedicalCenterDropDown == null &&
                           dropdownValuesCity == null &&
@@ -997,9 +1087,10 @@ class _DocEditWidgetState extends State<DocEditWidget> {
                         _userUpdateController.editProfile();
                         _btnController.reset();
                       }
-                    } else {
-                      _userUpdateController.dScrollController.jumpTo(0);
                     }
+                    // else {
+                    // _userUpdateController.dScrollController.jumpTo(0);
+                    // }
                     _btnController.reset();
                   },
                   child: const Text('Update Profile',

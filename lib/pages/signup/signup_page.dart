@@ -117,74 +117,56 @@ class _SignupPageState extends State<SignupPage> {
                 constraints: BoxConstraints(
                   minHeight: viewportConstraints.maxHeight,
                 ),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Expanded(
-                        child: SizedBox(
-                          height: 0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 28),
+                      child: Text(
+                        Translate.of(context)!.translate('sign_up'),
+                        style: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Padding(
+                    ),
+                    WidgetSignUp(scaffoldKey: _scaffoldKey),
+                    SafeArea(
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 28),
-                        child: Text(
-                          Translate.of(context)!.translate('sign_up'),
-                          style: const TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      WidgetSignUp(scaffoldKey: _scaffoldKey),
-                      const Expanded(
-                        child: SizedBox(
-                          height: 20,
-                        ),
-                      ),
-                      SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 28),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${Translate.of(context)!.translate('Already a Client')} ?',
-                                style: const TextStyle(
-                                  color: Color(0xffbcbcbc),
-                                  fontSize: 20,
-                                  fontFamily: 'NunitoSans',
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${Translate.of(context)!.translate('Already a Client')} ?',
+                              style: const TextStyle(
+                                color: Color(0xffbcbcbc),
+                                fontSize: 20,
+                                fontFamily: 'NunitoSans',
+                              ),
+                            ),
+                            const Text(' '),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(2),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Text(
+                                  Translate.of(context)!.translate('login'),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(fontSize: 20),
                                 ),
                               ),
-                              const Text(' '),
-                              InkWell(
-                                borderRadius: BorderRadius.circular(2),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Text(
-                                    Translate.of(context)!.translate('login'),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelLarge
-                                        ?.copyWith(fontSize: 20),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -384,7 +366,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                               size: 30, color: Colors.white),
                         ),
                 ),
-              ),
+              ).paddingSymmetric(vertical: 30),
             ],
           ),
           Padding(
@@ -408,13 +390,10 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Text(
                   "${Translate.of(context)!.translate('last_name_dot')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   focusNode: FocusNode(),
                   textInputAction: TextInputAction.next,
@@ -427,13 +406,10 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Text(
                   "${Translate.of(context)!.translate('gender_dot')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 Obx(
                   () => DropdownButtonFormField(
                     style: TextStyle(
@@ -458,9 +434,6 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28),
             child: Column(
@@ -469,7 +442,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 Text(
                   "${Translate.of(context)!.translate('email_dot')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   focusNode: FocusNode(),
                   textInputAction: TextInputAction.next,
@@ -479,13 +452,10 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                       ? null
                       : "Please Enter a Valid Email.",
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Text(
                   "${Translate.of(context)!.translate('Contact number')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                     focusNode: FocusNode(),
                     keyboardType: TextInputType.phone,
@@ -497,13 +467,10 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     ],
                     validator: validateMobile,
                     hintText: '+1 520 44 54 661'),
-                const SizedBox(
-                  height: 20,
-                ),
                 Text(
                   "${Translate.of(context)!.translate('date_of_birth_dot')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 Obx(
                   () => ListTile(
                     contentPadding: const EdgeInsets.all(0),
@@ -580,35 +547,32 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     },
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Text(
                   "${Translate.of(context)!.translate('height_dot')} (Optional)",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
                   controller: heightController,
                   hintText: Translate.of(context)!.translate('in_cm'),
                 ),
-                const SizedBox(height: 20),
+
                 Text(
                   "${Translate.of(context)!.translate('weight_dot')} (Optional)",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
                   controller: weightController,
                   hintText: Translate.of(context)!.translate('in_kg'),
                 ),
-                const SizedBox(height: 20),
+
                 const Text(
                   'Emergency Contact (Optional)',
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.phone,
@@ -620,22 +584,22 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   hintText: '+1 5204454661',
                   // validator: validateMobile,
                 ),
-                const SizedBox(height: 20),
+
                 Text(
                   "${Translate.of(context)!.translate('Current Case Manger info')} (Optional)",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.phone,
                   controller: currentCaseContactController,
                   hintText: '+1 5204454661',
                 ),
-                const SizedBox(height: 20),
+
                 Text(
                   "${Translate.of(context)!.translate('Blood Group')} (Optional)",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 Obx(
                   () => DropdownButtonFormField(
                     style: TextStyle(
@@ -655,27 +619,22 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     items: _userController.dropDownBlood,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('Allergies and Medication Allergies')} (Optional)",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   focusNode: FocusNode(),
                   textInputAction: TextInputAction.next,
                   controller: allergiesController,
-                  hintText:
-                      'Enter if you have any Allergies and Medication Allergies',
+                  hintText: 'Enter...',
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('Marital Status')} (Optional)",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 Obx(
                   () => DropdownButtonFormField(
                     style: TextStyle(
@@ -695,13 +654,11 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     items: _userController.dropDownMarital,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('Medical Insurance')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 Obx(
                   () => Column(
                     children: [
@@ -733,19 +690,15 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
                             Text(
                               "${Translate.of(context)!.translate('State the name of your Medical Insurance')} *",
                               style: kInputTextStyle,
-                            ),
+                            ).paddingOnly(top: 18),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: insuranceCompanyName,
-                              hintText:
-                                  'Enter State the name of Medical Insurance',
+                              hintText: 'Enter...',
                               validator: (text) {
                                 if (text!.isEmpty) {
                                   return 'Enter State the name of Medical Insurance';
@@ -753,18 +706,15 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                 return null;
                               },
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
                             Text(
                               "${Translate.of(context)!.translate('What is your medical insurance policy number?')} *",
                               style: kInputTextStyle,
-                            ),
+                            ).paddingOnly(top: 18),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: insuranceNumber,
-                              hintText: 'Enter medical insurance policy number',
+                              hintText: 'Enter...',
                               validator: (text) {
                                 if (text!.isEmpty) {
                                   return 'Enter medical insurance policy number';
@@ -777,13 +727,11 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('Are you a US Veteran?')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 Obx(
                   () => Column(
                     children: [
@@ -811,9 +759,6 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     ],
                   ),
                 ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
                 // Text(
                 //   "${Translate.of(context)!.translate('Tribal Status')} *",
                 //   style: kInputTextStyle,
@@ -839,13 +784,11 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                 //     items: _userController.dropDownTribal,
                 //   ),
                 // ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('Are you enrolled in a Federally Recognized Tribe?')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 Obx(
                   () => Column(
                     children: [
@@ -876,19 +819,15 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
                             Text(
                               "${Translate.of(context)!.translate('What federally recognized tribe you are enrolled in?')} *",
                               style: kInputTextStyle,
-                            ),
+                            ).paddingOnly(top: 18),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe1Controller,
-                              hintText:
-                                  'Enter enter federally recognized tribe',
+                              hintText: 'Enter...',
                               validator: (text) {
                                 if (text!.isEmpty) {
                                   return 'Please enter federally recognized tribe';
@@ -896,57 +835,46 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                 return null;
                               },
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
                             Text(
-                              "${Translate.of(context)!.translate('What is your second tribal affiliation?')} (Optional)",
+                              "${Translate.of(context)!.translate('What is your second tribal affiliation and/or another racial/ethnic group?')} (Optional)",
                               style: kInputTextStyle,
-                            ),
+                            ).paddingOnly(top: 18),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe1SecondController,
-                              hintText: 'Enter your second tribal affiliation',
-                            ),
-                            const SizedBox(
-                              height: 20,
+                              hintText: 'Enter...',
                             ),
                             Text(
-                              "${Translate.of(context)!.translate('What is your third tribal affiliation?')} (Optional)",
+                              "${Translate.of(context)!.translate('What is your third tribal affiliation and/or another racial/ethnic group?')} (Optional)",
                               style: kInputTextStyle,
-                            ),
+                            ).paddingOnly(top: 18),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe1ThirdController,
-                              hintText: 'Enter your third tribal affiliation',
-                            ),
-                            const SizedBox(
-                              height: 20,
+                              hintText: 'Enter...',
                             ),
                             Text(
-                              "${Translate.of(context)!.translate('What is your fourth tribal affiliation?')} (Optional)",
+                              "${Translate.of(context)!.translate('What is your fourth tribal affiliation and/or another racial/ethnic group?')} (Optional)",
                               style: kInputTextStyle,
-                            ),
+                            ).paddingOnly(top: 18),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe1FourthController,
-                              hintText: 'Enter your fourth tribal affiliation',
+                              hintText: 'Enter...',
                             ),
                           ],
                         )
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('Are you enrolled in a State Recognized Tribe?')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 Obx(
                   () => Column(
                     children: [
@@ -975,18 +903,15 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
                             Text(
                               "${Translate.of(context)!.translate('Enter state recognized tribe')} *",
                               style: kInputTextStyle,
-                            ),
+                            ).paddingOnly(top: 18),
                             CustomTextFormField(
                               focusNode: FocusNode(),
                               textInputAction: TextInputAction.next,
                               controller: whatTribe2Controller,
-                              hintText: 'Enter state tribal affiliation',
+                              hintText: 'Enter...',
                               validator: (text) {
                                 if (text!.isEmpty) {
                                   return 'Enter state recognized tribe';
@@ -999,17 +924,14 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
 
                 Obx(
                   () => Column(
                     children: [
                       Text(
-                        "${Translate.of(context)!.translate('If you are not enrolled tribal member, please select racial/ethnic background')} ${_userController.tribalFederallyState.value == "No" && _userController.tribalFederallyMember.value == "No" ? "*" : "(Optional)"}",
+                        "${Translate.of(context)!.translate('If you are not an enrolled tribal member, please select racial/ethnic background')} ${_userController.tribalFederallyState.value == "No" && _userController.tribalFederallyMember.value == "No" ? "*" : "(Optional)"}",
                         style: kInputTextStyle,
-                      ),
+                      ).paddingOnly(top: 18),
                       DropdownButtonFormField(
                         style: TextStyle(
                           fontSize: 20,
@@ -1040,13 +962,11 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('password_dot')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   focusNode: FocusNode(),
                   textInputAction: TextInputAction.next,
@@ -1060,13 +980,11 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('confirm_password_dot')} *",
                   style: kInputTextStyle,
-                ),
+                ).paddingOnly(top: 18),
                 CustomTextFormField(
                   focusNode: FocusNode(),
                   textInputAction: TextInputAction.done,
@@ -1083,16 +1001,12 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+
                 Text(
                   "${Translate.of(context)!.translate('State')} *",
                   style: kInputTextStyle,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
+                ).paddingOnly(top: 18),
+
                 dropDownView(
                   state: true,
                   colorCon: categoryItemListState == [] ||
@@ -1108,15 +1022,11 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   },
                 ),
 
-                const SizedBox(height: 15),
-
                 Text(
                   "${Translate.of(context)!.translate('City')} *",
                   style: kInputTextStyle,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
+                ).paddingOnly(top: 18),
+
                 dropDownView(
                   state: false,
                   colorCon: categoryItemListCity == [] ||
@@ -1133,13 +1043,11 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   },
                 ),
 
-                const SizedBox(height: 15),
-
                 Text(
                   "${Translate.of(context)!.translate('How did you hear about us?')} (Optional)",
                   style: kInputTextStyle,
-                ),
-                const SizedBox(height: 3),
+                ).paddingOnly(top: 18),
+
                 Obx(
                   () => DropdownButtonFormField(
                     style: TextStyle(
@@ -1166,9 +1074,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                   ),
                 ),
 
-                /*  SizedBox(
-                  height: 20,
-                ),
+                /*
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -1194,9 +1100,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                         color: Theme.of(context).textTheme.subtitle1.color,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
+
                     Transform.scale(
                       scale: 1.3,
                       child: Radio(
@@ -1221,9 +1125,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     )
                   ],
                 ),*/
-                const SizedBox(
-                  height: 35,
-                ),
+
                 CustomButton(
                   textSize: 24,
                   onPressed: () async {
@@ -1330,7 +1232,6 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                         },
                                       ),
                                     ),
-                                    SizedBox(height: 15),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 50),
@@ -1465,7 +1366,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                       //                   });
                       //                 },
                       //               ),
-                      //             ),SizedBox(height: 15),
+                      //             ),
                       //             Padding(
                       //               padding: const EdgeInsets.symmetric(horizontal: 50),
                       //               child: ElevatedButton(onPressed: (){
@@ -1492,7 +1393,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                     }
                   },
                   text: Translate.of(context)!.translate('sign_up'),
-                ),
+                ).paddingOnly(top: 40),
               ],
             ),
           ),
@@ -1598,7 +1499,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                             color:
                                 Theme.of(context).textTheme.titleMedium?.color,
                           ),
-                  ),
+                  ).paddingOnly(top: 12),
                 ),
                 (state == true && stateLoader == true) ||
                         (state == false && cityLoader == true)
@@ -1621,11 +1522,9 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                       )
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
             Container(
                 height: 1,
+                margin: const EdgeInsets.only(top: 15),
                 width: double.infinity,
                 color: state == true
                     ? !stateValidate
@@ -1723,9 +1622,6 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
                               IconButton(
                                 onPressed: () {
                                   if (state) {
@@ -1743,9 +1639,6 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                 ),
                               )
                             ],
-                          ),
-                          SizedBox(
-                            height: h * 0.01,
                           ),
                           Expanded(
                             child: Builder(
@@ -1928,7 +1821,7 @@ class _WidgetSignUpState extends State<WidgetSignUp> {
                                         },
                                       ),
                                     ),
-                                    SizedBox(height: 15),
+
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 50),

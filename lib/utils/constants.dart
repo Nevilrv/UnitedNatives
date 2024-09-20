@@ -3,22 +3,19 @@ import 'package:flutter/material.dart';
 class Constants {
   /// PRODUCTION //////////////////////////////////////////////////////////////////////////////////
 
-  // static final String baseUrl = 'https://www.unhbackend.com/AppServices/';
-  // static final String baseUrl1 = 'https://unhbackend.com/AppServices/';
-  // static final String webUrl =
+  // static const String baseUrl = 'https://www.unhbackend.com/AppServices/';
+  // static const String baseUrl1 = 'https://unhbackend.com/AppServices/';
+  // static const String webUrl =
   //     'https://www.unhbackend.com/Website/aunthenticate-secure-mobile-login';
+  // static const String medicalCenterURL =
+  //     'https://unhbackend.com/wordpress/index.php/wp-json/';
+  // static String domain = 'https://unhbackend.com/wordpress';
 
   /// OLD
 
   // static final String medicalCenterURL =
   //     'https://medicalcenter.sataware.dev/index.php/wp-json/';
   // static String domain = 'https://medicalcenter.sataware.dev';
-
-  /// NEW
-
-  // static final String medicalCenterURL =
-  //     'https://unhbackend.com/wordpress/index.php/wp-json/';
-  // static String domain = 'https://unhbackend.com/wordpress';
 
   /// DEVELOPMENT /////////////////////////////////////////////////////////////////////////////////
 

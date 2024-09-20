@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:united_natives/components/ads_bottom_bar.dart';
@@ -50,85 +51,99 @@ class _MoodState extends State<Mood> {
   String? moodData;
   List cols = [
     {
-      "title": 'Panic',
+      "title": 'Date',
       'index': 1,
+      'widthFactor': 0.3,
+      'key': 'date',
+      'editable': false
+    },
+    {
+      "title": 'Time',
+      'index': 2,
+      'widthFactor': 0.3,
+      'key': 'time',
+      'editable': false
+    },
+    {
+      "title": 'Panic',
+      'index': 3,
       'widthFactor': 0.3,
       'key': 'panic',
       'editable': false
     },
     {
       "title": 'Triggered',
-      'index': 2,
+      'index': 4,
       'widthFactor': 0.3,
       'key': 'triggered',
       'editable': false
     },
     {
       "title": 'Anger',
-      'index': 3,
+      'index': 5,
       'widthFactor': 0.3,
       'key': 'anger',
       'editable': false
     },
     {
       "title": 'Tired',
-      'index': 4,
+      'index': 6,
       'widthFactor': 0.3,
       'key': 'tired',
       'editable': false
     },
     {
       "title": 'Strong',
-      'index': 5,
+      'index': 7,
       'widthFactor': 0.3,
       'key': 'strong',
       'editable': false
     },
     {
       "title": 'Helped',
-      'index': 6,
+      'index': 8,
       'widthFactor': 0.3,
       'key': 'helped',
       'editable': false
     },
     {
       "title": 'Sad',
-      'index': 7,
+      'index': 9,
       'widthFactor': 0.3,
       'key': 'sad',
       'editable': false
     },
     {
       "title": 'Happy',
-      'index': 8,
+      'index': 10,
       'widthFactor': 0.3,
       'key': 'happy',
       'editable': false
     },
     {
       "title": 'Hurt',
-      'index': 9,
+      'index': 11,
       'widthFactor': 0.3,
       'key': 'hurt',
       'editable': false
     },
     {
       "title": 'Confident',
-      'index': 10,
+      'index': 12,
       'widthFactor': 0.3,
       'key': 'confident',
       'editable': false
     },
     {
       "title": 'Motivated',
-      'index': 11,
+      'index': 13,
       'widthFactor': 0.3,
       'key': 'motivated',
       'editable': false
     },
     {
       "title": 'Depressed',
-      'index': 12,
+      'index': 14,
       'widthFactor': 0.3,
       'key': 'depressed',
       'editable': false
@@ -164,18 +179,20 @@ class _MoodState extends State<Mood> {
           idList.add(element.id!);
           List list = (jsonDecode(element.tableData!) as List);
           rows.add({
-            'panic': list[0].toString().trim() == "true" ? '✔' : '-',
-            'triggered': list[1].toString().trim() == "true" ? '✔' : '-',
-            'anger': list[2].toString().trim() == "true" ? '✔' : '-',
-            'tired': list[3].toString().trim() == "true" ? '✔' : '-',
-            'strong': list[4].toString().trim() == "true" ? '✔' : '-',
-            'helped': list[5].toString().trim() == "true" ? '✔' : '-',
-            'sad': list[6].toString().trim() == "true" ? '✔' : '-',
-            'happy': list[7].toString().trim() == "true" ? '✔' : '-',
-            'hurt': list[8].toString().trim() == "true" ? '✔' : '-',
-            'confident': list[9].toString().trim() == "true" ? '✔' : '-',
-            'motivated': list[10].toString().trim() == "true" ? '✔' : '-',
-            'depressed': list[11].toString().trim() == "true" ? '✔' : '-',
+            'date': list[0].toString().trim(),
+            'time': list[1].toString().trim(),
+            'panic': list[2].toString().trim() == "true" ? '✔' : '-',
+            'triggered': list[3].toString().trim() == "true" ? '✔' : '-',
+            'anger': list[4].toString().trim() == "true" ? '✔' : '-',
+            'tired': list[5].toString().trim() == "true" ? '✔' : '-',
+            'strong': list[6].toString().trim() == "true" ? '✔' : '-',
+            'helped': list[7].toString().trim() == "true" ? '✔' : '-',
+            'sad': list[8].toString().trim() == "true" ? '✔' : '-',
+            'happy': list[9].toString().trim() == "true" ? '✔' : '-',
+            'hurt': list[10].toString().trim() == "true" ? '✔' : '-',
+            'confident': list[11].toString().trim() == "true" ? '✔' : '-',
+            'motivated': list[12].toString().trim() == "true" ? '✔' : '-',
+            'depressed': list[13].toString().trim() == "true" ? '✔' : '-',
           });
         });
         debugPrint('Rows $rows');
@@ -202,6 +219,8 @@ class _MoodState extends State<Mood> {
       "patient_id": "${_userController.user.value.id}",
       "report_type_id": "6",
       "report_table_headers": [
+        "Date",
+        "Time",
         "Panic",
         "Triggered",
         "Anger",
@@ -274,6 +293,8 @@ class _MoodState extends State<Mood> {
       "patient_id": "${_userController.user.value.id}",
       "report_id": id,
       "report_table_headers": [
+        "Date",
+        "Time",
         "Panic",
         "Triggered",
         "Anger",
@@ -314,6 +335,8 @@ class _MoodState extends State<Mood> {
   TextEditingController sadController = TextEditingController();
   TextEditingController tiredController = TextEditingController();
   TextEditingController otherController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
 
   TextEditingController editHappyController = TextEditingController();
   TextEditingController editSadController = TextEditingController();
@@ -414,8 +437,31 @@ class _MoodState extends State<Mood> {
                                   onAddButtonPressed: () async {
                                     String? text = moodData;
                                     List<String>? result = text?.split(',');
+                                    if (result == null) {
+                                      return Utils.showSnackBar(
+                                        'Enter details',
+                                        'Please enter all required details!!',
+                                      );
+                                    }
+                                    if (dateController.text.isEmpty) {
+                                      return Utils.showSnackBar(
+                                        'Enter Date',
+                                        'Please enter date!!',
+                                      );
+                                    }
+                                    if (timeController.text.isEmpty) {
+                                      return Utils.showSnackBar(
+                                        'Enter Time',
+                                        'Please enter time!!',
+                                      );
+                                    }
+
+                                    result.insert(0, dateController.text);
+                                    result.insert(1, timeController.text);
+
                                     bool addData = true;
-                                    for (int i = 0; i < result!.length; i++) {
+
+                                    for (int i = 0; i < result.length; i++) {
                                       if (result[i] == "") {
                                         Utils.showSnackBar(
                                           'Enter details',
@@ -427,24 +473,29 @@ class _MoodState extends State<Mood> {
                                     }
                                     if (addData) {
                                       rows.add({
-                                        'panic': result[0],
-                                        'triggered': result[1],
-                                        'anger': result[2],
-                                        'tired': result[3],
-                                        'strong': result[4],
-                                        'helped': result[5],
-                                        'sad': result[6],
-                                        'happy': result[7],
-                                        'hurt': result[8],
-                                        'confident': result[9],
-                                        'motivated': result[10],
-                                        'depressed': result[11],
+                                        'date': result[0],
+                                        'time': result[1],
+                                        'panic': result[2],
+                                        'triggered': result[3],
+                                        'anger': result[4],
+                                        'tired': result[5],
+                                        'strong': result[6],
+                                        'helped': result[7],
+                                        'sad': result[8],
+                                        'happy': result[9],
+                                        'hurt': result[10],
+                                        'confident': result[11],
+                                        'motivated': result[12],
+                                        'depressed': result[13],
                                       });
                                       Navigator.pop(context);
 
                                       await addMoodData(result);
                                       isChecked = List<bool>.filled(
                                           _texts.length, false);
+
+                                      timeController.clear();
+                                      dateController.clear();
                                     } else {
                                       // Navigator.pop(context);
                                     }
@@ -459,40 +510,87 @@ class _MoodState extends State<Mood> {
                                   popUpChild: StatefulBuilder(
                                     builder: (BuildContext context,
                                         StateSetter setStates) {
-                                      return SizedBox(
-                                        height: Get.height * 0.55,
-                                        width: Get.width * 0.75,
-                                        child: ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            itemCount: _texts.length,
-                                            itemBuilder: (context, index) {
-                                              return CheckboxListTile(
-                                                checkColor: Colors.indigo,
-                                                // value: _saved.contains(context), // changed
-                                                value: isChecked?[index],
-                                                title: Text(_texts[index]),
-                                                onChanged: (val) {
-                                                  setStates(() {
-                                                    isChecked?[index] = val!;
-                                                  });
+                                      return Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              dateController.text = await Utils
+                                                  .selectedDateFormat(context);
+                                            },
+                                            child: TextField(
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge
+                                                  ?.copyWith(fontSize: 18),
+                                              controller: dateController,
+                                              enabled: false,
+                                              readOnly: true,
+                                              decoration: const InputDecoration(
+                                                hintText: 'Date',
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              timeController.text = await Utils
+                                                  .selectedTimeFormat(context);
+                                            },
+                                            child: TextField(
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge
+                                                  ?.copyWith(fontSize: 18),
+                                              controller: timeController,
+                                              enabled: false,
+                                              readOnly: true,
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Time'),
+                                            ),
+                                          ),
+                                          Scrollbar(
+                                            child: SizedBox(
+                                              height: Get.height * 0.4,
+                                              width: Get.width * 0.75,
+                                              child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  itemCount: _texts.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return CheckboxListTile(
+                                                      checkColor: Colors.indigo,
+                                                      // value: _saved.contains(context), // changed
+                                                      value: isChecked?[index],
+                                                      title:
+                                                          Text(_texts[index]),
+                                                      onChanged: (val) {
+                                                        setStates(() {
+                                                          isChecked?[index] =
+                                                              val!;
+                                                        });
 
-                                                  final input =
-                                                      isChecked.toString();
-                                                  final removedBrackets =
-                                                      input.substring(
-                                                          1, input.length - 1);
-                                                  final parts = removedBrackets
-                                                      .split(', ');
-                                                  var joined = parts
-                                                      .map((part) => part)
-                                                      .join(',');
-                                                  moodData = joined;
+                                                        final input = isChecked
+                                                            .toString();
+                                                        final removedBrackets =
+                                                            input.substring(
+                                                                1,
+                                                                input.length -
+                                                                    1);
+                                                        final parts =
+                                                            removedBrackets
+                                                                .split(', ');
+                                                        var joined = parts
+                                                            .map((part) => part)
+                                                            .join(',');
+                                                        moodData = joined;
 
-                                                  debugPrint(
-                                                      'SPLITSES  $joined');
-                                                },
-                                              );
-                                            }),
+                                                        debugPrint(
+                                                            'SPLITSES  $joined');
+                                                      },
+                                                    );
+                                                  }),
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     },
                                   ),

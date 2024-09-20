@@ -14,28 +14,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/custom_button.dart';
 import 'package:united_natives/components/text_form_field.dart';
+import 'package:united_natives/medicle_center/lib/utils/translate.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/viewModel/ads_controller.dart';
 import 'package:united_natives/viewModel/user_controller.dart';
-import 'package:united_natives/utils/pref_manager.dart';
-import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 
 import '../../ResponseModel/user.dart';
 import '../../routes/routes.dart';
 import '../../utils/constants.dart';
-import '../../utils/utils.dart';
 
 enum Gender { male, female }
 
 enum BestTutorSite { ihDoctor, otherDoctor }
 
-String? categoryOfStatesDropDown;
-List categoryOfStates = [];
-String? categoryOfCitiesDropDown;
-String? categoryOfMedicalCenterDropDown;
-List categoryOfCity = [];
-List categoryOfMedicalCenter = [];
 bool _isDark = Prefs.getBool(Prefs.DARKTHEME, def: false);
-bool stateLoader = false;
 
 class DocSignupPage extends StatefulWidget {
   const DocSignupPage({super.key});
@@ -46,9 +38,99 @@ class DocSignupPage extends StatefulWidget {
 
 class _DocSignupPageState extends State<DocSignupPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
+  final UserController _userController = Get.find();
+  AdsController adsController = Get.find();
 
-  final UserController userController = Get.find();
   final sController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _contactController = TextEditingController();
+  final _certificateController = TextEditingController();
+  final _educationController = TextEditingController();
+  final _providerTypeController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _perAppointmentChargeController = TextEditingController(text: "0");
+  final cityController = TextEditingController();
+  final specialityController = TextEditingController();
+  final tribalRecognizedYesController = TextEditingController();
+  final tribalRecognizedNoController = TextEditingController();
+  final docDigitController = TextEditingController();
+
+  List categoryOfStates = [];
+  List categoryOfCity = [];
+  List categoryOfMedicalCenter = [];
+
+  File? _image;
+  ImagePicker imagePicker = ImagePicker();
+
+  String? categoryOfCitiesDropDown;
+  String? categoryOfMedicalCenterDropDown;
+  String? categoryOfStatesDropDown;
+  String? getIds1;
+  String? getIds;
+  String? getMedicalCenterID;
+  String? doctorsTypes;
+  String dropdownValue = 'Alabama';
+  dynamic selector;
+
+  bool dateValidate = true;
+  bool stateValidate = true;
+  bool cityValidate = true;
+  bool specialityValidate = true;
+  bool stateLoader = false;
+  bool medicalCenterLoader = false;
+  bool cityLoader = false;
+  bool isDoctorVerify = false;
+
+  @override
+  void initState() {
+    getSpecialityData();
+    getStates();
+    getMedicalCenter();
+    super.initState();
+  }
+
+  getSpecialityData() {
+    if (_userController.dropDownSpeciality.isEmpty) {
+      _userController.getSpecialities();
+      setState(() {});
+    }
+  }
+
+  @override
+  void dispose() {
+    _userController.onDispose();
+    categoryOfStatesDropDown = null;
+    categoryOfCitiesDropDown = null;
+    categoryOfMedicalCenterDropDown = null;
+    getIds1 = null;
+    getIds = null;
+    getMedicalCenterID = null;
+    doctorsTypes = null;
+    categoryOfStates = [];
+    categoryOfCity = [];
+    categoryOfMedicalCenter = [];
+    sController.clear();
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _emailController.clear();
+    _contactController.clear();
+    _certificateController.clear();
+    _educationController.clear();
+    _providerTypeController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+    _perAppointmentChargeController.clear();
+    cityController.clear();
+    specialityController.clear();
+    tribalRecognizedYesController.clear();
+    tribalRecognizedNoController.clear();
+    docDigitController.clear();
+    super.dispose();
+  }
 
   Future getStates() async {
     setState(() {
@@ -72,180 +154,6 @@ class _DocSignupPageState extends State<DocSignupPage> {
       });
     }
   }
-
-  @override
-  void initState() {
-    getStates();
-    getSpecialityData();
-    super.initState();
-  }
-
-  getSpecialityData() {
-    if (userController.dropDownSpeciality.isEmpty) {
-      userController.getSpecialities();
-      setState(() {});
-    }
-  }
-
-  @override
-  void dispose() {
-    categoryOfStatesDropDown = null;
-    categoryOfCitiesDropDown = null;
-    categoryOfMedicalCenterDropDown = null;
-    categoryOfStates = [];
-    categoryOfCity = [];
-    categoryOfMedicalCenter = [];
-    userController.onDispose();
-    super.dispose();
-  }
-
-  AdsController adsController = Get.find();
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<AdsController>(builder: (ads) {
-      return Scaffold(
-        key: _scaffoldKey,
-        bottomNavigationBar: AdsBottomBar(
-          ads: ads,
-          context: context,
-        ),
-        appBar: AppBar(
-          surfaceTintColor: Colors.transparent,
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: _isDark ? Colors.white : Colors.black,
-            ),
-          ),
-        ),
-        body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Expanded(
-                        child: SizedBox(
-                          height: 0,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 28),
-                        child: Text(
-                          Translate.of(context)!.translate('sign_up'),
-                          style: const TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      WidgetDocSignup(scaffoldKey: _scaffoldKey),
-                      const Expanded(
-                        child: SizedBox(height: 20),
-                      ),
-                      SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 28),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${Translate.of(context)!.translate('Already a Provider')} ?',
-                                style: const TextStyle(
-                                    color: Color(0xffbcbcbc),
-                                    fontSize: 20,
-                                    fontFamily: 'NunitoSans'),
-                              ),
-                              const Text('  '),
-                              InkWell(
-                                borderRadius: BorderRadius.circular(2),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Text(
-                                    Translate.of(context)!.translate('login'),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelLarge
-                                        ?.copyWith(fontSize: 20),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox(height: 10),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      );
-    });
-  }
-}
-
-class WidgetDocSignup extends StatefulWidget {
-  final GlobalKey<ScaffoldState>? scaffoldKey;
-
-  const WidgetDocSignup({super.key, this.scaffoldKey});
-
-  @override
-  State<WidgetDocSignup> createState() => _WidgetDocSignupState();
-}
-
-class _WidgetDocSignupState extends State<WidgetDocSignup> {
-  File? _image;
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _contactController = TextEditingController();
-  final _certificateController = TextEditingController();
-  final _educationController = TextEditingController();
-  final _providerTypeController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _perAppointmentChargeController = TextEditingController(text: "0");
-  final cityController = TextEditingController();
-  final specialityController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
-  final UserController _userController = Get.find();
-  final sController = TextEditingController();
-  String? getIds;
-  String? getIds1;
-  String? getMedicalCenterID;
-  bool dateValidate = true;
-  bool stateValidate = true;
-  bool cityValidate = true;
-  bool specialityValidate = true;
-  ImagePicker imagePicker = ImagePicker();
-
-  // Future _getImage(ImageSource imageSource) async {
-  //   var image = await imagePicker.pickImage(source: imageSource);
-  //   setState(() {
-  //     _image = File(image.path);
-  //   });
-  // }
 
   Future<void> _getImage(ImageSource imageSource) async {
     try {
@@ -303,8 +211,6 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
     });
   }
 
-  bool cityLoader = false;
-
   Future getCities({required String stateId}) async {
     setState(() {
       cityLoader = true;
@@ -325,8 +231,6 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
       });
     }
   }
-
-  bool medicalCenterLoader = false;
 
   Future getMedicalCenter({String? location}) async {
     setState(() {
@@ -367,1179 +271,879 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
     }
   }
 
-  // Future getMedicalCenter({String location}) async {
-  //   String url;
-  //   Map<String, String> body;
-  //   if (location == 'All States' || location == '' || location == null) {
-  //     body = {"state_name": ""};
-  //   } else {
-  //     body = {"state_name": "$location"};
-  //   }
-  //   url =
-  //   'http://www.unhbackend.com/AppServices/Patient/get_medical_center_detail';
-  //
-  //   Map<String, String> header = {
-  //     "Authorization": 'Bearer ${Prefs.getString(Prefs.BEARER)}',
-  //     "Content-Type": "application/json",
-  //   };
-  //
-  //   http.Response response = await http.post(Uri.parse(url),
-  //       body: jsonEncode(body), headers: header);
-  //   if (response.statusCode == 200) {
-  //     var result = jsonDecode(response.body);
-  //
-  //     setState(() {
-  //       categoryOfMedicalCenter = result;
-  //     });
-  //
-  //     return result;
-  //   } else {}
-  // }
-  // Future uploadPic(BuildContext context) async {
-  //   String fileName = basename(_image.path);
-  //   Refe firebaseStorageRef =
-  //       FirebaseStorage.instance.ref().child(fileName);
-  //   StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-  //   StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-  //   setState(() {
-  //     print("Profile Picture uploaded");
-  //     Scaffold.of(context)
-  //         .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
-  //   });
-  // }
-
-  String? doctorsTypes;
-  String dropdownValue = 'Alabama';
-
-  dynamic selector;
-  bool isDoctorVerify = false;
-  final docDigitController = TextEditingController();
-
-  // Future doctorPin() async {
-  //   var headers = {
-  //     'Authorization': 'Bearer ${Prefs.getString(Prefs.BEARER)}',
-  //     'Cookie': 'ci_session=5d272013f8aaa1d629bb834a68b3d0178d0454e3'
-  //   };
-  //   http.Response response = await http.post(
-  //       Uri.parse('${Constants.baseUrl + Constants.ihDocPin}'),
-  //       headers: headers);
-  //   if (response.statusCode == 200) {
-  //     var result = jsonDecode(response.body);
-  //     doctorPins = result;
-  //     print('++++ doctor 6 Digit Pin ++++++ $doctorPins');
-  //     return result;
-  //   }
-  // }
-
-  @override
-  void initState() {
-    // doctorPin();
-    getMedicalCenter();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    categoryOfStatesDropDown = null;
-    categoryOfCitiesDropDown = null;
-    categoryOfMedicalCenterDropDown = null;
-    categoryOfStates = [];
-    categoryOfCity = [];
-    categoryOfMedicalCenter = [];
-    _userController.onDispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    _openBottomSheet(context);
-                  },
-                  child: _image != null
-                      ? Stack(children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.file(
-                              _image!,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                          const Positioned.fill(
-                              child:
-                                  Icon(Icons.camera_alt, color: Colors.white)),
-                        ])
-                      : const CircleAvatar(
-                          radius: 50,
-                          child: Icon(Icons.camera_alt,
-                              size: 30, color: Colors.white),
-                          // backgroundImage: NetworkImage(
-                          //     "${_userController.authResult.user.photoURL}"),
-                        ),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "${Translate.of(context)!.translate('first_name_dot')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.next,
-                  controller: _firstNameController,
-                  hintText: 'John',
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Enter First Name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('last_name_dot')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.next,
-                  controller: _lastNameController,
-                  hintText: 'Doe',
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Enter Last Name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('gender_dot')} *",
-                  style: kInputTextStyle,
-                ),
-                Obx(
-                  () => DropdownButtonFormField(
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Theme.of(context).textTheme.titleMedium?.color,
-                    ),
-                    focusNode: FocusNode(),
-                    validator: (value) =>
-                        value == null ? 'Please Select Gender' : null,
-                    isExpanded: true,
-                    value: _userController.selectedGender.value.isEmpty
-                        ? null
-                        : _userController.selectedGender.value,
-                    hint: Text(
-                      Translate.of(context)!.translate('add_gender'),
-                      style: hintStyle,
-                    ),
-                    onChanged: _userController.onChangeGender,
-                    items: _userController.dropDownGender,
-                  ),
-                ),
-              ],
+    return GetBuilder<AdsController>(builder: (ads) {
+      return Scaffold(
+        key: _scaffoldKey,
+        bottomNavigationBar: AdsBottomBar(
+          ads: ads,
+          context: context,
+        ),
+        appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: _isDark ? Colors.white : Colors.black,
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "${Translate.of(context)!.translate('email_dot')} *",
-                  style: kInputTextStyle,
+        ),
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
                 ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.next,
-                  controller: _emailController,
-                  hintText: 'contact@sataware.com',
-                  validator: (value) => EmailValidator.validate(value!)
-                      ? null
-                      : "Please Enter a Valid Email.",
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('Contact number')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  keyboardType: TextInputType.phone,
-                  textInputAction: TextInputAction.next,
-                  controller: _contactController,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(10),
-                  ],
-                  validator: validateMobile,
-                  hintText: '+1 520 44 54 661',
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('date_of_birth_dot')} *",
-                  style: kInputTextStyle,
-                ),
-                Obx(
-                  () => ListTile(
-                    contentPadding: const EdgeInsets.all(0),
-                    // title: Text(_userController.dateOfBirth.value),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _userController.dateOfBirth.value.isEmpty
-                            ? Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        color: !dateValidate
-                                            ? Colors.red.shade900
-                                            : Colors.grey),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 28),
+                        child: Text(
+                          Translate.of(context)!.translate('sign_up'),
+                          style: const TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Center(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _openBottomSheet(context);
+                                    },
+                                    child: _image != null
+                                        ? Stack(children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: Image.file(
+                                                _image!,
+                                                width: 100,
+                                                height: 100,
+                                                fit: BoxFit.fitHeight,
+                                              ),
+                                            ),
+                                            const Positioned.fill(
+                                                child: Icon(Icons.camera_alt,
+                                                    color: Colors.white)),
+                                          ])
+                                        : const CircleAvatar(
+                                            radius: 50,
+                                            child: Icon(Icons.camera_alt,
+                                                size: 30, color: Colors.white),
+                                          ),
                                   ),
-                                ),
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: const Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Tap to Select BirthDate",
-                                      style: hintStyle,
+                                ).paddingSymmetric(vertical: 30),
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 28),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('first_name_dot')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.next,
+                                    controller: _firstNameController,
+                                    hintText: 'John',
+                                    validator: (text) {
+                                      if (text!.isEmpty) {
+                                        return 'Enter First Name';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('last_name_dot')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.next,
+                                    controller: _lastNameController,
+                                    hintText: 'Doe',
+                                    validator: (text) {
+                                      if (text!.isEmpty) {
+                                        return 'Enter Last Name';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('gender_dot')} *"),
+                                  Obx(
+                                    () => DropdownButtonFormField(
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.color,
+                                      ),
+                                      focusNode: FocusNode(),
+                                      validator: (value) => value == null
+                                          ? 'Please Select Gender'
+                                          : null,
+                                      isExpanded: true,
+                                      value: _userController
+                                              .selectedGender.value.isEmpty
+                                          ? null
+                                          : _userController
+                                              .selectedGender.value,
+                                      hint: Text(
+                                        Translate.of(context)!
+                                            .translate('add_gender'),
+                                        style: hintStyle,
+                                      ),
+                                      onChanged: _userController.onChangeGender,
+                                      items: _userController.dropDownGender,
                                     ),
-                                    Icon(
-                                      Icons.calendar_today_outlined,
-                                      color: Colors.grey,
-                                    )
-                                  ],
-                                ),
-                              )
-                            : Container(
-                                width: double.infinity,
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(color: Colors.grey),
                                   ),
-                                ),
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Text(
-                                  DateFormat('EEEE, dd MMMM, yyyy').format(
-                                    DateTime.parse(
-                                        _userController.dateOfBirth.value),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('email_dot')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.next,
+                                    controller: _emailController,
+                                    hintText: 'contact@sataware.com',
+                                    validator: (value) =>
+                                        EmailValidator.validate(value!)
+                                            ? null
+                                            : "Please Enter a Valid Email.",
                                   ),
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: Theme.of(context)
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('Contact number')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    keyboardType: TextInputType.phone,
+                                    textInputAction: TextInputAction.next,
+                                    controller: _contactController,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      LengthLimitingTextInputFormatter(10),
+                                    ],
+                                    validator: validateMobile,
+                                    hintText: '+1 520 44 54 661',
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('date_of_birth_dot')} *"),
+                                  _selectBirthDate(context),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('License No.')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.next,
+                                    controller: _certificateController,
+                                    hintText: 'DFGBV784959F0',
+                                    validator: (text) {
+                                      if (text!.isEmpty) {
+                                        return 'Please Enter License Number';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('Per Appointment Charge')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.next,
+                                    keyboardType: TextInputType.number,
+                                    controller: _perAppointmentChargeController,
+                                    hintText: '\$100',
+                                    validator: (text) {
+                                      if (text!.isEmpty) {
+                                        return 'Please Enter Per Appointment Charge';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('Speciality')} *"),
+                                  _selectSpeciality(context, h),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('Education')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.next,
+                                    controller: _educationController,
+                                    hintText: 'MBBS , MD',
+                                    validator: (text) {
+                                      if (text!.isEmpty) {
+                                        return 'Please Enter Your Education';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('Provider Type')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.next,
+                                    controller: _providerTypeController,
+                                    hintText: 'Enter Provider Type',
+                                    validator: (text) {
+                                      if (text!.isEmpty) {
+                                        return 'Enter Provider Type';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  _labelWidget(Translate.of(context)!
+                                      .translate('Racial/ethnic background *')),
+                                  _racialEthnicBackground(context),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('password_dot')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.next,
+                                    controller: _passwordController,
+                                    hintText: '* * * * * *',
+                                    obscureText: true,
+                                    validator: (text) {
+                                      if (text.toString().length < 8 ||
+                                          text!.isEmpty) {
+                                        return 'Password Should be Greater Than 8 Digit';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('confirm_password_dot')} *"),
+                                  CustomTextFormField(
+                                    focusNode: FocusNode(),
+                                    textInputAction: TextInputAction.done,
+                                    controller: _confirmPasswordController,
+                                    hintText: '* * * * * *',
+                                    obscureText: true,
+                                    validator: (text) {
+                                      if (text!.isEmpty) {
+                                        return 'Enter Confirm Password';
+                                      } else if (_passwordController.text !=
+                                          _confirmPasswordController.text) {
+                                        return 'Confirm Password Does Not Match';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('State')} *"),
+                                  dropDownView(
+                                    category: 's',
+                                    colorCon: categoryOfStates == [] ||
+                                        categoryOfStates.isEmpty,
+                                    textStyleCon:
+                                        categoryOfStatesDropDown == null,
+                                    text: categoryOfStatesDropDown != null
+                                        ? '$categoryOfStatesDropDown'
+                                        : 'Select State',
+                                    onTap: () {
+                                      if (categoryOfStates.isNotEmpty) {
+                                        stateCityDropDown(
+                                            category: 's', h: h, w: w);
+                                      }
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('city')} *"),
+                                  dropDownView(
+                                    category: 'c',
+                                    colorCon: categoryOfCity == [] ||
+                                        categoryOfCity.isEmpty,
+                                    textStyleCon:
+                                        categoryOfCitiesDropDown == null,
+                                    text: categoryOfCitiesDropDown != null
+                                        ? '$categoryOfCitiesDropDown'
+                                        : 'Select City',
+                                    onTap: () {
+                                      if (categoryOfCity.isNotEmpty) {
+                                        stateCityDropDown(
+                                            category: 'c', h: h, w: w);
+                                      }
+                                    },
+                                  ),
+                                  _labelWidget(
+                                      "${Translate.of(context)!.translate('Medical Center')} *"),
+                                  dropDownView(
+                                    category: 'm',
+                                    colorCon: categoryOfMedicalCenter == [] ||
+                                        categoryOfMedicalCenter.isEmpty,
+                                    textStyleCon:
+                                        categoryOfMedicalCenterDropDown == null,
+                                    text:
+                                        categoryOfMedicalCenterDropDown != null
+                                            ? '$categoryOfMedicalCenterDropDown'
+                                            : 'Select Medical Center',
+                                    onTap: () {
+                                      if (categoryOfMedicalCenter.isNotEmpty) {
+                                        stateCityDropDown(
+                                            category: 'm', h: h, w: w);
+                                      }
+                                    },
+                                  ),
+                                  _signUpButton(context),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 28),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${Translate.of(context)!.translate('Already a Provider')} ?',
+                                style: const TextStyle(
+                                    color: Color(0xffbcbcbc),
+                                    fontSize: 20,
+                                    fontFamily: 'NunitoSans'),
+                              ),
+                              const Text('  '),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(2),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Text(
+                                    Translate.of(context)!.translate('login'),
+                                    style: Theme.of(context)
                                         .textTheme
-                                        .titleMedium
-                                        ?.color,
+                                        .labelLarge
+                                        ?.copyWith(fontSize: 20),
                                   ),
                                 ),
                               ),
-                        dateValidate
-                            ? const SizedBox()
-                            : Text(
-                                "Please Select Birthdate",
-                                style: TextStyle(
-                                    color: Colors.red.shade900,
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.fontSize),
-                              ).paddingOnly(top: 6)
-                      ],
-                    ),
-                    onTap: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now(),
-                      ).then((DateTime? value) {
-                        if (value != null) {
-                          _userController.onDateOfBirth(value.toString());
-                        }
-                      });
-                    },
+                            ],
+                          ).paddingOnly(top: 12),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  "${Translate.of(context)!.translate('License No.')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.next,
-                  controller: _certificateController,
-                  hintText: 'DFGBV784959F0',
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Please Enter License Number';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  "${Translate.of(context)!.translate('Per Appointment Charge')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  controller: _perAppointmentChargeController,
-                  hintText: '\$100',
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Please Enter Per Appointment Charge';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('Speciality')} *",
-                  style: kInputTextStyle,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+              ),
+            );
+          },
+        ),
+      );
+    });
+  }
 
-                Obx(
-                  () => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          if (_userController.dropDownSpeciality.isNotEmpty) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return PopScope(
-                                  canPop: false,
-                                  child: StatefulBuilder(
-                                    builder: (context, setState234) {
-                                      return Dialog(
-                                        backgroundColor: Colors.transparent,
-                                        child: ConstrainedBox(
-                                          constraints: BoxConstraints(
-                                              maxHeight: h * 0.6,
-                                              maxWidth: 550),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: _isDark
-                                                  ? Colors.grey.shade800
-                                                  : Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                top: h * 0.015,
-                                                left: h * 0.015,
-                                                right: h * 0.005,
-                                                bottom: 0,
+  _labelWidget(String text) {
+    return Text(
+      text,
+      style: kInputTextStyle,
+    ).paddingOnly(top: 18);
+  }
+
+  /// SELECT BIRTH DATE
+
+  _selectBirthDate(BuildContext context) {
+    return Obx(
+      () => ListTile(
+        contentPadding: const EdgeInsets.all(0),
+        // title: Text(_userController.dateOfBirth.value),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _userController.dateOfBirth.value.isEmpty
+                ? Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: !dateValidate
+                                ? Colors.red.shade900
+                                : Colors.grey),
+                      ),
+                    ),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Tap to Select BirthDate",
+                          style: hintStyle,
+                        ),
+                        Icon(
+                          Icons.calendar_today_outlined,
+                          color: Colors.grey,
+                        )
+                      ],
+                    ),
+                  )
+                : Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      DateFormat('EEEE, dd MMMM, yyyy').format(
+                        DateTime.parse(_userController.dateOfBirth.value),
+                      ),
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Theme.of(context).textTheme.titleMedium?.color,
+                      ),
+                    ),
+                  ),
+            dateValidate
+                ? const SizedBox()
+                : Text(
+                    "Please Select Birthdate",
+                    style: TextStyle(
+                        color: Colors.red.shade900,
+                        fontSize:
+                            Theme.of(context).textTheme.bodySmall?.fontSize),
+                  ).paddingOnly(top: 6)
+          ],
+        ),
+        onTap: () {
+          showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1900),
+            lastDate: DateTime.now(),
+          ).then((DateTime? value) {
+            if (value != null) {
+              _userController.onDateOfBirth(value.toString());
+            }
+          });
+        },
+      ),
+    );
+  }
+
+  /// SELECT SPECIALITY
+
+  _selectSpeciality(BuildContext context, double h) {
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () async {
+              if (_userController.dropDownSpeciality.isNotEmpty) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return PopScope(
+                      canPop: false,
+                      child: StatefulBuilder(
+                        builder: (context, setState234) {
+                          return Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxHeight: h * 0.6, maxWidth: 550),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: _isDark
+                                      ? Colors.grey.shade800
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: h * 0.015,
+                                    left: h * 0.015,
+                                    right: h * 0.005,
+                                    bottom: 0,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: _isDark
+                                                    ? Colors.grey.shade800
+                                                    : Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(25),
+                                                border: Border.all(
+                                                    color: Colors.grey),
                                               ),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                              height: 48,
+                                              child: Center(
+                                                child: TextField(
+                                                  controller: sController,
+                                                  onChanged: (value) {
+                                                    setState234(() {});
+                                                  },
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          contentPadding:
+                                                              EdgeInsets.only(
+                                                                  top: 10,
+                                                                  left: 16),
+                                                          suffixIcon: Icon(
+                                                              Icons.search),
+                                                          enabledBorder:
+                                                              InputBorder.none,
+                                                          focusedBorder:
+                                                              InputBorder.none,
+                                                          hintText:
+                                                              'Search...'),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              sController.clear();
+                                            },
+                                            icon: const Icon(
+                                              Icons.clear,
+                                              color: Colors.black,
+                                              size: 25,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: Builder(
+                                          builder: (context) {
+                                            int index = _userController
+                                                .dropDownSpeciality
+                                                .indexWhere((element) =>
+                                                    element["speciality_name"]
+                                                        .toString()
+                                                        .toLowerCase()
+                                                        .contains(sController
+                                                            .text
+                                                            .toString()
+                                                            .toLowerCase()));
+                                            if (index < 0) {
+                                              return Center(
+                                                child: Text(
+                                                  'No Speciality !',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium
+                                                        ?.color,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+
+                                            return ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              physics:
+                                                  const BouncingScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: _userController
+                                                  .dropDownSpeciality.length,
+                                              itemBuilder: (context, index) {
+                                                if (_userController
+                                                    .dropDownSpeciality[index]
+                                                        ['speciality_name']
+                                                    .toString()
+                                                    .toLowerCase()
+                                                    .contains(sController.text
+                                                        .toString()
+                                                        .toLowerCase())) {
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Expanded(
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: _isDark
-                                                                ? Colors.grey
-                                                                    .shade800
-                                                                : Colors.white,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        25),
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .grey),
-                                                          ),
-                                                          height: 48,
-                                                          child: Center(
-                                                            child: TextField(
-                                                              controller:
-                                                                  sController,
-                                                              onChanged:
-                                                                  (value) {
-                                                                setState234(
-                                                                    () {});
-                                                              },
-                                                              decoration: const InputDecoration(
-                                                                  contentPadding:
-                                                                      EdgeInsets.only(
-                                                                          top:
-                                                                              10,
-                                                                          left:
-                                                                              16),
-                                                                  suffixIcon:
-                                                                      Icon(Icons
-                                                                          .search),
-                                                                  enabledBorder:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  focusedBorder:
-                                                                      InputBorder
-                                                                          .none,
-                                                                  hintText:
-                                                                      'Search...'),
-                                                            ),
+                                                      ListTile(
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        title: Text(
+                                                          _userController
+                                                              .dropDownSpeciality[
+                                                                  index][
+                                                                  'speciality_name']
+                                                              .toString()
+                                                              .trim(),
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .titleMedium
+                                                                ?.color,
                                                           ),
                                                         ),
-                                                      ),
-                                                      const SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      IconButton(
-                                                        onPressed: () {
+                                                        onTap: () async {
                                                           Navigator.pop(
                                                               context);
-                                                          sController.clear();
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.clear,
-                                                          color: Colors.black,
-                                                          size: 25,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: h * 0.01,
-                                                  ),
-                                                  Expanded(
-                                                    child: Builder(
-                                                      builder: (context) {
-                                                        int index = _userController
-                                                            .dropDownSpeciality
-                                                            .indexWhere((element) => element[
-                                                                    "speciality_name"]
-                                                                .toString()
-                                                                .toLowerCase()
-                                                                .contains(sController
-                                                                    .text
-                                                                    .toString()
-                                                                    .toLowerCase()));
-                                                        if (index < 0) {
-                                                          return Center(
-                                                            child: Text(
-                                                              'No Speciality !',
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .titleMedium
-                                                                    ?.color,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
 
-                                                        return ListView.builder(
-                                                          padding:
-                                                              EdgeInsets.zero,
-                                                          physics:
-                                                              const BouncingScrollPhysics(),
-                                                          shrinkWrap: true,
-                                                          itemCount: _userController
-                                                              .dropDownSpeciality
-                                                              .length,
-                                                          itemBuilder:
-                                                              (context, index) {
-                                                            if (_userController
+                                                          _userController
+                                                              .onChangeSpeciality(
+                                                            _userController
                                                                 .dropDownSpeciality[
                                                                     index][
                                                                     'speciality_name']
                                                                 .toString()
-                                                                .toLowerCase()
-                                                                .contains(sController
-                                                                    .text
-                                                                    .toString()
-                                                                    .toLowerCase())) {
-                                                              return Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  ListTile(
-                                                                    contentPadding:
-                                                                        EdgeInsets
-                                                                            .zero,
-                                                                    title: Text(
-                                                                      _userController
-                                                                          .dropDownSpeciality[
-                                                                              index]
-                                                                              [
-                                                                              'speciality_name']
-                                                                          .toString()
-                                                                          .trim(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            20,
-                                                                        color: Theme.of(context)
-                                                                            .textTheme
-                                                                            .titleMedium
-                                                                            ?.color,
-                                                                      ),
-                                                                    ),
-                                                                    onTap:
-                                                                        () async {
-                                                                      Navigator.pop(
-                                                                          context);
+                                                                .trim(),
+                                                          );
 
-                                                                      _userController
-                                                                          .onChangeSpeciality(
-                                                                        _userController
-                                                                            .dropDownSpeciality[index]['speciality_name']
-                                                                            .toString()
-                                                                            .trim(),
-                                                                      );
-
-                                                                      sController
-                                                                          .clear();
-                                                                    },
-                                                                  ),
-                                                                  Divider(
-                                                                    height: 0,
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade400,
-                                                                  ).paddingOnly(
-                                                                      right: 6)
-                                                                ],
-                                                              );
-                                                            } else {
-                                                              return const SizedBox();
-                                                            }
-                                                          },
-                                                        );
-                                                      },
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                                          sController.clear();
+                                                        },
+                                                      ),
+                                                      Divider(
+                                                        height: 0,
+                                                        color: Colors
+                                                            .grey.shade400,
+                                                      ).paddingOnly(right: 6)
+                                                    ],
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              },
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
+                                      )
+                                    ],
                                   ),
-                                );
-                              },
-                            );
-                          }
+                                ),
+                              ),
+                            ),
+                          );
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: Colors.transparent,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      _userController
-                                              .selectedSpeciality.value.isEmpty
-                                          ? "Select Speciality"
-                                          : _userController
-                                              .selectedSpeciality.value,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: _userController
-                                              .selectedSpeciality.value.isEmpty
-                                          ? const TextStyle(
-                                              fontSize: 20,
-                                              color: Color(0xffbcbcbc),
-                                              fontFamily: 'NunitoSans',
-                                            )
-                                          : TextStyle(
-                                              fontSize: 20,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium
-                                                  ?.color,
-                                            ),
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_drop_down,
-                                    color: _isDark
-                                        ? _userController
-                                                .dropDownSpeciality.isEmpty
-                                            ? Colors.grey.shade800
-                                            : Colors.grey.shade100
-                                        : _userController
-                                                .dropDownSpeciality.isEmpty
-                                            ? Colors.grey
-                                            : Colors.grey.shade800,
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                  height: 1,
-                                  width: double.infinity,
-                                  color: !specialityValidate
-                                      ? Colors.red.shade900
-                                      : Colors.grey.shade500),
-                              specialityValidate
-                                  ? const SizedBox()
-                                  : Text(
-                                      "Please Select Speciality",
-                                      style: TextStyle(
-                                          color: Colors.red.shade900,
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall
-                                              ?.fontSize),
-                                    ).paddingOnly(top: 6)
-                            ],
-                          ),
-                        ),
                       ),
-                      if (_userController.selectedSpeciality.value ==
-                          "Other") ...[
-                        const SizedBox(height: 20),
-                        Text(
-                          "${Translate.of(context)!.translate('Enter Speciality')} *",
-                          style: kInputTextStyle,
-                        ),
-                        CustomTextFormField(
-                          focusNode: FocusNode(),
-                          textInputAction: TextInputAction.next,
-                          controller: specialityController,
-                          hintText: 'Speciality',
-                          validator: (text) {
-                            if (text!.isEmpty) {
-                              return 'Please Enter Your Speciality';
-                            }
-                            return null;
-                          },
-                        ),
-                      ]
-                    ],
-                  ),
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-                // Obx(
-                //   () => DropdownButtonFormField(
-                //     style: TextStyle(
-                //         fontSize: 22,
-                //         color: Theme.of(context).textTheme.titleMedium?.color),
-                //     focusNode: FocusNode(),
-                //     validator: (value) =>
-                //         value == null ? 'Please Select Speciality' : null,
-                //     isExpanded: true,
-                //     value: _userController.selectedSpeciality.value.isEmpty
-                //         ? null
-                //         : _userController.selectedSpeciality.value,
-                //     hint: Text(
-                //       Translate.of(context)!.translate('Add Speciality'),
-                //       style: hintStyle,
-                //     ),
-                //     onChanged: _userController.onChangeSpeciality,
-                //     items: _userController.dropDownSpeciality,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
-                Text(
-                  "${Translate.of(context)!.translate('Education')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.next,
-                  controller: _educationController,
-                  hintText: 'MBBS , MD',
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Please Enter Your Education';
-                    }
-                    return null;
+                    );
                   },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('Provider Type')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.next,
-                  controller: _providerTypeController,
-                  hintText: 'Enter Provider Type',
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Enter Provider Type';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-
-                Obx(
-                  () => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                );
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Colors.transparent,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Text(
-                        Translate.of(context)!
-                            .translate('Racial/ethnic background *'),
-                        style: kInputTextStyle,
-                      ),
-                      DropdownButtonFormField(
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Theme.of(context).textTheme.titleMedium?.color,
+                      Expanded(
+                        child: Text(
+                          _userController.selectedSpeciality.value.isEmpty
+                              ? "Select Speciality"
+                              : _userController.selectedSpeciality.value,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              _userController.selectedSpeciality.value.isEmpty
+                                  ? const TextStyle(
+                                      fontSize: 20,
+                                      color: Color(0xffbcbcbc),
+                                      fontFamily: 'NunitoSans',
+                                    )
+                                  : TextStyle(
+                                      fontSize: 20,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.color,
+                                    ),
                         ),
-                        focusNode: FocusNode(),
-                        validator: (value) => value == null
-                            ? 'Please select racial/ethnic background'
-                            : null,
-                        isExpanded: true,
-                        value:
-                            _userController.tribalBackgroundStatus.value.isEmpty
-                                ? null
-                                : _userController.tribalBackgroundStatus.value,
-                        hint: Text(
-                            Translate.of(context)!
-                                .translate('Select racial/ethnic background'),
-                            style: hintStyle),
-                        onChanged:
-                            _userController.onChangeTribalBackgroundStatus,
-                        items: _userController.dropDownTribal3,
                       ),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: _isDark
+                            ? _userController.dropDownSpeciality.isEmpty
+                                ? Colors.grey.shade800
+                                : Colors.grey.shade100
+                            : _userController.dropDownSpeciality.isEmpty
+                                ? Colors.grey
+                                : Colors.grey.shade800,
+                      )
                     ],
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('password_dot')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.next,
-                  controller: _passwordController,
-                  hintText: '* * * * * *',
-                  obscureText: true,
-                  validator: (text) {
-                    if (text.toString().length < 8 || text!.isEmpty) {
-                      return 'Password Should be Greater Than 8 Digit';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('confirm_password_dot')} *",
-                  style: kInputTextStyle,
-                ),
-                CustomTextFormField(
-                  focusNode: FocusNode(),
-                  textInputAction: TextInputAction.done,
-                  controller: _confirmPasswordController,
-                  hintText: '* * * * * *',
-                  obscureText: true,
-                  validator: (text) {
-                    if (text!.isEmpty) {
-                      return 'Enter Confirm Password';
-                    } else if (_passwordController.text !=
-                        _confirmPasswordController.text) {
-                      return 'Confirm Password Does Not Match';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "${Translate.of(context)!.translate('State')} *",
-                  style: kInputTextStyle,
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                dropDownView(
-                  category: 's',
-                  colorCon: categoryOfStates == [] || categoryOfStates.isEmpty,
-                  textStyleCon: categoryOfStatesDropDown == null,
-                  text: categoryOfStatesDropDown != null
-                      ? '$categoryOfStatesDropDown'
-                      : 'Select State',
-                  onTap: () {
-                    if (categoryOfStates.isNotEmpty) {
-                      selectStateCity(category: 's', h: h, w: w);
-                    }
-                  },
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  "${Translate.of(context)!.translate('city')} *",
-                  style: kInputTextStyle,
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                dropDownView(
-                  category: 'c',
-                  colorCon: categoryOfCity == [] || categoryOfCity.isEmpty,
-                  textStyleCon: categoryOfCitiesDropDown == null,
-                  text: categoryOfCitiesDropDown != null
-                      ? '$categoryOfCitiesDropDown'
-                      : 'Select City',
-                  onTap: () {
-                    if (categoryOfCity.isNotEmpty) {
-                      selectStateCity(category: 'c', h: h, w: w);
-                    }
-                  },
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  "${Translate.of(context)!.translate('Medical Center')} *",
-                  style: kInputTextStyle,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                dropDownView(
-                  category: 'm',
-                  colorCon: categoryOfMedicalCenter == [] ||
-                      categoryOfMedicalCenter.isEmpty,
-                  textStyleCon: categoryOfMedicalCenterDropDown == null,
-                  text: categoryOfMedicalCenterDropDown != null
-                      ? '$categoryOfMedicalCenterDropDown'
-                      : 'Select Medical Center',
-                  onTap: () {
-                    if (categoryOfMedicalCenter.isNotEmpty) {
-                      selectStateCity(category: 'm', h: h, w: w);
-                    }
-                  },
-                ),
-                /*Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Radio(
-                        value: 'IH Doctor',
-                        groupValue: doctorsTypes,
-                        onChanged: (value) {
-                          setState(() {
-                            doctorsTypes = value.toString();
-                            selector = 0;
-                          });
-                          print(doctorsTypes);
-                        },
-                      ),
-                    ),
-                    Text(
-                      'UN Provider',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).textTheme.subtitle1.color,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Radio(
-                        value: 'Other Doctor',
-                        groupValue: doctorsTypes,
-                        onChanged: (value) {
-                          setState(() {
-                            doctorsTypes = value.toString();
-                            selector = 1;
-                          });
-                          print(doctorsTypes);
-                        },
-                      ),
-                    ),
-                    Text(
-                      'Other Provider',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).textTheme.subtitle1.color,
-                      ),
-                    )
-                  ],
-                ),*/
-                const SizedBox(
-                  height: 45,
-                ),
-                CustomButton(
-                  textSize: 24,
-                  onPressed: () async {
-                    dateValidate =
-                        _userController.dateOfBirth.value == "" ? false : true;
-                    specialityValidate =
-                        _userController.selectedSpeciality.value == ""
-                            ? false
-                            : true;
-                    stateValidate =
-                        (categoryOfStatesDropDown.toString().isEmpty ||
-                                categoryOfStatesDropDown == null)
-                            ? false
-                            : true;
-                    cityValidate =
-                        (categoryOfCitiesDropDown.toString().isEmpty ||
-                                categoryOfCitiesDropDown == null)
-                            ? false
-                            : true;
-
-                    setState(() {});
-
-                    if (_formKey.currentState!.validate() &&
-                        dateValidate &&
-                        stateValidate &&
-                        cityValidate &&
-                        specialityValidate) {
-                      /*if (selector == 0 && isDoctorVerify == false) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return StatefulBuilder(
-                              builder: (BuildContext context,
-                                  void Function(void Function()) setState) {
-                                return SimpleDialog(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            hintText: 'Enter The 6 Digit Pin'),
-                                        controller: docDigitController,
-                                      ),
-                                    ),
-                                    SizedBox(height: 15),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 50),
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          print(docDigitController.text);
-                                          print(doctorPins);
-                                          if (docDigitController.text ==
-                                              doctorPins) {
-                                            setState(() {
-                                              isDoctorVerify = true;
-                                            });
-
-                                            Get.snackbar('success',
-                                                'Verify Successfully',
-                                                backgroundColor: Colors.blue);
-                                            Navigator.pop(context);
-                                          } else {
-                                            setState(() {
-                                              isDoctorVerify = false;
-                                            });
-
-                                            Get.snackbar(
-                                                '6 digit code wrong', '',
-                                                backgroundColor: Colors.blue);
-                                            Navigator.pop(context);
-                                          }
-                                        },
-                                        child: Text('Verify'),
-                                        style: ElevatedButton.styleFrom(
-                                            fixedSize: Size(40, 30)),
-                                      ),
-                                    )
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        );
-                      } else*/
-                      if (selector == 0 && isDoctorVerify == true) {
-                        _userController.registerData = User(
-                            firstName: _firstNameController.text,
-                            lastName: _lastNameController.text,
-                            gender: _userController.selectedGender.value,
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                            perAppointmentCharge:
-                                _perAppointmentChargeController.text,
-                            profilePic: _image?.path ?? "",
-                            certificateNo: _certificateController.text,
-                            speciality:
-                                _userController.selectedSpeciality.value ==
-                                        "Other"
-                                    ? specialityController.text.trim()
-                                    : _userController.selectedSpeciality.value,
-                            tribalBackgroundStatus:
-                                _userController.tribalBackgroundStatus.value,
-                            userType: "2",
-                            dateOfBirth: DateFormat('yyyy-MM-dd').format(
-                                DateTime.parse(
-                                    _userController.dateOfBirth.value)),
-                            contactNumber: _contactController.text,
-                            education: _educationController.text,
-                            state: getIds ?? "",
-                            city: getIds1 ?? "",
-                            medicalCenterID: getMedicalCenterID ?? "",
-                            isIhUser: categoryOfMedicalCenterDropDown ==
-                                    "United Natives"
-                                ? 0.toString()
-                                : 1.toString(),
-                            providerType: _providerTypeController.text);
-                        if (_image != null) {
-                          _userController.registerUserProfile = _image!;
-                        }
-                        Get.toNamed(Routes.phoneAuthScreen);
-                      } else {
-                        _userController.registerData = User(
-                            firstName: _firstNameController.text,
-                            lastName: _lastNameController.text,
-                            gender: _userController.selectedGender.value,
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                            dateOfBirth: DateFormat('yyyy-MM-dd').format(
-                                DateTime.parse(
-                                    _userController.dateOfBirth.value)),
-                            perAppointmentCharge:
-                                _perAppointmentChargeController.text,
-                            profilePic: _image?.path ?? "",
-                            certificateNo: _certificateController.text,
-                            speciality:
-                                _userController.selectedSpeciality.value ==
-                                        "Other"
-                                    ? specialityController.text.trim()
-                                    : _userController.selectedSpeciality.value,
-                            tribalBackgroundStatus:
-                                _userController.tribalBackgroundStatus.value,
-                            userType: "2",
-                            isAdmin: '2',
-                            contactNumber: _contactController.text,
-                            education: _educationController.text,
-                            state: getIds ?? "",
-                            city: getIds1 ?? "",
-                            medicalCenterID: getMedicalCenterID ?? "",
-                            isIhUser: categoryOfMedicalCenterDropDown ==
-                                    "United Natives"
-                                ? 0.toString()
-                                : 1.toString(),
-                            providerType: _providerTypeController.text);
-                        if (_image != null) {
-                          _userController.registerUserProfile = _image!;
-                        }
-                        Get.toNamed(Routes.phoneAuthScreen);
-                      }
-
-                      // _userController.registerData = User(
-                      //     firstName: _firstNameController.text,
-                      //     lastName: _lastNameController.text,
-                      //     gender: _userController.selectedGender.value,
-                      //     email: _emailController.text,
-                      //     password: _passwordController.text,
-                      //     perAppointmentCharge:
-                      //     _perAppointmentChargeController.text,
-                      //     profilePic: _image?.path ?? "",
-                      //     certificateNo: _certificateController.text,
-                      //     speciality:
-                      //     "${[_userController.selectedSpeciality.value]}",
-                      //     userType: "2",
-                      //     contactNumber: _contactController.text,
-                      //     education: _educationController.text,
-                      //     state: getIds,
-                      //     city: getIds1,
-                      //    // isNativeAmerican: selector
-                      // );
-                      // if (_image != null) {
-                      //   _userController.registerUserProfile = _image;
-                      // }
-                      // Get.toNamed(Routes.phoneAuthScreen);
-                    }
-                  },
-                  text: Translate.of(context)!.translate('sign_up'),
-                ),
-              ],
+                  Container(
+                      margin: const EdgeInsets.only(top: 15),
+                      height: 1,
+                      width: double.infinity,
+                      color: !specialityValidate
+                          ? Colors.red.shade900
+                          : Colors.grey.shade500),
+                  specialityValidate
+                      ? const SizedBox()
+                      : Text(
+                          "Please Select Speciality",
+                          style: TextStyle(
+                              color: Colors.red.shade900,
+                              fontSize: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.fontSize),
+                        ).paddingOnly(top: 6)
+                ],
+              ).paddingOnly(top: 12),
             ),
           ),
+          if (_userController.selectedSpeciality.value == "Other") ...[
+            Text(
+              "${Translate.of(context)!.translate('Enter Speciality')} *",
+              style: kInputTextStyle,
+            ).paddingOnly(top: 18),
+            CustomTextFormField(
+              focusNode: FocusNode(),
+              textInputAction: TextInputAction.next,
+              controller: specialityController,
+              hintText: 'Speciality',
+              validator: (text) {
+                if (text!.isEmpty) {
+                  return 'Please Enter Your Speciality';
+                }
+                return null;
+              },
+            ),
+          ]
         ],
       ),
     );
   }
+
+  /// RACIAL/ETHNIC BACKGROUND
+
+  _racialEthnicBackground(BuildContext context) {
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DropdownButtonFormField(
+            style: TextStyle(
+              fontSize: 20,
+              color: Theme.of(context).textTheme.titleMedium?.color,
+            ),
+            focusNode: FocusNode(),
+            validator: (value) =>
+                value == null ? 'Please select racial/ethnic background' : null,
+            isExpanded: true,
+            value: _userController.tribalBackgroundStatus.value.isEmpty
+                ? null
+                : _userController.tribalBackgroundStatus.value,
+            hint: Text(
+                Translate.of(context)!
+                    .translate('Select racial/ethnic background'),
+                style: hintStyle),
+            onChanged: _userController.onChangeTribalBackgroundStatus,
+            items: _userController.dropDownTribal3,
+          ),
+          if (_userController.tribalBackgroundStatus.value ==
+                  "Native American" ||
+              _userController.tribalBackgroundStatus.value == "Alaska Native")
+            Column(
+              children: [
+                Text(
+                  "${Translate.of(context)!.translate('Are you enrolled in a federally recognized tribe?')} *",
+                  style: kInputTextStyle,
+                ).paddingOnly(top: 18),
+                DropdownButtonFormField(
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Theme.of(context).textTheme.titleMedium?.color,
+                  ),
+                  focusNode: FocusNode(),
+                  validator: (value) => value == null ? 'Please Select' : null,
+                  isExpanded: true,
+                  value: _userController.fedRecognizedTribe.value.isEmpty
+                      ? null
+                      : _userController.fedRecognizedTribe.value,
+                  hint: Text(
+                    Translate.of(context)!.translate(
+                        'Select enrolled in a federally recognized tribe or not'),
+                    style: hintStyle,
+                  ),
+                  onChanged: _userController.onChangeFedRecognizedTribe,
+                  items: _userController.dropDownFedRecognizedTribe,
+                ),
+                if (_userController.fedRecognizedTribe.value == "Yes")
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${Translate.of(context)!.translate('What tribal affiliation are you enrolled in?')} *",
+                        style: kInputTextStyle,
+                      ).paddingOnly(top: 18),
+                      CustomTextFormField(
+                        focusNode: FocusNode(),
+                        textInputAction: TextInputAction.next,
+                        controller: tribalRecognizedYesController,
+                        hintText: 'Enter...',
+                        validator: (text) {
+                          if (text!.isEmpty) {
+                            return 'Please enter tribal affiliation are you enrolled in';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                if (_userController.fedRecognizedTribe.value == "No")
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${Translate.of(context)!.translate('What tribal descendency do you affiliate with?')} *",
+                        style: kInputTextStyle,
+                      ).paddingOnly(top: 18),
+                      CustomTextFormField(
+                        focusNode: FocusNode(),
+                        textInputAction: TextInputAction.next,
+                        controller: tribalRecognizedNoController,
+                        hintText: 'Enter...',
+                        validator: (text) {
+                          if (text!.isEmpty) {
+                            return 'Please enter tribal descendency do you affiliate with';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  )
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  /// BOTTOM SHEET FOR SELECT IMAGES FROM
 
   _openBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -1597,6 +1201,8 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
         });
   }
 
+  /// STATE CITY MEDICAL CENTER DROP DOWN
+
   Widget dropDownView({
     required void Function() onTap,
     required String text,
@@ -1631,7 +1237,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                             color:
                                 Theme.of(context).textTheme.titleMedium?.color,
                           ),
-                  ),
+                  ).paddingOnly(top: 12),
                 ),
                 (category == 'm' && medicalCenterLoader == true) ||
                         (category == 'c' && cityLoader == true) ||
@@ -1655,11 +1261,9 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                       )
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
             Container(
                 height: 1,
+                margin: const EdgeInsets.only(top: 15),
                 width: double.infinity,
                 color: category == 's'
                     ? !stateValidate
@@ -1701,7 +1305,7 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
     );
   }
 
-  selectStateCity(
+  stateCityDropDown(
       {required double h, required double w, required String category}) async {
     showDialog(
       context: context,
@@ -1759,9 +1363,6 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
                               IconButton(
                                 onPressed: () {
                                   if (category == "s") {
@@ -1784,9 +1385,6 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                 ),
                               )
                             ],
-                          ),
-                          SizedBox(
-                            height: h * 0.01,
                           ),
                           Expanded(
                             child: Builder(
@@ -1925,7 +1523,9 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
                                                     .toString();
 
                                                 categoryOfCitiesDropDown =
-                                                    categoryOfCity[index];
+                                                    categoryOfCity[index]
+                                                            ['name']
+                                                        .toString();
 
                                                 setState(() {});
                                               } else {
@@ -1986,5 +1586,133 @@ class _WidgetDocSignupState extends State<WidgetDocSignup> {
         setState(() {});
       }
     });
+  }
+
+  /// SIGN UP BUTTON
+
+  _signUpButton(BuildContext context) {
+    return CustomButton(
+      textSize: 24,
+      onPressed: () async {
+        dateValidate = _userController.dateOfBirth.value == "" ? false : true;
+        specialityValidate =
+            _userController.selectedSpeciality.value == "" ? false : true;
+        stateValidate = (categoryOfStatesDropDown.toString().isEmpty ||
+                categoryOfStatesDropDown == null)
+            ? false
+            : true;
+        cityValidate = (categoryOfCitiesDropDown.toString().isEmpty ||
+                categoryOfCitiesDropDown == null)
+            ? false
+            : true;
+
+        setState(() {});
+
+        if (_formKey.currentState!.validate() &&
+            dateValidate &&
+            stateValidate &&
+            cityValidate &&
+            specialityValidate &&
+            _userController.tribalBackgroundStatus.value.isNotEmpty) {
+          if (selector == 0 && isDoctorVerify == true) {
+            _userController.registerData = User(
+              firstName: _firstNameController.text,
+              lastName: _lastNameController.text,
+              gender: _userController.selectedGender.value,
+              email: _emailController.text,
+              password: _passwordController.text,
+              perAppointmentCharge: _perAppointmentChargeController.text,
+              profilePic: _image?.path ?? "",
+              certificateNo: _certificateController.text,
+              speciality: _userController.selectedSpeciality.value == "Other"
+                  ? specialityController.text.trim()
+                  : _userController.selectedSpeciality.value,
+              tribalBackgroundStatus:
+                  _userController.tribalBackgroundStatus.value,
+              userType: "2",
+              dateOfBirth: DateFormat('yyyy-MM-dd')
+                  .format(DateTime.parse(_userController.dateOfBirth.value)),
+              contactNumber: _contactController.text,
+              education: _educationController.text,
+              state: getIds ?? "",
+              city: getIds1 ?? "",
+              medicalCenterID: getMedicalCenterID ?? "",
+              isIhUser: categoryOfMedicalCenterDropDown == "United Natives"
+                  ? 0.toString()
+                  : 1.toString(),
+              providerType: _providerTypeController.text,
+              federallyRecognizedTribe:
+                  _userController.tribalBackgroundStatus.value ==
+                              "Native American" ||
+                          _userController.tribalBackgroundStatus.value ==
+                              "Alaska Native"
+                      ? _userController.fedRecognizedTribe.value.toString()
+                      : "",
+              tribal_affiliation_enrolled:
+                  _userController.fedRecognizedTribe.value == "Yes"
+                      ? tribalRecognizedYesController.text.trim()
+                      : "",
+              tribal_descendancy_affiliate:
+                  _userController.fedRecognizedTribe.value == "No"
+                      ? tribalRecognizedNoController.text.trim()
+                      : "",
+            );
+            if (_image != null) {
+              _userController.registerUserProfile = _image!;
+            }
+            Get.toNamed(Routes.phoneAuthScreen);
+          } else {
+            _userController.registerData = User(
+              firstName: _firstNameController.text,
+              lastName: _lastNameController.text,
+              gender: _userController.selectedGender.value,
+              email: _emailController.text,
+              password: _passwordController.text,
+              dateOfBirth: DateFormat('yyyy-MM-dd')
+                  .format(DateTime.parse(_userController.dateOfBirth.value)),
+              perAppointmentCharge: _perAppointmentChargeController.text,
+              profilePic: _image?.path ?? "",
+              certificateNo: _certificateController.text,
+              speciality: _userController.selectedSpeciality.value == "Other"
+                  ? specialityController.text.trim()
+                  : _userController.selectedSpeciality.value,
+              tribalBackgroundStatus:
+                  _userController.tribalBackgroundStatus.value,
+              userType: "2",
+              isAdmin: '2',
+              contactNumber: _contactController.text,
+              education: _educationController.text,
+              state: getIds ?? "",
+              city: getIds1 ?? "",
+              medicalCenterID: getMedicalCenterID ?? "",
+              isIhUser: categoryOfMedicalCenterDropDown == "United Natives"
+                  ? 0.toString()
+                  : 1.toString(),
+              providerType: _providerTypeController.text,
+              federallyRecognizedTribe:
+                  _userController.tribalBackgroundStatus.value ==
+                              "Native American" ||
+                          _userController.tribalBackgroundStatus.value ==
+                              "Alaska Native"
+                      ? _userController.fedRecognizedTribe.value.toString()
+                      : "",
+              tribal_affiliation_enrolled:
+                  _userController.fedRecognizedTribe.value == "Yes"
+                      ? tribalRecognizedYesController.text.trim()
+                      : "",
+              tribal_descendancy_affiliate:
+                  _userController.fedRecognizedTribe.value == "No"
+                      ? tribalRecognizedNoController.text.trim()
+                      : "",
+            );
+            if (_image != null) {
+              _userController.registerUserProfile = _image!;
+            }
+            Get.toNamed(Routes.phoneAuthScreen);
+          }
+        }
+      },
+      text: Translate.of(context)!.translate('sign_up'),
+    ).paddingOnly(top: 40);
   }
 }

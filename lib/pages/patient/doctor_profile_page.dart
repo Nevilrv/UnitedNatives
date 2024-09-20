@@ -1,7 +1,6 @@
 import 'package:united_natives/medicle_center/lib/utils/translate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import '../../components/custom_circular_indicator.dart';
 import '../../components/round_icon_button.dart';
 import '../../utils/constants.dart';

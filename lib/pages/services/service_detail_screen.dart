@@ -103,7 +103,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: isDark ? Colors.white : Colors.black,
-                    fontSize: Get.height * 0.08,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold),
               ),
             ),

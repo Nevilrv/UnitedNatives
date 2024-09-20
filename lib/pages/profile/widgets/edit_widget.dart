@@ -699,7 +699,7 @@ class _EditWidgetState extends State<EditWidget> {
                             textInputAction: TextInputAction.next,
                             controller:
                                 _userUpdateController.whatTribe1Controller,
-                            hintText: 'Enter enter federally recognized tribe',
+                            hintText: 'Enter federally recognized tribe',
                             validator: (text) {
                               if (text!.isEmpty) {
                                 return 'Please enter federally recognized tribe';
@@ -711,7 +711,7 @@ class _EditWidgetState extends State<EditWidget> {
                             height: 20,
                           ),
                           Text(
-                            "${Translate.of(context)!.translate('What is your second tribal affiliation?')} (Optional)",
+                            "${Translate.of(context)!.translate('What is your second tribal affiliation and/or another racial/ethnic group?')} (Optional)",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -725,7 +725,7 @@ class _EditWidgetState extends State<EditWidget> {
                             height: 20,
                           ),
                           Text(
-                            "${Translate.of(context)!.translate('What is your third tribal affiliation?')} (Optional)",
+                            "${Translate.of(context)!.translate('What is your third tribal affiliation and/or another racial/ethnic group?')} (Optional)",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -739,7 +739,7 @@ class _EditWidgetState extends State<EditWidget> {
                             height: 20,
                           ),
                           Text(
-                            "${Translate.of(context)!.translate('What is your fourth tribal affiliation?')} (Optional)",
+                            "${Translate.of(context)!.translate('What is your fourth tribal affiliation and/or another racial/ethnic group?')} (Optional)",
                             style: kInputTextStyle,
                           ),
                           CustomTextFormField(
@@ -818,7 +818,7 @@ class _EditWidgetState extends State<EditWidget> {
               ),
               const SizedBox(height: 20),
               Text(
-                "${Translate.of(context)?.translate('If you are not enrolled tribal member, please select racial/ethnic background')} *",
+                "${Translate.of(context)?.translate('If you are not an enrolled tribal member, please select racial/ethnic background')} *",
                 style: kInputTextStyle,
               ),
               Obx(

@@ -51,6 +51,8 @@ class User {
   String? stateName;
   String? medicalCenterName;
   String? federallyRecognizedTribe;
+  String? tribal_affiliation_enrolled;
+  String? tribal_descendancy_affiliate;
 
   User({
     this.id,
@@ -105,6 +107,8 @@ class User {
     this.second_tribal_affiliation,
     this.third_tribal_affiliation,
     this.fourth_tribal_affiliation,
+    this.tribal_affiliation_enrolled,
+    this.tribal_descendancy_affiliate,
   });
 
   User.fromJson(Map<String, dynamic> json) {
@@ -162,6 +166,8 @@ class User {
     third_tribal_affiliation = json["third_tribal_affiliation"] ?? "";
     fourth_tribal_affiliation = json["fourth_tribal_affiliation"] ?? "";
     federallyRecognizedTribe = json["federally_recognized_tribe"] ?? "";
+    tribal_affiliation_enrolled = json["tribal_affiliation_enrolled"] ?? "";
+    tribal_descendancy_affiliate = json["tribal_descendancy_affiliate"] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -220,6 +226,8 @@ class User {
     data['medicalCenterName;'] = medicalCenterName;
     data['medical_insurance_number'] = insuranceNumber;
     data['federally_recognized_tribe'] = federallyRecognizedTribe;
+    data['tribal_descendancy_affiliate'] = tribal_descendancy_affiliate;
+    data['tribal_affiliation_enrolled'] = tribal_affiliation_enrolled;
 
     return data;
   }

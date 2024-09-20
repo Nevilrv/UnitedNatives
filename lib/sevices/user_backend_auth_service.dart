@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/ResponseModel/login_verification.dart';
 import 'package:united_natives/ResponseModel/patient_update_data.dart';
 import 'package:united_natives/ResponseModel/pin_status_model.dart';
@@ -15,10 +16,10 @@ import 'package:united_natives/ResponseModel/user.dart';
 import 'package:united_natives/utils/app_enum.dart';
 import 'package:united_natives/utils/exception.dart';
 import 'package:united_natives/utils/network_util.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/utils/utils.dart';
 
 import '../utils/constants.dart';
-import 'package:http/http.dart' as http;
 
 class UserBackendAuthService {
   static final UserBackendAuthService _authService =
@@ -156,11 +157,11 @@ class UserBackendAuthService {
             body: body,
             headers: headers);
 
-        log('result==========>>>>>${result}');
+        log('result==========>>>>>$result');
 
         if (result.statusCode == 200) {
           var data = jsonDecode(result.body);
-          log('data==========>>>>>${data}');
+          log('data==========>>>>>$data');
 
           id = data["id"];
         } else {
@@ -236,6 +237,11 @@ class UserBackendAuthService {
         "medical_center_id": userData.medicalCenterID ?? "",
         'provider_type': userData.providerType ?? "",
         'ethnic_background': userData.tribalBackgroundStatus ?? "",
+        'federally_recognized_tribe': userData.federallyRecognizedTribe ?? "",
+        'tribal_affiliation_enrolled':
+            userData.tribal_affiliation_enrolled ?? "",
+        'tribal_descendancy_affiliate':
+            userData.tribal_descendancy_affiliate ?? "",
 
         // 'is_admin':userData.isAdmin
         // 'is_native_american':userData.isNativeAmerican,
@@ -606,7 +612,7 @@ class UserBackendAuthService {
         "last_name": userUpdateData.lastName ?? "",
         "gender": userUpdateData.gender ?? "",
         "contact_number": userUpdateData.contactNumber ?? "",
-        "dob": userUpdateData.dateOfBirth ?? "",
+        "date_of_birth": userUpdateData.dateOfBirth ?? "",
         "blood_group": userUpdateData.bloodGroup ?? "",
         "marital_status": userUpdateData.maritalStatus ?? "",
         "height": userUpdateData.height ?? "",
@@ -649,8 +655,15 @@ class UserBackendAuthService {
         "city_id": userUpdateData.cityId ?? "",
         "medical_center_id": userUpdateData.medicalCenterID ?? "",
         "provider_type": userUpdateData.providerType ?? "",
-        "ethnic_background": userUpdateData.tribalBackgroundStatus ?? ""
+        "ethnic_background": userUpdateData.tribalBackgroundStatus ?? "",
+        'federally_recognized_tribe':
+            userUpdateData.federallyRecognizedTribe ?? "",
+        'tribal_affiliation_enrolled':
+            userUpdateData.tribal_affiliation_enrolled ?? "",
+        'tribal_descendancy_affiliate':
+            userUpdateData.tribal_descendancy_affiliate ?? "",
       };
+
       if (userType == "1") {
         // PatientUpdateData patientUpdateData =
         var result = await _networkAPICall.multipartRequestPost(

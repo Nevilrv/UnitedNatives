@@ -150,6 +150,10 @@ class _AddMedicineState extends State<AddMedicine> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
       await showTimePicker(
+        builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: const TextScaler.linear(1.3)),
+            child: child!),
         initialTime: TimeOfDay.now(),
         context: context,
       ).then((TimeOfDay? selectedTime) async {

@@ -8,10 +8,10 @@ enum AppTheme {
 }
 
 class Themes {
-  final isLight = ThemeData(
+  ThemeData isLight = ThemeData(
     fontFamily: 'NunitoSans',
-
     useMaterial3: false, // Add this line to use Material 3
+
     colorScheme: const ColorScheme.light(
         primary: kColorPrimary,
         surface: Colors.white,
@@ -57,7 +57,7 @@ class Themes {
     ),
   );
 
-  final isDark = ThemeData(
+  ThemeData isDark = ThemeData(
     fontFamily: 'NunitoSans',
     useMaterial3: false, // Add this line to use Material 3
     colorScheme: const ColorScheme.dark(
@@ -112,7 +112,7 @@ class Themes {
   );
 }
 
-final appThemeData = {
+Map<AppTheme, ThemeData> appThemeData = {
   AppTheme.LightTheme: ThemeData(
     fontFamily: 'NunitoSans',
     useMaterial3: true, // Add this line to use Material 3

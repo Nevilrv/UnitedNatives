@@ -2,20 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Trans;
-import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
-import 'package:united_natives/utils/pref_manager.dart';
-import 'package:united_natives/viewModel/user_controller.dart';
+import 'package:location/location.dart';
 import 'package:united_natives/ResponseModel/patient_update_data.dart';
 import 'package:united_natives/ResponseModel/specialities_model.dart';
 import 'package:united_natives/ResponseModel/user.dart';
 import 'package:united_natives/sevices/user_backend_auth_service.dart';
 import 'package:united_natives/utils/constants.dart';
 import 'package:united_natives/utils/exception.dart';
+import 'package:united_natives/utils/pref_manager.dart';
 import 'package:united_natives/utils/utils.dart';
+import 'package:united_natives/viewModel/user_controller.dart';
 
 class UserUpdateController extends GetxController {
   final UserController _userController = Get.find();
@@ -50,9 +51,11 @@ class UserUpdateController extends GetxController {
   final whatTribe1ThirdController = TextEditingController();
   final whatTribe1FourthController = TextEditingController();
   final whatTribe2Controller = TextEditingController();
+  final tribalRecognizedYesController = TextEditingController();
+  final tribalRecognizedNoController = TextEditingController();
 
-  ScrollController dScrollController = ScrollController();
-  ScrollController pScrollController = ScrollController();
+  // ScrollController dScrollController = ScrollController();
+  // ScrollController pScrollController = ScrollController();
 
   final selectedGender = ''.obs;
   final selectedInsuranceEligibility = ''.obs;
@@ -68,6 +71,7 @@ class UserUpdateController extends GetxController {
   final tribalFederallyMember = ''.obs;
   final tribalFederallyState = ''.obs;
   final tribalBackgroundStatus = ''.obs;
+  RxString fedRecognizedTribe = ''.obs;
 
   // var genderItems = <String>['Male'.tr(), 'Female'.tr()];
   var genderItems = <String>['Male', 'Female', 'Non-Binary', 'Gender Neutral'];
@@ -104,6 +108,7 @@ class UserUpdateController extends GetxController {
 
   // var _maritalItems = <String>['Single'.tr(), 'Married'.tr()];
   final _tribalItems = <String>['Yes'.tr(), 'No'.tr()];
+
   String? userProfile;
   String? getStateId;
   String? getCityId;
@@ -119,6 +124,7 @@ class UserUpdateController extends GetxController {
   List<DropdownMenuItem<String>>? dropDownTribal1;
   List<DropdownMenuItem<String>>? dropDownTribal2;
   List<DropdownMenuItem<String>>? dropDownTribal3;
+  List<DropdownMenuItem<String>>? dropDownFedRecognizedTribe;
 
   // final DateTime now = DateTime.now();
   String convertedDateTime =
@@ -167,7 +173,7 @@ class UserUpdateController extends GetxController {
             ? "Yes"
             : "No";
     tribalBackgroundStatus.value =
-        _userController.user.value.tribalBackgroundStatus!;
+        _userController.user.value.tribalBackgroundStatus ?? "";
 
     allergiesController.text = _userController.user.value.allergies ?? "";
     insuranceCompanyName.text =
@@ -183,6 +189,13 @@ class UserUpdateController extends GetxController {
     whatTribe2Controller.text =
         _userController.user.value.tribalFederallyState ?? "";
     insuranceNumber.text = _userController.user.value.insuranceNumber ?? "";
+
+    fedRecognizedTribe.value =
+        _userController.user.value.federallyRecognizedTribe ?? "";
+    tribalRecognizedNoController.text =
+        _userController.user.value.tribal_descendancy_affiliate ?? "";
+    tribalRecognizedYesController.text =
+        _userController.user.value.tribal_affiliation_enrolled ?? "";
 
     _initDropDowns();
   }
@@ -274,6 +287,15 @@ class UserUpdateController extends GetxController {
           ),
         )
         .toList();
+
+    dropDownFedRecognizedTribe = _tribalItems
+        .map(
+          (String value) => DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          ),
+        )
+        .toList();
   }
 
   void onChangeGender(value) => selectedGender.value = value ?? '';
@@ -281,6 +303,8 @@ class UserUpdateController extends GetxController {
   onChangeSpeciality(value) {
     speciality.value = value ?? '';
   }
+
+  void onChangeFedRecognizedTribe(value) => fedRecognizedTribe.value = value;
 
   onDateOfBirth(value) => dateOfBirth.value = value ?? '';
 
@@ -291,7 +315,7 @@ class UserUpdateController extends GetxController {
   void onChangeInsuranceEligibility(value) =>
       selectedInsuranceEligibility.value = value;
 
-  void onChangeTribalStatus(value) => selectedTribalStatus.value = value;
+  // void onChangeTribalStatus(value) => selectedTribalStatus.value = value;
   void onAareYouAUSVeteran(value) => areYouAUSVeteran.value = value;
   void onChangeTribalFederallyStatus(value) =>
       tribalFederallyMember.value = value;
@@ -332,7 +356,8 @@ class UserUpdateController extends GetxController {
         lastName: lastNameController.text,
         contactNumber: contactController.text,
         gender: selectedGender.value,
-        dateOfBirth: dateOfBirth.value,
+        dateOfBirth:
+            DateFormat("yyyy-MM-dd").format(DateTime.parse(dateOfBirth.value)),
         bloodGroup: selectedBloodGroup.value,
         maritalStatus: selectedMaritalStatus.value,
         height: heightController.text,
@@ -360,6 +385,17 @@ class UserUpdateController extends GetxController {
         usVeteranStatus: areYouAUSVeteran.value,
         insuranceCompanyName: insuranceCompanyName.text.trim(),
         insuranceNumber: insuranceNumber.text.trim(),
+        federallyRecognizedTribe:
+            tribalBackgroundStatus.value == "Native American" ||
+                    tribalBackgroundStatus.value == "Alaska Native"
+                ? fedRecognizedTribe.value.toString()
+                : "",
+        tribal_affiliation_enrolled: fedRecognizedTribe.value == "Yes"
+            ? tribalRecognizedYesController.text.trim()
+            : "",
+        tribal_descendancy_affiliate: fedRecognizedTribe.value == "No"
+            ? tribalRecognizedNoController.text.trim()
+            : "",
       );
 
       patientUpdateModelData.value = await UserBackendAuthService()

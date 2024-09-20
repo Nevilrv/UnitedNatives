@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:united_natives/components/ads_bottom_bar.dart';
 import 'package:united_natives/components/round_icon_button.dart';
 import 'package:united_natives/viewModel/ads_controller.dart';
@@ -110,78 +111,82 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate('gender'),
-                        trailing: _userController.user.value.gender,
-                        hint: Translate.of(context)?.translate('add_gender'),
+                        trailing: "${_userController.user.value.gender}".isEmpty
+                            ? "   -   "
+                            : _userController.user.value.gender,
                       ),
                       ProfileInfoTile(
                         title:
                             Translate.of(context)?.translate('date_of_birth'),
-                        trailing: _userController.user.value.dateOfBirth,
-                        hint: 'yyyy mm dd',
+                        trailing: "${_userController.user.value.dateOfBirth}"
+                                .isEmpty
+                            ? "   -   "
+                            : DateFormat('EEEE, dd MMMM, yyyy').format(
+                                DateTime.parse(
+                                    _userController.user.value.dateOfBirth ??
+                                        DateTime.now().toString())),
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate('blood_group'),
-                        trailing: _userController.user.value.bloodGroup!.isEmpty
-                            ? "   -   "
-                            : _userController.user.value.bloodGroup,
-                        hint:
-                            Translate.of(context)?.translate('add_blood_group'),
+                        trailing:
+                            "${_userController.user.value.bloodGroup}".isEmpty
+                                ? "   -   "
+                                : _userController.user.value.bloodGroup,
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate('Allergies'),
-                        trailing: _userController.user.value.allergies!.isEmpty
-                            ? "   -   "
-                            : _userController.user.value.allergies,
-                        hint: Translate.of(context)?.translate('Allergies'),
+                        trailing:
+                            "${_userController.user.value.allergies}".isEmpty
+                                ? "   -   "
+                                : _userController.user.value.allergies,
                       ),
                       ProfileInfoTile(
                         title:
                             Translate.of(context)?.translate('marital_status'),
-                        trailing:
-                            _userController.user.value.maritalStatus!.isEmpty
-                                ? "   -   "
-                                : _userController.user.value.maritalStatus,
-                        hint: Translate.of(context)
-                            ?.translate('add_marital_status'),
+                        trailing: "${_userController.user.value.maritalStatus}"
+                                .isEmpty
+                            ? "   -   "
+                            : _userController.user.value.maritalStatus,
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate('height'),
-                        trailing: _userController.user.value.height!.isEmpty
+                        trailing: "${_userController.user.value.height}".isEmpty
                             ? "   -   "
                             : _userController.user.value.height,
-                        hint: Translate.of(context)?.translate('add_height'),
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate('weight'),
-                        trailing: _userController.user.value.weight!.isEmpty
+                        trailing: "${_userController.user.value.weight}".isEmpty
                             ? "   -   "
                             : _userController.user.value.weight,
-                        hint: Translate.of(context)?.translate('add_weight'),
                       ),
                       ProfileInfoTile(
                         title: 'Emergency contact',
                         trailing:
-                            _userController.user.value.emergencyContact!.isEmpty
+                            "${_userController.user.value.emergencyContact}"
+                                    .isEmpty
                                 ? "   -   "
                                 : _userController.user.value.emergencyContact,
-                        hint: 'Add emergency contact',
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)
                             ?.translate('Current case manager info'),
-                        trailing: _userController
-                                .user.value.currentCaseManagerInfo!.isEmpty
-                            ? "   -   "
-                            : _userController.user.value.currentCaseManagerInfo,
-                        hint:
-                            Translate.of(context)?.translate('+1 52139784672'),
+                        trailing:
+                            "${_userController.user.value.currentCaseManagerInfo}"
+                                    .isEmpty
+                                ? "   -   "
+                                : _userController
+                                    .user.value.currentCaseManagerInfo,
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)
                             ?.translate('Insurance Eligibility'),
                         trailing:
-                            _userController.user.value.insuranceEligibility,
-                        hint: Translate.of(context)?.translate('yes'),
+                            "${_userController.user.value.insuranceEligibility}"
+                                    .isEmpty
+                                ? "   -   "
+                                : _userController
+                                    .user.value.insuranceEligibility,
                       ),
                       if (_userController.user.value.insuranceEligibility
                               ?.toLowerCase() ==
@@ -189,27 +194,31 @@ class _ProfilePageState extends State<ProfilePage> {
                         ProfileInfoTile(
                           title: Translate.of(context)
                               ?.translate('State the name of your insurance'),
-                          trailing: _userController
-                                  .user.value.insuranceCompanyName!.isEmpty
-                              ? "   -   "
-                              : _userController.user.value.insuranceCompanyName,
-                          hint: Translate.of(context)?.translate(''),
+                          trailing:
+                              "${_userController.user.value.insuranceCompanyName}"
+                                      .isEmpty
+                                  ? "   -   "
+                                  : _userController
+                                      .user.value.insuranceCompanyName,
                         ),
                         ProfileInfoTile(
                           title: Translate.of(context)
                               ?.translate('Medical insurance policy number'),
-                          trailing: _userController
-                                  .user.value.insuranceNumber!.isEmpty
-                              ? "   -   "
-                              : _userController.user.value.insuranceNumber,
-                          hint: Translate.of(context)?.translate(''),
+                          trailing:
+                              "${_userController.user.value.insuranceNumber}"
+                                      .isEmpty
+                                  ? "   -   "
+                                  : _userController.user.value.insuranceNumber,
                         ),
                       ],
                       ProfileInfoTile(
                         title: Translate.of(context)
                             ?.translate('Are you a US Veteran?'),
-                        trailing: _userController.user.value.usVeteranStatus,
-                        hint: Translate.of(context)?.translate('yes'),
+                        trailing:
+                            "${_userController.user.value.usVeteranStatus}"
+                                    .isEmpty
+                                ? "   -   "
+                                : _userController.user.value.usVeteranStatus,
                       ),
                       // ProfileInfoTile(
                       //   title:
@@ -220,82 +229,90 @@ class _ProfilePageState extends State<ProfilePage> {
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate(
                             'Are you enrolled in a federally recognized tribe?'),
-                        trailing: _userController
-                                .user.value.tribalFederallyMember!.isEmpty
-                            ? "No"
-                            : "Yes",
+                        trailing:
+                            "${_userController.user.value.tribalFederallyMember}"
+                                    .isEmpty
+                                ? "No"
+                                : "Yes",
                         hint: Translate.of(context)?.translate('yes'),
                       ),
-                      if (_userController
-                          .user.value.tribalFederallyMember!.isNotEmpty) ...[
+                      if ("${_userController.user.value.tribalFederallyMember}"
+                          .isNotEmpty) ...[
                         ProfileInfoTile(
                           title: Translate.of(context)
                               ?.translate('Federally recognized tribe'),
                           trailing:
-                              _userController.user.value.tribalFederallyMember,
-                          hint: Translate.of(context)
-                              ?.translate('Federally recognized tribe'),
+                              "${_userController.user.value.tribalFederallyMember}"
+                                      .isEmpty
+                                  ? "   -   "
+                                  : _userController
+                                      .user.value.tribalFederallyMember,
                         ),
                         ProfileInfoTile(
-                          title: Translate.of(context)
-                              ?.translate('Second federally recognized tribe'),
-                          trailing: _userController
-                              .user.value.second_tribal_affiliation,
-                          hint: Translate.of(context)
-                              ?.translate('Second federally recognized tribe'),
+                          title: Translate.of(context)?.translate(
+                              'Second tribal affiliation and/or another racial/ethnic group'),
+                          trailing:
+                              "${_userController.user.value.second_tribal_affiliation}"
+                                      .isEmpty
+                                  ? "   -   "
+                                  : _userController
+                                      .user.value.second_tribal_affiliation,
                         ),
                         ProfileInfoTile(
-                          title: Translate.of(context)
-                              ?.translate('Third federally recognized tribe'),
-                          trailing: _userController
-                              .user.value.third_tribal_affiliation,
-                          hint: Translate.of(context)
-                              ?.translate('Third federally recognized tribe'),
+                          title: Translate.of(context)?.translate(
+                              'Third tribal affiliation and/or another racial/ethnic group'),
+                          trailing:
+                              "${_userController.user.value.third_tribal_affiliation}"
+                                      .isEmpty
+                                  ? "   -   "
+                                  : _userController
+                                      .user.value.third_tribal_affiliation,
                         ),
                         ProfileInfoTile(
-                          title: Translate.of(context)
-                              ?.translate('Fourth federally recognized tribe'),
-                          trailing: _userController
-                              .user.value.fourth_tribal_affiliation,
-                          hint: Translate.of(context)
-                              ?.translate('Fourth federally recognized tribe'),
+                          title: Translate.of(context)?.translate(
+                              'Fourth tribal affiliation and/or another racial/ethnic group'),
+                          trailing:
+                              "${_userController.user.value.fourth_tribal_affiliation}"
+                                      .isEmpty
+                                  ? "   -   "
+                                  : _userController
+                                      .user.value.fourth_tribal_affiliation,
                         ),
                       ],
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate(
                             'Are you enrolled in a State Recognized Tribe?'),
-                        trailing: _userController
-                                .user.value.tribalFederallyState!.isEmpty
-                            ? "No"
-                            : "Yes",
-                        hint: Translate.of(context)?.translate('yes'),
+                        trailing:
+                            "${_userController.user.value.tribalFederallyState}"
+                                    .isEmpty
+                                ? "No"
+                                : "Yes",
                       ),
-                      if (_userController
-                          .user.value.tribalFederallyState!.isNotEmpty)
+                      if ("${_userController.user.value.tribalFederallyState}"
+                          .isNotEmpty)
                         ProfileInfoTile(
                           title: Translate.of(context)
                               ?.translate('State recognized tribe'),
                           trailing:
-                              _userController.user.value.tribalFederallyState,
-                          hint: Translate.of(context)
-                              ?.translate('State recognized tribe'),
+                              "${_userController.user.value.tribalFederallyState}"
+                                      .isEmpty
+                                  ? "   -   "
+                                  : _userController
+                                      .user.value.tribalFederallyState,
                         ),
                       ProfileInfoTile(
                         title: Translate.of(context)
                             ?.translate('Racial/ethnic background '),
                         trailing:
                             _userController.user.value.tribalBackgroundStatus,
-                        hint: Translate.of(context)?.translate('yes'),
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate('State'),
                         trailing: _userController.user.value.stateName,
-                        hint: Translate.of(context)?.translate('Alabama'),
                       ),
                       ProfileInfoTile(
                         title: Translate.of(context)?.translate('city'),
                         trailing: _userController.user.value.cityName,
-                        hint: Translate.of(context)?.translate('ADAK'),
                       ),
                       const SizedBox(
                         height: 75,

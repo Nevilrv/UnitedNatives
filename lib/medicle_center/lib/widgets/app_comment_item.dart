@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:united_natives/medicle_center/lib/models/model.dart';
 import 'package:united_natives/medicle_center/lib/widgets/widget.dart';
+import 'package:united_natives/utils/utils.dart';
 
 class AppCommentItem extends StatelessWidget {
   final CommentModel? item;
@@ -204,8 +205,6 @@ class AppCommentItem extends StatelessWidget {
                             ),
                           ),
                           Builder(builder: (context) {
-                            log('item?.createDate==========>>>>>${item?.createDate}');
-
                             return Text(
                               DateFormat("hh:mm a")
                                   .format(item?.createDate ?? DateTime.now()),

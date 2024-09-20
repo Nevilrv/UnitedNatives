@@ -407,6 +407,32 @@ class Utils {
       return '';
     }
   }
+
+  static Future<String> selectedTimeFormat(context,
+      {TimeOfDay? selectedTime}) async {
+    final time =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+    if (time != null) {
+      return DateFormat('hh:mm aa').format(DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        time.hour,
+        time.minute,
+      ));
+    } else if (selectedTime != null) {
+      return DateFormat('hh:mm aa').format(DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        selectedTime.hour,
+        selectedTime.minute,
+      ));
+    } else {
+      return '';
+    }
+  }
 }
 
 class Config {

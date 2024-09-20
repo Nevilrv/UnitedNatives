@@ -20,8 +20,6 @@ class SearchHistory extends StatefulWidget {
 class _SearchHistoryState extends State<SearchHistory> {
   SearchHistoryDelegate? _delegate;
 
-  List<ProductModel> _history = [];
-
   @override
   void initState() {
     super.initState();
@@ -41,14 +39,7 @@ class _SearchHistoryState extends State<SearchHistory> {
   ///Load history
   void _loadHistory() async {
     List<String>? historyString = Preferences.getStringList(Preferences.search);
-    if (historyString != null) {
-      _history = historyString.map((e) {
-        return ProductModel.fromJson(
-          jsonDecode(e),
-          setting: Application.setting,
-        );
-      }).toList();
-    }
+    if (historyString != null) {}
     setState(() {});
   }
 
@@ -67,7 +58,7 @@ class _SearchHistoryState extends State<SearchHistory> {
     } else {
       List<String> historyString =
           Preferences.getStringList(Preferences.search)!;
-      if (historyString != null) {
+      if (historyString.isNotEmpty) {
         historyString.remove(jsonEncode(item.toJson()));
         await Preferences.setStringList(Preferences.search, historyString);
       }
@@ -82,9 +73,6 @@ class _SearchHistoryState extends State<SearchHistory> {
 
   @override
   Widget build(BuildContext context) {
-    print('_delegate---------->>>>>>>>  $_delegate');
-
-    print('search Location Data');
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

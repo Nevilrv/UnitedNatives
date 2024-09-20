@@ -470,7 +470,10 @@ class _UpdateAvailabilityState extends State<UpdateAvailability> {
               onPressed: () async {
                 _selectDate(context);
               },
-              child: Text(DateFormat('EEEE, dd MMMM yyyy').format(currentDate)),
+              child: Text(
+                DateFormat('EEEE, dd MMMM yyyy').format(currentDate),
+                style: const TextStyle(fontSize: 20),
+              ),
             ),
             const SizedBox(
               height: 10,
